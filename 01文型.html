@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【新UI！】英語の文型マスター講座：ゼロから始めるあなたのための最強ガイド</title>
+    <meta name="description" content="英語力を本気で伸ばしたい皆さんへ！PCでもスマホでも使いやすいハンバーガーメニューで目的の文法へ即アクセス！平叙文から感嘆文まで、熱血解説と豊富な例文、合格TIPSで、英語の構造をガッチリ掴みましょう！確認問題で実力アップ！">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基本設定とリセット --- */
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #f8f9fa;
+            --accent-color: #fbbc05;
+            --text-color: #202124;
+            --light-text-color: #fff;
+            --border-color: #dfe1e5;
+            --tooltip-bg: #3c4043;
+            --tooltip-text: #e8eaed;
+            --header-bg: var(--primary-color);
+            --font-jp: 'Noto Sans JP', sans-serif;
+            --font-en: 'Roboto', sans-serif;
+            --link-color: #1a0dab;
+            --note-bg: #e8f0fe;
+            --note-border: #1a73e8;
+            --tips-bg: #fffbeb;
+            --tips-border: #fbbc05;
+            --toc-width: 280px; /* 目次の幅を少し広めに */
+            --toc-bg: #ffffff;
+            --toc-border: #dadce0;
+            --toc-link-color: #3c4043;
+            --toc-link-hover-bg: #f1f3f4;
+            --toc-active-link-color: var(--primary-color);
+            --toc-active-link-bg: #e8f0fe;
+            --menu-btn-color: #5f6368;
+            --overlay-bg: rgba(0, 0, 0, 0.5);
+            --header-height: 60px; /* ヘッダーの高さ（目安） */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-jp), var(--font-en);
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: #fff;
+            overflow-x: hidden;
+            /* padding-left は削除 */
+        }
+        body.toc-open { overflow: hidden; } /* メニュー表示中は背景スクロール禁止 (PC/スマホ共通) */
+
+        /* --- ハンバーガーメニューボタン (常に表示) --- */
+        #menu-toggle-btn {
+            display: block; /* 常に表示 */
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1200; /* 目次より手前 */
+            background-color: rgba(255, 255, 255, 0.9); /* 背景を少し透過 */
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            padding: 0.7rem; /* 少し大きく */
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px); /* 背景ぼかし */
+            transition: transform 0.2s ease;
+        }
+        #menu-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+        #menu-toggle-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--menu-btn-color);
+            display: block;
+        }
+
+        /* --- フロート目次 (PC/スマホ共通 ハンバーガーメニュー) --- */
+        #floating-toc {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--toc-width);
+            height: 100vh;
+            background-color: var(--toc-bg);
+            border-right: 1px solid var(--toc-border);
+            padding-top: 0; /* ヘッダーでpadding管理 */
+            overflow-y: auto;
+            z-index: 1100;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* 影を少し濃く */
+            transform: translateX(-100%); /* 初期状態は画面外 */
+            transition: transform 0.3s ease; /* スライドアニメーション */
+        }
+        #floating-toc.open {
+            transform: translateX(0); /* openクラスで表示 */
+        }
+
+        #floating-toc .toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--toc-border);
+            position: sticky;
+            top: 0;
+            background-color: var(--toc-bg);
+            z-index: 1;
+        }
+
+        #floating-toc h2 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin: 0; padding: 0; border: none;
+        }
+        #floating-toc .toc-close-btn { /* 閉じるボタン (共通) */
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.8rem; /* 少し大きく */
+            color: var(--menu-btn-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        #floating-toc ul { list-style: none; padding: 1rem 0; margin: 0; }
+        #floating-toc li a {
+            display: flex;
+            align-items: center;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.9rem;
+            color: var(--toc-link-color);
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease, border-left-color 0.2s ease;
+            border-left: 4px solid transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #floating-toc li a .toc-icon { margin-right: 0.8rem; opacity: 0.6; width: 16px; text-align: center; }
+        #floating-toc li a .toc-text {
+            opacity: 1; /* 常にテキスト表示 */
+            transition: none; /* opacityアニメーション不要 */
+        }
+        #floating-toc li a:hover { background-color: var(--toc-link-hover-bg); }
+        #floating-toc li a.active {
+            color: var(--toc-active-link-color);
+            font-weight: bold;
+            background-color: var(--toc-active-link-bg);
+            border-left-color: var(--toc-active-link-color);
+        }
+        #floating-toc li a.active .toc-icon { opacity: 1; }
+
+
+        /* --- オーバーレイ (PC/スマホ共通) --- */
+        #overlay {
+            display: none; /* デフォルト非表示 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-bg);
+            z-index: 1090;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        body.toc-open #overlay {
+            display: block;
+            opacity: 1;
+        }
+
+
+        /* --- ヘッダー --- */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #4285f4);
+            color: var(--light-text-color);
+            padding: 3rem 1rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 5px solid var(--accent-color);
+            /* margin-left は削除 */
+        }
+        header h1 { font-family: var(--font-jp); font-size: 2.8rem; margin-bottom: 0.8rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        header p { font-size: 1.2rem; opacity: 0.9; max-width: 800px; margin: 0 auto; }
+
+        /* --- メインコンテンツ --- */
+        main {
+            max-width: 1100px;
+            /* padding-leftを調整 (ハンバーガーボタン分考慮) */
+            padding: 3rem 2rem 3rem calc(1rem + var(--toc-width-closed)); /* 左に少し余裕を持たせる */
+            margin: 0 auto;
+        }
+        main > section { width: 100%; }
+
+        /* --- セクション、リスト、ボタンなどのスタイル --- */
+        /* (省略 - 目次関連以外の部分は前回と同様) */
+        section { background-color: var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid var(--border-color); opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; scroll-margin-top: 20px; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        section h2 { font-family: var(--font-jp); font-size: 2rem; color: var(--primary-color); margin-bottom: 1.5rem; padding-bottom: 0.8rem; border-bottom: 3px solid var(--primary-color); display: inline-block; }
+        section h3 { font-family: var(--font-jp); font-size: 1.6rem; color: var(--text-color); margin-top: 2rem; margin-bottom: 1rem; border-left: 5px solid var(--accent-color); padding-left: 0.8rem; }
+        section p { margin-bottom: 1.2rem; font-size: 1.05rem; }
+        section ul { list-style: none; padding-left: 0; }
+        section li { background-color: #fff; margin-bottom: 1rem; padding: 1.2rem 1.5rem; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; transition: box-shadow 0.2s ease; }
+        section li:hover { box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .example-sentence { font-family: var(--font-en); font-weight: bold; font-size: 1.1rem; margin-right: 1rem; flex-grow: 1; min-width: 250px; color: #333; }
+        .example-sentence + span { font-size: 0.95rem; color: #555; display: block; width: 100%; margin-top: 0.3rem; }
+        .similar-example-btn { font-family: var(--font-jp); background-color: var(--accent-color); color: var(--text-color); border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: background-color 0.3s ease, transform 0.2s ease; white-space: nowrap; margin-left: auto; margin-top: 0.5rem; }
+        .similar-example-btn:hover, .similar-example-btn:focus { background-color: #f9ab00; transform: scale(1.05); outline: none; }
+        .subsection { margin-top: 2rem; padding: 1.5rem; background-color: #fff; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .subsection h3 { margin-top: 0; border-left: none; padding-left: 0; }
+        .subsection h4 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #555; }
+        .note { background-color: var(--note-bg); border-left: 5px solid var(--note-border); padding: 1.2rem 1.5rem; margin-top: 2rem; border-radius: 6px; font-size: 1rem; color: #333; }
+        .note::before { content: "⚠️ ここがポイント！ "; font-weight: bold; color: var(--note-border); }
+        .tips { background-color: var(--tips-bg); border: 1px solid var(--tips-border); border-left-width: 5px; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 6px; font-size: 0.95rem; }
+        .tips::before { content: "💡 合格TIPS！ "; font-weight: bold; color: #c69104; }
+        .tips strong { color: #a07600; }
+        #exclamatory .subsection { margin-bottom: 2rem; padding: 2rem; }
+        #tooltip { position: absolute; background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 0.8rem 1.2rem; border-radius: 6px; font-size: 0.95rem; z-index: 1000; display: none; opacity: 0; transition: opacity 0.15s ease-out, transform 0.15s ease-out; pointer-events: none; max-width: 350px; line-height: 1.6; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transform: translateY(5px); }
+        #tooltip.visible { display: block; opacity: 1; transform: translateY(0); }
+        #tooltip ul { padding-left: 1.2rem; margin-top: 0.5rem; }
+        #tooltip li { background: none; border: none; padding: 0.1rem 0; margin: 0; color: var(--tooltip-text); display: list-item; }
+        #tooltip p { margin: 0.5rem 0 0 0; font-size: 0.85em; color: #ccc;}
+        #practice-quiz h2 { color: #d93025; border-bottom-color: #d93025; }
+        .quiz-item { background-color: #fff; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); }
+        .quiz-item h4 { font-size: 1.1rem; font-weight: bold; color: var(--primary-color); margin-bottom: 0.8rem; }
+        .question { font-weight: bold; margin-bottom: 1rem; }
+        .show-answer-btn { display: inline-block; background-color: var(--primary-color); color: var(--light-text-color); border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: background-color 0.3s ease; margin-top: 0.5rem; }
+        .show-answer-btn:hover { background-color: #1665c0; }
+        .answer-explanation { background-color: #f1f3f4; border: 1px dashed var(--border-color); padding: 1rem; margin-top: 1rem; border-radius: 4px; display: none; animation: slideDown 0.3s ease-out; }
+        .answer-explanation p { margin-bottom: 0.5rem; }
+        .answer-explanation strong { color: #d93025; }
+        .answer-explanation .explanation { font-size: 0.9rem; color: #5f6368; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid #e0e0e0; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- フッター --- */
+        footer { text-align: center; margin-top: 4rem; padding: 2rem; background-color: #3c4043; color: #bdc1c6; font-size: 0.9rem; width: 100%; }
+        footer p { margin: 0;}
+
+        /* --- レスポンシブ調整 --- */
+        @media (min-width: 1200px) {
+            html { font-size: 17px; }
+             header h1 { font-size: 3.2rem; }
+             main { padding: 5rem 4rem 5rem calc(1rem + var(--toc-width-closed)); }
+             main > section { max-width: 1200px; }
+        }
+
+        @media (max-width: 768px) {
+             html { font-size: 15px; }
+             main { padding: 3rem 1rem 2rem 1rem; } /* スマホでは左padding不要 */
+             header { padding: 2rem 1rem; margin-bottom: 2rem; }
+             header h1 { font-size: 2.2rem; } header p { font-size: 1.1rem; }
+             section { padding: 1.5rem; margin-bottom: 2rem; scroll-margin-top: 60px; }
+             section h2 { font-size: 1.6rem; margin-bottom: 1rem; padding-bottom: 0.5rem;}
+             section h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+             section li { padding: 1rem; flex-direction: column; align-items: flex-start;}
+             .example-sentence { margin-bottom: 0.5rem; font-size: 1rem;}
+             .example-sentence + span { margin-left: 0; display: block; width: 100%;}
+             .similar-example-btn { padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-left: 0; align-self: flex-end;}
+             .note { padding: 1rem; margin-top: 1.5rem; font-size: 0.95rem;}
+             .tips { padding: 1rem; margin: 1rem 0; font-size: 0.9rem;}
+             #practice-quiz h2 { font-size: 1.6rem;}
+             .quiz-item { padding: 1rem;}
+             .question { font-size: 1rem; }
+             .show-answer-btn { padding: 0.5rem 1rem; font-size: 0.85rem;}
+             .answer-explanation { padding: 0.8rem; }
+             .answer-explanation .explanation { font-size: 0.85rem;}
+             footer { padding: 1.5rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ハンバーガーメニューボタン (常に表示) -->
+    <button id="menu-toggle-btn" aria-label="目次を開く" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+    </button>
+
+    <!-- フロート目次 -->
+    <nav id="floating-toc" aria-hidden="true">
+        <div class="toc-header">
+             <h2>目次</h2>
+             <button class="toc-close-btn" aria-label="目次を閉じる">&times;</button>
+        </div>
+        <ul>
+            <li><a href="#intro"><span class="toc-icon">🚀</span><span class="toc-text">はじめに</span></a></li>
+            <li><a href="#declarative"><span class="toc-icon">👍</span><span class="toc-text">平叙文</span></a></li>
+            <li><a href="#interrogative-yesno"><span class="toc-icon">🤔</span><span class="toc-text">一般疑問文(Yes/No)</span></a></li>
+            <li><a href="#interrogative-wh"><span class="toc-icon">❓</span><span class="toc-text">疑問詞疑問文</span></a></li>
+            <li><a href="#interrogative-choice"><span class="toc-icon">🆚</span><span class="toc-text">選択疑問文</span></a></li>
+            <li><a href="#imperative"><span class="toc-icon">🗣️</span><span class="toc-text">命令文</span></a></li>
+            <li><a href="#exclamatory"><span class="toc-icon">🤩</span><span class="toc-text">感嘆文</span></a></li>
+            <li><a href="#interrogative-negative"><span class="toc-icon">🤔</span><span class="toc-text">否定疑問文</span></a></li>
+            <li><a href="#tag-question"><span class="toc-icon">🤝</span><span class="toc-text">付加疑問</span></a></li>
+            <li><a href="#rhetorical-question"><span class="toc-icon">✨</span><span class="toc-text">修辞疑問文</span></a></li>
+            <li><a href="#practice-quiz"><span class="toc-icon">🔥</span><span class="toc-text">確認問題</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- オーバーレイ -->
+    <div id="overlay"></div>
+
+    <header>
+        <h1>【合格へ導く！】英語の文型マスター講座</h1>
+        <p>ゼロから始めるあなたのための最強ガイド！英語の「構造」を掴めば、世界が広がりますよ！</p>
+    </header>
+
+    <main>
+        <!-- 各セクションの内容 (省略) -->
+        <section id="intro">
+            <h2>🚀 さあ、始めましょう！ なぜ「文型」が英語学習の鍵なのか？</h2>
+            <p>「英語の成績、なかなか上がらないな…」「単語は頑張って覚えたんだけど、文章になると自信がない…」そんな悩みをお持ちの皆さん、原因は英語の<span style="font-weight:bold; color:var(--primary-color);">基本的な構造、つまり「文型」</span>の理解にあるかもしれません。日本語と英語では、言葉を並べる順番（語順）が大きく異なります。英語では「誰が(S)」「何をする(V)」「何を(O)」といった語順が文の意味を決定づける、非常に重要な要素なのです！ この構造をしっかり掴むことで、複雑な長文もスムーズに読めるようになり、自分の考えを英語で表現する力も格段にアップします。この講座で、英語の骨組みをマスターし、確かな英語力を身につけましょう！</p>
+            <div class="tips">
+                <strong>イメージで掴む！</strong> 文型は英語の「設計図」のようなもの。設計図が読めれば、どんな複雑な建物（英文）も構造が理解できるようになりますよ！ まずは S (主語) と V (動詞) を見つける練習から始めましょう。これが全ての基本です！ <strong>例文を音読する</strong>のも効果的。正しい語順が自然と口から出るようになります。
+            </div>
+        </section>
+
+        <section id="declarative">
+            <h2>👍👎 基本の「き」！「平叙文」～肯定と否定をマスターしよう！～</h2>
+            <p>まず最初にマスターすべきは、物事を「普通に」説明するための文、平叙文です。「～です」「～します」という形で、事実や情報を伝える基本形ですね。<strong>英語の語順の絶対ルール「主語(S)＋動詞(V)」</strong>、これをしっかり頭に叩き込みましょう！ 文の終わりにはピリオド(.)が必要です。</p>
+            <div class="subsection">
+                <h3>✨ 肯定文：事実を「ありのまま」に伝える！</h3>
+                <p><strong>形：主語 + 動詞 + ... .</strong></p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">I am a student.</span> <span>(私は学生です。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>She is a doctor. (彼女は医者です)</li><li>They are teachers. (彼らは先生です)</li><li>He is tall. (彼は背が高いです)</li></ul><p>be動詞 (am, is, are) は「主語＝～」や「主語の状態」を表す、いわば『イコール』の役割です！</p>">類例を見る</button>
+                    </li>
+                    <li>
+                        <span class="example-sentence">I play tennis.</span> <span>(私はテニスをします。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>He plays soccer. (彼はサッカーをします - 主語が三人称単数なので動詞にs！)</li><li>We watch movies. (私たちは映画を見ます)</li><li>She reads books. (彼女は本を読みます - これもsが付くパターン！)</li></ul><p>一般動詞は『主語の具体的な動作』を表します！</p>">類例を見る</button>
+                    </li>
+                </ul>
+                <div class="tips">
+                    <strong>三人称単数現在の「s」を忘れずに！</strong> 主語が「彼(He)」「彼女(She)」「それ(It)」や、単数の名詞（例: the cat, Tom）で、現在の話をしているとき、一般動詞には原則として「s」が付きます。これは長文読解で主語と動詞の関係を見抜くヒントにもなりますし、英作文では必須のルールです！ テストでは必ずチェック！
+                </div>
+            </div>
+            <div class="subsection">
+                <h3>🙅 否定文：「～ではない」と打ち消す！動詞の種類に注目！</h3>
+                <p>否定文を作る方法は、動詞の種類で変わります。この区別が英語の基礎固めの第一歩！</p>
+                <h4>be動詞の場合：「not」をbe動詞のすぐ後ろに置くだけ！最もシンプル！</h4>
+                <p><strong>形：主語 + be動詞 + not + ... .</strong></p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">I am not a student.</span> <span>(私は学生ではありません。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>He is not busy. / He isn't busy. (彼は忙しくありません)</li><li>They are not tired. / They aren't tired. (彼らは疲れていません)</li><li>This isn't my bag. (これは私のカバンではありません)</li></ul><p>is not = isn't / are not = aren't。短縮形もセットで覚えましょう！</p>">類例を見る</button>
+                    </li>
+                    <li>
+                        <span class="example-sentence">She is not my sister.</span> <span>(彼女は私の姉（妹）ではありません。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>He isn't her brother. (彼は彼女の兄（弟）ではありません)</li><li>We are not cousins. (私たちは従兄弟ではありません)</li><li>That is not the answer. (それは答えではありません)</li></ul>">類例を見る</button>
+                    </li>
+                </ul>
+                <h4>一般動詞の場合：助動詞「do/does/did」の助けが必要です！最重要ポイント！</h4>
+                <p><strong>形：主語 + do/does/did + not + <span style="color:red; font-weight:bold;">動詞の原形</span> + ... .</strong> ← 助動詞の後ろは動詞の<span style="color:red; font-weight:bold;">『原形』</span>！ 三単現のsも過去形も、元の形に戻すのを忘れずに！</p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">I don't play tennis.</span> <span>(私はテニスをしません。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>He doesn't like fish. (彼は魚が好きではありません - 主語He(三人称単数・現在)→does！)</li><li>We don't know the way. (私たちは道を知りません)</li><li>They didn't come yesterday. (彼らは昨日来ませんでした - 過去→did！)</li></ul><p>do not = don't / does not = doesn't / did not = didn't。これも短縮形が基本！</p>">類例を見る</button>
+                   </li>
+                    <li>
+                        <span class="example-sentence">My father doesn't play golf.</span> <span>(私の父はゴルフをしません。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>She doesn't speak French. (彼女はフランス語を話しません)</li><li>The store doesn't open on Sundays. (その店は日曜日に開きません)</li><li>He didn't answer the phone. (彼は電話に出ませんでした)</li></ul><p>主語の人称・数、そして時制（現在か過去か）でdo/does/didを使い分けるのがポイント！</p>">類例を見る</button>
+                   </li>
+                </ul>
+                <div class="tips">
+                    <strong>否定文・疑問文のサポーター、do/does/did！</strong> 彼らは一般動詞の文で大活躍する助っ人です。彼らが出てきたら、後ろの動詞は「お疲れ様！」とばかりに元の姿（原形）に戻る、と覚えましょう。この「原形に戻る」ルールはテストで狙われやすいですよ！
+                </div>
+                 <h4>助動詞 (can, will, must, should, may など) がある場合：助動詞の直後に「not」を置くだけ！</h4>
+                <p><strong>形：主語 + 助動詞 + not + <span style="color:red; font-weight:bold;">動詞の原形</span> + ... .</strong> ← 助動詞の後ろも動詞は原形です！</p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">He can't play the flute.</span> <span>(彼はフルートを吹けません。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>She cannot swim. (彼女は泳げません - cannotは1語！)</li><li>You must not enter. (入ってはいけません - must not は強い禁止！)</li><li>They will not attend. (彼らは出席しないでしょう - won't と短縮も)</li></ul><p>cannot = can't / will not = won't など、助動詞の否定も短縮形がよく使われます！</p>">類例を見る</button>
+                   </li>
+                    <li>
+                        <span class="example-sentence">I will not be at home tomorrow.</span> <span>(私は明日、家にいないでしょう。)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>We should not worry. (私たちは心配すべきではありません)</li><li>He may not come. (彼は来ないかもしれません - may notは可能性の否定)</li><li>You cannot be serious. (本気のはずがありません - can't は可能性の否定も)</li></ul><p>助動詞はそれぞれ意味が違うので、否定になった時のニュアンスも確認しましょう。</p>">類例を見る</button>
+                   </li>
+                </ul>
+            </div>
+            <p class="note">英語の語順は文の意味を決定づける超重要要素です！ 特に「主語＋動詞」という核となる部分は、常に意識して文を作る・読む癖をつけましょう。これが英語力アップの土台となります。</p>
+        </section>
+
+         <section id="interrogative-yesno">
+             <h2>🤔 質問の基本！「一般疑問文 (Yes/No疑問文)」～相手に聞いてみましょう！～</h2>
+             <p>相手に「はい(Yes)」か「いいえ(No)」で答えてほしいときに使うのが、この一般疑問文。「～ですか？」と尋ねる形です。作り方は、文中の動詞がbe動詞か、一般動詞か、助動詞があるかによって変わってきます。文末のイントネーションは、通常、<span style="font-weight:bold;">語尾を上げて(⤴)</span>発音しますよ！</p>
+             <div class="tips">
+                 <strong>疑問文はコミュニケーションの基本！</strong> 相手に質問することで会話が生まれます。作り方のパターンをしっかり覚え、色々な動詞で練習してみましょう。特に一般動詞の疑問文（Do/Does/Didを使う形）は頻出です！ <strong>口に出して練習</strong>すると、自然なイントネーションも身につきます。
+             </div>
+             <div class="subsection">
+                 <h3>be動詞の場合：be動詞を主語の前に移動させるだけ！シンプル！</h3>
+                 <p><strong>形：Be動詞 + 主語 ... ?</strong></p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Is he a student?</span> <span>(彼は学生ですか？)</span> (← He is a student.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Are you busy? (忙しいですか？)</li><li>Was she happy? (彼女は幸せでしたか？ - 過去形はwas/were！)</li><li>Were they at the party? (彼らはパーティーにいましたか？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Are they at home?</span> <span>(彼らは家にいますか？)</span> (← They are at home.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Is this your pen? (これはあなたのペンですか？)</li><li>Was it cold yesterday? (昨日は寒かったですか？)</li><li>Am I late? (私は遅刻ですか？ - 自分に尋ねる時はAm I...！)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>一般動詞の場合：助動詞「Do/Does/Did」を文の先頭に！</h3>
+                 <p><strong>形：Do/Does/Did + 主語 + <span style="color:red; font-weight:bold;">動詞の原形</span> ... ?</strong> ← 繰り返しますが、動詞は原形に戻す！</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Do you play tennis?</span> <span>(あなたはテニスをしますか？)</span> (← You play tennis.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Does he like music? (彼は音楽が好きですか？ - 主語He→Does！)</li><li>Did they finish the work? (彼らは仕事を終えましたか？ - 過去→Did！)</li><li>Do we need this? (私たちはこれが必要ですか？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Does she study English?</span> <span>(彼女は英語を勉強しますか？)</span> (← She studies English.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Did you see the movie? (あなたはその映画を見ましたか？)</li><li>Does it work? (それは機能しますか？)</li><li>Do they know him? (彼らは彼を知っていますか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>助動詞 (can, willなど) がある場合：助動詞を主語の前に！ be動詞と同じ！</h3>
+                 <p><strong>形：助動詞 + 主語 + <span style="color:red; font-weight:bold;">動詞の原形</span> ... ?</strong> ← ここも原形です！</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Can you swim?</span> <span>(あなたは泳げますか？)</span> (← You can swim.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Will he come? (彼は来るでしょうか？)</li><li>Should I wait? (私は待つべきでしょうか？)</li><li>May I help you? (お手伝いしましょうか？ - 丁寧な申し出)</li></ul>">類例を見る</button>
+                     </li>
+                      <li>
+                         <span class="example-sentence">Should we go?</span> <span>(私たちは行くべきでしょうか？)</span> (← We should go.)
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Can they speak Japanese? (彼らは日本語を話せますか？)</li><li>Will it rain tomorrow? (明日は雨が降るでしょうか？)</li><li>Must I finish this today? (私は今日これを終えなければなりませんか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <p class="note">答え方は明快です！ 「Yes, 主語 + 最初の動詞.」か「No, 主語 + 最初の動詞 + not.」が基本。<strong>「最初の動詞」とは、文頭に出した be動詞、do/does/did、または助動詞のことですよ！</strong></p>
+         </section>
+
+        <section id="interrogative-wh">
+             <h2>❓ もっと詳しく！「疑問詞で始まる疑問文」～5W1Hを使いこなそう！～</h2>
+             <p>「いつ(When)」「どこで(Where)」「誰が(Who)」「何を(What)」「なぜ(Why)」「どのように(How)」といった<span style="font-weight:bold; color:var(--primary-color);">具体的な情報を尋ねる</span>のが、疑問詞で始まる疑問文です。これらはYes/Noでは答えられませんね。尋ねられた内容に合わせて、具体的な情報で答えましょう。</p>
+             <div class="tips">
+                <strong>疑問詞は情報の引き出し役！</strong> 長文読解でも、疑問詞で始まる文が何を聞いているのか正確に把握することが、内容理解の鍵になります。英作文や会話でも、的確な疑問詞を使うことで、より深いコミュニケーションが可能になります。<strong>各疑問詞が何を尋ねるのか</strong>（時、場所、人、物、理由、方法、選択肢(Which)、所有(Whose)など）をしっかり覚え、<strong>疑問詞の後ろの語順</strong>（パターン1と2の違い）に注意しましょう！
+             </div>
+             <div class="subsection">
+                 <h3>パターン1：疑問詞が主語「以外」の場合 → 疑問詞を文の先頭に！</h3>
+                 <p><strong>形：疑問詞 + Yes/No疑問文の語順 ... ?</strong> （つまり、疑問詞 + be動詞/Do/Does/Did/助動詞 + 主語 + ...? という形になります！）</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">When is your birthday?</span> <span>(あなたの誕生日はいつですか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Where do you live? (どこに住んでいますか？)</li><li>Why are you late? (なぜ遅れたのですか？)</li><li>How is the weather? (天気はどうですか？)</li></ul><p>疑問詞の後ろは、先ほど学んだYes/No疑問文の形と同じです！</p>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">What did you buy?</span> <span>(あなたは何を買いましたか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Where did he go? (彼はどこへ行きましたか？)</li><li>Why did she cry? (彼女はなぜ泣いたのですか？)</li><li>How did you find it? (どうやってそれを見つけましたか？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Where can I buy a ticket?</span> <span>(チケットはどこで買えますか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>When should we leave? (私たちはいつ出発すべきですか？)</li><li>What can I do? (私に何ができますか？)</li><li>How can I get there? (どうすればそこへ行けますか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>パターン2：疑問詞が主語「そのもの」の場合 → 疑問詞を主語の位置に置くだけ！</h3>
+                 <p><strong>形：疑問詞(S) + 動詞(V) ... ?</strong> （平叙文の主語を、そのまま疑問詞に入れ替えるイメージです！）<br>※このパターンでは、通常 Do/Does/Did は使いません。</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Who plays the hero?</span> <span>(誰が主役を演じるのですか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Who came to the party? (誰がパーティーに来ましたか？)</li><li>What happened here? (ここで何が起こりましたか？)</li><li>Which bus goes downtown? (どのバスが中心街へ行きますか？)</li></ul><p>疑問詞自体が主語なので、その後ろは肯定文に近い語順になります！</p>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">What happened?</span> <span>(何が起こりましたか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Who broke the window? (誰が窓を割りましたか？)</li><li>Which team won? (どちらのチームが勝ちましたか？)</li><li>What made that noise? (何がその音を立てたのですか？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Which works better?</span> <span>(どちらがより良く機能しますか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Who lives in this house? (誰がこの家に住んでいますか？)</li><li>What causes this problem? (何がこの問題を引き起こしていますか？)</li><li>Which tastes better? (どちらの方が美味しいですか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+              <div class="subsection">
+                 <h3>🗣️ イントネーション（発音の抑揚）について</h3>
+                 <p>疑問詞で始まる質問は、基本的に文末のイントネーションを<span style="font-weight:bold;">下げ調子(⤵)</span>で発音します。しかし、「え？もう一度お願いします」のように<span style="font-weight:bold;">聞き返す場合</span>は、例外的に<span style="font-weight:bold;">上げ調子(⤴)</span>になります。</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">What did you say?⤴</span> <span>(何とおっしゃいましたか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Sorry, when did you arrive?⤴ (すみません、いつ到着されましたか？)</li><li>Excuse me, where is the station?⤴ (すみません、駅はどこですか？)</li></ul><p>聞き返す気持ちを込めて、語尾を上げてみましょう！</p>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <p class="note">「疑問詞が主語」のパターン (例: Who broke the window?) では、語順が肯定文と非常に似ている点がポイントです！ Do/Does/Did が不要なことをしっかり理解しておきましょう！</p>
+         </section>
+
+        <section id="interrogative-choice">
+             <h2>🆚 どちらを選びますか？「選択疑問文」～A or B で尋ねよう！～</h2>
+             <p>「コーヒーにしますか、それとも紅茶にしますか？」のように、相手に<span style="font-weight:bold; color:var(--primary-color);">複数の選択肢を提示して</span>、どれかを選んでもらうときに使うのが選択疑問文です。接続詞「or」を使って選択肢をつなぎ、「...A or B?」という形になるのが特徴。答えはYes/Noではなく、提示された選択肢の中から選びます。</p>
+              <div class="tips">
+                 <strong>選択肢を明確に提示！</strong> 相手にどちらかを選んでほしいときに便利な表現です。イントネーション（A上げて⤴ B下げる⤵）に注意して、自然な会話を目指しましょう。<strong>答え方も練習</strong>しておくと、スムーズに応対できますね。（例: "Tea, please." / "I prefer coffee." / "Either is fine." どちらでも良い）。Whichを使った形も頻出なので覚えておきましょう。
+              </div>
+             <div class="subsection">
+                 <h3>基本の形：「... A or B ?」</h3>
+                 <p>通常の疑問文の最後に「or B」を追加するイメージです。</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Do you want tea or coffee?</span> <span>(紅茶がいいですか、それともコーヒー？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Would you like fish or meat? (お魚になさいますか、お肉になさいますか？ - Would you like...? は丁寧！)</li><li>Did you go by train or by bus? (電車で行きましたか、それともバスで？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Is she a teacher or a student?</span> <span>(彼女は先生ですか、それとも学生？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Is he American or Canadian? (彼はアメリカ人ですか、カナダ人ですか？)</li><li>Are they brothers or friends? (彼らは兄弟ですか、それとも友達ですか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>🗣️ イントネーション：Aは上げて⤴、B(最後)は下げる⤵！</h3>
+                 <p>これが選択疑問文のイントネーションの基本ルールです！しっかりマスターしましょう。</p>
+                 <ul>
+                     <li>最初の選択肢 (A) の語尾は<span style="font-weight:bold;">上げる(⤴)</span></li>
+                     <li>最後の選択肢 (B) の語尾は<span style="font-weight:bold;">下げる(⤵)</span></li>
+                     <li>例: Do you want tea⤴ or coffee⤵?</li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>「Which」を使った形：「Which ..., A or B ?」</h3>
+                 <p>「どちらの～が好きですか、Aですか、Bですか？」のように、具体的な選択肢について尋ねる際によく使われます。</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Which do you like better, cats or dogs?</span> <span>(猫と犬、どちらの方が好きですか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Which is cheaper, this one or that one? (これとあれ、どちらが安いですか？)</li><li>Which subject do you prefer, math or science? (数学と理科、どちらの科目が好きですか？ - preferは「～の方を好む」)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Which color do you prefer, blue or green?</span> <span>(青と緑、どちらの色が好きですか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Which way is faster, the highway or the local road? (高速道路と一般道、どちらが速いですか？)</li><li>Which movie should we watch, action or comedy? (アクションとコメディ、どちらの映画を見るべきですか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+              <div class="subsection">
+                 <h3>選択肢が3つ以上の場合</h3>
+                 <p>イントネーションは、<span style="font-weight:bold;">最後の選択肢だけ下げて(⤵)</span>、それ以外はすべて上げ調子(⤴)にするのが一般的です！</p>
+                 <ul>
+                      <li>
+                         <span class="example-sentence">Would you like tea⤴, coffee⤴ or orange juice⤵?</span> <span>(紅茶、コーヒー、それともオレンジジュースになさいますか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Do you want small⤴, medium⤴, or large⤵? (S、M、Lのどれにしますか？)</li><li>Is it Monday⤴, Tuesday⤴, or Wednesday⤵ today? (今日、月曜、火曜、それとも水曜ですか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <p class="note">⚠️ 注意点！ もし最後の選択肢も上げて「...A⤴ or B⤴?」のように発音すると、「AとかBとか、そういったものはいかがですか？」という風に、<span style="font-weight:bold;">単なる例示</span>として聞こえる場合があります。この場合は選択疑問文とは少し異なり、提示された選択肢以外の答え（例: 「水をお願いします」など）も可能になります。</p>
+         </section>
+
+         <section id="imperative">
+             <h2>🗣️ 行動を促す！「命令文」～やってみよう！ やめましょう！～</h2>
+             <p>「～しなさい」「～してください」のように、相手に<span style="font-weight:bold; color:var(--primary-color);">特定の行動を促したり</span>、あるいは「～するな」と<span style="font-weight:bold; color:var(--primary-color);">禁止したり</span>する際に使うのが命令文です。話し相手（You）に対して直接言うため、通常は<span style="font-weight:bold;">主語の「You」は省略</span>されます。感情を込めて強く言いたいときは、文末に感嘆符(!)を付けることもあります。</p>
+             <div class="tips">
+                 <strong>命令文は指示や依頼の基本！</strong> 道案内、お店での注文、誰かにお願いごとをする時など、実用的な場面で非常に役立ちます。ただし、直接的な表現なので、状況によっては失礼に聞こえることも。特に目上の人や初対面の人には、<strong>please</strong> を付けたり、疑問文の形（例: Could you open the window?）を使うなど、丁寧さを意識することが大切です！ <strong>Let's... は提案・勧誘</strong>の重要表現です！
+             </div>
+             <div class="subsection">
+                 <h3>【肯定】「～しなさい！」パターン：動詞の原形で始めるのが鉄則！</h3>
+                 <p>文の始まりがいきなり動詞の<span style="color:red; font-weight:bold;">原形</span>になるのが大きな特徴です！</p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Be careful.</span> <span>(注意しなさい。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Be quiet. (静かにしなさい)</li><li>Listen carefully. (注意深く聞きなさい)</li><li>Be nice to your sister. (妹[姉]に優しくしなさい - Be動詞の命令文はBeで始めます！)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Come here.</span> <span>(ここに来なさい。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Look at this. (これを見てください)</li><li>Open the window. (窓を開けてください)</li><li>Sit down. (座ってください)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Please wait.</span> <span>(お待ちください。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Please help me. (手伝ってください)</li><li>Have a seat, please. (どうぞお座りください - pleaseは文末でもOK！)</li><li>Please be patient. (どうか辛抱してください)</li></ul><p>pleaseを付けると、丁寧な依頼になります！</p>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>【否定】「～するな！」パターン：「Don't」で始める！</h3>
+                 <p><strong>形：Don't + <span style="color:red; font-weight:bold;">動詞の原形</span> ... !</strong></p>
+                 <ul>
+                     <li>
+                         <span class="example-sentence">Don't be late.</span> <span>(遅れてはいけません。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Don't worry. (心配しないでください)</li><li>Don't be afraid. (恐れないでください)</li><li>Don't make noise. (騒がないでください)</li></ul>">類例を見る</button>
+                     </li>
+                      <li>
+                         <span class="example-sentence">Don't touch the paintings.</span> <span>(その絵に触れてはいけません。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Don't forget your keys. (鍵を忘れないでください)</li><li>Don't eat too much. (食べ過ぎないでください)</li><li>Don't talk during the movie. (映画中は話さないでください)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Never forget his words.</span> <span>(彼の言葉を決して忘れてはいけません。)</span>
+                          <button class="similar-example-btn" data-tooltip-content="<ul><li>Never give up. (決してあきらめないでください！)</li><li>Never tell a lie. (決して嘘をつかないでください！)</li><li>Never be rude to others. (他人に決して失礼な態度をとらないでください！)</li></ul><p>Neverを使うと「絶対に～するな」という非常に強い禁止を表します！</p>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>【提案】「～しましょう！」パターン：「Let's」で始める！</h3>
+                 <p><strong>形：Let's + <span style="color:red; font-weight:bold;">動詞の原形</span> ... .</strong> (Let's は Let us の短縮形。相手を誘う表現です！)</p>
+                  <ul>
+                     <li>
+                         <span class="example-sentence">Let's go shopping.</span> <span>(買い物に行きましょう。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Let's start. (始めましょう！)</li><li>Let's have lunch. (昼食にしましょう！)</li><li>Let's take a break. (休憩しましょう！)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                         <span class="example-sentence">Let's not do that now.</span> <span>(今はそれをしないようにしましょう。)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Let's not argue. (口論はやめましょう)</li><li>Let's not waste time. (時間を無駄にするのはやめましょう)</li><li>Let's not talk about it. (その話はやめましょう)</li></ul><p>「～するのはやめましょう」と否定の提案は Let's not + 原形です！</p>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+              <div class="subsection">
+                  <h3>✨ もっと丁寧に依頼するには「please」を活用！</h3>
+                  <p>文の最初か最後に please を付けると、命令のニュアンスが和らぎ、丁寧な依頼になります。</p>
+                  <ul>
+                      <li>
+                          <span class="example-sentence">Please come here. / Come here, please.</span> <span>(どうかこちらへ来てください。)</span>
+                          <button class="similar-example-btn" data-tooltip-content="<ul><li>Please close the door. / Close the door, please. (ドアを閉めていただけますか。)</li><li>Please pass the salt. / Pass the salt, please. (お塩を取っていただけますか。)</li></ul>">類例を見る</button>
+                      </li>
+                       <li>
+                          <span class="example-sentence">Please don't be late. / Don't be late, please.</span> <span>(どうか遅れないでください。)</span>
+                          <button class="similar-example-btn" data-tooltip-content="<ul><li>Please don't smoke here. / Don't smoke here, please. (ここではタバコを吸わないでください。)</li><li>Please don't shout. / Don't shout, please. (叫ばないでください。)</li></ul>">類例を見る</button>
+                      </li>
+                  </ul>
+              </div>
+             <p class="note">命令文は相手(You)に直接働きかける文。だから主語が省略されていることを意識しましょう！ Let's は「私たち(us)で～しよう」という提案なので、応答は Yes, let's. / No, let's not. が基本ですが、状況に応じて OK. / Sure. や Sorry, I can't. などで答えることも多いです。</p>
+         </section>
+
+        <section id="exclamatory">
+            <h2>🤩 感動や驚きを表現！「感嘆文」～なんて○○なんだ！～</h2>
+            <p>「わあ、すごい！」「なんて美しいんだろう！」のように、<span style="font-weight:bold; color:var(--primary-color);">心が大きく動いたときの強い感情</span>（感動、驚き、喜び、残念な気持ちなど）を表すのが感嘆文です！ How で始める形と What で始める形の主に2種類があります。文の終わりには感嘆符(!)を付けるのがルール。発音は通常、感情を込めて<span style="font-weight:bold;">語尾を下げて(⤵)</span>言います。</p>
+            <div class="tips">
+                <strong>感嘆文は感情表現のスパイス！</strong> 日常会話で感情を豊かに伝えたり、文章で生き生きとした描写をしたりするのに効果的です。How と What の使い分け（How は形容詞/副詞、What は名詞）をしっかり押さえましょう！ <strong>主語＋動詞が省略されることが多い</strong>のも特徴です。省略された形に慣れておくと、リスニングでも聞き取りやすくなりますよ。
+            </div>
+
+            <div class="subsection">
+                <h3>パターン1：「How」型 → 形容詞や副詞の「程度」を強調！</h3>
+                <p>「なんて<span style="color:red; font-weight:bold;">（形容詞/副詞）</span>なんだ！」とその程度を強調したいときに使います。</p>
+                <p><strong>形：How + 形容詞/副詞 + 主語 + 動詞 !</strong></p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">How beautiful this house is!</span> <span>(この家はなんて美しいんだろう！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>How kind you are! (あなたはなんて親切なんでしょう！)</li><li>How interesting this book is! (この本はなんて面白いんだろう！)</li><li>How tall he is! (彼はなんて背が高いんだろう！)</li></ul><p>形容詞 (beautiful, kind, interesting, tall) の程度を強調！</p>">類例を見る</button>
+                    </li>
+                    <li>
+                        <span class="example-sentence">How fast Mike swims!</span> <span>(マイクはなんて速く泳ぐんだろう！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>How well she sings! (彼女はなんて上手に歌うんだろう！)</li><li>How hard he works! (彼はなんて一生懸命働くんだろう！)</li><li>How quickly time flies! (時間とはなんて速く過ぎるものなんだろう！)</li></ul><p>副詞 (fast, well, hard, quickly) の程度を強調！</p>">類例を見る</button>
+                    </li>
+                     <li>
+                        <span class="example-sentence">How clever you are!</span> <span>(あなたはなんて賢いんだろう！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>How lucky I am! (私はなんて幸運なんだろう！)</li><li>How strange it is! (それはなんて奇妙なんだろう！)</li><li>How wonderful! (なんて素晴らしい！ - 主語+動詞が省略されることも非常に多いです！)</li></ul>">類例を見る</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>パターン2：「What」型 → 「名詞（とそれを修飾する形容詞）」を強調！</h3>
+                 <p>「なんて<span style="color:red; font-weight:bold;">（形容詞）な名詞</span>なんだ！」と、名詞を中心に強調したいときに使います。</p>
+                <p><strong>形：What + (a/an) + 形容詞 + 名詞 (+ 主語 + 動詞) !</strong> ← 強調したい名詞が<span style="font-weight:bold;">数えられる単数形</span>なら、前に a や an を付けるのを忘れずに！</p>
+                <ul>
+                    <li>
+                        <span class="example-sentence">What a beautiful house this is!</span> <span>(これはなんて美しい家なんだ！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>What a nice day it is! (なんて良い天気なんだ！)</li><li>What a surprise! (なんて驚きなんだ！ - 名詞だけでもOK！)</li><li>What a pity! (なんて残念なことだ！ - a pity は決まり文句)</li></ul><p>名詞 (house, day, surprise, pity) を強調！ 数えられる単数名詞なので a が付きます！</p>">類例を見る</button>
+                    </li>
+                     <li>
+                        <span class="example-sentence">What an interesting story it is!</span> <span>(それはなんて面白い物語なんでしょう！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>What an amazing view! (なんて素晴らしい眺めなんだ！)</li><li>What an excellent idea! (なんて素晴らしい考えなんだ！)</li><li>What a difficult question! (なんて難しい質問なんだ！ - difficultはdで始まるのでa)</li></ul><p>interesting, amazing, excellent のように形容詞が母音で始まる場合は an になります！</p>">類例を見る</button>
+                    </li>
+                    <li>
+                        <span class="example-sentence">What beautiful eyes he has!</span> <span>(彼はなんて美しい目をしているんだろう！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>What kind people they are! (彼らはなんて親切な人たちなんだろう！)</li><li>What wonderful memories we made! (私たちはなんて素晴らしい思い出を作ったんだろう！)</li><li>What delicious cookies! (なんて美味しいクッキーなんだ！)</li></ul><p>複数形の名詞 (eyes, people, memories, cookies) や数えられない名詞の前には a/an は付きません！</p>">類例を見る</button>
+                    </li>
+                </ul>
+                 <div class="tips">
+                    <strong>a/an の有無は名詞で決まる！</strong> What型の感嘆文では、後ろに来る名詞が「数えられる単数形」かどうかで a/an を付けるかどうかが決まります。形容詞の有無や種類は関係ありません！ 例: What a big apple! / What beautiful flowers! / What important information! (informationは数えられない)。ここは英作文で頻出のポイントです！
+                </div>
+            </div>
+            <p class="note">感嘆文と疑問文の語順の違いは非常に重要です！ 感嘆文は「How tall he is! (S+V)」の語順ですが、疑問文は「How tall is he? (V+S)」となります。混同しないように注意しましょう！ また、感嘆文では主語＋動詞が省略されることもよくあります (例: What a beautiful house!)。</p>
+        </section>
+
+        <section id="interrogative-negative">
+             <h2>🤔 えっ、～じゃないの？「否定疑問文」～意外な気持ちや確認に！～</h2>
+             <p>相手に「～ではないのですか？」と尋ねるのが否定疑問文です。文の始まりが <span style="font-weight:bold;">Isn't, Aren't, Don't, Doesn't, Didn't, Can't</span> のように否定形（通常は短縮形）になるのが特徴です。これを使うと、<span style="color:var(--primary-color);">「え、そうじゃなかったの？」という意外な気持ち</span>を表したり、「～だと思ったけど、違いますか？」と<span style="color:var(--primary-color);">確認</span>したり、時には「まだ終わってないの？」のように<span style="color:var(--primary-color);">軽い非難やいらだち</span>のニュアンスを出すこともできます。</p>
+              <div class="tips">
+                <strong>否定疑問文の応答は英語脳で！</strong> 日本語の「はい」「いいえ」の感覚で答えると、真逆の意味になってしまうことがあります！ これはリスニング問題でも狙われやすいポイントです。英語では、質問の形に関わらず、<strong>答えの内容が肯定ならYes、否定ならNo</strong>と覚えるのが鉄則です。混乱しやすいので、"Yes, I can swim." / "No, I can't swim."のように、<strong>Yes/Noの後に続く文まで意識して</strong>練習すると良いでしょう。
+              </div>
+             <div class="subsection">
+                <h3>基本の形：否定の助動詞/be動詞 (短縮形) + 主語 ... ?</h3>
+                <p>通常のYes/No疑問文の文頭部分を否定の短縮形にするだけ、と考えると分かりやすいでしょう。</p>
+                 <ul>
+                    <li>
+                        <span class="example-sentence">Can't you swim?</span> <span>(泳げないのですか？ - 意外・驚き)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>Won't you join us? (私たちに参加しませんか？ - 丁寧な誘い)</li><li>Shouldn't we leave now? (もう出発すべきではないでしょうか？ - 提案・確認)</li><li>Haven't you finished yet? (まだ終わっていないのですか？ - 非難・いらだち)</li></ul>">類例を見る</button>
+                    </li>
+                    <li>
+                        <span class="example-sentence">Isn't she lovely?</span> <span>(彼女、素敵じゃありませんか？ - 同意を求める)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>Aren't they cute? (あの子たち、可愛くないですか？)</li><li>Wasn't it a good movie? (良い映画ではありませんでしたか？)</li><li>Doesn't he look tired? (彼は疲れているように見えませんか？)</li></ul>">類例を見る</button>
+                    </li>
+                </ul>
+            </div>
+             <div class="subsection">
+                <h3>⚠️ 応答のポイント！ 日本語の発想と逆になることも！</h3>
+                <p>ここが否定疑問文で最も注意すべき点です！ 日本語では「泳げないの？」と聞かれ、もし泳げるなら「いいえ、泳げます」と答えますね。しかし、英語の応答は異なります。</p>
+                <p>英語の Yes/No は、質問が肯定形か否定形かに関わらず、<span style="font-weight:bold;">答えの内容が事実として肯定なら Yes、否定なら No</span> で答えるのが原則です！</p>
+                <p><strong>例: Can't you swim? （泳げないのですか？）</strong></p>
+                <ul>
+                     <li><strong>Yes, I can.</strong> (← 文字通りの意味: はい、私はできます → 自然な日本語訳: <span style="font-weight:bold;">いいえ、泳げます。</span>)</li>
+                     <li><strong>No, I can't.</strong> (← 文字通りの意味: いいえ、私はできません → 自然な日本語訳: <span style="font-weight:bold;">はい、泳げません。</span>)</li>
+                 </ul>
+                 <p><strong>例: Don't you like this soup? （このスープ、好きではないのですか？）</strong></p>
+                 <ul>
+                    <li><strong>Yes, I do.</strong> (← 文字通りの意味: はい、私は好きです → 自然な日本語訳: <span style="font-weight:bold;">いいえ、好きです。</span>)</li>
+                    <li><strong>No, I don't.</strong> (← 文字通りの意味: いいえ、私は好きではありません → 自然な日本語訳: <span style="font-weight:bold;">はい、好きではありません。</span>)</li>
+                 </ul>
+                 <p>この違いは最初は戸惑うかもしれませんが、英語のロジックに慣れることが大切です！「事実が肯定ならYes、否定ならNo」とシンプルに考えましょう！</p>
+             </div>
+        </section>
+
+        <section id="tag-question">
+             <h2>🤝 念押し＆共感！「付加疑問」～...ですよね？ ...しませんか？～</h2>
+             <p>平叙文や命令文の最後に、「, isn't it?」や「, do you?」のような<span style="font-weight:bold; color:var(--primary-color);">短い疑問形を付け加える</span>のが付加疑問です。「～ですよね？」と相手に<span style="color:var(--primary-color);">確認</span>したり、「～ですよね！」と<span style="color:var(--primary-color);">同意</span>を求めたりする際に非常によく使われます。イントネーション（抑揚）によってニュアンスが変わるのも特徴的です。</p>
+             <div class="tips">
+                 <strong>会話をスムーズにする潤滑油！</strong> 付加疑問を使いこなせると、会話がより自然でスムーズになります。相手への確認や同意を求めるだけでなく、柔らかく質問したり、会話のきっかけを作ったりするのにも役立ちます。<strong>作り方のルール（肯定↔否定、助動詞の繰り返し、代名詞の使用）</strong>と、<strong>イントネーションによるニュアンスの違い</strong>をマスターしましょう！ 特に I am ... に対する aren't I? や、命令文の will you?、Let's に対する shall we? は決まり文句として覚えてしまうのが早いです！
+             </div>
+             <div class="subsection">
+                 <h3>ルール１：前の文と「逆」にするのが基本！</h3>
+                  <p>肯定文には<span style="color:red; font-weight:bold;">否定形</span>の付加疑問を、否定文には<span style="color:green; font-weight:bold;">肯定形</span>の付加疑問を付けます。</p>
+                  <ul>
+                     <li>
+                         <span style="color:green;">肯定文</span> + <span style="color:red;">否定の付加疑問</span>?
+                         <br><span class="example-sentence">You are a student, aren't you?</span> <span>(あなたは学生ですよね？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>He is busy, isn't he? (彼は忙しいですよね？)</li><li>They were happy, weren't they? (彼らは幸せでしたよね？)</li><li>It's cold, isn't it? (寒いですよね？)</li></ul>">類例を見る</button>
+                     </li>
+                     <li>
+                          <span style="color:red;">否定文</span> + <span style="color:green;">肯定の付加疑問</span>?
+                         <br><span class="example-sentence">You don't like cheese, do you?</span> <span>(あなたはチーズが好きではないですよね？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>She doesn't live here, does she? (彼女はここに住んでいないですよね？)</li><li>He didn't come, did he? (彼は来なかったんですよね？)</li><li>They weren't tired, were they? (彼らは疲れていなかったですよね？)</li></ul>">類例を見る</button>
+                     </li>
+                      <li>
+                         <span style="color:green;">肯定文 (助動詞あり)</span> + <span style="color:red;">否定の付加疑問 (助動詞)</span>?
+                         <br><span class="example-sentence">Tom can play the piano, can't he?</span> <span>(トムはピアノが弾けますよね？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Mary will help us, won't she? (メアリーは私たちを手伝ってくれますよね？)</li><li>It wasn't easy, was it? (それは簡単ではなかったですよね？ - 否定文+肯定付加疑問)</li><li>I'm right, aren't I? (私は正しいですよね？ - 【特別ルール！】I am ... の付加疑問は aren't I? になる点に注意！)</li></ul><p>前の文で使われたbe動詞、助動詞、do/does/didを繰り返します。主語は代名詞に！</p>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>ルール２：命令文には「will you?」または「won't you?」</h3>
+                  <p>命令文の後に付け加える場合は、この形が一般的です。「will you?」は軽い依頼、「won't you?」はより丁寧なニュアンスです。</p>
+                  <ul>
+                     <li>
+                         <span class="example-sentence">Open the door, will you?</span> <span>(ドアを開けてくれますか？)</span>
+                         <button class="similar-example-btn" data-tooltip-content="<ul><li>Wait here, will you? (ここで待っていてくれますか？)</li><li>Be quiet, won't you? (静かにしてくれませんか？)</li><li>Don't touch it, will you? (それに触らないでくれますか？ - 否定命令文でもwill you?がよく使われます)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>ルール３：「Let's」で始まる提案には「shall we?」</h3>
+                 <p>「～しましょう」と提案する Let's の文には、「shall we?（～しませんか？）」を付けるのが定番の形です！</p>
+                  <ul>
+                     <li>
+                         <span class="example-sentence">Let's play cards, shall we?</span> <span>(トランプをしませんか？)</span>
+                          <button class="similar-example-btn" data-tooltip-content="<ul><li>Let's take a break, shall we? (休憩しませんか？)</li><li>Let's go home, shall we? (家に帰りませんか？)</li></ul>">類例を見る</button>
+                     </li>
+                 </ul>
+             </div>
+             <p class="note">イントネーションがニュアンスを左右します！ 語尾を<span style="font-weight:bold;">上げる(⤴)</span>と「～ですよね？」と<span style="font-weight:bold;">純粋に確認</span>する感じ、語尾を<span style="font-weight:bold;">下げる(⤵)</span>と「～ですよね！」と相手に<span style="font-weight:bold;">同意</span>を求める感じになります。日常会話で非常によく使われるので、マスターすればグッと自然な英語に近づけますよ！</p>
+         </section>
+
+         <section id="rhetorical-question">
+            <h2>✨ 言いたいことを強調！「修辞疑問文」～答えは分かっている！？～</h2>
+            <p>見た目は疑問文ですが、実際には<span style="font-weight:bold; color:var(--primary-color);">相手に答えを求めているわけではない</span>、少し変わったタイプの疑問文です。これは、話し手が自分の言いたいことを<span style="font-weight:bold;">より強く、印象的に伝える</span>ために、わざと疑問の形を使う表現技法なのです。「そんなことあるはずがないでしょう！」「当然じゃないですか！」といった強い気持ちを表すときによく登場します。一種の<span style="font-weight:bold;">反語表現</span>と考えると分かりやすいでしょう。</p>
+            <div class="tips">
+                 <strong>読解力アップの隠し味！</strong> 修辞疑問文は、特に評論やスピーチなどで、筆者や話し手の主張を効果的に読者・聴衆に訴えかけるために使われます。これが修辞疑問文だと見抜ければ、「ああ、ここではこういうことを強く言いたいんだな」と、文章の意図をより深く理解できるようになります。<strong>テストの長文でも、筆者の主張を読み取る上で重要なポイント</strong>になることがあるので、意識して探す練習をしておくと良いでしょう！
+            </div>
+             <div class="subsection">
+                 <h3>【肯定形 → 否定の意味】のパターン</h3>
+                 <p>肯定の疑問文の形をとりながら、「いや、そんなはずはない」「誰も～ないだろう」という<span style="font-weight:bold; color:red;">否定的な結論</span>を強調します！</p>
+                 <ul>
+                    <li>
+                        <span class="example-sentence">Who can say what will happen in the future?</span> <span>(将来何が起こるかなんて、誰が言えるでしょうか？ → いいえ、誰にも分かりません)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>Who knows? (誰が知っているというのですか？ → いいえ、誰も知りません)</li><li>What's the use of complaining? (文句を言って何の役に立つというのですか？ → いいえ、何の役にも立ちません)</li><li>Is there any reason to doubt him? (彼を疑う理由がありますか？ → いいえ、ないでしょう)</li></ul><p>「誰が～か？」→「いや誰も～ない」という反語です。</p>">類例を見る</button>
+                    </li>
+                 </ul>
+             </div>
+             <div class="subsection">
+                 <h3>【否定形 → 肯定の意味】のパターン</h3>
+                 <p>否定疑問文の形をとりながら、「いや、もちろん～だ」「当然～ではないか」という<span style="font-weight:bold; color:green;">肯定的な結論</span>を強調します！</p>
+                 <ul>
+                    <li>
+                        <span class="example-sentence">Isn't it beautiful?</span> <span>(美しくありませんか？ → ええ、とても美しいです！)</span>
+                        <button class="similar-example-btn" data-tooltip-content="<ul><li>Who doesn't know that? (それを知らない人がいるでしょうか？ → いいえ、皆知っています)</li><li>Wasn't that a great party? (素晴らしいパーティーではありませんでしたか？ → ええ、最高でした！)</li><li>Don't we all want to be happy? (私たちは皆、幸せになりたくないでしょうか？ → いいえ、皆なりたいはずです！)</li></ul><p>「～ではないか？」→「いや、もちろん～だ」という反語です。</p>">類例を見る</button>
+                    </li>
+                 </ul>
+             </div>
+             <p class="note">通常の疑問文なのか、それとも修辞疑問文なのかは、<span style="font-weight:bold;">文脈や状況、話者の口調や意図</span>によって判断する必要があります。通常、修辞疑問文では相手に実際の答えを期待していないため、話し手が続けて自分の意見を述べたり、話題を変えたりすることが多いです。英語の表現を豊かにするテクニックの一つなので、見分けられるようになると、読解力やコミュニケーション能力の向上につながりますよ！</p>
+         </section>
+
+        <section id="practice-quiz">
+             <h2>🔥 実力チェック！ 確認問題で定着させよう！</h2>
+             <p>さあ、ここまで学んだ知識を試す時間です！ 各問題のボタンを押すと、正解とポイント解説が表示されます。間違えた問題は、該当するセクションに戻って復習しましょう！</p>
+             <div class="tips">
+                 <strong>アウトプットが記憶を定着させる！</strong> 学んだことは、実際に使ってみる（問題を解く、例文を作るなど）ことで、より深く記憶に残ります。間違えることを恐れずに、どんどんチャレンジしましょう！間違えた問題こそ、あなたの伸びしろです！ 解答・解説をしっかり読んで、なぜ間違えたのか、どこを理解していなかったのかを確認することが、次へのステップになります。
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題1：平叙文 (否定文)</h4>
+                 <p class="question">次の文を否定文にしなさい： She knows the answer.</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> She <strong>doesn't know</strong> the answer.</p>
+                     <p class="explanation">解説: 一般動詞 knows (三人称単数現在形) の否定文です。主語が She なので助動詞 <strong>does + not (doesn't)</strong> を使い、動詞は<strong>原形の know</strong> に戻すのがポイントです！</p>
+                 </div>
+             </div>
+
+            <div class="quiz-item">
+                 <h4>問題2：一般疑問文 (Yes/No)</h4>
+                 <p class="question">次の文を疑問文にしなさい： They went to the park yesterday.</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>Did</strong> they <strong>go</strong> to the park yesterday?</p>
+                     <p class="explanation">解説: 一般動詞 went (goの過去形) の疑問文です。過去の話なので文頭に助動詞 <strong>Did</strong> を置き、動詞は<strong>原形の go</strong> に戻します。主語が誰であっても過去の一般動詞の疑問文は Did で始めます。</p>
+                 </div>
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題3：疑問詞疑問文 (What)</h4>
+                 <p class="question">下線部を尋ねる疑問文を作りなさい： He bought <u>a new car</u>.</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>What did</strong> he <strong>buy</strong>?</p>
+                     <p class="explanation">解説: 「何を買ったか」という「物」を尋ねるので疑問詞 <strong>What</strong> を使います。元の文が過去形 (bought) なので、助動詞 <strong>Did</strong> を使い、動詞は<strong>原形の buy</strong> に戻します。語順は「<strong>疑問詞 + Did + 主語 + 動詞の原形?</strong>」です。</p>
+                 </div>
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題4：疑問詞疑問文 (Whoが主語)</h4>
+                 <p class="question">下線部を尋ねる疑問文を作りなさい： <u>Tom</u> broke the vase.</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>Who</strong> broke the vase?</p>
+                     <p class="explanation">解説: 「誰が」割ったのか、文の<strong>主語</strong>を尋ねています。この場合は疑問詞 <strong>Who</strong> をそのまま主語の位置に置きます。<strong>Do/Does/Didは不要</strong>で、語順は肯定文と同じ「<strong>疑問詞(S) + 動詞(V) + ...?</strong>」となるのが特徴です！</p>
+                 </div>
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題5：命令文 (否定)</h4>
+                 <p class="question">「その箱を開けてはいけません。」を英語にしなさい。</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>Don't open</strong> the box.</p>
+                     <p class="explanation">解説: 否定の命令文（～するな）は「<strong>Don't + 動詞の原形</strong>」で作ります。open は一般動詞なのでこの形になります。</p>
+                 </div>
+             </div>
+
+            <div class="quiz-item">
+                 <h4>問題6：感嘆文 (How)</h4>
+                 <p class="question">「彼女はなんて速く走るんだろう！」を英語にしなさい。</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>How fast</strong> she <strong>runs</strong>!</p>
+                     <p class="explanation">解説: 「速く」という<strong>副詞 fast</strong> の程度を強調しているので <strong>How</strong> を使います。語順は「<strong>How + 副詞 + 主語 + 動詞!</strong>」です。主語が she (三人称単数) で現在の話なので、動詞には <strong>s</strong> が付きます (runs)。</p>
+                 </div>
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題7：感嘆文 (What)</h4>
+                 <p class="question">「それはなんて面白い本なんだ！」を英語にしなさい。(an interesting book を使って)</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> <strong>What an interesting book</strong> it is!</p>
+                     <p class="explanation">解説: 「面白い本」という「<strong>形容詞 + 名詞</strong>」を強調しているので <strong>What</strong> を使います。book は数えられる単数名詞で、形容詞 interesting が母音で始まっているので <strong>an</strong> を付けます。語順は「<strong>What + a/an + 形容詞 + 名詞 + 主語 + 動詞!</strong>」です。主語+動詞 (it is) は省略されることもあります (What an interesting book!)。</p>
+                 </div>
+             </div>
+
+              <div class="quiz-item">
+                 <h4>問題8：付加疑問</h4>
+                 <p class="question">次の文に適切な付加疑問を付けなさい： It's a beautiful day, ______?</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> isn't it?</p>
+                     <p class="explanation">解説: 前の文 (It's a beautiful day) が<strong>肯定文</strong>なので、<strong>否定形</strong>の付加疑問を付けます。動詞が is (be動詞) なので、その否定短縮形 <strong>isn't</strong> を使い、主語の <strong>it</strong> を繰り返します。</p>
+                 </div>
+             </div>
+
+             <div class="quiz-item">
+                 <h4>問題9：付加疑問 (Let's)</h4>
+                 <p class="question">次の文に適切な付加疑問を付けなさい： Let's go to the movies, ______?</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> shall we?</p>
+                     <p class="explanation">解説: <strong>Let's</strong> で始まる提案の文には、付加疑問として <strong>shall we?</strong> を付けるのが決まりです。これはルールとして覚えましょう！</p>
+                 </div>
+             </div>
+
+              <div class="quiz-item">
+                 <h4>問題10：否定疑問文の応答</h4>
+                 <p class="question">"Don't you know him?" (彼を知らないのですか？) と聞かれ、「いいえ、知っています」と答えたい場合、英語ではどう言いますか？</p>
+                 <button class="show-answer-btn">正解・解説を表示</button>
+                 <div class="answer-explanation">
+                     <p><strong>正解:</strong> Yes, I do.</p>
+                     <p class="explanation">解説: 英語の応答は、質問の形（肯定か否定か）に関わらず、<strong>答える内容の事実</strong>に基づきます。「知っている」という事実は肯定的なので <strong>Yes</strong> を使います。そして、質問で使われた助動詞 do を使って <strong>Yes, I do.</strong> と答えます。日本語の「はい/いいえ」の感覚とは逆になるため、注意が必要です！</p>
+                 </div>
+             </div>
+
+         </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 【合格へ導く！】英語の文型マスター講座</p>
+    </footer>
+
+    <div id="tooltip" role="tooltip"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 目次関連 ---
+            const toc = document.getElementById('floating-toc');
+            const menuToggleBtn = document.getElementById('menu-toggle-btn');
+            const tocCloseBtn = toc?.querySelector('.toc-close-btn');
+            const overlay = document.getElementById('overlay');
+            const tocLinks = toc?.querySelectorAll('a');
+            const mainContent = document.querySelector('main'); // main要素を取得
+
+            function openMobileToc() {
+                if (toc) toc.classList.add('open');
+                document.body.classList.add('toc-open');
+                if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'true');
+                if (toc) toc.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeMobileToc() {
+                if (toc) toc.classList.remove('open');
+                document.body.classList.remove('toc-open');
+                if (menuToggleBtn) menuToggleBtn.setAttribute('aria-expanded', 'false');
+                 if (toc) toc.setAttribute('aria-hidden', 'true');
+            }
+
+            if (menuToggleBtn) {
+                menuToggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 親要素への伝播を防ぐ
+                    const isTocOpen = toc?.classList.contains('open');
+                    if (isTocOpen) {
+                        closeMobileToc();
+                    } else {
+                        openMobileToc();
+                    }
+                });
+            }
+            if (tocCloseBtn) {
+                tocCloseBtn.addEventListener('click', closeMobileToc);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closeMobileToc);
+            }
+             // 目次自身やボタン以外をクリックしても閉じるように（より広範に）
+            document.addEventListener('click', (e) => {
+                 if (toc?.classList.contains('open') && !toc.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                    closeMobileToc();
+                 }
+             });
+
+            if (tocLinks) {
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        // 画面サイズに関わらずメニューを閉じる
+                        closeMobileToc();
+                    });
+                });
+            }
+
+            // --- ツールチップ機能 (省略 - 変更なし) ---
+            const buttons = document.querySelectorAll('.similar-example-btn');
+            const tooltip = document.getElementById('tooltip');
+            let tooltipVisible = false;
+            let currentButton = null;
+            let hideTimeoutTooltip;
+            if (tooltip) {
+                 function showTooltip(button) { if (tooltipVisible && currentButton !== button) hideTooltipImmediatelyTooltip(); clearTimeout(hideTimeoutTooltip); const content = button.getAttribute('data-tooltip-content'); if (!content || content.trim() === '') return; tooltip.innerHTML = content; tooltip.style.display = 'block'; tooltip.style.visibility = 'hidden'; tooltip.style.opacity = '0'; requestAnimationFrame(() => { const buttonRect = button.getBoundingClientRect(); const tooltipStyle = window.getComputedStyle(tooltip); const tooltipWidth = parseFloat(tooltipStyle.width); const tooltipHeight = parseFloat(tooltipStyle.height); let top = buttonRect.top + window.scrollY - tooltipHeight - 10; let left = buttonRect.left + window.scrollX + (buttonRect.width / 2) - (tooltipWidth / 2); if (top < window.scrollY + 5) top = buttonRect.bottom + window.scrollY + 10; if (left < window.scrollX + 5) left = window.scrollX + 5; else if (left + tooltipWidth > window.scrollX + document.documentElement.clientWidth - 5) left = window.scrollX + document.documentElement.clientWidth - tooltipWidth - 5; tooltip.style.top = `${top}px`; tooltip.style.left = `${left}px`; tooltip.style.visibility = 'visible'; tooltip.style.opacity = '1'; tooltip.classList.add('visible'); tooltipVisible = true; currentButton = button; }); }
+                 function hideTooltipTooltip() { clearTimeout(hideTimeoutTooltip); hideTimeoutTooltip = setTimeout(hideTooltipImmediatelyTooltip, 150); }
+                 function hideTooltipImmediatelyTooltip() { clearTimeout(hideTimeoutTooltip); if (!tooltipVisible) return; tooltip.style.opacity = '0'; tooltip.classList.remove('visible'); const transitionDuration = parseFloat(window.getComputedStyle(tooltip).transitionDuration) * 1000 || 150; setTimeout(() => { if (!tooltip.classList.contains('visible')) tooltip.style.display = 'none'; }, transitionDuration); tooltipVisible = false; currentButton = null; }
+                 buttons.forEach(button => { button.addEventListener('mouseenter', () => showTooltip(button)); button.addEventListener('mouseleave', hideTooltipTooltip); button.addEventListener('focus', () => showTooltip(button)); button.addEventListener('blur', hideTooltipTooltip); button.addEventListener('click', (event) => { event.stopPropagation(); if (tooltipVisible && currentButton === button) hideTooltipImmediatelyTooltip(); else { hideTooltipImmediatelyTooltip(); setTimeout(() => showTooltip(button), 10); } }); });
+                 tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimeoutTooltip)); tooltip.addEventListener('mouseleave', hideTooltipTooltip);
+                 document.addEventListener('click', (event) => { if (tooltipVisible && currentButton && !currentButton.contains(event.target) && !tooltip.contains(event.target)) hideTooltipImmediatelyTooltip(); });
+                 let scrollTimeoutTooltip; window.addEventListener('scroll', () => { clearTimeout(scrollTimeoutTooltip); scrollTimeoutTooltip = setTimeout(hideTooltipImmediatelyTooltip, 50); }, { passive: true }); window.addEventListener('resize', hideTooltipImmediatelyTooltip);
+            } else { console.error('Tooltip element not found!'); }
+
+            // --- 確認問題の表示/非表示機能 (省略 - 変更なし) ---
+             const quizItems = document.querySelectorAll('.quiz-item');
+             quizItems.forEach(item => { const btn = item.querySelector('.show-answer-btn'); const answerDiv = item.querySelector('.answer-explanation'); if (btn && answerDiv) { btn.addEventListener('click', () => { const isVisible = answerDiv.style.display === 'block'; answerDiv.style.display = isVisible ? 'none' : 'block'; btn.textContent = isVisible ? '正解・解説を表示' : '閉じる'; }); } });
+
+            // --- Intersection Observer でセクションをフェードイン (省略 - 変更なし) ---
+             const sections = document.querySelectorAll('section');
+             if ('IntersectionObserver' in window) { const observerOptions = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0 }; const observerCallback = (entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }; const observer = new IntersectionObserver(observerCallback, observerOptions); sections.forEach(section => { observer.observe(section); });
+             } else { sections.forEach(section => { section.style.opacity = '1'; section.style.transform = 'translateY(0)'; }); }
+
+            // --- 目次のアクティブ表示 (スクロール連動) ---
+             const tocLinksObserver = document.querySelectorAll('#floating-toc a');
+             const sectionElementsObserver = document.querySelectorAll('main section');
+             if (tocLinksObserver.length > 0 && sectionElementsObserver.length > 0 && 'IntersectionObserver' in window) {
+                 const tocObserverOptions = { root: null, rootMargin: "-20% 0px -60% 0px", threshold: 0 };
+                 let lastActiveLink = null; // 最後のアクティブリンクを追跡
+
+                 const tocObserverCallback = (entries) => {
+                     let currentActiveFound = false;
+                     entries.forEach(entry => {
+                         const id = entry.target.getAttribute('id');
+                         const correspondingLink = document.querySelector(`#floating-toc a[href="#${id}"]`);
+
+                         if (correspondingLink) {
+                            if (entry.isIntersecting && entry.intersectionRatio > 0) {
+                                // 画面上部にあるものを優先的にアクティブにする
+                                if (!currentActiveFound) {
+                                     tocLinksObserver.forEach(link => link.classList.remove('active'));
+                                     correspondingLink.classList.add('active');
+                                     lastActiveLink = correspondingLink; // アクティブなリンクを更新
+                                     currentActiveFound = true;
+                                 }
+                            }
+                             // isIntersectingがfalseになってもすぐにはクラスを削除しない
+                         }
+                     });
+
+                      // 可視範囲に該当セクションが全くない場合（ページの最上部など）、最初のアクティブを外す
+                     // （ただし、これにより一時的にアクティブがなくなる瞬間ができる）
+                    // if (!currentActiveFound && lastActiveLink) {
+                    //     // lastActiveLink.classList.remove('active'); // 必要ならコメント解除
+                    // }
+                 };
+                 const tocObserver = new IntersectionObserver(tocObserverCallback, tocObserverOptions);
+                 sectionElementsObserver.forEach(sec => tocObserver.observe(sec));
+             }
+
+        });
+    </script>
+</body>
+</html>
