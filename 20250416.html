@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Default language set to English here -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Class Review: Self-Introductions</title> <!-- Default title -->
+    <style>
+        /* --- Basic Styles --- */
+        body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.7; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 850px; margin: 30px auto; padding: 25px 30px; background-color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 10px; }
+        h1, h2 { color: #0056b3; margin-top: 1.5em; margin-bottom: 0.8em; padding-bottom: 5px; }
+        h1 { text-align: center; font-size: 2.2em; border-bottom: 3px solid #a0c4e4; margin-bottom: 1em; }
+        h2 { font-size: 1.6em; border-left: 7px solid #0056b3; padding-left: 10px; }
+        section { margin-bottom: 35px; padding: 20px; border-radius: 8px; background-color: #ffffff; }
+        dl dt { font-weight: bold; margin-top: 12px; color: #343a40; font-size: 1.1em; }
+        dl dd { margin-left: 0; margin-bottom: 12px; padding-left: 20px; border-left: 3px solid #e9ecef; }
+        ul { list-style: none; padding-left: 0; }
+        footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #eee; color: #777; font-size: 0.9em; }
+
+        /* --- Section Specific Styles --- */
+        .intro-questions li { background-color: #e7f3ff; margin-bottom: 10px; padding: 12px 18px; border-radius: 5px; border-left: 6px solid #007bff; }
+        .intro-questions li strong { color: #0056b3; display: inline-block; min-width: 200px; }
+        .intro-questions li > span { margin-left: 10px; font-style: italic; color: #555; }
+        .teacher-intro { border: 1px solid #e0e0e0; padding: 25px; }
+        .teacher-intro.teacher-a { border-left: 8px solid #ffd700; background-color: #fffef5; }
+        .teacher-intro.teacher-a h2 { color: #0057b7; border-left-color: #0057b7; }
+        .teacher-intro.teacher-b { border-left: 8px solid #bf0a30; background-color: #f8f9fa; }
+        .teacher-intro.teacher-b h2 { color: #002868; border-left-color: #002868; }
+        .point-system li { background-color: #e0f2f1; margin-bottom: 8px; padding: 10px 15px; border-radius: 4px; border-left: 5px solid #00796b; }
+        .point-system strong { color: #004d40; font-size: 1.2em; margin-left: 5px; }
+
+        /* --- Language Switcher Styles --- */
+        .lang-switcher { text-align: right; margin-bottom: 15px; }
+        .lang-switcher button { padding: 5px 12px; margin-left: 5px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
+        .lang-switcher button.active { background-color: #0056b3; color: white; border-color: #0056b3; font-weight: bold; }
+
+        /* --- Language Visibility Control --- */
+        /* This class is added/removed by JavaScript to hide elements */
+        .lang-hidden {
+            display: none !important;
+        }
+        /* No initial display:none for specific languages here; JS handles it */
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            .container { margin: 15px; padding: 15px; }
+            h1 { font-size: 1.8em; } h2 { font-size: 1.4em; }
+            .intro-questions li strong { display: block; margin-bottom: 5px; min-width: auto; }
+            .intro-questions li > span { margin-left: 0; display: block; }
+        }
+         @media (max-width: 480px) {
+             body { font-size: 15px; }
+             h1 { font-size: 1.6em; } h2 { font-size: 1.25em; }
+         }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+            <button id="lang-btn-en" onclick="setLanguage('en')">English</button>
+            <button id="lang-btn-ja" onclick="setLanguage('ja')">日本語</button>
+        </div>
+
+        <h1>
+            <span class="lang-en">English Class (Self-Introduction) Review</span>
+            <span class="lang-ja">英語の授業（自己紹介）振り返り</span>
+        </h1>
+        <p>
+            <span class="lang-en">In today's class, we practiced asking and answering questions in English through the self-introductions of the teachers. Let's review the class content!</span>
+            <span class="lang-ja">今日の授業では、先生たちの自己紹介を通して、英語で質問したり答えたりする練習をしましたね。授業の内容を振り返ってみましょう！</span>
+        </p>
+
+        <!-- Section 1: Questions -->
+        <section class="intro-questions">
+            <h2>
+                <span class="lang-en">1. Questions and Answers for Self-Introductions</span>
+                <span class="lang-ja">1. 自己紹介で使う質問と答え方</span>
+            </h2>
+            <p>
+                <span class="lang-en">At the beginning of the class, we practiced common questions and answers used in self-introductions. Remember these basic phrases well.</span>
+                <span class="lang-ja">授業の最初に、自己紹介でよく使う質問と答え方の練習をしました。基本的なフレーズなのでしっかり覚えておきましょう。</span>
+            </p>
+            <ul>
+                <li>
+                    <strong><span class="lang-en">What is your name?</span><span class="lang-ja">お名前は？</span></strong>
+                    <span>→ <span class="lang-en">My name is ...</span><span class="lang-ja">私の名前は～です</span></span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">Where are you from?</span><span class="lang-ja">出身はどこですか？</span></strong>
+                    <span>→ <span class="lang-en">I'm from ...</span><span class="lang-ja">～出身です</span></span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">What is your favorite food?</span><span class="lang-ja">好きな食べ物は何ですか？</span></strong>
+                    <span>→ <span class="lang-en">My favorite food is ... / I like ...</span><span class="lang-ja">好きな食べ物は～です / ～が好きです</span></span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">When is your birthday?</span><span class="lang-ja">誕生日はいつですか？</span></strong>
+                    <span>→ <span class="lang-en">My birthday is ...</span><span class="lang-ja">誕生日は～です</span></span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">What are your hobbies?</span><span class="lang-ja">趣味は何ですか？</span></strong>
+                    <span>→ <span class="lang-en">My hobbies are ... / I like ...</span><span class="lang-ja">趣味は～です / ～が好きです</span></span>
+                </li>
+                <li>
+                    <strong><span class="lang-en">What color do you like?</span><span class="lang-ja">何色が好きですか？</span></strong>
+                    <span>→ <span class="lang-en">I like ...</span><span class="lang-ja">～色が好きです</span></span>
+                </li>
+                 <li>
+                    <strong><span class="lang-en">How old are you?</span><span class="lang-ja">何歳ですか？</span></strong>
+                    <span>→ <span class="lang-en">I am ... years old.</span><span class="lang-ja">～歳です</span></span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 2: Teacher A -->
+        <section class="teacher-intro teacher-a">
+             <h2>
+                 <span class="lang-en">2. Teacher A's Self-Introduction</span>
+                 <span class="lang-ja">2. 先生Aの自己紹介</span>
+             </h2>
+             <dl>
+                 <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
+                 <dd><span class="lang-en">Teacher A</span><span class="lang-ja">先生A</span></dd>
+
+                 <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
+                 <dd><span class="lang-en">Ukraine - A country in Europe. It has beautiful nature and culture. In class, we talked about the Ukrainian mermaid "Mavka" and the Christmas star.</span><span class="lang-ja">ウクライナ (Ukraine) - ヨーロッパにある国です。美しい自然や文化があります。授業ではウクライナの人魚「マフカ(Mavka)」やクリスマスの星の話も出ましたね。</span></dd>
+
+                 <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
+                 <dd><span class="lang-en">Dancing (Indian dance, Ukrainian dance), singing, karate, drawing.</span><span class="lang-ja">ダンス (インド舞踊、ウクライナのダンス)、歌うこと、空手、絵を描くこと</span></dd>
+
+                 <dt><span class="lang-en">Favorite Color</span><span class="lang-ja">好きな色</span></dt>
+                 <dd><span class="lang-en">Green - But as an artist, I use many different colors.</span><span class="lang-ja">緑 (Green) - でも、アーティストとして色々な色を使います。</span></dd>
+
+                 <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
+                 <dd><span class="lang-en">Japanese miso soup, Ukrainian borscht.</span><span class="lang-ja">日本の味噌汁、ウクライナのボルシチ (Borscht)</span></dd>
+
+                 <dt><span class="lang-en">Favorite Country (besides Ukraine)</span><span class="lang-ja">好きな国（ウクライナ以外）</span></dt>
+                 <dd><span class="lang-en">Japan</span><span class="lang-ja">日本</span></dd>
+
+                 <dt><span class="lang-en">Favorite Sport</span><span class="lang-ja">好きなスポーツ</span></dt>
+                 <dd><span class="lang-en">Football/Soccer - I used to be a goalkeeper when I was a child!</span><span class="lang-ja">サッカー (Football/Soccer) - 子どもの頃ゴールキーパーでした！</span></dd>
+             </dl>
+        </section>
+
+        <!-- Section 3: Teacher B -->
+        <section class="teacher-intro teacher-b">
+            <h2>
+                <span class="lang-en">3. Teacher B's Self-Introduction</span>
+                <span class="lang-ja">3. 先生Bの自己紹介</span>
+            </h2>
+            <dl>
+                 <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
+                 <dd><span class="lang-en">Teacher B</span><span class="lang-ja">先生B</span></dd>
+
+                 <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
+                 <dd><span class="lang-en">United States, Oregon - A state on the West Coast of the US with abundant nature.</span><span class="lang-ja">アメリカ合衆国 (United States)、オレゴン州 (Oregon) - アメリカ西海岸、自然が豊かな州です。</span></dd>
+
+                 <dt><span class="lang-en">Life in Japan</span><span class="lang-ja">日本での生活</span></dt>
+                 <dd><span class="lang-en">I have lived in Japan for many years and have been teaching English for a long time.</span><span class="lang-ja">長年日本に住んでいて、長く英語を教えています。</span></dd>
+
+                 <dt><span class="lang-en">Family</span><span class="lang-ja">家族</span></dt>
+                 <dd><span class="lang-en">I am married and have children.</span><span class="lang-ja">結婚していて、子どもがいます。</span></dd>
+
+                 <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
+                 <dd><span class="lang-en">Japanese food (sashimi, sushi, nabe, soup), curry, Thai food, Italian food, Mexican food, etc. I love delicious food!</span><span class="lang-ja">日本食 (刺身、寿司、鍋、スープ)、カレー、タイ料理、イタリア料理、メキシコ料理など。美味しいものが好き！</span></dd>
+
+                 <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
+                 <dd><span class="lang-en">Walking, barbecue, traveling, watching movies (especially love "Jaws"!), spending time with family.</span><span class="lang-ja">散歩、バーベキュー、旅行、映画鑑賞 (特に「ジョーズ」が好き！)、家族と過ごすこと。</span></dd>
+
+                 <dt><span class="lang-en">Favorite Colors</span><span class="lang-ja">好きな色</span></dt>
+                 <dd><span class="lang-en">Blue, Purple</span><span class="lang-ja">青 (Blue)、紫 (Purple)</span></dd>
+
+                 <dt><span class="lang-en">Favorite Sports</span><span class="lang-ja">好きなスポーツ</span></dt>
+                 <dd><span class="lang-en">Badminton, table tennis, Aikido (practiced in the past).</span><span class="lang-ja">バドミントン、卓球、合気道 (昔やっていました)。</span></dd>
+
+                 <dt><span class="lang-en">Favorite Countries</span><span class="lang-ja">好きな国</span></dt>
+                 <dd><span class="lang-en">The United States and Japan</span><span class="lang-ja">アメリカと日本</span></dd>
+            </dl>
+        </section>
+
+        <!-- Section 4: Point System -->
+        <section class="point-system">
+            <h2>
+                <span class="lang-en">4. About the Point System</span>
+                <span class="lang-ja">4. ポイントシステムについて</span>
+            </h2>
+            <p>
+                <span class="lang-en">You can earn points by actively asking questions or speaking in English during class. Let's challenge ourselves a lot!</span>
+                <span class="lang-ja">授業中に積極的に英語で質問したり、発言したりするとポイントがもらえます。たくさんチャレンジしてみましょう！</span>
+            </p>
+            <ul>
+                <li>
+                    <span class="lang-en">Question in Japanese</span><span class="lang-ja">日本語での質問</span> →<strong> 3 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
+                </li>
+                <li>
+                    <span class="lang-en">Question in English</span><span class="lang-ja">英語での質問</span> →<strong> 5 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
+                </li>
+            </ul>
+             <p>
+                <span class="lang-en">Points will be recorded and collected in July, becoming part of your grade.</span>
+                <span class="lang-ja">ポイントは記録しておき、7月に集めて成績の一部になります。</span>
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                <span class="lang-en">Try using the expressions learned in today's class to practice speaking English with teachers and friends! See you next time!</span>
+                <span class="lang-ja">今日の授業で学んだ表現を使って、先生や友達と英語で話す練習をしてみてくださいね！ See you next time!</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            const enElements = document.querySelectorAll('.lang-en');
+            const jaElements = document.querySelectorAll('.lang-ja');
+
+            if (lang === 'ja') {
+                jaElements.forEach(el => el.classList.remove('lang-hidden'));
+                enElements.forEach(el => el.classList.add('lang-hidden'));
+                document.documentElement.lang = 'ja';
+                document.title = "英語の授業（自己紹介）振り返り";
+            } else { // Default to English ('en')
+                enElements.forEach(el => el.classList.remove('lang-hidden'));
+                jaElements.forEach(el => el.classList.add('lang-hidden'));
+                document.documentElement.lang = 'en';
+                document.title = "English Class Review: Self-Introductions";
+            }
+
+            document.getElementById('lang-btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-btn-ja').classList.toggle('active', lang === 'ja');
+
+            try {
+                localStorage.setItem('preferredLanguage', lang);
+            } catch (e) {
+                console.warn("Could not save language preference.", e);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Default language is 'en'
+            let initialLang = 'en';
+            try {
+                // Check if a preference was saved previously
+                const savedLang = localStorage.getItem('preferredLanguage');
+                if (savedLang === 'ja') { // Only override default if 'ja' was explicitly saved
+                    initialLang = 'ja';
+                }
+                // If savedLang is 'en' or null/invalid, initialLang remains 'en'
+            } catch (e) {
+                 console.warn("Could not read language preference.", e);
+                 // Proceed with default 'en' if localStorage fails
+            }
+
+            // Initially hide the non-default language elements based on initialLang
+            if (initialLang === 'en') {
+                // Hide Japanese elements initially
+                document.querySelectorAll('.lang-ja').forEach(el => el.classList.add('lang-hidden'));
+                // Make sure English elements are not hidden (remove class just in case)
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('lang-hidden'));
+            } else { // initialLang must be 'ja'
+                // Hide English elements initially
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('lang-hidden'));
+                 // Make sure Japanese elements are not hidden
+                document.querySelectorAll('.lang-ja').forEach(el => el.classList.remove('lang-hidden'));
+            }
+
+            // Apply the determined language settings (updates buttons, title, etc.)
+            setLanguage(initialLang);
+            console.log('Language initialized to:', initialLang); // For debugging
+        });
+    </script>
+
+</body>
+</html>
