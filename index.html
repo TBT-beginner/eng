@@ -1,11 +1,89 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<title>index</index>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録</title> <!-- タイトルを修正し、分かりやすく -->
+    <style>
+        /* ここからCSSでのデザイン指定 */
+        body {
+            font-family: sans-serif; /* 見やすいフォントに */
+            line-height: 1.6;      /* 行間を少し広げる */
+            margin: 30px;          /* ページ全体の余白 */
+            background-color: #f8f9fa; /* 背景を薄いグレーに */
+            color: #333;           /* 基本の文字色 */
+        }
+        h1 {
+            color: #007bff;        /* 見出しの色を青系に */
+            border-bottom: 2px solid #dee2e6; /* 下線を追加 */
+            padding-bottom: 10px;  /* 下線とのスペース */
+        }
+        p {
+            margin-bottom: 20px;   /* 説明文の下に余白 */
+        }
+        ul {
+            list-style: none;      /* リストの・を消す */
+            padding: 0;            /* リストの左側の余白をなくす */
+        }
+        li {
+            background-color: #fff; /* 各項目の背景を白に */
+            margin-bottom: 10px;   /* 各項目の下の余白 */
+            border-radius: 5px;    /* 角を少し丸くする */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 薄い影をつける */
+            transition: transform 0.2s ease; /* ホバー時のアニメーション */
+        }
+        li:hover {
+            transform: translateY(-3px); /* ホバー時に少し浮き上がる */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* 影を少し濃くする */
+        }
+        a {
+            display: block;        /* リンクを項目全体でクリック可能に */
+            padding: 15px 20px;    /* リンク内の余白 */
+            text-decoration: none; /* 下線を消す */
+            color: #0d6efd;        /* リンクの文字色 */
+            font-weight: bold;     /* 文字を少し太く */
+        }
+        a:hover {
+            color: #0a58ca;        /* ホバー時の文字色 */
+            background-color: #e9ecef; /* ホバー時の背景色 */
+            border-radius: 5px;    /* ホバー時も角丸を維持 */
+        }
+        /* 注意書き用のスタイル */
+        .note {
+            margin-top: 30px;
+            padding: 15px;
+            border-left: 4px solid #ffc107; /* 左側に黄色の線 */
+            background-color: #fff3cd;      /* 背景を薄い黄色に */
+            color: #856404;                 /* 文字色 */
+            font-size: 0.9em;
+        }
+        .note strong {
+            color: #664d03;
+        }
+    </style>
 </head>
 <body>
-ここでは、授業の内容をまとめていきます。
-<a href=20250416selfintroduction.html>自己紹介1</a>
-<a href=00 可算不可算名詞.html>可算名詞と不可算名詞</a>
-/!--<a href=01文の種類.html>文の種類</a>--/
+
+    <h1>授業記録一覧</h1>
+
+    <p>ここでは、これまでの授業内容の記録をまとめています。</p>
+
+    <ul>
+        <li><a href="20250416selfintroduction.html">自己紹介 (2025/04/16)</a></li>
+        <li><a href="00_kasan_fukasan.html">00 可算名詞と不可算名詞</a></li>
+        <!-- <li><a href="01_bun_no_shurui.html">01 文の種類</a></li> -->
+        <!-- ↑正しくコメントアウトしました。ファイル名も修正推奨です -->
+    </ul>
+
+    <div class="note">
+        <p><strong>【ファイル名について】</strong><br>
+        HTMLファイル名にスペース（空白）や日本語文字を使うと、リンクが正しく動作しないことがあります。アルファベット、数字、アンダースコア(<code>_</code>)、ハイフン(<code>-</code>)で構成することをおすすめします。<br>
+        例： <code>00 可算不可算名詞.html</code> → <code>00_kasan_fukasan.html</code> や <code>00-countable-uncountable.html</code>
+        </p>
+        <p><strong>【コメントアウトについて】</strong><br>
+        HTML内で一時的に表示したくない部分は、<code><!--</code> と <code>--></code> で囲んでください。
+        </p>
+    </div>
+
 </body>
 </html>
