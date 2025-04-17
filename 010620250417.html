@@ -45,6 +45,7 @@
             color: #111;
             margin-top: 45px;
             margin-bottom: 25px;
+            scroll-margin-top: 20px; /* Add space above heading when jumped to */
         }
 
         h1 {
@@ -60,14 +61,91 @@
             text-align: center;
             color: #777;
             font-size: 0.9em;
-            margin-bottom: 45px;
+            margin-bottom: 35px; /* Increased margin before summary/toc */
         }
         .reading-time::before {
            content: "⏱️ ";
            margin-right: 3px;
         }
 
+        /* Summary Box */
+        .summary-box {
+            background-color: #f8f8f8;
+            border: 1px solid #eee;
+            padding: 15px 25px;
+            margin-bottom: 35px;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .summary-box ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        .summary-box li {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .summary-box li span {
+            display: inline-block;
+            width: 50px; /* Align time */
+            color: #888;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
 
+
+        /* Table of Contents */
+        #tableOfContents {
+            background-color: #fdfdfd;
+            border: 1px solid #eee;
+            padding: 20px 30px;
+            margin-bottom: 50px;
+            border-radius: 5px;
+        }
+        #tableOfContents h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #333;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        #tableOfContents ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            columns: 2; /* Display in two columns if space allows */
+            column-gap: 40px;
+        }
+        #tableOfContents li {
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        #tableOfContents a {
+            text-decoration: none;
+            color: #0056b3;
+            transition: color 0.2s ease;
+        }
+        #tableOfContents a:hover {
+            color: #003d80;
+            text-decoration: underline;
+        }
+        #tableOfContents a .section-time { /* Style for time hint in TOC */
+            font-size: 0.8em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        /* Section Heading Adjustments */
         h2 {
             font-size: 1.7em;
             border-bottom: 1px solid #eee;
@@ -125,6 +203,13 @@
             padding-left: 30px;
             margin-bottom: 1.3em;
         }
+        /* Ensure TOC list style doesn't override others */
+        #tableOfContents ul, .summary-box ul {
+             padding-left: 0;
+        }
+        section ul, section ol {
+            padding-left: 30px; /* Reset padding for main content lists */
+        }
 
         li {
             margin-bottom: 0.7em;
@@ -132,6 +217,29 @@
         li::marker {
            color: #555;
         }
+        /* Remove marker from TOC and Summary */
+        #tableOfContents li::marker, .summary-box li::marker, .checklist li::marker {
+            content: none;
+        }
+        /* Keep checklist style */
+        .checklist {
+            list-style: none;
+            padding-left: 10px;
+        }
+        .checklist li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px;
+        }
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-size: 1.3em;
+            color: #aaa;
+        }
+
 
         /* Blockquotes */
         blockquote {
@@ -186,42 +294,20 @@
         }
 
         #review h2 {
-            border-bottom: none; /* Remove double border */
+            border-bottom: none;
             text-align: center;
             margin-bottom: 35px;
         }
 
-        .checklist {
-            list-style: none; /* Remove default bullets */
-            padding-left: 10px;
-        }
-        .checklist li {
-            margin-bottom: 12px;
-            position: relative;
-            padding-left: 30px; /* Space for the checkbox */
-        }
-        .checklist li::before {
-            content: "☐"; /* Basic checkbox representation */
-            position: absolute;
-            left: 0;
-            top: 1px; /* Adjust vertical alignment */
-            font-size: 1.3em;
-            color: #aaa;
-        }
-        /* If you want clickable checkboxes (requires JS to track state): */
-        /* .checklist input[type="checkbox"] { margin-right: 10px; } */
-
         .review-questions ol {
-            padding-left: 20px; /* Indent question numbers */
+            padding-left: 20px;
         }
         .review-questions li {
-            margin-bottom: 20px; /* Space between questions */
+            margin-bottom: 20px;
         }
-        .review-questions p { /* Optional: Add space for answers */
+        .review-questions p {
             margin-top: 8px;
             margin-bottom: 0;
-            /* border-bottom: 1px dotted #ccc; */ /* Uncomment for answer lines */
-            /* min-height: 2em; */ /* Uncomment for answer space */
         }
 
 
@@ -253,6 +339,12 @@
         }
 
         /* Responsive adjustments */
+        @media (max-width: 768px) { /* Adjust breakpoint for columns */
+             #tableOfContents ul {
+                columns: 1; /* Single column on smaller screens */
+            }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 30px 20px;
@@ -262,8 +354,10 @@
             h1 { font-size: 1.9em; }
             h2 { font-size: 1.5em; }
             h3 { font-size: 1.2em; }
+            .summary-box { padding: 15px 20px; }
+            #tableOfContents { padding: 15px 20px; }
             .supplementary-box { padding: 15px 20px; }
-            .checklist li { padding-left: 25px; } /* Adjust checkbox spacing */
+            .checklist li { padding-left: 25px; }
             .checklist li::before { font-size: 1.2em; }
         }
 
@@ -275,11 +369,37 @@
     <div id="progressBar"></div>
 
     <div class="container" id="mainContent">
-        <h1>授業の記録 2025/4/17</h1>
+        <h1>暗唱体験授業</h1>
         <p class="reading-time" id="readingTimeEstimate">読了時間: 計算中...</p>
-        <p style="text-align: center; color: #777; margin-bottom: 50px;">英語学習における文法と暗記の役割</p>
 
-        <!-- ... (Previous sections: vocab, grammar-importance, memorization-activity, pimsleur-method, next-steps) ... -->
+        <!-- Summary Box -->
+        <div class="summary-box">
+            <h3>今回の授業概要(2025/4/17)</h3>
+            <ul>
+                <li><span>10分</span> 単語練習</li>
+                <li><span>20分</span> なぜ文法を学ぶのか？ & 暗唱体験</li>
+            </ul>
+        </div>
+
+        <!-- Table of Contents -->
+        <nav id="tableOfContents">
+            <h3>目次</h3>
+            <ul>
+                <li><a href="#vocab">単語練習<span class="section-time">(10分)</span></a></li>
+                <li><a href="#grammar-importance">なぜ文法（ルール）を学ぶのか？<span class="section-time">(20分)</span></a></li>
+                <li><a href="#memorization-activity">暗記の「コツ」体験：ルールの力</a></li>
+                <li><a href="#pimsleur-method">暗唱体験：ピムズラーメソッドの一部活用</a></li>
+                <li><a href="#next-steps">次回の授業に向けて</a></li>
+                <li><a href="#review">今回の授業の振り返り</a></li>
+            </ul>
+        </nav>
+
+        <p style="text-align: center; color: #777; margin-bottom: 50px; margin-top: -30px;">
+            英語学習における文法と暗記の役割
+        </p>
+
+        <!-- --- Content Sections --- -->
+
         <section id="vocab">
             <h2><span style="font-size: 0.8em; color: #999; vertical-align: middle; margin-right: 5px;">⏱️ 10分</span> 単語練習</h2>
             <p>
@@ -470,6 +590,7 @@ RAXSY</div>
             </div>
         </section>
 
+
     </div> <!-- end .container -->
 
     <!-- Scroll to Top Button -->
@@ -506,6 +627,7 @@ RAXSY</div>
         }
 
         function scrollToTop() {
+          // Add smooth scrolling behavior polyfill if needed for older browsers
           window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
@@ -515,18 +637,11 @@ RAXSY</div>
         document.addEventListener('DOMContentLoaded', () => {
             const contentElement = document.getElementById('mainContent');
             const readingTimeElement = document.getElementById('readingTimeEstimate');
-            const wordsPerMinute = 500;
+            const wordsPerMinute = 500; // Japanese reading speed approx. 500-600 char/min
 
             if (contentElement && readingTimeElement) {
-                // Exclude review section if desired (simple way: query only main part)
-                // const mainSections = contentElement.querySelectorAll('section:not(#review)');
-                // let text = '';
-                // mainSections.forEach(section => { text += section.innerText || section.textContent; });
-
-                // Or include review section (current implementation):
                 const text = contentElement.innerText || contentElement.textContent;
-
-                const cleanText = text.replace(/\s+/g, ' ').trim();
+                const cleanText = text.replace(/\s+/g, '').trim(); // Remove all whitespace for char count
                 const characterCount = cleanText.length;
 
                 if (characterCount > 0) {
@@ -538,6 +653,26 @@ RAXSY</div>
             }
             updateProgressAndScrollBtn(); // Initial call
         });
+
+        // ---- Smooth scroll for TOC links (optional enhancement) ----
+        document.querySelectorAll('#tableOfContents a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default jump
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calculate position considering the fixed progress bar height (if any)
+                    // and the scroll-margin-top defined in CSS
+                    const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 10; // Adjust 10px extra offset if needed
+
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
 
     </script>
 
