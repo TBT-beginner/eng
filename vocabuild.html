@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 接頭辞で広がる英単語の世界</title>
+    <style>
+        /* --- CSS変数定義 (カラーパレット: 学習と発見のグリーン・オレンジ基調) --- */
+        :root {
+            --bg-main: #F8F9FA; /* 背景 (Main) */
+            --bg-content: #FFFFFF; /* 背景 (Content) */
+            --text-main: #212529; /* テキスト (Main) */
+            --text-secondary: #6C757D; /* テキスト (Secondary) */
+            --color-primary: #28A745; /* メインカラー (Primary) - グリーン系 */
+            --color-accent: #FD7E14; /* アクセントカラー (Accent) - オレンジ系 */
+            --color-link: #28A745; /* リンクカラー (Link) */
+            --color-border: #DEE2E6; /* ボーダーカラー (Border) */
+            --font-family-base: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+        }
+
+        /* --- 基本スタイル --- */
+        body {
+            font-family: var(--font-family-base);
+            line-height: 1.75; /* 行間を広めに */
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- プログレスバー --- */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --- コンテナ --- */
+        .container {
+            max-width: 850px;
+            margin: 40px auto; /* 上部に少し余裕を持たせる */
+            padding: 30px 40px;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--color-border);
+        }
+
+        /* --- 言語表示スタイル (日本語をデフォルト表示、英語を非表示) --- */
+        .lang-en {
+            display: none; /* 英語は非表示 */
+        }
+        /* .lang-ja の特別なスタイルは不要 (常に表示されるため) */
+        /* トグル関連のスタイルは削除 */
+
+        /* --- タイポグラフィ --- */
+        h1, h2, h3 {
+            color: var(--color-primary);
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            line-height: 1.3;
+        }
+        h1 {
+            font-size: 2.2em;
+            text-align: center;
+            margin-bottom: 0.5em;
+            margin-top: 0; /* コンテナ上部のマージンがあるので0に */
+        }
+        h2 {
+            font-size: 1.7em;
+            border-bottom: 2px solid var(--color-border);
+            padding-bottom: 0.3em;
+        }
+        h3 {
+            font-size: 1.3em;
+            color: var(--color-accent); /* h3 はアクセントカラーに */
+            border-left: 4px solid var(--color-accent);
+            padding-left: 0.5em;
+        }
+        p {
+            margin-bottom: 1.2em;
+        }
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+        ul, ol {
+            margin-bottom: 1.2em;
+            padding-left: 1.5em;
+        }
+        li {
+            margin-bottom: 0.6em;
+        }
+        strong {
+            color: var(--color-primary);
+        }
+        .highlight {
+            background-color: #FFF3CD; /* 淡い黄色 */
+            padding: 0.1em 0.4em;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #E9ECEF;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: var(--text-main);
+        }
+        .code-block {
+            background-color: #212529; /* 濃い背景 */
+            color: #F8F9FA; /* 明るいテキスト */
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            margin-bottom: 1.2em;
+            white-space: pre;
+        }
+        blockquote {
+            border-left: 4px solid var(--color-primary);
+            margin: 1.5em 0 1.5em 1em;
+            padding: 0.5em 1em;
+            color: var(--text-secondary);
+            background-color: #f8f9fa; /* 少し背景色を変える */
+        }
+        blockquote p {
+            margin-bottom: 0.5em;
+        }
+
+        /* --- 読了時間目安 --- */
+        #readingTime {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 25px;
+        }
+
+        /* --- 概要セクション --- */
+        .summary-box {
+            background-color: #E8F5E9; /* 淡いグリーン */
+            border: 1px solid var(--color-primary);
+            border-left: 5px solid var(--color-primary);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+            font-size: 1.2em;
+            border: none; /* h3 スタイルを上書き */
+            padding-left: 0; /* h3 スタイルを上書き */
+        }
+        .summary-box ul {
+            padding-left: 1.2em;
+            margin-bottom: 0;
+        }
+
+        /* --- 目次 --- */
+        #tableOfContents {
+            background-color: #fdfdfe;
+            border: 1px solid var(--color-border);
+            padding: 20px 25px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        #tableOfContents h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            border-bottom: none;
+            text-align: center;
+        }
+        #tableOfContents ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            /* カラム表示 (画面幅が広い場合) */
+            column-count: 2;
+            column-gap: 30px;
+        }
+        #tableOfContents li {
+            margin-bottom: 10px;
+        }
+        #tableOfContents a {
+            display: block; /* クリック範囲を広げる */
+        }
+        /* 日本語併記時の目次スタイル調整は不要になったため削除 */
+
+        /* --- 補足情報ボックス --- */
+        .supplementary-box {
+            background-color: #FFF8E1; /* 淡いオレンジ */
+            border: 1px solid var(--color-accent);
+            border-left: 5px solid var(--color-accent);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .supplementary-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- 振り返りセクション --- */
+        #review {
+            margin-top: 40px;
+            border-top: 2px solid var(--color-border);
+            padding-top: 20px;
+        }
+        /* チェックリスト */
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            position: relative;
+            padding-left: 30px; /* チェックボックススペース */
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .checklist li::before {
+            content: '☐'; /* 未チェック状態 */
+            position: absolute;
+            left: 0;
+            top: 0px;
+            font-size: 1.3em;
+            color: var(--color-primary);
+            font-family: sans-serif; /* 絵文字フォントを確実に */
+        }
+        .checklist li.checked::before {
+            content: '☑'; /* チェック状態 */
+            color: var(--color-accent);
+        }
+        .checklist li.checked {
+            color: var(--text-secondary); /* チェック済みは少し薄く */
+            text-decoration: line-through;
+        }
+        /* 日本語併記時のチェックリストスタイル調整は不要になったため削除 */
+
+        /* 確認問題 */
+        .review-questions ol {
+            padding-left: 1.5em;
+        }
+        .review-questions li {
+            margin-bottom: 15px;
+        }
+        .review-questions .question-text {
+            margin-bottom: 8px;
+        }
+        .review-questions input[type="text"] {
+            width: calc(100% - 22px); /* padding考慮 */
+            padding: 8px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        .review-questions input[type="text"]::placeholder {
+            color: var(--text-secondary);
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        /* --- トップへ戻るボタン --- */
+        #scrollTopBtn {
+            display: none; /* 初期状態では非表示 */
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--color-primary);
+            color: white;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 50%; /* 円形 */
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+        #scrollTopBtn:hover {
+            background-color: var(--color-accent);
+        }
+
+        /* --- レスポンシブデザイン --- */
+        @media (max-width: 900px) {
+            .container {
+                margin: 20px;
+                padding: 20px 25px;
+                width: auto;
+                max-width: none;
+            }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            .container { padding: 15px 20px; }
+            #tableOfContents ul { column-count: 1; } /* スマホでは1カラム */
+            #scrollTopBtn { padding: 10px 13px; font-size: 16px; bottom: 15px; right: 15px; }
+            /* .language-toggle のレスポンシブスタイルは削除 */
+            .code-block { font-size: 0.85em; padding: 10px;}
+            /* 日本語併記時のスマホ用調整は不要になったため削除 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- プログレスバー -->
+    <div id="progressBar"></div>
+
+    <!-- 言語トグル用チェックボックスは削除 -->
+
+    <!-- メインコンテンツコンテナ -->
+    <div class="container">
+
+        <!-- 言語併記トグルUIは削除 -->
+
+        <!-- タイトル -->
+        <h1>接頭辞で広がる英単語の世界！</h1>
+
+        <!-- 読了時間目安 -->
+        <div id="readingTime">読了時間の目安: 計算中...</div>
+
+        <!-- 概要セクション -->
+        <div class="summary-box">
+            <h3>授業のまとめ</h3>
+            <ul>
+                <li>接頭辞が単語の意味を変える仕組みを理解する (例: <strong>re</strong>turn)。</li>
+                <li>接頭辞からの意味推測と、漢字の部首からの意味類推を比較する。</li>
+                <li>初級レベルでよく使われる接頭辞・語根・接尾辞を学ぶ。</li>
+                <li>単語の意味を推測することで語彙力を強化する。</li>
+            </ul>
+        </div>
+
+        <!-- 目次 -->
+        <nav id="tableOfContents">
+            <h2>目次</h2>
+            <ul>
+                <li><a href="#intro">1. 接頭辞の力: 'turn' と 'return'</a></li>
+                <li><a href="#analogy">2. 漢字の部首みたい？意味を推測する力</a></li>
+                <li><a href="#prefixes">3. 初級者向け：よく使われる接頭辞</a></li>
+                <li><a href="#roots">4. 単語の「根っこ」：語根入門</a></li>
+                <li><a href="#suffixes">5. 覚えておくと便利な接尾辞</a></li>
+                <li><a href="#conclusion">6. あなたの語彙力アップ戦略</a></li>
+                 <li><a href="#review">7. 振り返りと練習問題</a></li>
+            </ul>
+        </nav>
+
+        <!-- --- コンテンツセクション --- -->
+
+        <section id="intro">
+            <h2>1. 接頭辞の力: 'turn' と 'return'</h2>
+            <p>英語の授業で <code>turn</code> という単語について話しましたね。「方向を変える」という意味だと知っているでしょう。そして <code>return</code> という単語を見ました。この <strong>re-</strong> という部分はどんな働きをしているのでしょうか？</p>
+            <p>接頭辞の <strong>re-</strong> は、しばしば「元の方向へ(back)」や「再び(again)」という意味を持ちます。ですから、<code>turn</code> が方向を変えることなら、<code>return</code> は「元に戻る」や「元の場所へ帰る」という意味になります。簡単でしょう？この小さな「re-」が意味を変えるのです！</p>
+            <div class="code-block">
+turn (方向を変える) + re- (元の方向へ) = return (元に戻る、帰る)
+            </div>
+            <p>これが接頭辞の魔法です！接頭辞は、単語の始まりに付け加えられて、その意味を変化させる小さな部品なのです。</p>
+        </section>
+
+        <section id="analogy">
+            <h2>2. 漢字の部首みたい？意味を推測する力</h2>
+            <p>日本語で使われる漢字について考えてみましょう。例えば <strong class="highlight">蒜</strong>（にんにく）という難しい漢字の正確な読み方や意味を知なくても、部首の <strong class="highlight">艹</strong>（くさかんむり）が付いていることから、<span class="highlight">植物</span>に関係する言葉だと推測できるかもしれません。</p>
+            <blockquote>
+                <p><strong>漢字の部首（ぶしゅ）:</strong> 漢字を構成する要素で、しばしばその意味やカテゴリーの手がかりを与えるもの（例：氵 は水に関係、木 は木に関係）。</p>
+            </blockquote>
+            <p>英語の接頭辞（そして後で見る語根や接尾辞も）は、これと似たような働きをします！よく使われる接頭辞を学ぶことで、知らない単語に出会ったときでも、その意味を推測できることがよくあります。これは、漢字の部首を知っていることが日本語の学習に役立つのと同じように、語彙力を増やすための非常に便利なスキルなのです。</p>
+            <div class="supplementary-box">
+                <p><strong>語源学（ごげんがく）:</strong> これは、言葉の起源や、その意味が歴史を通じてどのように変化してきたかを研究する学問です。接頭辞、語根、接尾辞を理解することは語源学の一部であり、単語の意味を解き明かすのに役立ちます。</p>
+            </div>
+        </section>
+
+        <section id="prefixes">
+            <h2>3. 初級者向け：よく使われる接頭辞</h2>
+            <p>よく使われる接頭辞と、それらがどのように単語の意味を変えるかを見ていきましょう。</p>
+            <ul>
+                <li>
+                    <strong>un-</strong> (意味: 〜でない、反対の)
+                    <ul>
+                        <li>happy (幸せな) → <strong class="highlight">un</strong>happy (幸せでない、不幸な)</li>
+                        <li>lock (鍵をかける) → <strong class="highlight">un</strong>lock (鍵をかけるの反対 = 鍵を開ける)</li>
+                        <li>kind (親切な) → <strong class="highlight">un</strong>kind (親切でない、不親切な)</li>
+                    </ul>
+                </li>
+                 <li>
+                    <strong>re-</strong> (意味: 再び、元の場所へ)
+                    <ul>
+                        <li>view (見る) → <strong class="highlight">re</strong>view (再び見る = 復習する、見直す)</li>
+                        <li>build (建てる) → <strong class="highlight">re</strong>build (再び建てる = 再建する)</li>
+                        <li>play (再生する) → <strong class="highlight">re</strong>play (再び再生する)</li>
+                    </ul>
+                </li>
+                 <li>
+                    <strong>pre-</strong> (意味: 前に、〜の前に)
+                    <ul>
+                        <li>view (見る) → <strong class="highlight">pre</strong>view (前に見る = 予告編、下見)</li>
+                        <li>heat (熱する) → <strong class="highlight">pre</strong>heat (前に熱する = 予熱する)</li>
+                        <li>paid (支払われた) → <strong class="highlight">pre</strong>paid (前に支払われた = 前払いの)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>dis-</strong> (意味: 〜でない、反対の、離れて)
+                    <ul>
+                        <li>like (好き) → <strong class="highlight">dis</strong>like (好きでない = 嫌う)</li>
+                        <li>agree (同意する) → <strong class="highlight">dis</strong>agree (同意しない)</li>
+                        <li>connect (接続する) → <strong class="highlight">dis</strong>connect (接続を断つ)</li>
+                    </ul>
+                </li>
+                 <li>
+                    <strong>mis-</strong> (意味: 誤って、悪く)
+                    <ul>
+                        <li>understand (理解する) → <strong class="highlight">mis</strong>understand (誤って理解する = 誤解する)</li>
+                        <li>lead (導く) → <strong class="highlight">mis</strong>lead (誤って導く = 誤解させる)</li>
+                        <li>spell (綴る) → <strong class="highlight">mis</strong>spell (誤って綴る)</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>ほら？これらのいくつかの接頭辞を知っているだけで、すでにもっと多くの単語の意味を理解したり推測したりできますね！</p>
+        </section>
+
+        <section id="roots">
+            <h2>4. 単語の「根っこ」：語根入門</h2>
+            <p>接頭辞（単語の始まり）や接尾辞（単語の終わり）の他に、多くの英単語には<strong>語根（ごこん）</strong>があります。語根は単語の中心部分で、基本的な意味を担っています。多くはラテン語やギリシャ語に由来します。</p>
+             <p>語根を単語の「幹」と考え、接頭辞や接尾辞をそれに付いた「葉」や「花」のように考えると分かりやすいかもしれません。</p>
+             <ul>
+                 <li>
+                    <strong>port</strong> (意味: 運ぶ)
+                    <ul>
+                        <li>im<strong class="highlight">port</strong> (中に運ぶ → 輸入する)</li>
+                        <li>ex<strong class="highlight">port</strong> (外に運ぶ → 輸出する)</li>
+                        <li>trans<strong class="highlight">port</strong> (横切って運ぶ → 輸送する)</li>
+                         <li><strong class="highlight">port</strong>able (運ぶことができる → 持ち運び可能な)</li>
+                    </ul>
+                </li>
+                 <li>
+                    <strong>vis / vid</strong> (意味: 見る)
+                    <ul>
+                        <li><strong class="highlight">vis</strong>it (見に行く → 訪れる)</li>
+                        <li><strong class="highlight">vis</strong>ible (見ることができる → 目に見える)</li>
+                        <li>tele<strong class="highlight">vis</strong>ion (遠くから見るもの → テレビ)</li>
+                        <li>e<strong class="highlight">vid</strong>ence (はっきりと見えたもの → 証拠)</li>
+                    </ul>
+                </li>
+                 <li>
+                    <strong>struct</strong> (意味: 建てる、組み立てる)
+                    <ul>
+                        <li>con<strong class="highlight">struct</strong> (一緒に建てる → 建設する)</li>
+                        <li>de<strong class="highlight">struct</strong>ion (建てたものを壊すこと → 破壊)</li>
+                        <li>in<strong class="highlight">struct</strong>ion (誰かの中に知識を築くこと → 指示、教育)</li>
+                        <li><strong class="highlight">struct</strong>ure (何かが建てられている方法 → 構造)</li>
+                    </ul>
+                </li>
+             </ul>
+             <p>語根を学ぶのは少し努力が必要ですが、難しい単語を理解する能力を劇的に向上させます！</p>
+        </section>
+
+        <section id="suffixes">
+            <h2>5. 覚えておくと便利な接尾辞</h2>
+            <p>接尾辞（せつびじ）は単語の終わりに付け加えられます。これらはしばしば単語の文法的な機能を変えます（例えば、動詞を名詞や形容詞に変えるなど）。</p>
+             <ul>
+                 <li>
+                    <strong>-able / -ible</strong> (意味: 〜できる; 動詞や名詞を形容詞に変える)
+                    <ul>
+                        <li>read (読む) → read<strong class="highlight">able</strong> (読むことができる → 読みやすい)</li>
+                        <li>comfort (快適さ) → comfort<strong class="highlight">able</strong> (快適さを与えられる → 快適な)</li>
+                        <li>vis<strong class="highlight">ible</strong> (見ることができる → 目に見える)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>-ly</strong> (意味: 〜な方法で; 形容詞を副詞に変えることが多い)
+                    <ul>
+                        <li>quick (速い) → quick<strong class="highlight">ly</strong> (速い方法で → 速く)</li>
+                        <li>slow (遅い) → slow<strong class="highlight">ly</strong> (遅い方法で → ゆっくりと)</li>
+                        <li>careful (注意深い) → careful<strong class="highlight">ly</strong> (注意深い方法で → 注意深く)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>-tion / -sion</strong> (意味: 〜する行為や過程; 動詞を名詞に変えることが多い)
+                    <ul>
+                        <li>educate (教育する) → educa<strong class="highlight">tion</strong> (教育する過程 → 教育)</li>
+                        <li>inform (知らせる) → informa<strong class="highlight">tion</strong> (知らせた結果 → 情報)</li>
+                        <li>decide (決める) → deci<strong class="highlight">sion</strong> (決める行為 → 決定)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>-er / -or</strong> (意味: 〜する人; 動詞を名詞に変える)
+                    <ul>
+                        <li>teach (教える) → teach<strong class="highlight">er</strong> (教える人 → 教師)</li>
+                        <li>work (働く) → work<strong class="highlight">er</strong> (働く人 → 労働者)</li>
+                        <li>act (演じる) → act<strong class="highlight">or</strong> (演じる人 → 俳優)</li>
+                    </ul>
+                </li>
+             </ul>
+        </section>
+
+        <section id="conclusion">
+            <h2>6. あなたの語彙力アップ戦略</h2>
+            <p>接頭辞、語根、接尾辞を学ぶことは、英語の秘密解読リングを手に入れるようなものです！新しい単語を見たら、ただ暗記するのではなく、分解してみてください。</p>
+            <ol>
+                <li>知っている接頭辞はありますか？ (例: <code>un-</code>, <code>re-</code>, <code>pre-</code>)</li>
+                <li>知っている接尾辞はありますか？ (例: <code>-able</code>, <code>-ly</code>, <code>-tion</code>)</li>
+                <li>語根や単語の主要部分の意味を推測できますか？ (例: <code>port</code>, <code>vis</code>)</li>
+                <li>部品を組み合わせて、単語の意味を推測してみましょう。</li>
+                <li>辞書や文脈で、自分の推測が合っているか確認しましょう。</li>
+            </ol>
+            <p>このアプローチは、語彙学習をより面白くし、単語の構造を理解することで記憶しやすくします。練習を続ければ、語彙が急速に増えるのを実感できるでしょう！</p>
+        </section>
+
+        <!-- 振り返りセクション -->
+        <section id="review">
+            <h2>7. 振り返りと練習問題</h2>
+
+            <h3>理解度チェック</h3>
+            <div class="checklist">
+                <ul>
+                    <li>接頭辞が何か、そしてそれが単語の意味をどう変えるか（<strong>re</strong>turnのように）理解した。</li>
+                    <li>接頭辞から単語の意味を推測することと、部首から漢字の意味を類推することの類似性がわかった。</li>
+                    <li><strong>un-</strong>, <strong>re-</strong>, <strong>pre-</strong>, <strong>dis-</strong>, <strong>mis-</strong> のような、よくある接頭辞をいくつか認識できる。</li>
+                     <li>語根（<strong>port</strong>, <strong>vis</strong>, <strong>struct</strong> など）の概念を理解した。</li>
+                    <li>接尾辞が何か、そしてそれが単語の機能（品詞）をどう変えるか（<strong>-able</strong>, <strong>-ly</strong>, <strong>-tion</strong> のように）理解した。</li>
+                    <li>接頭辞・語根・接尾辞を使って新しい単語の意味を推測する方法がわかった。</li>
+                </ul>
+            </div>
+
+            <h3 style="margin-top: 30px;">練習問題</h3>
+            <div class="review-questions">
+                <ol>
+                    <li>
+                        <p class="question-text">接頭辞 <strong>pre-</strong> は「前に」という意味です。<code>pre + view</code> (<strong>preview</strong>) はどういう意味だと思いますか？</p>
+                        <input type="text" placeholder="答えを入力してください (例: 前もって見ること)">
+                    </li>
+                    <li>
+                        <p class="question-text">語根 <strong>port</strong> は「運ぶ」という意味です。<code>ex + port</code> (<strong>export</strong>) はどういう意味だと思いますか？ (ヒント: <strong>ex-</strong> はしばしば「外へ」という意味です)</p>
+                        <input type="text" placeholder="答えを入力してください (例: 外へ運ぶこと)">
+                    </li>
+                     <li>
+                        <p class="question-text">接尾辞 <strong>-er</strong> は「〜する人」という意味です。<code>teach + er</code> (<strong>teacher</strong>) はどういう意味ですか？</p>
+                        <input type="text" placeholder="答えを入力してください (例: 教える人)">
+                    </li>
+                     <li>
+                        <p class="question-text">接頭辞 <strong>un-</strong>（「〜でない」の意味）を使った他の単語を思いつきますか？</p>
+                        <input type="text" placeholder="答えを入力してください (例: unkind)">
+                    </li>
+                     <li>
+                        <p class="question-text">単語 <strong>invisible</strong> は、接頭辞 <strong>in-</strong> (「〜でない」の意味)、語根 <strong>vis</strong> (「見る」の意味)、接尾辞 <strong>-ible</strong> (「〜できる」の意味) を使っています。<strong>invisible</strong> はどういう意味ですか？</p>
+                        <input type="text" placeholder="答えを入力してください (例: 見ることができない)">
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer>
+            <p>言葉の世界を探求し続けましょう！</p>
+            <p>
+                <a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">
+                    授業記録ウェブサイト本体へ
+                </a>
+            </p>
+             <p style="margin-top:15px; font-size: 0.8em;">
+                授業日: {授業の日付などをここに入れる}
+            </p>
+        </footer>
+
+    </div> <!-- /container -->
+
+    <!-- トップへ戻るボタン -->
+    <button id="scrollTopBtn" title="Go to top">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 要素取得 ---
+            const progressBar = document.getElementById('progressBar');
+            // langToggleCheckbox, langToggleUI は削除
+            const readingTimeEl = document.getElementById('readingTime');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const checklistItems = document.querySelectorAll('.checklist li');
+            const contentContainer = document.querySelector('.container');
+
+            // --- プログレスバー処理 ---
+            function updateProgressBar() {
+                const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrollTotal > 0) ? (scrolled / scrollTotal) * 100 : 0; // ゼロ除算を避ける
+                progressBar.style.width = progress + '%';
+            }
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar(); // 初期表示
+
+            // --- 言語トグル処理は削除 ---
+
+            // --- 読了時間計算 (日本語テキスト基準) ---
+            function calculateReadingTime() {
+                if (!readingTimeEl || !contentContainer) return; // 要素がなければ何もしない
+
+                // コンテンツ全体からテキストを取得 (フッターや目次なども含む簡易計算)
+                // より正確にするには、特定のセクションのみを対象にするなどの調整が必要
+                const mainContentText = contentContainer.innerText || contentContainer.textContent || '';
+                const japaneseText = mainContentText.replace(/\s+/g, ''); // 空白文字を除去
+                const charCount = japaneseText.length;
+                const charsPerMinute = 500; // 日本語の平均読書速度（文字/分）- 必要に応じて調整
+                const minutes = Math.ceil(charCount / charsPerMinute);
+
+                readingTimeEl.textContent = `読了時間の目安: 約 ${minutes} 分`;
+            }
+            calculateReadingTime(); // 初期計算
+
+            // --- チェックリスト処理 ---
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                    // ARIA属性も更新
+                    this.setAttribute('aria-checked', this.classList.contains('checked'));
+                });
+                 // キーボード操作のための属性追加
+                 item.setAttribute('tabindex', '0');
+                 item.setAttribute('role', 'checkbox');
+                 // 初期状態のARIA属性を設定
+                 item.setAttribute('aria-checked', item.classList.contains('checked'));
+
+                 item.addEventListener('keydown', function(e) {
+                     if (e.key === ' ' || e.key === 'Enter') {
+                         e.preventDefault(); // デフォルトのスクロールなどを防ぐ
+                         this.click(); // クリックイベントを発火
+                     }
+                 });
+
+                 // チェック状態の変更を監視して aria-checked を更新する処理は不要
+                 // (click イベント内で直接更新するため)
+            });
+
+
+            // --- トップへ戻るボタン処理 ---
+            function toggleScrollTopButton() {
+                 if (!scrollTopBtn) return; // ボタンがなければ何もしない
+                const scrollThreshold = 100; // 表示を開始するスクロール量
+                if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+                    if (scrollTopBtn.style.display !== "block") {
+                         scrollTopBtn.style.display = "block";
+                         // display:block になってから opacity を変更
+                         requestAnimationFrame(() => {
+                            scrollTopBtn.style.opacity = '1';
+                         });
+                    }
+                } else {
+                    if (scrollTopBtn.style.opacity === '1') {
+                         scrollTopBtn.style.opacity = '0';
+                         // transitionが終わってから非表示にする
+                         setTimeout(() => {
+                              // 再度 opacity が 0 であることを確認（transition中に再度スクロールされた場合のため）
+                              if (scrollTopBtn.style.opacity === '0') {
+                                  scrollTopBtn.style.display = "none";
+                              }
+                         }, 300); // CSSのtransition時間と合わせる
+                    }
+                }
+            }
+             // スタイルにtransitionを追加
+            if (scrollTopBtn) {
+                scrollTopBtn.style.transition = 'opacity 0.3s ease-in-out, background-color 0.3s ease';
+                scrollTopBtn.style.opacity = '0'; // 初期は透明
+            }
+
+            window.addEventListener('scroll', toggleScrollTopButton);
+
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+             // --- 目次リンクのスムーズスクロール ---
+             document.querySelectorAll('#tableOfContents a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    try {
+                        const targetElement = document.querySelector(targetId);
+                        if(targetElement) {
+                            // ヘッダーやプログレスバーの高さを考慮してオフセット調整（必要なら）
+                            const progressBarHeight = progressBar ? progressBar.offsetHeight : 0;
+                            const offsetTop = targetElement.offsetTop - progressBarHeight - 20; // プログレスバーの高さ + 20px余裕
+                            window.scrollTo({
+                                top: offsetTop > 0 ? offsetTop : 0, // マイナスにならないように
+                                behavior: 'smooth'
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error finding or scrolling to element:", targetId, error);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>
