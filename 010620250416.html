@@ -1,277 +1,544 @@
+
 <!DOCTYPE html>
-<html lang="en"> <!-- Default language set to English here -->
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Class Review: Self-Introductions</title> <!-- Default title -->
+    <title>授業の記録: 英語学習における文法と暗記</title>
     <style>
-        /* --- Basic Styles --- */
-        body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.7; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
-        .container { max-width: 850px; margin: 30px auto; padding: 25px 30px; background-color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 10px; }
-        h1, h2 { color: #0056b3; margin-top: 1.5em; margin-bottom: 0.8em; padding-bottom: 5px; }
-        h1 { text-align: center; font-size: 2.2em; border-bottom: 3px solid #a0c4e4; margin-bottom: 1em; }
-        h2 { font-size: 1.6em; border-left: 7px solid #0056b3; padding-left: 10px; }
-        section { margin-bottom: 35px; padding: 20px; border-radius: 8px; background-color: #ffffff; }
-        dl dt { font-weight: bold; margin-top: 12px; color: #343a40; font-size: 1.1em; }
-        dl dd { margin-left: 0; margin-bottom: 12px; padding-left: 20px; border-left: 3px solid #e9ecef; }
-        ul { list-style: none; padding-left: 0; }
-        footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #eee; color: #777; font-size: 0.9em; }
-
-        /* --- Section Specific Styles --- */
-        .intro-questions li { background-color: #e7f3ff; margin-bottom: 10px; padding: 12px 18px; border-radius: 5px; border-left: 6px solid #007bff; }
-        .intro-questions li strong { color: #0056b3; display: inline-block; min-width: 200px; }
-        .intro-questions li > span { margin-left: 10px; font-style: italic; color: #555; }
-        .teacher-intro { border: 1px solid #e0e0e0; padding: 25px; }
-        .teacher-intro.teacher-a { border-left: 8px solid #ffd700; background-color: #fffef5; }
-        .teacher-intro.teacher-a h2 { color: #0057b7; border-left-color: #0057b7; }
-        .teacher-intro.teacher-b { border-left: 8px solid #bf0a30; background-color: #f8f9fa; }
-        .teacher-intro.teacher-b h2 { color: #002868; border-left-color: #002868; }
-        .point-system li { background-color: #e0f2f1; margin-bottom: 8px; padding: 10px 15px; border-radius: 4px; border-left: 5px solid #00796b; }
-        .point-system strong { color: #004d40; font-size: 1.2em; margin-left: 5px; }
-
-        /* --- Language Switcher Styles --- */
-        .lang-switcher { text-align: right; margin-bottom: 15px; }
-        .lang-switcher button { padding: 5px 12px; margin-left: 5px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
-        .lang-switcher button.active { background-color: #0056b3; color: white; border-color: #0056b3; font-weight: bold; }
-
-        /* --- Language Visibility Control --- */
-        /* This class is added/removed by JavaScript to hide elements */
-        .lang-hidden {
-            display: none !important;
+        /* Reset and Base Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fbfbfb;
+            margin: 0;
+            padding: 0;
+            padding-top: 4px; /* Make space for progress bar */
         }
-        /* No initial display:none for specific languages here; JS handles it */
 
-        /* --- Responsive Styles --- */
-        @media (max-width: 768px) {
-            .container { margin: 15px; padding: 15px; }
-            h1 { font-size: 1.8em; } h2 { font-size: 1.4em; }
-            .intro-questions li strong { display: block; margin-bottom: 5px; min-width: auto; }
-            .intro-questions li > span { margin-left: 0; display: block; }
+        /* Progress Bar */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background-color: #007bff;
+            z-index: 1000;
+            transition: width 0.1s linear;
         }
-         @media (max-width: 480px) {
-             body { font-size: 15px; }
-             h1 { font-size: 1.6em; } h2 { font-size: 1.25em; }
-         }
+
+        /* Container for Content */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 45px 55px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            border: 1px solid #ededed;
+        }
+
+        /* Headings */
+        h1, h2, h3 {
+            color: #111;
+            margin-top: 45px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.1em;
+            text-align: center;
+            border-bottom: none;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        /* Reading Time Estimate */
+        .reading-time {
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+            margin-bottom: 45px;
+        }
+        .reading-time::before {
+           content: "⏱️ ";
+           margin-right: 3px;
+        }
+
+
+        h2 {
+            font-size: 1.7em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: #222;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Paragraphs */
+        p {
+            margin-bottom: 1.3em;
+            color: #3a3a3a;
+        }
+
+        /* Emphasis and Highlights */
+        strong {
+            color: #0056b3;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background-color: rgba(255, 224, 133, 0.5);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        /* Code Blocks and Inline Code */
+        code, .code-block {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            background-color: #f6f6f6;
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-size: 0.92em;
+            color: #333;
+            border: 1px solid #e5e5e5;
+        }
+
+        .code-block {
+            display: block;
+            padding: 18px;
+            margin: 25px 0;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 30px;
+            margin-bottom: 1.3em;
+        }
+
+        li {
+            margin-bottom: 0.7em;
+        }
+        li::marker {
+           color: #555;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid #007bff;
+            padding: 10px 25px;
+            margin: 25px 0;
+            color: #444;
+            background-color: #f9f9f9;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Supplementary Box */
+        .supplementary-box {
+            background-color: #f0f7ff;
+            border: 1px solid #cce0ff;
+            border-left: 5px solid #0056b3;
+            padding: 20px 25px;
+            margin: 30px 0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .supplementary-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #004085;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+        .supplementary-box h4::before {
+            content: '💡';
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+        .supplementary-box p {
+            margin-bottom: 0.8em;
+            color: #314d6f;
+        }
+        .supplementary-box p:last-child {
+            margin-bottom: 0;
+        }
+        .supplementary-box strong {
+            color: #004085;
+        }
+
+        /* Review Section Styles */
+        #review {
+            border-top: 2px solid #eee;
+            margin-top: 50px;
+            padding-top: 30px;
+        }
+
+        #review h2 {
+            border-bottom: none; /* Remove double border */
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .checklist {
+            list-style: none; /* Remove default bullets */
+            padding-left: 10px;
+        }
+        .checklist li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px; /* Space for the checkbox */
+        }
+        .checklist li::before {
+            content: "☐"; /* Basic checkbox representation */
+            position: absolute;
+            left: 0;
+            top: 1px; /* Adjust vertical alignment */
+            font-size: 1.3em;
+            color: #aaa;
+        }
+        /* If you want clickable checkboxes (requires JS to track state): */
+        /* .checklist input[type="checkbox"] { margin-right: 10px; } */
+
+        .review-questions ol {
+            padding-left: 20px; /* Indent question numbers */
+        }
+        .review-questions li {
+            margin-bottom: 20px; /* Space between questions */
+        }
+        .review-questions p { /* Optional: Add space for answers */
+            margin-top: 8px;
+            margin-bottom: 0;
+            /* border-bottom: 1px dotted #ccc; */ /* Uncomment for answer lines */
+            /* min-height: 2em; */ /* Uncomment for answer space */
+        }
+
+
+        /* Scroll to Top Button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #555;
+            color: white;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 28px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+                margin-top: 30px;
+            }
+            h1 { font-size: 1.9em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            .supplementary-box { padding: 15px 20px; }
+            .checklist li { padding-left: 25px; } /* Adjust checkbox spacing */
+            .checklist li::before { font-size: 1.2em; }
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Language Switcher -->
-        <div class="lang-switcher">
-            <button id="lang-btn-en" onclick="setLanguage('en')">English</button>
-            <button id="lang-btn-ja" onclick="setLanguage('ja')">日本語</button>
-        </div>
 
-        <h1>
-            <span class="lang-en">English Class (Self-Introduction) Review</span>
-            <span class="lang-ja">英語の授業（自己紹介）振り返り</span>
-        </h1>
-        <p>
-            <span class="lang-en">In today's class, we practiced asking and answering questions in English through the self-introductions of the teachers. Let's review the class content!</span>
-            <span class="lang-ja">今日の授業では、先生たちの自己紹介を通して、英語で質問したり答えたりする練習をしましたね。授業の内容を振り返ってみましょう！</span>
-        </p>
+    <!-- Reading Progress Bar -->
+    <div id="progressBar"></div>
 
-        <!-- Section 1: Questions -->
-        <section class="intro-questions">
-            <h2>
-                <span class="lang-en">1. Questions and Answers for Self-Introductions</span>
-                <span class="lang-ja">1. 自己紹介で使う質問と答え方</span>
-            </h2>
+    <div class="container" id="mainContent">
+        <h1>授業の記録</h1>
+        <p class="reading-time" id="readingTimeEstimate">読了時間: 計算中...</p>
+        <p style="text-align: center; color: #777; margin-bottom: 50px;">英語学習における文法と暗記の役割</p>
+
+        <!-- ... (Previous sections: vocab, grammar-importance, memorization-activity, pimsleur-method, next-steps) ... -->
+        <section id="vocab">
+            <h2><span style="font-size: 0.8em; color: #999; vertical-align: middle; margin-right: 5px;">⏱️ 10分</span> 単語練習</h2>
             <p>
-                <span class="lang-en">At the beginning of the class, we practiced common questions and answers used in self-introductions. Remember these basic phrases well.</span>
-                <span class="lang-ja">授業の最初に、自己紹介でよく使う質問と答え方の練習をしました。基本的なフレーズなのでしっかり覚えておきましょう。</span>
+                いつもの通り、授業の最初に単語練習を行いました。
+                語彙力は、英語でコミュニケーションをとるための大切な<span class="highlight">「材料」</span>です。家を建てるのにレンガが必要なように、話したり書いたりするためには単語を知っている必要があります。
+                地道な練習ですが、<strong>継続することで確実に力になります</strong>ので、毎日少しずつでも触れるようにしましょう。
+            </p>
+        </section>
+
+        <section id="grammar-importance">
+            <h2><span style="font-size: 0.8em; color: #999; vertical-align: middle; margin-right: 5px;">⏱️ 20分</span> なぜ文法（ルール）を学ぶのか？</h2>
+            <p>
+                「結局、英語ってたくさんの単語やフレーズを覚える暗記科目でしょ？」と感じる人もいるかもしれません。確かに、外国語を習得するには多くのことを記憶し、それをスムーズに使えるようにする必要があります。これは事実です。
+            </p>
+            <p>
+                では、なぜわざわざ「文法」というルールを学ぶのでしょうか？ それは、<strong>文法が暗記の助けになり、効率的な学習を可能にする</strong>からです。
+            </p>
+            <blockquote>
+                文法は、単語という「部品」を正しく組み立てて、意味の通じる「文」という製品を作るための<strong>「設計図」</strong>や<strong>「組み立て説明書」</strong>のようなものです。設計図があるからこそ、効率よく、正確に、そして応用を利かせながら「文」を作れるようになります。
+            </blockquote>
+            <p>
+                設計図なしに家を建てようとしたら、やみくもにレンガを積むことになり、時間もかかるし、うまくいく保証もありません。それと同じで、文法を知らないと、知っている単語をただ並べるだけでは、意図したことが伝わらなかったり、不自然な表現になったりする可能性があります。
+            </p>
+            <p>
+                文法ルールや、単語が持つイメージ、成り立ちなどを理解することで、一つ一つの単語や文をバラバラに「丸暗記」するのではなく、<span class="highlight">関連付けながら効率よく覚える</span>ことができるようになります。これは、脳が情報を整理し、記憶しやすくするための重要な戦略です。
+            </p>
+
+            <div class="supplementary-box">
+                <h4>教育の視点：文法学習のアプローチ</h4>
+                <p>文法の学び方には、大きく分けて2つのアプローチがあります。</p>
+                <ul>
+                    <li><strong>演繹的アプローチ（Deductive Approach）:</strong> まず文法ルールを学び、その後で具体的な例文に当てはめて練習する方法。学校の授業でよく見られます。</li>
+                    <li><strong>帰納的アプローチ（Inductive Approach）:</strong> たくさんの例文に触れる中で、学習者自身がルールやパターンを発見していく方法。今回の授業のように、<span class="highlight">先に暗唱文などで英語に触れてからルールを確認する</span>のは、このアプローチに近い考え方です。</li>
+                </ul>
+                <p>帰納的アプローチは、ルールが「腑に落ちる」感覚を得やすく、記憶に残りやすいという利点がありますが、時間がかかる場合もあります。どちらが良いかは学習内容や個人の好みにもよるので、両方を組み合わせるのが効果的です。</p>
+            </div>
+
+        </section>
+
+        <section id="memorization-activity">
+            <h2>暗記の「コツ」体験：ルールの力</h2>
+            <p>
+                文法（ルール）を知ることが暗記にどう役立つのかを体験するために、授業でこんな活動をしましたね。
+                黒板に書かれた以下の4つの文字列を、7秒間で覚えてもらいました。
+            </p>
+            <div class="code-block">XNEHU
+USHIJ
+ITOTI
+RAXSY</div>
+            <p>
+                ぱっと見ると、意味のないアルファベットの羅列に見えます。これをそのまま記憶する「丸暗記」（専門用語では<span class="highlight">rote memorization</span>と言います）は、なかなか難しいですよね。
+            </p>
+            <p>
+                しかし、ここには<strong>隠されたルール（パターン）</strong>がありました。
             </p>
             <ul>
-                <li>
-                    <strong><span class="lang-en">What is your name?</span><span class="lang-ja">お名前は？</span></strong>
-                    <span>→ <span class="lang-en">My name is ...</span><span class="lang-ja">私の名前は～です</span></span>
-                </li>
-                <li>
-                    <strong><span class="lang-en">Where are you from?</span><span class="lang-ja">出身はどこですか？</span></strong>
-                    <span>→ <span class="lang-en">I'm from ...</span><span class="lang-ja">～出身です</span></span>
-                </li>
-                <li>
-                    <strong><span class="lang-en">What is your favorite food?</span><span class="lang-ja">好きな食べ物は何ですか？</span></strong>
-                    <span>→ <span class="lang-en">My favorite food is ... / I like ...</span><span class="lang-ja">好きな食べ物は～です / ～が好きです</span></span>
-                </li>
-                <li>
-                    <strong><span class="lang-en">When is your birthday?</span><span class="lang-ja">誕生日はいつですか？</span></strong>
-                    <span>→ <span class="lang-en">My birthday is ...</span><span class="lang-ja">誕生日は～です</span></span>
-                </li>
-                <li>
-                    <strong><span class="lang-en">What are your hobbies?</span><span class="lang-ja">趣味は何ですか？</span></strong>
-                    <span>→ <span class="lang-en">My hobbies are ... / I like ...</span><span class="lang-ja">趣味は～です / ～が好きです</span></span>
-                </li>
-                <li>
-                    <strong><span class="lang-en">What color do you like?</span><span class="lang-ja">何色が好きですか？</span></strong>
-                    <span>→ <span class="lang-en">I like ...</span><span class="lang-ja">～色が好きです</span></span>
-                </li>
-                 <li>
-                    <strong><span class="lang-en">How old are you?</span><span class="lang-ja">何歳ですか？</span></strong>
-                    <span>→ <span class="lang-en">I am ... years old.</span><span class="lang-ja">～歳です</span></span>
-                </li>
+                <li><strong>左3列：</strong> 各行の最初の「X」を除いて上から読むと、「NE」「USHI」「ITO」「RA」となり、十二支の一部と関連していました。</li>
+                <li><strong>右2列：</strong> 縦読みなど、別のルールが隠れていました。</li>
             </ul>
-        </section>
-
-        <!-- Section 2: Teacher A -->
-        <section class="teacher-intro teacher-a">
-             <h2>
-                 <span class="lang-en">2. Teacher A's Self-Introduction</span>
-                 <span class="lang-ja">2. 先生Aの自己紹介</span>
-             </h2>
-             <dl>
-                 <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
-                 <dd><span class="lang-en">Teacher A</span><span class="lang-ja">先生A</span></dd>
-
-                 <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
-                 <dd><span class="lang-en">Ukraine - A country in Europe. It has beautiful nature and culture. In class, we talked about the Ukrainian mermaid "Mavka" and the Christmas star.</span><span class="lang-ja">ウクライナ (Ukraine) - ヨーロッパにある国です。美しい自然や文化があります。授業ではウクライナの人魚「マフカ(Mavka)」やクリスマスの星の話も出ましたね。</span></dd>
-
-                 <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
-                 <dd><span class="lang-en">Dancing (Indian dance, Ukrainian dance), singing, karate, drawing.</span><span class="lang-ja">ダンス (インド舞踊、ウクライナのダンス)、歌うこと、空手、絵を描くこと</span></dd>
-
-                 <dt><span class="lang-en">Favorite Color</span><span class="lang-ja">好きな色</span></dt>
-                 <dd><span class="lang-en">Green - But as an artist, I use many different colors.</span><span class="lang-ja">緑 (Green) - でも、アーティストとして色々な色を使います。</span></dd>
-
-                 <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
-                 <dd><span class="lang-en">Japanese miso soup, Ukrainian borscht.</span><span class="lang-ja">日本の味噌汁、ウクライナのボルシチ (Borscht)</span></dd>
-
-                 <dt><span class="lang-en">Favorite Country (besides Ukraine)</span><span class="lang-ja">好きな国（ウクライナ以外）</span></dt>
-                 <dd><span class="lang-en">Japan</span><span class="lang-ja">日本</span></dd>
-
-                 <dt><span class="lang-en">Favorite Sport</span><span class="lang-ja">好きなスポーツ</span></dt>
-                 <dd><span class="lang-en">Football/Soccer - I used to be a goalkeeper when I was a child!</span><span class="lang-ja">サッカー (Football/Soccer) - 子どもの頃ゴールキーパーでした！</span></dd>
-             </dl>
-        </section>
-
-        <!-- Section 3: Teacher B -->
-        <section class="teacher-intro teacher-b">
-            <h2>
-                <span class="lang-en">3. Teacher B's Self-Introduction</span>
-                <span class="lang-ja">3. 先生Bの自己紹介</span>
-            </h2>
-            <dl>
-                 <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
-                 <dd><span class="lang-en">Teacher B</span><span class="lang-ja">先生B</span></dd>
-
-                 <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
-                 <dd><span class="lang-en">United States, Oregon - A state on the West Coast of the US with abundant nature.</span><span class="lang-ja">アメリカ合衆国 (United States)、オレゴン州 (Oregon) - アメリカ西海岸、自然が豊かな州です。</span></dd>
-
-                 <dt><span class="lang-en">Life in Japan</span><span class="lang-ja">日本での生活</span></dt>
-                 <dd><span class="lang-en">I have lived in Japan for many years and have been teaching English for a long time.</span><span class="lang-ja">長年日本に住んでいて、長く英語を教えています。</span></dd>
-
-                 <dt><span class="lang-en">Family</span><span class="lang-ja">家族</span></dt>
-                 <dd><span class="lang-en">I am married and have children.</span><span class="lang-ja">結婚していて、子どもがいます。</span></dd>
-
-                 <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
-                 <dd><span class="lang-en">Japanese food (sashimi, sushi, nabe, soup), curry, Thai food, Italian food, Mexican food, etc. I love delicious food!</span><span class="lang-ja">日本食 (刺身、寿司、鍋、スープ)、カレー、タイ料理、イタリア料理、メキシコ料理など。美味しいものが好き！</span></dd>
-
-                 <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
-                 <dd><span class="lang-en">Walking, barbecue, traveling, watching movies (especially love "Jaws"!), spending time with family.</span><span class="lang-ja">散歩、バーベキュー、旅行、映画鑑賞 (特に「ジョーズ」が好き！)、家族と過ごすこと。</span></dd>
-
-                 <dt><span class="lang-en">Favorite Colors</span><span class="lang-ja">好きな色</span></dt>
-                 <dd><span class="lang-en">Blue, Purple</span><span class="lang-ja">青 (Blue)、紫 (Purple)</span></dd>
-
-                 <dt><span class="lang-en">Favorite Sports</span><span class="lang-ja">好きなスポーツ</span></dt>
-                 <dd><span class="lang-en">Badminton, table tennis, Aikido (practiced in the past).</span><span class="lang-ja">バドミントン、卓球、合気道 (昔やっていました)。</span></dd>
-
-                 <dt><span class="lang-en">Favorite Countries</span><span class="lang-ja">好きな国</span></dt>
-                 <dd><span class="lang-en">The United States and Japan</span><span class="lang-ja">アメリカと日本</span></dd>
-            </dl>
-        </section>
-
-        <!-- Section 4: Point System -->
-        <section class="point-system">
-            <h2>
-                <span class="lang-en">4. About the Point System</span>
-                <span class="lang-ja">4. ポイントシステムについて</span>
-            </h2>
             <p>
-                <span class="lang-en">You can earn points by actively asking questions or speaking in English during class. Let's challenge ourselves a lot!</span>
-                <span class="lang-ja">授業中に積極的に英語で質問したり、発言したりするとポイントがもらえます。たくさんチャレンジしてみましょう！</span>
+                このように、一見複雑に見える情報も、その背後にある<strong>ルールやパターン</strong>を見つけ出し、意味付けをすることで、個々の要素をバラバラに記憶する必要がなくなり、<span class="highlight">少ない労力で、より深く覚える</span>ことができます。これを<span class="highlight">「意味のある暗記」（meaningful memorization）</span>と言います。
             </p>
-            <ul>
-                <li>
-                    <span class="lang-en">Question in Japanese</span><span class="lang-ja">日本語での質問</span> →<strong> 3 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
-                </li>
-                <li>
-                    <span class="lang-en">Question in English</span><span class="lang-ja">英語での質問</span> →<strong> 5 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
-                </li>
+            <p>
+                語学学習における<strong>「文法」</strong>や、単語の語源・イメージを学ぶことは、まさにこの「意味のある暗記」を助けてくれます。無関係に見える単語や表現の間に繋がりを見つけ、<span class="highlight">記憶のネットワーク</span>を作りやすくしてくれるのです。
+            </p>
+
+            <div class="supplementary-box">
+                <h4>学習心理学のヒント：チャンク化と精緻化</h4>
+                <p>今回の文字列の活動は、記憶のテクニックである<strong>「チャンク化（Chunking）」</strong>と<strong>「精緻化（Elaboration）」</strong>の有効性を示しています。</p>
+                <ul>
+                    <li><strong>チャンク化:</strong> バラバラの情報を、意味のある塊（チャンク）にまとめること。「XNEHU」を「X / NE / HU」と区切り、「NE=子」のように意味のある単位で捉えることです。一度に覚えられる情報の量は限られていますが（マジカルナンバー7±2）、チャンク化することで、より多くの情報を効率的に記憶できます。</li>
+                    <li><strong>精緻化:</strong> 新しい情報に既知の知識やイメージを結びつけて、意味付けを深めること。「NE」を「十二支の子（ねずみ）」と関連付けるのが精緻化です。これにより、記憶がより強固になります。</li>
+                </ul>
+                <p>文法ルールを理解したり、単語のイメージを掴んだりすることは、まさにこのチャンク化や精緻化を促し、丸暗記よりも効率的で忘れにくい記憶を作るのに役立ちます。</p>
+            </div>
+
+            <p>
+                だからこの授業では、まず英語の例文にたくさん触れて（暗唱などを通して）<strong>自分の中に英語のデータベースを作り</strong>、その後に「なぜそうなるのか？」という<strong>文法ルールを学ぶ</strong>、という順番で進めています。先に体験してからルールを学ぶことで、「なるほど、だからこういう形になるのか！」と、より深く納得しやすくなるからです。
+            </p>
+        </section>
+
+        <section id="pimsleur-method">
+            <h2>暗唱体験：ピムズラーメソッドの一部活用</h2>
+            <p>
+                授業の後半では、具体的な暗唱方法の一つとして、「ピムズラーメソッド」と呼ばれるテクニックの一部（バックワード・ビルドアップ）を使い、以下の1文を覚える練習をしました。
+            </p>
+            <p style="font-size: 1.1em; text-align: center; margin: 25px 0;">
+                <code>Tom eats an apple and drinks water every morning.</code>
+            </p>
+            <p>
+                この方法の特徴は、<strong>文の終わりから少しずつ</strong>、意味の塊（フレーズ）ごとに区切って、<strong>日本語から英語へ</strong>と言い換えながら積み上げていく点です。
+            </p>
+            <ol>
+                <li>「毎朝」 → <code>every morning</code></li>
+                <li>「水を飲みます、毎朝」 → <code>drinks water every morning</code></li>
+                <li>「そして 水を飲みます、毎朝」 → <code>and drinks water every morning</code></li>
+                <li>「リンゴを食べ、そして 水を飲みます、毎朝」 → <code>eats an apple and drinks water every morning</code></li>
+                <li>「トムは リンゴを食べ、そして 水を飲みます、毎朝」 → <code>Tom eats an apple and drinks water every morning.</code></li>
+            </ol>
+            <p>
+                このように、少しずつ負荷を増やしながら文を構築していくことで、無理なく長い文も覚えることができます。実際に、この練習をした後に改めて元の英文を聞いてみると、<strong>以前よりも格段に聞き取りやすくなった</strong>と感じた人が多かったのではないでしょうか？ これは、文の構造や音の繋がりを<span class="highlight">能動的に意識</span>しながら練習した成果です。
+            </p>
+            <p>
+                ただし、大切なのは「聞き取れる（受容スキル）」だけで満足せず、次のステップに進むことです。
+            </p>
+            <blockquote>
+                <strong>最終目標は、自分でもその文を「意味を理解しながら」「自然なスピードで」「すらすらと言える（表出スキル）」ようになることです。</strong> 聞こえることと言えることは、異なるスキルなのです。
+            </blockquote>
+            <p>
+                聞こえるようになったら、今度は何度も音読して、発音やリズム、イントネーションも真似てみましょう。<span class="highlight">自分の声を録音して聞き比べてみる</span>のも非常に効果的です。
+            </p>
+
+            <div class="supplementary-box">
+                <h4>教育の視点：ピムズラーメソッドと学習効果</h4>
+                <p>今回用いた方法は、ピムズラーメソッドの「バックワード・ビルドアップ（後方連鎖法）」という要素です。このメソッド全体には、他にも重要な原則があります。</p>
+                <ul>
+                    <li><strong>段階的想起（Graduated Interval Recall）:</strong> エビングハウスの忘却曲線に基づき、忘れかけるタイミングで復習の間隔を徐々に延ばしていく方法。これにより、長期記憶への定着を図ります。</li>
+                    <li><strong>期待の原則（Principle of Anticipation）:</strong> 正解を教える前に、学習者に答えを「予測」させること。今回の「日本語→英語」のステップは、これを促しています。自分で考え出すプロセスが記憶を強化します。</li>
+                    <li><strong>コア語彙（Core Vocabulary）:</strong> 使用頻度の高い基本的な単語やフレーズに絞って学習を進めます。</li>
+                </ul>
+                <p>「聞き取れるようになった」と感じたのは、練習によって文構造や音声パターンへの<span class="highlight">注意（Attention）</span>が高まり、脳がその情報を処理しやすくなったためと考えられます。さらに「言える」ようになるには、<span class="highlight">運動野（発声器官を動かす）との連携</span>を強化する練習（音読など）が必要です。「できる！」という<span class="highlight">自己効力感（Self-efficacy）</span>が高まると、学習意欲も向上します。</p>
+            </div>
+
+        </section>
+
+        <section id="next-steps">
+            <h2>次回の授業に向けて</h2>
+            <p>
+                次回の授業の冒頭では、今回練習した暗唱文
+                <code>Tom eats an apple and drinks water every morning.</code>
+                が、皆さんがどのくらい言えるようになったかを確認します。
+            </p>
+            <p>
+                ただ覚えるだけでなく、<strong>トムが毎朝リンゴを食べて水を飲んでいる情景を思い浮かべながら、感情を込めて言える</strong>ようになると、さらに記憶に定着しやすくなります（精緻化の一種です）。
+            </p>
+            <p>
+                <strong>ぜひ、授業が始まる前に、この文を何度も声に出して練習しておいてください。</strong> 目標は、<span class="highlight">テキストを見ずに、スムーズに、意味を感じながら</span>言えるようになることです。頑張ってください！
+            </p>
+
+            <div class="supplementary-box">
+                <h4>学習を続けるために：復習と学習スタイル</h4>
+                <ul>
+                    <li><strong>復習のタイミング:</strong> 覚えたことは時間とともに忘れていきます（忘却曲線）。授業の後、<strong>その日のうちに一度、翌日にもう一度、さらに1週間後</strong>など、間隔をあけて復習するのが非常に効果的です。今回の暗唱文も、短い時間で良いので、繰り返し口にしてみてください。</li>
+                    <li><strong>自分に合った学習法:</strong> 人には得意な学習スタイルがあります。目で見て覚えるのが得意な人（視覚優位）、耳で聞いて覚えるのが得意な人（聴覚優位）、実際に体を動かしながら覚えるのが得意な人（運動感覚優位）など。今回の暗唱練習（聴覚・口の運動）が合っている人もいれば、書き写したり、絵を描いたりする方が覚えやすい人もいるかもしれません。色々な方法を試して、自分に合ったやり方を見つけることも大切です。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Review Section -->
+        <section id="review">
+            <h2>今回の授業の振り返り</h2>
+
+            <h3>チェックリスト</h3>
+            <p>以下の項目について、理解できたか確認してみましょう。</p>
+            <ul class="checklist">
+                <li>単語練習は、英語を使うための「材料」集めとして重要だと理解した。</li>
+                <li>英語学習において、単に単語を覚えるだけでなく「文法（ルール）」を学ぶことが、なぜ大切なのか説明できる。</li>
+                <li>文法を学ぶことは、丸暗記の負担を減らし、効率的な学習につながることを理解した。</li>
+                <li>授業で行った文字列の暗記活動で、「ルール」を知っているとなぜ覚えやすくなるのか（例：チャンク化、意味付け）が分かった。</li>
+                <li>「丸暗記 (rote memorization)」と「意味のある暗記 (meaningful memorization)」の違いを意識できるようになった。</li>
+                <li>ピムズラーメソッド（バックワード・ビルドアップ）の練習方法（文末から日本語→英語）を理解した。</li>
+                <li>英語を聞き取れること（受容スキル）と、自分で話せること（表出スキル）は別であり、両方の練習が必要だと分かった。</li>
+                <li>次回の授業までに、暗唱文を練習する必要性を理解した。</li>
+                <li>復習は、学習内容を定着させるために重要であり、適切なタイミングで行うことが効果的だと知った。</li>
             </ul>
-             <p>
-                <span class="lang-en">Points will be recorded and collected in July, becoming part of your grade.</span>
-                <span class="lang-ja">ポイントは記録しておき、7月に集めて成績の一部になります。</span>
-            </p>
+
+            <h3 style="margin-top: 40px;">確認問題</h3>
+            <p>自分の言葉で説明したり、考えたりしてみましょう。</p>
+            <div class="review-questions">
+                <ol>
+                    <li>
+                        <strong>文法の役割：</strong>授業では文法を「設計図」や「組み立て説明書」に例えましたが、あなた自身の言葉で、なぜ英語学習において文法が役立つのか説明してください。
+                        <p><!-- Answer space --></p>
+                    </li>
+                    <li>
+                        <strong>暗記のコツ：</strong>授業で行った文字列暗記 (XNEHU...) について、「ルールを知っていると覚えやすい」のはなぜですか？ 学習心理学のヒント（チャンク化や精緻化）を参考に説明してみてください。
+                        <p><!-- Answer space --></p>
+                    </li>
+                    <li>
+                        <strong>練習方法の応用：</strong>授業で練習した文（Tom eats...）とは別の、簡単な英語の文（例: "I study English at home every day."）を使って、ピムズラーメソッド（バックワード・ビルドアップ）の練習ステップを書き出してみてください。（例：「毎日」→ every day, 「家で、毎日」→ at home every day, ...）
+                        <p><!-- Answer space --></p>
+                    </li>
+                    <li>
+                        <strong>今後の学習：</strong>今回の授業内容（文法の役割、意味のある暗記、暗唱練習、復習など）を踏まえて、あなたが今後の英語学習で特に意識したいこと、または試してみたいことは何ですか？
+                        <p><!-- Answer space --></p>
+                    </li>
+                </ol>
+            </div>
         </section>
 
-        <!-- Footer -->
-        <footer>
-            <p>
-                <span class="lang-en">Try using the expressions learned in today's class to practice speaking English with teachers and friends! See you next time!</span>
-                <span class="lang-ja">今日の授業で学んだ表現を使って、先生や友達と英語で話す練習をしてみてくださいね！ See you next time!</span>
-            </p>
-        </footer>
-    </div>
+    </div> <!-- end .container -->
+
+    <!-- Scroll to Top Button -->
+    <button onclick="scrollToTop()" id="scrollTopBtn" title="ページトップへ戻る">▲</button>
 
     <script>
-        function setLanguage(lang) {
-            const enElements = document.querySelectorAll('.lang-en');
-            const jaElements = document.querySelectorAll('.lang-ja');
+        // ---- Reading Progress Bar and Scroll to Top ----
+        const progressBar = document.getElementById("progressBar");
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-            if (lang === 'ja') {
-                jaElements.forEach(el => el.classList.remove('lang-hidden'));
-                enElements.forEach(el => el.classList.add('lang-hidden'));
-                document.documentElement.lang = 'ja';
-                document.title = "英語の授業（自己紹介）振り返り";
-            } else { // Default to English ('en')
-                enElements.forEach(el => el.classList.remove('lang-hidden'));
-                jaElements.forEach(el => el.classList.add('lang-hidden'));
-                document.documentElement.lang = 'en';
-                document.title = "English Class Review: Self-Introductions";
-            }
+        function updateProgressAndScrollBtn() {
+            const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
+            const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winHeightPx > 0) ? (scrollPx / winHeightPx) * 100 : 0;
 
-            document.getElementById('lang-btn-en').classList.toggle('active', lang === 'en');
-            document.getElementById('lang-btn-ja').classList.toggle('active', lang === 'ja');
+            progressBar.style.width = scrolled + "%";
 
-            try {
-                localStorage.setItem('preferredLanguage', lang);
-            } catch (e) {
-                console.warn("Could not save language preference.", e);
+            if (scrollPx > 100) {
+                if (scrollTopBtn.style.display !== "block") {
+                   scrollTopBtn.style.opacity = "0";
+                   scrollTopBtn.style.display = "block";
+                   setTimeout(() => { scrollTopBtn.style.opacity = "1"; }, 10);
+                }
+            } else {
+                if (scrollTopBtn.style.display === "block") {
+                    scrollTopBtn.style.opacity = "0";
+                    setTimeout(function(){
+                        if (!(document.documentElement.scrollTop > 100 || document.body.scrollTop > 100)) {
+                             scrollTopBtn.style.display = "none";
+                        }
+                    }, 300);
+                }
             }
         }
 
-        // Initialize on page load
+        function scrollToTop() {
+          window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        window.addEventListener('scroll', updateProgressAndScrollBtn);
+
+        // ---- Reading Time Calculation ----
         document.addEventListener('DOMContentLoaded', () => {
-            // Default language is 'en'
-            let initialLang = 'en';
-            try {
-                // Check if a preference was saved previously
-                const savedLang = localStorage.getItem('preferredLanguage');
-                if (savedLang === 'ja') { // Only override default if 'ja' was explicitly saved
-                    initialLang = 'ja';
+            const contentElement = document.getElementById('mainContent');
+            const readingTimeElement = document.getElementById('readingTimeEstimate');
+            const wordsPerMinute = 500;
+
+            if (contentElement && readingTimeElement) {
+                // Exclude review section if desired (simple way: query only main part)
+                // const mainSections = contentElement.querySelectorAll('section:not(#review)');
+                // let text = '';
+                // mainSections.forEach(section => { text += section.innerText || section.textContent; });
+
+                // Or include review section (current implementation):
+                const text = contentElement.innerText || contentElement.textContent;
+
+                const cleanText = text.replace(/\s+/g, ' ').trim();
+                const characterCount = cleanText.length;
+
+                if (characterCount > 0) {
+                    const estimatedMinutes = Math.ceil(characterCount / wordsPerMinute);
+                    readingTimeElement.textContent = `読了時間: 約 ${estimatedMinutes} 分`;
+                } else {
+                    readingTimeElement.textContent = '読了時間: 計算不能';
                 }
-                // If savedLang is 'en' or null/invalid, initialLang remains 'en'
-            } catch (e) {
-                 console.warn("Could not read language preference.", e);
-                 // Proceed with default 'en' if localStorage fails
             }
-
-            // Initially hide the non-default language elements based on initialLang
-            if (initialLang === 'en') {
-                // Hide Japanese elements initially
-                document.querySelectorAll('.lang-ja').forEach(el => el.classList.add('lang-hidden'));
-                // Make sure English elements are not hidden (remove class just in case)
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('lang-hidden'));
-            } else { // initialLang must be 'ja'
-                // Hide English elements initially
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('lang-hidden'));
-                 // Make sure Japanese elements are not hidden
-                document.querySelectorAll('.lang-ja').forEach(el => el.classList.remove('lang-hidden'));
-            }
-
-            // Apply the determined language settings (updates buttons, title, etc.)
-            setLanguage(initialLang);
-            console.log('Language initialized to:', initialLang); // For debugging
+            updateProgressAndScrollBtn(); // Initial call
         });
+
     </script>
 
 </body>
