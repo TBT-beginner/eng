@@ -1,78 +1,303 @@
+
 <!DOCTYPE html>
-<html lang="en"> <!-- Default language set to English here -->
+<html lang="en"> <!-- Language set to English -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Class Review: Self-Introductions</title> <!-- Default title -->
+    <title>English Class Review: Self-Introductions</title>
     <style>
-        /* --- Basic Styles --- */
-        body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; line-height: 1.7; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
-        .container { max-width: 850px; margin: 30px auto; padding: 25px 30px; background-color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 10px; }
-        h1, h2 { color: #0056b3; margin-top: 1.5em; margin-bottom: 0.8em; padding-bottom: 5px; }
-        h1 { text-align: center; font-size: 2.2em; border-bottom: 3px solid #a0c4e4; margin-bottom: 1em; }
-        h2 { font-size: 1.6em; border-left: 7px solid #0056b3; padding-left: 10px; }
-        section { margin-bottom: 35px; padding: 20px; border-radius: 8px; background-color: #ffffff; }
-        dl dt { font-weight: bold; margin-top: 12px; color: #343a40; font-size: 1.1em; }
-        dl dd { margin-left: 0; margin-bottom: 12px; padding-left: 20px; border-left: 3px solid #e9ecef; }
-        ul { list-style: none; padding-left: 0; }
-        footer { text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #eee; color: #777; font-size: 0.9em; }
+        /* --- Blue Focused Color Palette (Copied from previous) --- */
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --primary-color: #4A90E2;
+            --secondary-color-soft: #A0D2DB;
+            --secondary-color-light: #CED4DA;
+            --accent-color: #F4A261;
+            --link-color: #4A90E2;
+            --code-bg: #F8F9FA;
+            --code-text: #343A40;
+            --border-color: #E9ECEF;
+            --progress-bar: #4A90E2;
+            --quote-border: #F4A261;
+            --highlight-bg: rgba(244, 162, 97, 0.25);
+            --supp-box-bg: #F8F9FA;
+            --supp-box-border: #A0D2DB;
+            --supp-box-heading: #2E6C80;
+            --teacher-a-border: #E6B800;
+            --teacher-a-bg: #FFFCEC;
+            --teacher-b-border: #C71F4F;
+            --teacher-b-bg: #F8F9FA;
+        }
 
-        /* --- Section Specific Styles --- */
-        .intro-questions li { background-color: #e7f3ff; margin-bottom: 10px; padding: 12px 18px; border-radius: 5px; border-left: 6px solid #007bff; }
-        .intro-questions li strong { color: #0056b3; display: inline-block; min-width: 200px; }
-        .intro-questions li > span { margin-left: 10px; font-style: italic; color: #555; }
-        .teacher-intro { border: 1px solid #e0e0e0; padding: 25px; }
-        .teacher-intro.teacher-a { border-left: 8px solid #ffd700; background-color: #fffef5; }
-        .teacher-intro.teacher-a h2 { color: #0057b7; border-left-color: #0057b7; }
-        .teacher-intro.teacher-b { border-left: 8px solid #bf0a30; background-color: #f8f9fa; }
-        .teacher-intro.teacher-b h2 { color: #002868; border-left-color: #002868; }
-        .point-system li { background-color: #e0f2f1; margin-bottom: 8px; padding: 10px 15px; border-radius: 4px; border-left: 5px solid #00796b; }
-        .point-system strong { color: #004d40; font-size: 1.2em; margin-left: 5px; }
+        /* Reset and Base Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo;
+            line-height: 1.75; color: var(--text-main); background-color: var(--bg-main);
+            margin: 0; padding: 0; padding-top: 4px;
+        }
 
-        /* --- Language Switcher Styles --- */
-        .lang-switcher { text-align: right; margin-bottom: 15px; }
-        .lang-switcher button { padding: 5px 12px; margin-left: 5px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
-        .lang-switcher button.active { background-color: #0056b3; color: white; border-color: #0056b3; font-weight: bold; }
+        /* Progress Bar */
+        #progressBar { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background-color: var(--progress-bar); z-index: 1000; transition: width 0.1s linear; }
+
+        /* Container */
+        .container { max-width: 850px; margin: 40px auto; padding: 45px 55px; background-color: var(--bg-content); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); border: 1px solid var(--border-color); }
+
+        /* Headings */
+        h1, h2, h3 { margin-top: 45px; margin-bottom: 25px; scroll-margin-top: 20px; font-weight: 600; }
+        h1 { font-size: 2.1em; text-align: center; border-bottom: none; margin-top: 0; margin-bottom: 15px; color: var(--text-main); }
+        h2 { font-size: 1.7em; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; color: var(--primary-color); }
+        h3 { font-size: 1.35em; color: var(--primary-color); margin-top: 35px; margin-bottom: 18px; }
+        .summary-box h3, #tableOfContents h3, #review h3, .supplementary-box h4 { color: var(--text-main); font-size: 1.15em; text-align: left; border-bottom: none; margin-bottom: 15px; font-weight: 600; }
+        .supplementary-box h4::before { content: '💡'; margin-right: 10px; font-size: 1.1em; }
+        #tableOfContents h3, #review h2 { text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
+        #review h2 { font-size: 1.7em; color: var(--primary-color); }
+
+        /* Reading Time Estimate */
+        .reading-time { text-align: center; color: var(--text-secondary); font-size: 0.9em; margin-bottom: 35px; }
+        .reading-time::before { content: "⏱️ "; margin-right: 3px; }
+
+        /* Summary Box */
+        .summary-box { background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 15px 25px; margin-bottom: 35px; border-radius: 4px; font-size: 0.95em; }
+        .summary-box ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+        .summary-box li { margin-bottom: 8px; color: var(--text-secondary); } /* Adjusted margin */
+         /* Summary points - ensure EN/JA spans work */
+         .summary-box li .lang-ja { margin-left: 5px; font-style: italic; }
+
+        /* Table of Contents */
+        #tableOfContents { background-color: var(--bg-content); border: 1px solid var(--border-color); padding: 20px 30px; margin-bottom: 50px; border-radius: 4px; }
+        #tableOfContents ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 40px; }
+        #tableOfContents li { margin-bottom: 10px; font-size: 0.95em; }
+        #tableOfContents a { text-decoration: none; color: var(--link-color); transition: color 0.2s ease, text-decoration 0.2s ease; font-weight: 500; }
+        #tableOfContents a:hover { color: #3178c6; text-decoration: underline; }
+        /* TOC items - ensure EN/JA spans work */
+        #tableOfContents a .lang-ja { margin-left: 5px; color: var(--text-secondary); font-style: italic; font-size: 0.9em; }
+
+
+        /* Paragraphs */
+        p { margin-bottom: 1.4em; color: var(--text-main); }
+
+        /* Emphasis and Highlights */
+        strong { color: var(--primary-color); font-weight: 600; }
+        .highlight { background-color: var(--highlight-bg); padding: 0.1em 0.4em; border-radius: 3px; font-weight: 500; color: var(--text-main); }
+
+        /* Code Blocks and Inline Code */
+        code, .code-block { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; background-color: var(--code-bg); padding: 0.2em 0.5em; border-radius: 4px; font-size: 0.9em; color: var(--code-text); border: 1px solid var(--border-color); }
+        .code-block { display: block; padding: 15px; margin: 25px 0; white-space: pre; overflow-x: auto; line-height: 1.6; }
+
+        /* Lists */
+        section ul, section ol { padding-left: 30px; margin-bottom: 1.3em; }
+        li { margin-bottom: 0.8em; }
+        li::marker { color: var(--text-secondary); font-weight: 500; }
+        #tableOfContents ul, .summary-box ul, .supplementary-box ul, .review-questions ol, .checklist { padding-left: 0; }
+        #tableOfContents li::marker, .summary-box li::marker, .supplementary-box li::marker, .checklist li::marker { content: none; }
+
+        /* Section Specific Styles (Integration) */
+        section { margin-bottom: 40px; }
+        .intro-questions ul { list-style: none; padding-left: 0; }
+        .intro-questions li { background-color: #EDF6FF; margin-bottom: 12px; padding: 12px 18px; border-radius: 5px; border-left: 5px solid var(--primary-color); }
+        .intro-questions li strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 4px; }
+        .intro-questions li > span { /* Answer Hint Container */ margin-left: 10px; font-style: italic; color: var(--text-secondary); font-size: 0.95em; }
+        .intro-questions li > span .lang-en, .intro-questions li > span .lang-ja { color: #3385d9; font-style: normal; /* Override italic */}
+        .intro-questions li > span .lang-ja { margin-left: 5px; } /* Space before JA answer */
+
+        .teacher-intro { border: 1px solid var(--border-color); padding: 25px; margin-top: 20px; border-radius: 6px; }
+        .teacher-intro h2 { border-bottom: none; padding-bottom: 0; margin-bottom: 20px; padding-left: 10px; font-size: 1.6em; }
+        .teacher-intro dl dt { font-weight: bold; margin-top: 15px; color: var(--text-main); font-size: 1.05em; border-bottom: 1px dotted var(--secondary-color-light); padding-bottom: 3px; }
+        .teacher-intro dl dd { margin-left: 0; margin-bottom: 12px; padding: 8px 0 8px 15px; }
+        .teacher-intro.teacher-a { border-left: 8px solid var(--teacher-a-border); background-color: var(--teacher-a-bg); }
+        .teacher-intro.teacher-a h2 { color: var(--primary-color); border-left: 5px solid var(--teacher-a-border); }
+        .teacher-intro.teacher-b { border-left: 8px solid var(--teacher-b-border); background-color: var(--teacher-b-bg); }
+        .teacher-intro.teacher-b h2 { color: var(--primary-color); border-left: 5px solid var(--teacher-b-border); }
+
+        .point-system ul { list-style: none; padding-left: 0; margin-top: 15px; }
+        .point-system li { background-color: #FFF8F2; margin-bottom: 10px; padding: 10px 15px; border-radius: 4px; border-left: 5px solid var(--accent-color); display: flex; align-items: center; justify-content: space-between; }
+        .point-system strong { color: #C05700; font-size: 1.3em; margin-left: 15px; font-weight: bold; background-color: #fff; padding: 3px 8px; border-radius: 4px; border: 1px solid var(--accent-color); }
+        /* Point system text - ensure EN/JA spans work */
+        .point-system li span .lang-ja { margin-left: 5px; font-style: italic; }
+
+        /* Blockquotes */
+        blockquote { border-left: 4px solid var(--quote-border); padding: 12px 25px; margin: 28px 0; color: var(--text-main); background-color: var(--bg-main); border-radius: 0 4px 4px 0; font-style: normal; }
+        blockquote strong { color: var(--primary-color); }
+
+        /* Supplementary Box */
+        .supplementary-box { background-color: var(--supp-box-bg); border: 1px solid var(--border-color); border-left: 5px solid var(--supp-box-border); padding: 20px 25px; margin: 35px 0; border-radius: 4px; font-size: 0.95em; }
+        .supplementary-box p { margin-bottom: 0.8em; color: var(--text-main); }
+        .supplementary-box p:last-child { margin-bottom: 0; }
+        .supplementary-box strong { color: var(--primary-color); font-weight: 600; }
+        .supplementary-box ul { list-style-type: disc; padding-left: 25px; margin-top: 10px;}
+
+        /* --- Language Toggle Styles --- */
+        .lang-toggle { text-align: right; margin-bottom: 25px; display: flex; justify-content: flex-end; align-items: center; }
+        .lang-toggle label { margin-left: 8px; color: var(--text-secondary); font-size: 0.9em; cursor: pointer; user-select: none; }
+        .lang-toggle input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; margin-right: 5px; accent-color: var(--primary-color); /* Style checkbox color */}
 
         /* --- Language Visibility Control --- */
-        /* This class is added/removed by JavaScript to hide elements */
-        .lang-hidden {
-            display: none !important;
-        }
-        /* No initial display:none for specific languages here; JS handles it */
-
-        /* --- Responsive Styles --- */
-        @media (max-width: 768px) {
-            .container { margin: 15px; padding: 15px; }
-            h1 { font-size: 1.8em; } h2 { font-size: 1.4em; }
-            .intro-questions li strong { display: block; margin-bottom: 5px; min-width: auto; }
-            .intro-questions li > span { margin-left: 0; display: block; }
-        }
-         @media (max-width: 480px) {
-             body { font-size: 15px; }
-             h1 { font-size: 1.6em; } h2 { font-size: 1.25em; }
+        /* Hide Japanese by default */
+        .lang-ja { display: none; }
+        /* When checkbox is checked (body has 'show-japanese' class), show Japanese */
+        body.show-japanese .lang-ja { display: inline; /* Or block, depending on element */ }
+         /* Ensure inline display for spans inside other elements when shown */
+         body.show-japanese h1 .lang-ja,
+         body.show-japanese h2 .lang-ja,
+         body.show-japanese h3 .lang-ja,
+         body.show-japanese p .lang-ja,
+         body.show-japanese dt .lang-ja,
+         body.show-japanese dd .lang-ja,
+         body.show-japanese li .lang-ja,
+         body.show-japanese footer .lang-ja,
+         body.show-japanese label .lang-ja { /* Also for the toggle label */
+             display: inline;
+             margin-left: 0.4em; /* Add a small space before Japanese text */
+             font-style: italic; /* Optional: Style Japanese differently */
+             color: var(--text-secondary); /* Optional: Dimmer Japanese text */
+             font-size: 0.95em; /* Optional: Slightly smaller Japanese text */
          }
+         /* Specific adjustments for list items where JA should follow EN */
+         body.show-japanese .intro-questions li strong .lang-ja,
+         body.show-japanese .intro-questions li > span .lang-ja,
+         body.show-japanese .point-system li span .lang-ja,
+         body.show-japanese .summary-box li .lang-ja,
+         body.show-japanese #tableOfContents a .lang-ja {
+             /* Existing styles might handle positioning, ensure display:inline */
+             display: inline;
+         }
+          /* Hide the English part of the toggle label when Japanese is shown */
+         body.show-japanese .lang-toggle label .lang-en { display: none; }
+         /* Show the Japanese part of the toggle label */
+         body.show-japanese .lang-toggle label .lang-ja { display: inline; margin-left: 0; font-style: normal; color: var(--text-secondary); font-size: 0.9em; }
+
+
+        /* Review Section Styles */
+        #review { border-top: 2px solid var(--border-color); margin-top: 50px; padding-top: 30px; }
+        .checklist { list-style: none; padding-left: 10px; }
+        .checklist li { margin-bottom: 12px; position: relative; padding-left: 35px; cursor: pointer; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0px; font-size: 1.4em; color: var(--secondary-color-light); transition: color 0.2s; }
+        .checklist li.checked::before { content: "☑"; color: var(--accent-color); }
+        .review-questions ol { list-style-type: decimal; padding-left: 25px; }
+        .review-questions li { margin-bottom: 25px; }
+        .review-questions li strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 5px; } /* Make question bold and block */
+        .review-questions p { margin-top: 8px; margin-bottom: 0; font-style: italic; color: var(--text-secondary); border-bottom: 1px dotted var(--secondary-color-light); padding-bottom: 5px; min-height: 1.5em; }
+        .review-questions p .lang-en, .review-questions p .lang-ja { font-style: normal; } /* Ensure answer hints are not italic */
+        body.show-japanese .review-questions li strong .lang-ja { display: block; /* Ensure JA question is also block */ }
+        body.show-japanese .review-questions p .lang-ja { display: inline; }
+
+        /* Footer */
+        footer { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9em; }
+        footer a { color: var(--link-color); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+         /* Ensure footer EN/JA spans work */
+        footer p .lang-ja { margin-left: 5px; font-style: italic; }
+
+
+        /* Scroll to Top Button */
+        #scrollTopBtn { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 999; font-size: 18px; border: none; outline: none; background-color: var(--text-secondary); color: white; cursor: pointer; padding: 10px 15px; border-radius: 50%; width: 50px; height: 50px; text-align: center; line-height: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: background-color 0.3s, opacity 0.3s; }
+        #scrollTopBtn:hover { background-color: var(--text-main); }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            #tableOfContents ul { columns: 1; }
+            .container { margin: 20px; padding: 25px 20px; }
+            h1 { font-size: 1.9em; } h2 { font-size: 1.5em; } h3 { font-size: 1.25em; }
+            .teacher-intro { padding: 20px; }
+            .point-system li { flex-direction: column; align-items: flex-start; }
+            .point-system strong { margin-left: 0; margin-top: 8px; }
+        }
+        @media (max-width: 480px) {
+             body { font-size: 15px; }
+             h1 { font-size: 1.7em; } h2 { font-size: 1.3em; } h3 { font-size: 1.2em; }
+             .container { padding: 20px 15px; }
+             #tableOfContents { padding: 15px 20px; }
+             .lang-toggle { justify-content: center; } /* Center toggle on small screens */
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Language Switcher -->
-        <div class="lang-switcher">
-            <button id="lang-btn-en" onclick="setLanguage('en')">English</button>
-            <button id="lang-btn-ja" onclick="setLanguage('ja')">日本語</button>
+    <!-- Reading Progress Bar -->
+    <div id="progressBar"></div>
+
+    <div class="container" id="mainContent">
+        <!-- Language Toggle -->
+        <div class="lang-toggle">
+            <input type="checkbox" id="toggle-ja" name="toggle-ja">
+            <label for="toggle-ja">
+                <span class="lang-en">Show Japanese</span>
+                <span class="lang-ja">日本語を併記</span>
+            </label>
         </div>
 
         <h1>
             <span class="lang-en">English Class (Self-Introduction) Review</span>
             <span class="lang-ja">英語の授業（自己紹介）振り返り</span>
         </h1>
-        <p>
-            <span class="lang-en">In today's class, we practiced asking and answering questions in English through the self-introductions of the teachers. Let's review the class content!</span>
-            <span class="lang-ja">今日の授業では、先生たちの自己紹介を通して、英語で質問したり答えたりする練習をしましたね。授業の内容を振り返ってみましょう！</span>
+        <p class="reading-time" id="readingTimeEstimate">
+            <span class="lang-en">Estimated reading time: Calculating...</span>
+            <!-- Japanese reading time is difficult to show correctly when toggling -->
         </p>
 
-        <!-- Section 1: Questions -->
-        <section class="intro-questions">
+        <!-- Summary Box -->
+        <div class="summary-box">
+            <h3>
+                <span class="lang-en">Summary of Today's Class</span>
+                <span class="lang-ja">今回の授業概要</span>
+            </h3>
+            <ul>
+                <li>
+                    <span class="lang-en">Practiced basic questions & answers for self-introductions.</span>
+                    <span class="lang-ja">自己紹介で使う基本的な質問と答え方を練習しました。</span>
+                </li>
+                 <li>
+                    <span class="lang-en">Listened to self-introductions from Teacher A (Ukraine) and Teacher B (USA).</span>
+                    <span class="lang-ja">先生A（ウクライナ出身）と先生B（アメリカ出身）の自己紹介を聞きました。</span>
+                </li>
+                <li>
+                    <span class="lang-en">Learned about the class point system for participation.</span>
+                    <span class="lang-ja">授業での積極性に応じたポイントシステムについて学びました。</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Table of Contents -->
+        <nav id="tableOfContents">
+            <h3>
+                <span class="lang-en">Table of Contents</span>
+                <span class="lang-ja">目次</span>
+            </h3>
+            <ul>
+                <li><a href="#questions">
+                    <span class="lang-en">1. Q&A for Self-Introductions</span>
+                    <span class="lang-ja">1. 自己紹介の質問と答え方</span>
+                </a></li>
+                <li><a href="#teacher-a">
+                    <span class="lang-en">2. Teacher A's Introduction</span>
+                    <span class="lang-ja">2. 先生Aの自己紹介</span>
+                </a></li>
+                <li><a href="#teacher-b">
+                    <span class="lang-en">3. Teacher B's Introduction</span>
+                    <span class="lang-ja">3. 先生Bの自己紹介</span>
+                </a></li>
+                <li><a href="#points">
+                    <span class="lang-en">4. About the Point System</span>
+                    <span class="lang-ja">4. ポイントシステムについて</span>
+                </a></li>
+                <li><a href="#review">
+                    <span class="lang-en">5. Review & Check</span>
+                    <span class="lang-ja">5. 振り返りと確認</span>
+                </a></li>
+            </ul>
+        </nav>
+
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 50px; margin-top: -30px;">
+            <span class="lang-en">Let's review the self-introduction practice from class!</span>
+            <span class="lang-ja">授業で行った自己紹介の練習を振り返ってみましょう！</span>
+        </p>
+
+        <!-- --- Content Sections --- -->
+
+        <section class="intro-questions" id="questions">
             <h2>
                 <span class="lang-en">1. Questions and Answers for Self-Introductions</span>
                 <span class="lang-ja">1. 自己紹介で使う質問と答え方</span>
@@ -113,8 +338,7 @@
             </ul>
         </section>
 
-        <!-- Section 2: Teacher A -->
-        <section class="teacher-intro teacher-a">
+        <section class="teacher-intro teacher-a" id="teacher-a">
              <h2>
                  <span class="lang-en">2. Teacher A's Self-Introduction</span>
                  <span class="lang-ja">2. 先生Aの自己紹介</span>
@@ -122,29 +346,22 @@
              <dl>
                  <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
                  <dd><span class="lang-en">Teacher A</span><span class="lang-ja">先生A</span></dd>
-
                  <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
-                 <dd><span class="lang-en">Ukraine - A country in Europe. It has beautiful nature and culture. In class, we talked about the Ukrainian mermaid "Mavka" and the Christmas star.</span><span class="lang-ja">ウクライナ (Ukraine) - ヨーロッパにある国です。美しい自然や文化があります。授業ではウクライナの人魚「マフカ(Mavka)」やクリスマスの星の話も出ましたね。</span></dd>
-
+                 <dd><span class="lang-en">Ukraine</span><span class="lang-ja">ウクライナ (Ukraine)</span> - <span class="lang-en">A country in Europe. It has beautiful nature and culture. In class, we talked about the Ukrainian mermaid "Mavka" and the Christmas star.</span><span class="lang-ja">ヨーロッパにある国です。美しい自然や文化があります。授業ではウクライナの人魚「マフカ(Mavka)」やクリスマスの星の話も出ましたね。</span></dd>
                  <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
                  <dd><span class="lang-en">Dancing (Indian dance, Ukrainian dance), singing, karate, drawing.</span><span class="lang-ja">ダンス (インド舞踊、ウクライナのダンス)、歌うこと、空手、絵を描くこと</span></dd>
-
                  <dt><span class="lang-en">Favorite Color</span><span class="lang-ja">好きな色</span></dt>
-                 <dd><span class="lang-en">Green - But as an artist, I use many different colors.</span><span class="lang-ja">緑 (Green) - でも、アーティストとして色々な色を使います。</span></dd>
-
+                 <dd><span class="lang-en">Green</span><span class="lang-ja">緑 (Green)</span> - <span class="lang-en">But as an artist, I use many different colors.</span><span class="lang-ja">でも、アーティストとして色々な色を使います。</span></dd>
                  <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
                  <dd><span class="lang-en">Japanese miso soup, Ukrainian borscht.</span><span class="lang-ja">日本の味噌汁、ウクライナのボルシチ (Borscht)</span></dd>
-
                  <dt><span class="lang-en">Favorite Country (besides Ukraine)</span><span class="lang-ja">好きな国（ウクライナ以外）</span></dt>
                  <dd><span class="lang-en">Japan</span><span class="lang-ja">日本</span></dd>
-
                  <dt><span class="lang-en">Favorite Sport</span><span class="lang-ja">好きなスポーツ</span></dt>
-                 <dd><span class="lang-en">Football/Soccer - I used to be a goalkeeper when I was a child!</span><span class="lang-ja">サッカー (Football/Soccer) - 子どもの頃ゴールキーパーでした！</span></dd>
+                 <dd><span class="lang-en">Football/Soccer</span><span class="lang-ja">サッカー (Football/Soccer)</span> - <span class="lang-en">I used to be a goalkeeper when I was a child!</span><span class="lang-ja">子どもの頃ゴールキーパーでした！</span></dd>
              </dl>
         </section>
 
-        <!-- Section 3: Teacher B -->
-        <section class="teacher-intro teacher-b">
+        <section class="teacher-intro teacher-b" id="teacher-b">
             <h2>
                 <span class="lang-en">3. Teacher B's Self-Introduction</span>
                 <span class="lang-ja">3. 先生Bの自己紹介</span>
@@ -152,35 +369,26 @@
             <dl>
                  <dt><span class="lang-en">Name</span><span class="lang-ja">名前</span></dt>
                  <dd><span class="lang-en">Teacher B</span><span class="lang-ja">先生B</span></dd>
-
                  <dt><span class="lang-en">From</span><span class="lang-ja">出身</span></dt>
-                 <dd><span class="lang-en">United States, Oregon - A state on the West Coast of the US with abundant nature.</span><span class="lang-ja">アメリカ合衆国 (United States)、オレゴン州 (Oregon) - アメリカ西海岸、自然が豊かな州です。</span></dd>
-
+                 <dd><span class="lang-en">United States, Oregon</span><span class="lang-ja">アメリカ合衆国 (United States)、オレゴン州 (Oregon)</span> - <span class="lang-en">A state on the West Coast of the US with abundant nature.</span><span class="lang-ja">アメリカ西海岸、自然が豊かな州です。</span></dd>
                  <dt><span class="lang-en">Life in Japan</span><span class="lang-ja">日本での生活</span></dt>
                  <dd><span class="lang-en">I have lived in Japan for many years and have been teaching English for a long time.</span><span class="lang-ja">長年日本に住んでいて、長く英語を教えています。</span></dd>
-
                  <dt><span class="lang-en">Family</span><span class="lang-ja">家族</span></dt>
                  <dd><span class="lang-en">I am married and have children.</span><span class="lang-ja">結婚していて、子どもがいます。</span></dd>
-
                  <dt><span class="lang-en">Favorite Food</span><span class="lang-ja">好きな食べ物</span></dt>
                  <dd><span class="lang-en">Japanese food (sashimi, sushi, nabe, soup), curry, Thai food, Italian food, Mexican food, etc. I love delicious food!</span><span class="lang-ja">日本食 (刺身、寿司、鍋、スープ)、カレー、タイ料理、イタリア料理、メキシコ料理など。美味しいものが好き！</span></dd>
-
                  <dt><span class="lang-en">Hobbies</span><span class="lang-ja">趣味</span></dt>
                  <dd><span class="lang-en">Walking, barbecue, traveling, watching movies (especially love "Jaws"!), spending time with family.</span><span class="lang-ja">散歩、バーベキュー、旅行、映画鑑賞 (特に「ジョーズ」が好き！)、家族と過ごすこと。</span></dd>
-
                  <dt><span class="lang-en">Favorite Colors</span><span class="lang-ja">好きな色</span></dt>
                  <dd><span class="lang-en">Blue, Purple</span><span class="lang-ja">青 (Blue)、紫 (Purple)</span></dd>
-
                  <dt><span class="lang-en">Favorite Sports</span><span class="lang-ja">好きなスポーツ</span></dt>
                  <dd><span class="lang-en">Badminton, table tennis, Aikido (practiced in the past).</span><span class="lang-ja">バドミントン、卓球、合気道 (昔やっていました)。</span></dd>
-
                  <dt><span class="lang-en">Favorite Countries</span><span class="lang-ja">好きな国</span></dt>
                  <dd><span class="lang-en">The United States and Japan</span><span class="lang-ja">アメリカと日本</span></dd>
             </dl>
         </section>
 
-        <!-- Section 4: Point System -->
-        <section class="point-system">
+        <section class="point-system" id="points">
             <h2>
                 <span class="lang-en">4. About the Point System</span>
                 <span class="lang-ja">4. ポイントシステムについて</span>
@@ -191,10 +399,10 @@
             </p>
             <ul>
                 <li>
-                    <span class="lang-en">Question in Japanese</span><span class="lang-ja">日本語での質問</span> →<strong> 3 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
+                    <span><span class="lang-en">Question in Japanese</span><span class="lang-ja">日本語での質問</span></span><strong> 3 </strong>
                 </li>
                 <li>
-                    <span class="lang-en">Question in English</span><span class="lang-ja">英語での質問</span> →<strong> 5 </strong><span class="lang-en">points</span><span class="lang-ja">ポイント</span>
+                    <span><span class="lang-en">Question in English</span><span class="lang-ja">英語での質問</span></span><strong> 5 </strong>
                 </li>
             </ul>
              <p>
@@ -203,74 +411,206 @@
             </p>
         </section>
 
+        <section id="review">
+            <h2>
+                <span class="lang-en">5. Review & Check</span>
+                <span class="lang-ja">5. 振り返りと確認</span>
+            </h2>
+            <h3>
+                <span class="lang-en">Checklist</span>
+                <span class="lang-ja">チェックリスト</span>
+            </h3>
+            <p>
+                <span class="lang-en">Let's check if you remember the key points from today's class. (Click to check)</span>
+                <span class="lang-ja">今日の授業のポイントを覚えているか確認してみましょう。（クリックしてチェックできます）</span>
+            </p>
+            <ul class="checklist">
+                <li><span class="lang-en">I can ask someone's name and answer my own name.</span><span class="lang-ja">名前を尋ねたり、自分の名前を答えたりできる。</span></li>
+                <li><span class="lang-en">I can ask where someone is from and answer where I am from.</span><span class="lang-ja">出身地を尋ねたり、自分の出身地を答えたりできる。</span></li>
+                <li><span class="lang-en">I can ask about favorite foods and answer my own favorite food.</span><span class="lang-ja">好きな食べ物を尋ねたり、自分の好きな食べ物を答えたりできる。</span></li>
+                <li><span class="lang-en">I can ask about hobbies and answer my own hobbies.</span><span class="lang-ja">趣味を尋ねたり、自分の趣味を答えたりできる。</span></li>
+                <li><span class="lang-en">I remember some information about Teacher A (e.g., from Ukraine, likes green).</span><span class="lang-ja">先生Aの自己紹介内容をいくつか覚えている（例：ウクライナ出身、緑色が好き）。</span></li>
+                <li><span class="lang-en">I remember some information about Teacher B (e.g., from USA, likes movies).</span><span class="lang-ja">先生Bの自己紹介内容をいくつか覚えている（例：アメリカ出身、映画が好き）。</span></li>
+                <li><span class="lang-en">I understand how the point system works (asking questions earns points).</span><span class="lang-ja">ポイントシステムの仕組み（質問するとポイントがもらえること）を理解した。</span></li>
+            </ul>
+
+            <h3 style="margin-top: 40px;">
+                <span class="lang-en">Practice Questions</span>
+                <span class="lang-ja">練習問題</span>
+            </h3>
+            <p>
+                <span class="lang-en">Try answering these questions about yourself in English.</span>
+                <span class="lang-ja">自分自身について、英語で答える練習をしてみましょう。</span>
+            </p>
+            <div class="review-questions">
+                <ol>
+                    <li>
+                        <strong><span class="lang-en">What is your name?</span><span class="lang-ja">あなたの名前は何ですか？</span></strong>
+                        <p><span class="lang-en">My name is ...</span><span class="lang-ja">私の名前は ...</span></p>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">What is your favorite food?</span><span class="lang-ja">あなたの好きな食べ物は何ですか？</span></strong>
+                        <p><span class="lang-en">My favorite food is ... / I like ...</span><span class="lang-ja">私の好きな食べ物は ... / 私は ... が好きです。</span></p>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">What are your hobbies?</span><span class="lang-ja">あなたの趣味は何ですか？</span></strong>
+                         <p><span class="lang-en">My hobbies are ... / I like ...</span><span class="lang-ja">私の趣味は ... / 私は ... が好きです。</span></p>
+                    </li>
+                    <li>
+                        <strong><span class="lang-en">What did you find interesting about the teachers' introductions? (Japanese is okay)</span><span class="lang-ja">先生たちの自己紹介で面白いと思ったことは何ですか？ (日本語でもOK)</span></strong>
+                        <p><span class="lang-en">(Your thoughts here)</span><span class="lang-ja">（ここにあなたの考えを書いてみましょう）</span></p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer>
             <p>
-                <span class="lang-en">Try using the expressions learned in today's class to practice speaking English with teachers and friends! See you next time!</span>
-                <span class="lang-ja">今日の授業で学んだ表現を使って、先生や友達と英語で話す練習をしてみてくださいね！ See you next time!</span>
+                <span class="lang-en">Try using the expressions learned in today's class to practice speaking English with teachers and friends!</span>
+                <span class="lang-ja">今日の授業で学んだ表現を使って、先生や友達と英語で話す練習をしてみてくださいね！</span>
+            </p>
+             <p>
+                <a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">
+                    <span class="lang-en">Visit the Class Review Website</span>
+                    <span class="lang-ja">授業記録のウェブサイトはこちら</span>
+                </a>
+            </p>
+            <p>
+                <span class="lang-en">See you next time!</span>
+                <span class="lang-ja">See you next time!</span>
             </p>
         </footer>
-    </div>
+
+        <!-- Scroll to Top Button -->
+        <button onclick="scrollToTop()" id="scrollTopBtn" title="ページトップへ戻る">▲</button>
+
+    </div> <!-- end .container -->
 
     <script>
-        function setLanguage(lang) {
-            const enElements = document.querySelectorAll('.lang-en');
-            const jaElements = document.querySelectorAll('.lang-ja');
+        const toggleJaCheckbox = document.getElementById('toggle-ja');
+        const bodyElement = document.body;
 
-            if (lang === 'ja') {
-                jaElements.forEach(el => el.classList.remove('lang-hidden'));
-                enElements.forEach(el => el.classList.add('lang-hidden'));
-                document.documentElement.lang = 'ja';
-                document.title = "英語の授業（自己紹介）振り返り";
-            } else { // Default to English ('en')
-                enElements.forEach(el => el.classList.remove('lang-hidden'));
-                jaElements.forEach(el => el.classList.add('lang-hidden'));
-                document.documentElement.lang = 'en';
-                document.title = "English Class Review: Self-Introductions";
+        // --- Toggle Japanese Visibility ---
+        function toggleJapanese(show) {
+            if (show) {
+                bodyElement.classList.add('show-japanese');
+            } else {
+                bodyElement.classList.remove('show-japanese');
             }
-
-            document.getElementById('lang-btn-en').classList.toggle('active', lang === 'en');
-            document.getElementById('lang-btn-ja').classList.toggle('active', lang === 'ja');
-
-            try {
-                localStorage.setItem('preferredLanguage', lang);
-            } catch (e) {
-                console.warn("Could not save language preference.", e);
-            }
+            // Save preference
+            try { localStorage.setItem('showJapanesePreference', show); }
+            catch (e) { console.warn("Could not save Japanese visibility preference.", e); }
         }
 
-        // Initialize on page load
+        // --- Reading Time Calculation (Based on English content only) ---
+        function calculateReadingTime() {
+             const contentElement = document.getElementById('mainContent');
+             const readingTimeElement = document.getElementById('readingTimeEstimate');
+             const readingTimeSpanEn = readingTimeElement.querySelector('.lang-en');
+
+             if (contentElement && readingTimeSpanEn) {
+                 // Select English elements OR elements without specific lang spans
+                 const englishElements = contentElement.querySelectorAll('.lang-en, h1:not(:has(.lang-ja)), h2:not(:has(.lang-ja)), h3:not(:has(.lang-ja)), p:not(:has(.lang-ja)), li:not(:has(.lang-ja)), dt:not(:has(.lang-ja)), dd:not(:has(.lang-ja))');
+                 let text = '';
+                 englishElements.forEach(el => {
+                     // If it's specifically an English span, use its text
+                     if(el.classList.contains('lang-en')) {
+                         text += (el.innerText || el.textContent) + ' ';
+                     }
+                     // Otherwise (it's a general element without specific lang spans), use its text
+                     // This avoids double-counting when both EN and JA spans exist but JA is hidden
+                     else if (!el.querySelector('.lang-en') && !el.querySelector('.lang-ja')){
+                          text += (el.innerText || el.textContent) + ' ';
+                     }
+                 });
+
+                 const cleanText = text.replace(/\s+/g, ' ').trim();
+                 let estimatedMinutes = 0;
+                 const wpm_en = 200; // Approx English WPM
+
+                 if (cleanText.length > 0) {
+                    const wordCount = cleanText.split(/\s+/).filter(Boolean).length;
+                    estimatedMinutes = Math.ceil(wordCount / wpm_en);
+                 }
+
+                 const timeTextEn = `Estimated reading time: Approx. ${estimatedMinutes} min`;
+                 readingTimeSpanEn.textContent = timeTextEn;
+             }
+        }
+
+        // --- Initialize on page load ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Default language is 'en'
-            let initialLang = 'en';
+            // Restore Japanese visibility preference
+            let showJaInitial = false;
             try {
-                // Check if a preference was saved previously
-                const savedLang = localStorage.getItem('preferredLanguage');
-                if (savedLang === 'ja') { // Only override default if 'ja' was explicitly saved
-                    initialLang = 'ja';
+                const savedPref = localStorage.getItem('showJapanesePreference');
+                // Convert string 'true' to boolean true, otherwise default to false
+                showJaInitial = savedPref === 'true';
+            } catch (e) { console.warn("Could not read Japanese visibility preference.", e); }
+
+            // Set initial checkbox state and body class
+            toggleJaCheckbox.checked = showJaInitial;
+            toggleJapanese(showJaInitial); // Apply class to body
+
+            // Add event listener for the checkbox
+            toggleJaCheckbox.addEventListener('change', (event) => {
+                toggleJapanese(event.target.checked);
+            });
+
+            // Calculate initial reading time (based on English)
+            calculateReadingTime();
+
+            // Initialize other elements
+            updateProgressAndScrollBtn(); // Initialize progress bar & scroll button state
+        });
+
+
+        // ---- Reading Progress Bar and Scroll to Top (Keep as is) ----
+        const progressBar = document.getElementById("progressBar");
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+        function updateProgressAndScrollBtn() {
+            const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
+            const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winHeightPx > 0) ? (scrollPx / winHeightPx) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
+            if (scrollPx > 100) {
+                if (scrollTopBtn.style.display !== "block") {
+                   scrollTopBtn.style.opacity = "0"; scrollTopBtn.style.display = "block";
+                   setTimeout(() => { scrollTopBtn.style.opacity = "1"; }, 10);
                 }
-                // If savedLang is 'en' or null/invalid, initialLang remains 'en'
-            } catch (e) {
-                 console.warn("Could not read language preference.", e);
-                 // Proceed with default 'en' if localStorage fails
+            } else {
+                if (scrollTopBtn.style.display === "block") {
+                    scrollTopBtn.style.opacity = "0";
+                    setTimeout(function(){ if (!(document.documentElement.scrollTop > 100 || document.body.scrollTop > 100)) { scrollTopBtn.style.display = "none"; } }, 300);
+                }
             }
+        }
+        function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
+        window.addEventListener('scroll', updateProgressAndScrollBtn);
 
-            // Initially hide the non-default language elements based on initialLang
-            if (initialLang === 'en') {
-                // Hide Japanese elements initially
-                document.querySelectorAll('.lang-ja').forEach(el => el.classList.add('lang-hidden'));
-                // Make sure English elements are not hidden (remove class just in case)
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('lang-hidden'));
-            } else { // initialLang must be 'ja'
-                // Hide English elements initially
-                document.querySelectorAll('.lang-en').forEach(el => el.classList.add('lang-hidden'));
-                 // Make sure Japanese elements are not hidden
-                document.querySelectorAll('.lang-ja').forEach(el => el.classList.remove('lang-hidden'));
-            }
+        // ---- Smooth scroll for TOC links (Keep as is) ----
+        document.querySelectorAll('#tableOfContents a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 15;
+                    window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+            });
+        });
 
-            // Apply the determined language settings (updates buttons, title, etc.)
-            setLanguage(initialLang);
-            console.log('Language initialized to:', initialLang); // For debugging
+        // ---- Checklist Interaction (Keep as is) ----
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function() { this.classList.toggle('checked'); });
+            item.setAttribute('tabindex', '0');
+            item.addEventListener('keypress', function(e) {
+               if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault(); this.classList.toggle('checked');
+                }
+            });
         });
     </script>
 
