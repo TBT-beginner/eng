@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英語授業記録と教材</title>
+<title>英語授業記録：名詞と冠詞</title>
 <style>
   body {
     font-family: sans-serif;
@@ -25,89 +26,115 @@
     border-bottom: 2px solid #0056b3;
     padding-bottom: 5px;
     margin-top: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   h3 {
-    color: #007bff;
+    color: #1a73e8;
     margin-top: 25px;
-    margin-bottom: 15px;
-    border-left: 4px solid #007bff;
-    padding-left: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #1a73e8;
+    padding-left: 8px;
   }
   h4 {
-    color: #17a2b8;
+    color: #333;
     margin-top: 20px;
     margin-bottom: 10px;
+    font-weight: bold;
   }
-  ul {
-    list-style: disc;
+  ul, ol {
     margin-left: 20px;
+    padding-left: 15px;
     margin-bottom: 15px;
   }
   li {
     margin-bottom: 8px;
   }
-  .highlight {
-    background-color: #e7f3ff;
-    padding: 5px 10px;
+  .example, .mnemonic, .point {
+    background-color: #eef;
+    border-left: 4px solid #99d;
+    padding: 10px 15px;
+    margin: 15px 0;
     border-radius: 4px;
-    font-weight: bold;
-    display: inline-block;
   }
-  .example {
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-left: 3px solid #ccc;
-    margin: 10px 0;
+  .mnemonic p {
+    margin: 5px 0;
+  }
+  .mnemonic strong {
+    color: #d9534f;
   }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
   }
   th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
     text-align: left;
   }
   th {
-    background-color: #e9ecef;
+    background-color: #f0f0f0;
     font-weight: bold;
+    text-align: center;
   }
-  .drill-section {
-    margin-bottom: 30px;
+  .drill-section ol, .answer-section ol {
+    list-style-type: none; /* 番号は手動で付与 */
+    padding-left: 0;
   }
-  .drill-item {
+  .drill-section li, .answer-section li {
     margin-bottom: 15px;
-    padding-left: 10px;
-    border-left: 2px solid #17a2b8;
+    padding-left: 25px;
+    position: relative;
   }
-  .drill-item p {
-    margin: 5px 0;
+  .drill-section li::before, .answer-section li::before {
+    content: attr(data-qnum) "."; /* 問題番号を表示 */
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #0056b3;
   }
-  .drill-item .question-text {
-    margin-bottom: 3px;
-  }
-  .drill-item .english-sentence {
-    font-family: 'Courier New', Courier, monospace;
-    margin-bottom: 3px;
-  }
-  .drill-item .options {
-    color: #666;
-    font-size: 0.9em;
-  }
-  .blank {
+  .drill-placeholder {
+    font-family: monospace;
+    color: #999;
+    border-bottom: 1px dotted #999;
     display: inline-block;
-    border-bottom: 1px solid #333;
-    min-width: 50px;
+    min-width: 50px; /* 空欄の幅 */
     text-align: center;
     margin: 0 5px;
   }
-  .section-separator {
-      border-top: 1px dashed #ccc;
-      margin-top: 40px;
-      margin-bottom: 40px;
+  .answer-text {
+    font-weight: bold;
+    color: #28a745;
+  }
+  .explanation {
+    background-color: #f0f8ff;
+    border: 1px solid #add8e6;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+  .explanation h4 {
+    margin-top: 0;
+    color: #0056b3;
+    font-size: 1.1em;
+    border-bottom: 1px solid #add8e6;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  .explanation ol {
+      list-style-type: decimal;
+      margin-left: 20px;
+      padding-left: 0;
+  }
+  .explanation li {
+      margin-bottom: 5px;
+  }
+  .workbook-ref {
+      text-align: right;
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 10px;
   }
 </style>
 </head>
@@ -115,197 +142,199 @@
 
 <div class="container">
 
-  <h2>英語の授業内容（名詞と冠詞、名詞の複数形 -es のルール）のまとめ</h2>
+  <h2>英語授業記録：名詞と冠詞</h2>
 
-  <section id="class-summary-es-rule">
-    <h3>1. es をつけるルール</h3>
+  <section id="lesson-summary">
+    <h3>名詞の複数形 -es のルール</h3>
+    <p>この部分の授業では、名詞を複数形にする際のルールのうち、特に語尾に es をつける場合について詳しく解説されました。</p>
+
+    <h4>1. es をつけるルール</h4>
     <ul>
-      <li>名詞の単数形の語尾が <span class="highlight">s, o, x, ch, sh</span> で終わる場合、複数形にするには s ではなく <span class="highlight">es</span> をつけます。</li>
+      <li>名詞の単数形の語尾が <strong>s, o, x, ch, sh</strong> で終わる場合、複数形にするには s ではなく <strong>es</strong> をつけます。</li>
     </ul>
-  </section>
 
-  <section id="class-summary-es-reason">
-    <h3>2. なぜ es をつけるのか？</h3>
+    <h4>2. なぜ es をつけるのか？</h4>
     <ul>
-      <li>主な理由は<span class="highlight">発音のしやすさ</span>です。</li>
+      <li>主な理由は<strong>発音のしやすさ</strong>です。</li>
       <li>例えば bush (しげみ) に s だけつけると bushs となり発音しにくいですが、es をつけて bushes とすると発音しやすくなります。</li>
     </ul>
-  </section>
 
-  <section id="class-summary-es-examples">
-    <h3>3. 具体例</h3>
+    <h4>3. 具体例</h4>
     <div class="example">
       <ul>
         <li>tomato → tomatoes</li>
         <li>tax → taxes</li>
         <li>bush → bushes</li>
-        <li>bus → buses</li>
-        <li>watch → watches</li>
+        <li>(授業内で言及はなかったが、ルールに当てはまる例として: bus → buses, watch → watches)</li>
+      </ul>
+    </div>
+
+    <h4>4. 覚え方のコツ</h4>
+    <div class="mnemonic">
+      <p>この <strong>s, o, x, ch, sh</strong> の語尾のルールを覚えるための語呂合わせとして、生徒が提案した <strong>「ソックス集中 (soxch)」</strong> が紹介されました。</p>
+      <p>先生はこの覚え方を「すごい」「いい覚え方」と評価し、今後使っていくと話していました。（先生が子供の頃に使っていた「ソックス履いてシュワッチ」という覚え方も紹介されました。）</p>
+    </div>
+
+    <h4>5. その他の名詞</h4>
+    <p>この s, o, x, ch, sh で終わるルールに当てはまらない名詞の複数形は、基本的に語尾に s をつけるだけで良いと説明されました。</p>
+
+    <h4>6. 今後の授業の流れ</h4>
+    <p>この es のルールの説明の後、冠詞や人称代名詞の復習に移り、教科書右側の問題演習を行う予定であることが示唆されました。</p>
+  </section>
+
+  <section id="noun-classification">
+    <h3>名詞の分類（数えられるか、数えられないか）</h3>
+    <ul>
+      <li>
+        <strong>可算名詞 (Countable Nouns):</strong> 数えられる名詞。
+        <ul>
+          <li>単数形 (Singular): 1つの場合。前に <strong>a</strong> や <strong>an</strong> がつくことが多い (例: a brother)。</li>
+          <li>複数形 (Plural): 2つ以上の場合。基本的に語尾に <strong>s</strong> や <strong>es</strong> をつける (例: two sisters, classes, potatoes)。</li>
+          <li>複数形の注意点:
+            <ul>
+              <li>y で終わる名詞: y の前が子音の場合、y を i に変えて <strong>es</strong> をつける (例: country → countries)。</li>
+              <li>不規則な変化: s をつけずに形が変わるものがある (例: child → children, woman → women)。</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>不可算名詞 (Uncountable Nouns):</strong> 数えられない名詞。
+        <ul>
+          <li>決まった形がないものが多い (例: bread, butter, water, information, homework)。</li>
+          <li><strong>a</strong> や <strong>an</strong> をつけない。</li>
+          <li>複数形にしない（s をつけない）。</li>
+          <li>量を表すときは <strong>much</strong> を使うことがある (many は使わない)。</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section id="articles">
+    <h3>冠詞 (Articles: a, an, the)</h3>
+    <ul>
+      <li>
+        <strong>a / an:</strong>
+        <ul>
+          <li>数えられる名詞の単数形につける。</li>
+          <li>特定されていない「あるひとつの〜」という意味。</li>
+          <li>母音 (a, i, u, e, o) の<strong>音</strong>で始まる単語の前では <strong>an</strong> を使う (例: an umbrella)。</li>
+          <li>不可算名詞にはつけない。</li>
+        </ul>
+      </li>
+      <li>
+        <strong>the:</strong>
+        <ul>
+          <li>特定できる「その〜」という意味で使う (例: 文脈上どの犬か分かる場合の the dog)。</li>
+          <li>世界に一つしかないものにつける (例: the moon, the earth)。</li>
+          <li>単数形、複数形、不可算名詞のいずれにも使える。</li>
+        </ul>
+      </li>
+      <li>
+        <strong>冠詞をつけない場合:</strong>
+        <ul>
+          <li>不可算名詞 (例: I have homework.)</li>
+          <li>複数形の総称 (例: Teachers are busy. - ※授業の例 Those women are teachers at my school. の teachers は特定の複数なので冠詞なしではない)</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section id="lesson-points">
+    <h3>授業で扱った例とポイント</h3>
+    <div class="point">
+      <ul>
+        <li>bread や butter は形が決まっていないため不可算名詞。</li>
+        <li>information (情報) や homework (宿題) も形がないため不可算名詞。</li>
+        <li>woman の複数形は <strong>women</strong> で、発音 (ウィメン) に注意が必要。</li>
+        <li>文脈によって単数か複数かを判断する必要がある (例: Those women are teachers. → women が複数なので teachers も複数形)。</li>
       </ul>
     </div>
   </section>
 
-  <section id="class-summary-es-mnemonic">
-    <h3>4. 覚え方のコツ</h3>
-    <ul>
-      <li>s, o, x, ch, sh の語尾のルールを覚えるための語呂合わせとして、生徒提案の <span class="highlight">「ソックス集中 (soxch)」</span> が紹介されました。</li>
-      <li>先生はこの覚え方を「すごい」「いい覚え方」と評価し、今後使っていくと話していました。（先生の昔の覚え方「ソックス履いてシュワッチ」も紹介）</li>
-    </ul>
-  </section>
-
-  <section id="class-summary-other-nouns">
-    <h3>5. その他の名詞の複数形</h3>
-    <ul>
-      <li>s, o, x, ch, sh で終わるルールに当てはまらない名詞の複数形は、基本的に語尾に <span class="highlight">s をつけるだけ</span>で良いと説明されました。</li>
-    </ul>
-  </section>
-
-  <section id="class-summary-future-plan1">
-    <h3>6. 今後の授業の流れ (前半)</h3>
-    <ul>
-      <li>この es のルールの説明の後、冠詞や人称代名詞の復習に移り、教科書右側の問題演習を行う予定であることが示唆されました。</li>
-    </ul>
-  </section>
-
-  <hr class="section-separator">
-
-  <section id="class-summary-noun-classification">
-    <h3>1. 名詞の分類（数えられるか、数えられないか）</h3>
-    <h4>可算名詞 (Countable Nouns)</h4>
-    <ul>
-      <li>数えられる名詞。</li>
-      <li><strong>単数形 (Singular):</strong> 1つの場合。前に <span class="highlight">a</span> や <span class="highlight">an</span> がつくことが多い (例: a brother)。</li>
-      <li><strong>複数形 (Plural):</strong> 2つ以上の場合。基本的に語尾に <span class="highlight">s</span> や <span class="highlight">es</span> をつける (例: two sisters, classes, potatoes)。</li>
-      <li><strong>複数形の注意点:</strong>
-        <ul>
-          <li>y で終わる名詞: y の前が子音の場合、y を i に変えて es をつける (例: country → countries)。</li>
-          <li>不規則な変化: s をつけずに形が変わるものがある (例: child → children, woman → women)。</li>
-        </ul>
-      </li>
-    </ul>
-    <h4>不可算名詞 (Uncountable Nouns)</h4>
-    <ul>
-      <li>数えられない名詞。</li>
-      <li>決まった形がないものが多い (例: bread, butter, water, information, homework)。</li>
-      <li><span class="highlight">a や an をつけない</span>。</li>
-      <li><span class="highlight">複数形にしない</span>（s をつけない）。</li>
-      <li>量を表すときは <span class="highlight">much</span> を使うことがある (many は使わない)。</li>
-    </ul>
-  </section>
-
-  <section id="class-summary-articles">
-    <h3>2. 冠詞 (Articles: a, an, the)</h3>
-    <h4>a / an</h4>
-    <ul>
-      <li>数えられる名詞の<span class="highlight">単数形</span>につける。</li>
-      <li>特定されていない「あるひとつの〜」という意味。</li>
-      <li><span class="highlight">母音 (a, i, u, e, o) の音</span>で始まる単語の前では <span class="highlight">an</span> を使う (例: an umbrella)。</li>
-      <li>不可算名詞にはつけない。</li>
-    </ul>
-    <h4>the</h4>
-    <ul>
-      <li>特定できる「その〜」という意味で使う (例: 文脈上どの犬か分かる場合の the dog)。</li>
-      <li>世界に一つしかないものにつける (例: the moon, the earth)。</li>
-      <li><span class="highlight">単数形、複数形、不可算名詞のいずれにも使える</span>。</li>
-    </ul>
-    <h4>冠詞をつけない場合</h4>
-    <ul>
-      <li>不可算名詞 (例: I have homework.)</li>
-      <li>複数形の総称 (例: Teachers are busy. <span style="font-size:0.8em; color:#666;">※授業の例 Those women are teachers at my school. の teachers は特定の複数なので冠詞なしの例ではない</span>)</li>
-    </ul>
-  </section>
-
-  <section id="class-summary-examples-points">
-    <h3>3. 授業で扱った例とポイント</h3>
-    <ul>
-      <li>bread や butter は形が決まっていないため不可算名詞。</li>
-      <li>information (情報) や homework (宿題) も形がないため不可算名詞。</li>
-      <li>woman の複数形は <span class="highlight">women</span> で、発音 (ウィメン) に注意が必要。</li>
-      <li>文脈によって単数か複数かを判断する必要がある (例: Those women are teachers. → women が複数なので teachers も複数形)。</li>
-    </ul>
-  </section>
-
-  <section id="class-summary-future-plan2">
-    <h3>4. 次回の予定 (後半)</h3>
-    <ul>
-      <li>今回時間が足りなかった冠詞の問題（Drill 2番）と、次のページの内容に進む。</li>
-    </ul>
+  <section id="next-lesson">
+    <h3>次回の予定</h3>
+    <p>今回時間が足りなかった冠詞の問題（3番）と、次のページの内容に進む。</p>
     <p>この授業を通して、名詞の種類を意識し、単数・複数の形や冠詞を正しく使い分けることの重要性を学びました。</p>
   </section>
 
-  <hr class="section-separator">
+  <hr style="margin: 40px 0;">
 
-  <h2>教材 Get Ready ① 名詞・冠詞・代名詞</h2>
+  <h2>教材</h2>
+  <h3>Get Ready ① 名詞・冠詞・代名詞</h3>
 
-  <section id="text-noun">
-    <h3>A 名詞</h3>
+  <section id="material-noun">
+    <h4>A 名詞</h4>
     <p>名詞は人や物の名前を表す。数えられる名詞と数えられない名詞がある。</p>
-    <div class="example">Tom eats an apple and drinks water every morning. (毎朝トムはリンゴを食べ，水を飲む。)</div>
-    <p>名詞(人の名前)　名詞(物の名前) 名詞(物の名前)</p>
+    <p><em>Tom eats an apple and drinks water every morning.</em> 毎朝トムはリンゴを食べ，水を飲む。</p>
+    <p>名詞(人の名前)　名詞(物の名前)       名詞(物の名前)</p>
 
-    <h4>数えられる名詞（可算名詞）</h4>
-    <p>単数(１つのとき)の場合，名詞の前にaかanを付ける。<br>
-       複数(２つ以上のとき)の場合，名詞の語尾に-sか-esを付ける。<br>
-       ⇒ 名詞の不規則変化は教 p.146 / α p.128を参照。</p>
+    <h5>数えられる名詞（可算名詞）</h5>
+    <ul>
+      <li>単数(１つのとき)の場合，名詞の前にaかanを付ける。</li>
+      <li>複数(２つ以上のとき)の場合，名詞の語尾に-sか-esを付ける。</li>
+      <li>⇒ 名詞の不規則変化は教 p.146 / α p.128を参照。</li>
+    </ul>
 
-    <h4>数えられない名詞（１つ，２つ…と数えないもの。不可算名詞）</h4>
-    <p>名詞の前にa/anは付かない。<br>
-       名詞の語尾に-s/-esは付かない。</p>
+    <h5>数えられない名詞（１つ，２つ…と数えないもの。不可算名詞）</h5>
+    <ul>
+      <li>名詞の前にa/anは付かない。</li>
+      <li>名詞の語尾に-s/-esは付かない。</li>
+    </ul>
   </section>
 
-  <section id="text-article">
-    <h3>B 冠詞</h3>
+  <section id="material-article">
+    <h4>B 冠詞</h4>
     <p>冠詞は名詞の前に付く。aとanは「不特定のもの」が１つあることを表す。theはその名詞が「特定のもの(話し手と聞き手がどれを指すか理解できているもの)」であることを表す。</p>
     <table>
       <thead>
         <tr>
-          <th>話し手や聞き手の理解</th>
-          <th>数えられる名詞<br>単数（１つ）</th>
-          <th>数えられる名詞<br>複数（２つ以上）</th>
+          <th rowspan="2">話し手や聞き手の理解</th>
+          <th colspan="2">数えられる名詞</th>
           <th>数えられない名詞</th>
+        </tr>
+        <tr>
+          <th>単数（１つ）</th>
+          <th>複数（２つ以上）</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>どれを指しているのか<br>特定できない場合</td>
-          <td>a book<br>(１冊の)本</td>
+          <td><strong>a</strong> book<br>(１冊の)本</td>
           <td>books<br>(２冊以上の)本</td>
-          <td rowspan="2">water<br>水</td>
+          <td>water<br>水</td>
         </tr>
         <tr>
           <td>どれを指しているのか<br>特定できる場合</td>
-          <td>the book<br>その本</td>
-          <td>the books<br>それらの(２冊以上の)本</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>the water<br>その水</td>
+          <td><strong>the</strong> book<br>その本</td>
+          <td><strong>the</strong> books<br>それらの(２冊以上の)本</td>
+          <td><strong>the</strong> water<br>その水</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <section id="text-pronoun">
-    <h3>C 人称代名詞</h3>
+  <section id="material-pronoun">
+    <h4>C 人称代名詞</h4>
     <p>人称代名詞は名詞の代わりをする語。主格は主語に，目的格は目的語になる。所有格は名詞の前に付いて「～の」の意味を表す。所有代名詞は「～のもの」を表す代名詞で，〈所有格＋名詞〉の代わりとなる。</p>
     <table>
       <thead>
         <tr>
-          <th rowspan="2">人称</th>
+          <th rowspan="2">人 称</th>
           <th colspan="4">単 数</th>
           <th colspan="4">複 数</th>
         </tr>
         <tr>
-          <th>主格（～は）</th>
-          <th>所有格（～の）</th>
-          <th>目的格（～を）</th>
-          <th>所有代名詞</th>
-          <th>主格（～は）</th>
-          <th>所有格（～の）</th>
-          <th>目的格（～を）</th>
-          <th>所有代名詞</th>
+          <th>主格<br>（～は）</th>
+          <th>所有格<br>（～の）</th>
+          <th>目的格<br>（～を）</th>
+          <th>所有<br>代名詞</th>
+          <th>主格<br>（～は）</th>
+          <th>所有格<br>（～の）</th>
+          <th>目的格<br>（～を）</th>
+          <th>所有<br>代名詞</th>
         </tr>
       </thead>
       <tbody>
@@ -332,125 +361,157 @@
           <td>yours</td>
         </tr>
         <tr>
-          <td rowspan="3">３人称<br>自分と相手以外</td>
-          <td>he</td>
-          <td>his</td>
-          <td>him</td>
-          <td>his</td>
-          <td rowspan="3">they</td>
-          <td rowspan="3">their</td>
-          <td rowspan="3">them</td>
-          <td rowspan="3">theirs</td>
-        </tr>
-        <tr>
-          <td>she</td>
-          <td>her</td>
-          <td>her</td>
-          <td>hers</td>
-        </tr>
-         <tr>
-          <td>it</td>
-          <td>its</td>
-          <td>it</td>
-          <td>―</td>
+          <td>３人称<br>自分と相手以外</td>
+          <td>he<br>she<br>it</td>
+          <td>his<br>her<br>its</td>
+          <td>him<br>her<br>it</td>
+          <td>his<br>hers<br>―</td>
+          <td>they</td>
+          <td>their</td>
+          <td>them</td>
+          <td>theirs</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <hr class="section-separator">
+  <hr style="margin: 40px 0;">
 
-  <section id="drill">
-    <h2>Drill</h2>
+  <h2>Drill（問題）</h2>
+  <div class="workbook-ref">ワークブック本体 pp.4～5</div>
 
-    <section id="drill-1" class="drill-section">
-      <h3>１ [ ]内の名詞を必要に応じて適切な形にして，英文を完成させなさい。A</h3>
-      <div class="drill-item">
-        <p class="question-text">□ 1. 彼には兄[弟]が１人と，姉[妹]が２人いる。</p>
-        <p class="english-sentence">He has a <span class="blank"></span> and two <span class="blank"></span>.</p>
-        <p class="options">[ brother / sister ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 2. 私はバター付きのパンを食べる。</p>
-        <p class="english-sentence">I have <span class="blank"></span> and <span class="blank"></span>.</p>
-        <p class="options">[ bread / butter ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 3. 彼女はたくさんの国を訪れた。</p>
-        <p class="english-sentence">She visited many <span class="blank"></span>.</p>
-        <p class="options">[ country ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 4. 今日は何時間授業がありますか。</p>
-        <p class="english-sentence">How many <span class="blank"></span> do you have today?</p>
-        <p class="options">[ class ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 5. 彼は夕食用にいくつかジャガイモを買った。</p>
-        <p class="english-sentence">He bought some <span class="blank"></span> for dinner.</p>
-        <p class="options">[ potato ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 6. その子どもたちは３日間のキャンプに出かけた。</p>
-        <p class="english-sentence">The <span class="blank"></span> went camping for three <span class="blank"></span>.</p>
-        <p class="options">[ child / day ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 7. あの女の人たちは私の学校の先生だ。</p>
-        <p class="english-sentence">Those <span class="blank"></span> are <span class="blank"></span> at my school.</p>
-        <p class="options">[ woman / teacher ]</p>
-      </div>
-    </section>
+  <section class="drill-section" id="drill-1">
+    <h3>１ [ ]内の名詞を必要に応じて適切な形にして，英文を完成させなさい。A</h3>
+    <ol>
+      <li data-qnum="1"> 彼には兄[弟]が１人と，姉[妹]が２人いる。
+        <br>He has a<span class="drill-placeholder"></span> and two <span class="drill-placeholder"></span>. [ brother / sister ]
+      </li>
+      <li data-qnum="2"> 私はバター付きのパンを食べる。
+        <br>I have <span class="drill-placeholder"></span> and <span class="drill-placeholder"></span>. [ bread / butter ]
+      </li>
+      <li data-qnum="3"> 彼女はたくさんの国を訪れた。
+        <br>She visited many <span class="drill-placeholder"></span>. [ country ]
+      </li>
+      <li data-qnum="4"> 今日は何時間授業がありますか。
+        <br>How many <span class="drill-placeholder"></span> do you have today? [ class ]
+      </li>
+      <li data-qnum="5"> 彼は夕食用にいくつかジャガイモを買った。
+        <br>He bought some <span class="drill-placeholder"></span> for dinner. [ potato ]
+      </li>
+      <li data-qnum="6"> その子どもたちは３日間のキャンプに出かけた。
+        <br>The <span class="drill-placeholder"></span> went camping for three <span class="drill-placeholder"></span>. [ child / day ]
+      </li>
+      <li data-qnum="7"> あの女の人たちは私の学校の先生だ。
+        <br>Those <span class="drill-placeholder"></span> are <span class="drill-placeholder"></span> at my school. [ woman / teacher ]
+      </li>
+    </ol>
+  </section>
 
-    <section id="drill-2" class="drill-section">
-      <h3>２ [ ]内から適切な冠詞を選び，下線部に入れなさい。冠詞が必要ない場合は×と答えなさい。B</h3>
-      <div class="drill-item">
-        <p class="english-sentence">□ 1. Take <span class="blank"></span> umbrella.</p>
-      </div>
-      <div class="drill-item">
-        <p class="english-sentence">□ 2. I have <span class="blank"></span> dog and a cat. <span class="blank"></span> dog sleeps under my bed.</p>
-      </div>
-      <div class="drill-item">
-        <p class="english-sentence">□ 3. He has <span class="blank"></span> useful information.</p>
-      </div>
-      <div class="drill-item">
-        <p class="english-sentence">□ 4. I don’t have <span class="blank"></span> homework today.</p>
-      </div>
-      <div class="drill-item">
-        <p class="english-sentence">□ 5. <span class="blank"></span> moon is smaller than <span class="blank"></span> earth.</p>
-      </div>
-      <p class="options">[ a / an / the ]</p>
-    </section>
+  <section class="drill-section" id="drill-2">
+    <h3>２ [ ]内から適切な冠詞を選び，下線部に入れなさい。冠詞が必要ない場合は×と答えなさい。B</h3>
+    <ol>
+      <li data-qnum="1"> Take <span class="drill-placeholder"></span> umbrella. [ a / an / the ]</li>
+      <li data-qnum="2"> I have <span class="drill-placeholder"></span> dog and a cat. <span class="drill-placeholder"></span> dog sleeps under my bed. [ a / an / the ]</li>
+      <li data-qnum="3"> He has <span class="drill-placeholder"></span> useful information. [ a / an / the ]</li>
+      <li data-qnum="4"> I don’t have <span class="drill-placeholder"></span> homework today. [ a / an / the ]</li>
+      <li data-qnum="5"> <span class="drill-placeholder"></span> moon is smaller than <span class="drill-placeholder"></span> earth. [ a / an / the ]</li>
+    </ol>
+  </section>
 
-    <section id="drill-3" class="drill-section">
-      <h3>３ [ ]内の人称代名詞を必要に応じて適切な形にして，英文を完成させなさい。C</h3>
-      <div class="drill-item">
-        <p class="question-text">□ 1. 昨日，祖母の家を訪れた。</p>
-        <p class="english-sentence"><span class="blank"></span> visited <span class="blank"></span> grandmother yesterday.</p>
-        <p class="options">[ I ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 2. パーティーで彼を見かけた。</p>
-        <p class="english-sentence">I saw <span class="blank"></span> at the party.</p>
-        <p class="options">[ he ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 3. 彼は私たちにその写真を見せてくれた。</p>
-        <p class="english-sentence">Tom showed <span class="blank"></span> the picture.</p>
-        <p class="options">[ we ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 4. 私たちは彼らのサッカーの試合を見に行った。</p>
-        <p class="english-sentence">We went to watch <span class="blank"></span> soccer game.</p>
-        <p class="options">[ they ]</p>
-      </div>
-      <div class="drill-item">
-        <p class="question-text">□ 5.「これはあなたのものですか。」「いいえ，それは彼女のものです。」</p>
-        <p class="english-sentence">“Is this yours?” “No, it’s <span class="blank"></span>.”</p>
-        <p class="options">[ she ]</p>
-      </div>
-    </section>
+  <section class="drill-section" id="drill-3">
+    <h3>３ [ ]内の人称代名詞を必要に応じて適切な形にして，英文を完成させなさい。C</h3>
+    <ol>
+      <li data-qnum="1"> 昨日，祖母の家を訪れた。
+        <br><span class="drill-placeholder"></span> visited <span class="drill-placeholder"></span> grandmother yesterday. [ I ]
+      </li>
+      <li data-qnum="2"> パーティーで彼を見かけた。
+        <br>I saw <span class="drill-placeholder"></span> at the party. [ he ]
+      </li>
+      <li data-qnum="3"> 彼は私たちにその写真を見せてくれた。
+        <br>Tom showed <span class="drill-placeholder"></span> the picture. [ we ]
+      </li>
+      <li data-qnum="4"> 私たちは彼らのサッカーの試合を見に行った。
+        <br>We went to watch <span class="drill-placeholder"></span> soccer game. [ they ]
+      </li>
+      <li data-qnum="5">「これはあなたのものですか。」「いいえ，それは彼女のものです。」
+        <br>“Is this yours?” “No, it’s <span class="drill-placeholder"></span>.” [ she ]
+      </li>
+    </ol>
+  </section>
 
+  <hr style="margin: 40px 0;">
+
+  <h2>解答と解説</h2>
+  <div class="workbook-ref">ワークブック本体 pp.4～5</div>
+
+  <section class="answer-section" id="answer-1">
+    <h3>１ 解答</h3>
+    <ol>
+      <li data-qnum="1"> He has a <span class="answer-text">brother</span> and two <span class="answer-text">sisters</span>.</li>
+      <li data-qnum="2"> I have <span class="answer-text">bread</span> and <span class="answer-text">butter</span>.</li>
+      <li data-qnum="3"> She visited many <span class="answer-text">countries</span>.</li>
+      <li data-qnum="4"> How many <span class="answer-text">classes</span> do you have today?</li>
+      <li data-qnum="5"> He bought some <span class="answer-text">potatoes</span> for dinner.</li>
+      <li data-qnum="6"> The <span class="answer-text">children</span> went camping for three <span class="answer-text">days</span>.</li>
+      <li data-qnum="7"> Those <span class="answer-text">women</span> are <span class="answer-text">teachers</span> at my school.</li>
+    </ol>
+    <div class="explanation">
+      <h4>【解説】</h4>
+      <p>人や物の名前を表す名詞には，数えられる名詞と数えられない名詞がある。「数えられる」とは「１，２，３…」と数えることができる場合を指し，数えるのに形状・容器・単位が必要な場合は「数えられない」と考える。(例) a piece of paper「１枚の紙」，a glass of water「１杯の水」，a liter of milk「１リットルの牛乳」。</p>
+      <ol>
+        <li>brother「兄[弟]」，sister「姉[妹]」は数えられる名詞。単数(１人)の場合，名詞の前にaを付ける。複数(２人以上)の場合，名詞の語尾に-sを付けて複数形にする。</li>
+        <li>bread「パン」，butter「バター」はどちらも数えられない名詞。名詞の前にaは付かず，名詞の語尾に-sは付かない。</li>
+        <li>country「国」は数えられる名詞なので，複数形にする。語尾が〈子音字＋y〉の語はyをiに変えて-esを付ける。</li>
+        <li>class「授業」は数えられる名詞なので，複数形にする。語尾がsで終わる語には-esを付ける。</li>
+        <li>potato「ジャガイモ」は数えられる名詞なので，複数形にする。語尾が〈子音字＋o〉の語には-esを付ける。</li>
+        <li>child「子ども」，day「日」は数えられる名詞。childは不規則変化をする名詞で，複数形はchildren。dayのように，語尾が〈母音字＋y〉の語はそのまま-sを付ける。</li>
+        <li>woman「女の人」，teacher「先生」はどちらも数えられる名詞。womanは不規則変化をする名詞で，複数形はwomen /wímɪn/。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="answer-section" id="answer-2">
+    <h3>２ 解答</h3>
+    <ol>
+      <li data-qnum="1"> Take <span class="answer-text">an</span> umbrella.</li>
+      <li data-qnum="2"> I have <span class="answer-text">a</span> dog and a cat. <span class="answer-text">The</span> dog sleeps under my bed.</li>
+      <li data-qnum="3"> He has <span class="answer-text">×</span> useful information.</li>
+      <li data-qnum="4"> I don’t have <span class="answer-text">×</span> homework today.</li>
+      <li data-qnum="5"> <span class="answer-text">The</span> moon is smaller than <span class="answer-text">the</span> earth.</li>
+    </ol>
+    <div class="explanation">
+      <h4>【解説】</h4>
+      <p>冠詞は名詞の前に付き，話し手や聞き手の理解の状況(特定されたものか特定されていないものか)を表す。</p>
+      <ol>
+        <li>「傘を持って行きなさい。」umbrella「傘」は数えられる名詞で単数形なのでanを付ける。a/anは「不特定のもの」が１つあることを表す。つまり，その会話で初めて出てくる語で，聞き手は何を指しているのか特定できていないことを示す。発音が子音で始まる語の前にはaを，発音が母音で始まる語の前にはanを付ける。a dog /dɔ́(ː)ɡ/, an apple /ǽpl/。どの傘を持って行くかあらかじめ決まっている場合は，Take the umbrella. やTake your umbrella. でもよい。</li>
+        <li>「私は犬と猫を飼っている。犬は私のベッドの下で寝る。」dog「犬」は数えられる名詞で単数形なのでaを付ける。１文目ではaが付いて不特定のものであることを示しているが，２文目ではtheを付けて特定のものであることを示す。theは聞き手が何を指しているのか特定できる場合に，名詞の前に置く。</li>
+        <li>「彼は役に立つ情報を持っている。」information「情報」は数えられない名詞で，特定できない場合は冠詞を付けない。特定できる場合はthe information「その情報」となる。</li>
+        <li>「今日は宿題がない。」homework「宿題」は数えられない名詞で，特定できない場合は冠詞を付けない。特定できる場合はthe homework「その宿題」となる。</li>
+        <li>「月は地球よりも小さい。」１つしか存在しないものにはtheを付ける。その会話で初めて出てきても，聞き手がどれを指しているか特定できるからである。theの発音は，後ろの語の発音が子音で始まるときは/ðə/，母音で始まるときは/ði/と発音する。the moon /ðə múːn/, the earth / ð́i ə́ːrθ/。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="answer-section" id="answer-3">
+    <h3>３ 解答</h3>
+    <ol>
+      <li data-qnum="1"> <span class="answer-text">I</span> visited <span class="answer-text">my</span> grandmother yesterday.</li>
+      <li data-qnum="2"> I saw <span class="answer-text">him</span> at the party.</li>
+      <li data-qnum="3"> Tom showed <span class="answer-text">us</span> the picture.</li>
+      <li data-qnum="4"> We went to watch <span class="answer-text">their</span> soccer game.</li>
+      <li data-qnum="5"> “Is this yours?” “No, it’s <span class="answer-text">hers</span>.”</li>
+    </ol>
+    <div class="explanation">
+      <h4>【解説】</h4>
+      <p>人称代名詞は人を表す名詞の代わりをする語で，格変化をする。</p>
+      <ol>
+        <li>１人称単数の主格はI「私は」で，所有格はmy「私の」で表す。なお，目的格はme「私を」で表す。</li>
+        <li>男性３人称単数の目的格はhim「彼を」で表す。なお，主格はhe「彼は」，所有格はhis「彼の」で表す。</li>
+        <li>１人称複数の目的格はus「私たちに[を]」で表す。なお，主格はwe「私たちは」，所有格はour「私たちの」で表す。</li>
+        <li>３人称複数の所有格はtheir「彼らの」で表す。なお，主格はthey「彼らは」，目的格はthem「彼らを」で表す。</li>
+        <li>２人称単数の所有代名詞はyours「あなたのもの」で，女性３人称単数の所有代名詞はhers「彼女のもの」で表す。ほかの所有代名詞はmine「私のもの」，his「彼のもの」，ours「私たちのもの」，yours「あなた方のもの」，theirs「彼らのもの」となる。所有代名詞「～のもの」は〈所有格＋名詞〉の代わりとして使う。(例) “Is this your bag?” “Yes, it’s mine.”「これはあなたのかばんですか。」「はい。私のかばんです。」</li>
+      </ol>
+    </div>
   </section>
 
 </div>
