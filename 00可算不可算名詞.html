@@ -111,6 +111,13 @@
             font-weight: 700;
             color: var(--text-color);
         }
+        /* Emphasize shape/form concept */
+        .shape-emphasis {
+            font-weight: bold;
+            color: var(--accent-color);
+            border-bottom: 2px dotted var(--accent-color);
+        }
+
 
         code {
             background-color: #e9ecef;
@@ -173,6 +180,39 @@
             background-color: #e9ecef;
             transition: background-color var(--transition-speed);
         }
+        /* Style for plural rules details */
+        .plural-rules-details {
+             margin-top: 20px;
+             padding: 15px;
+             background-color: #f8f9fa;
+             border-radius: 8px;
+             border: 1px solid var(--border-color);
+             font-size: 0.95em; /* Slightly smaller font for details */
+        }
+        .plural-rules-details h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.2em;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 5px;
+        }
+        .plural-rules-details strong {
+            color: var(--primary-color);
+        }
+        .plural-rules-details .rule-memo {
+            font-style: italic;
+            color: var(--accent-color);
+        }
+        .plural-rules-details ul {
+            list-style-position: inside;
+            padding-left: 0; /* Reset default padding */
+            margin-bottom: 0;
+        }
+        .plural-rules-details li {
+            margin-bottom: 10px;
+        }
+
 
         .comparison-grid {
             display: grid;
@@ -330,33 +370,35 @@
                 <h2>A 名詞ってなに？</h2>
                 <p>名詞は、人 (<code>Tom</code>)、物 (<code>apple</code>)、場所 (<code>park</code>)、概念 (<code>information</code>) などの名前を表す言葉だよ。英語の名詞を使いこなす上で超重要なのが、「数えられる」か「数えられない」かの区別なんだ。</p>
                 <p><em>例文:</em> Tom eats <code class="highlight-countable">an apple</code> and drinks <code class="highlight-uncountable">water</code> every morning. （トムは毎朝リンゴを1つ食べ、水を飲む。）</p>
-                <p>この違いが、<code>a</code>/<code>an</code> を付けるか、複数形 (<code>-s</code>) にするか、どんな言葉（<code>many</code> や <code>much</code> など）と一緒に使うかを決めるカギになるんだ！</p>
+                <p>この違いが、<code>a</code>/<code>an</code> を付けるか、複数形 (<code>-s</code> や <code>-es</code>) にするか、どんな言葉（<code>many</code> や <code>much</code> など）と一緒に使うかを決めるカギになるんだ！</p>
+                <p>基本的に、<strong class="shape-emphasis">はっきりとした姿・形が思い浮かべられて、一つひとつ数えられるモノ</strong> が <span class='highlight-countable'>可算名詞</span>、<strong class="shape-emphasis">決まった形がなく、素材や概念全体を指すようなモノ</strong> が <span class='highlight-uncountable'>不可算名詞</span> と考えると分かりやすいよ。</p>
             </section>
 
             <section id="boundary">
                 <h2>① 境界線はどこ？ 〜可算と不可算を見分けるコツ〜</h2>
-                <p>この２つのグループを分ける<strong>本質的な境界線</strong>は、<strong>「明確な形・輪郭があって、1つ、2つ…と個別に指さして認識できるか？」</strong>という点にあるんだ。</p>
+                <p>この２つのグループを見分ける<strong style="color: var(--accent-color); font-size: 1.1em;">一番のポイント</strong>は、<strong>「その名詞を聞いて、<span class="shape-emphasis">具体的な姿や形をパッと思い浮かべられるか？</span>」</strong>ということなんだ。もし、<strong class="shape-emphasis">はっきりとした輪郭があって『あ、これ1個』と個別に認識できるモノ</strong>なら、それは<span class='highlight-countable'>可算名詞</span>の可能性が高いよ。</p>
+                <p>逆に、水や情報のように<strong class="shape-emphasis">決まった形がなかったり、どこからどこまでが「1つ」なのか区切りが曖昧だったりするもの</strong>は<span class='highlight-uncountable'>不可算名詞</span>になることが多いんだ。</p>
 
                 <div class="explanation-box">
                     <h4>🤔 思考実験タイム 🤔</h4>
-                    <p>頭の中でそのモノやコトを思い浮かべてみて。「あ、これ1個」「こっちは2個目」ってはっきり区切れるかな？</p>
+                    <p>頭の中でそのモノやコトを思い浮かべてみて。<strong><span class="shape-emphasis">具体的な『形』が見えるかな？</span></strong> 1個、2個って区切れる感じ？</p>
                     <ul>
-                        <li><strong>YES! はっきり区切れる！</strong> → <span class="highlight-countable">可算名詞</span> の可能性大！ (例: <code class="highlight-countable">apple</code>, <code class="highlight-countable">chair</code>, <code class="highlight-countable">idea</code>) - ちゃんと輪郭が見える！</li>
-                        <li><strong>NO... なんか境界が曖昧...</strong> → <span class="highlight-uncountable">不可算名詞</span> かもしれない！ (例: <code class="highlight-uncountable">water</code>, <code class="highlight-uncountable">information</code>, <code class="highlight-uncountable">furniture</code>) - モノ全体とか、形のない概念を指してる感じ。</li>
+                        <li><strong>YES! 形が見える！区切れる！</strong> → <span class="highlight-countable">可算名詞</span> の可能性大！ (例: <code class="highlight-countable">apple</code>, <code class="highlight-countable">chair</code>, <code class="highlight-countable">idea</code>) - <strong class="shape-emphasis">姿・形がはっきり</strong>している！</li>
+                        <li><strong>NO... なんかボンヤリ...形がない/決まってない...</strong> → <span class="highlight-uncountable">不可算名詞</span> かもしれない！ (例: <code class="highlight-uncountable">water</code>, <code class="highlight-uncountable">information</code>, <code class="highlight-uncountable">furniture</code>) - <strong class="shape-emphasis">素材そのものや、形のない概念</strong>を指してる感じ。</li>
                     </ul>
                 </div>
 
                 <h3>具体例で見てみよう！</h3>
                 <ul>
-                    <li><code class="highlight-countable">apple</code> (リンゴ): 一つひとつ形がはっきり。数えやすいね！→ <strong>可算</strong></li>
-                    <li><code class="highlight-uncountable">water</code> (水): 液体そのもの。どこまでが「1つの水」か区切れない。→ <strong>不可算</strong></li>
-                    <li><code class="highlight-countable">chair</code> (椅子): これも形が明確。「1脚、2脚…」と数えられる。→ <strong>可算</strong></li>
-                    <li><code class="highlight-uncountable">information</code> (情報): 形のない概念。「1つの情報」とは普通言わない。→ <strong>不可算</strong></li>
+                    <li><code class="highlight-countable">apple</code> (リンゴ): 一つひとつ<strong class="shape-emphasis">形がはっきり</strong>。数えやすいね！→ <strong>可算</strong></li>
+                    <li><code class="highlight-uncountable">water</code> (水): 液体そのもの。<strong class="shape-emphasis">決まった形がなく</strong>、どこまでが「1つの水」か区切れない。→ <strong>不可算</strong></li>
+                    <li><code class="highlight-countable">chair</code> (椅子): これも<strong class="shape-emphasis">形が明確</strong>。「1脚、2脚…」と数えられる。→ <strong>可算</strong></li>
+                    <li><code class="highlight-uncountable">information</code> (情報): <strong class="shape-emphasis">形のない概念</strong>。「1つの情報」とは普通言わない。→ <strong>不可算</strong></li>
                 </ul>
             </section>
 
             <section id="rules">
-                 <h2>③ 使い方のルール早見表</h2>
+                 <h2>② 使い方のルール早見表</h2>
                  <p>可算名詞と不可算名詞の基本的な使い方をまとめたよ。これさえ押さえれば、文法ミスがぐっと減るはず！</p>
                  <div style="overflow-x: auto;"> <!-- Make table responsive -->
                     <table class="rule-table">
@@ -375,7 +417,12 @@
                             </tr>
                             <tr>
                                 <td><strong>複数形 (2つ以上の時)</strong></td>
-                                <td>語尾に <code>-s</code> / <code>-es</code> を付ける (例: <code>apples</code>, <code>boxes</code>)<br>※不規則変化あり (後述)</td>
+                                <td>
+                                    基本は語尾に <code>-s</code> / <code>-es</code> を付ける。<br>
+                                    (例: <code>apples</code>, <code>boxes</code>)<br>
+                                    ※作り方の詳細は下記参照。<br>
+                                    ※不規則変化は <strong>⑤</strong> を参照。
+                                </td>
                                 <td>複数形は通常<span style="color: var(--error-color); font-weight: bold;">ない</span> (<code>-s</code> / <code>-es</code> は付かない)</td>
                             </tr>
                             <tr>
@@ -400,17 +447,47 @@
                         </tbody>
                     </table>
                  </div>
+
+                 <div class="plural-rules-details">
+                    <h4>可算名詞の複数形の作り方（詳細）</h4>
+                    <ul>
+                        <li>
+                            <strong>基本:</strong> 語尾に <code>-s</code> を付ける。<br>
+                            (例: <code>cat</code> → <code>cats</code>, <code>book</code> → <code>books</code>)
+                        </li>
+                        <li>
+                            <strong>-es を付ける場合:</strong> 語尾が <strong>s, o, x, sh, ch</strong> のとき。<br>
+                            <span class="rule-memo">→ 覚え方: 「<span style="font-weight:bold;">ソックス</span>(s, o, x) <span style="font-weight:bold;">はいて</span> <span style="font-weight:bold;">集中</span>(sh, ch)！」</span><br>
+                            (例: <code>bus</code>→<code>buses</code>, <code>potato</code>→<code>potatoes</code>, <code>box</code>→<code>boxes</code>, <code>dish</code>→<code>dishes</code>, <code>church</code>→<code>churches</code>)<br>
+                            <span style="font-size:0.9em;">※語尾が o でも <code>piano</code>→<code>pianos</code> のような例外もあるよ。</span>
+                        </li>
+                        <li>
+                            <strong>y を i に変えて -es を付ける場合:</strong> 語尾が <strong><子音字> + y</strong> のとき。<br>
+                            (例: <code>country</code>→<code>countries</code>, <code>study</code>→<code>studies</code>, <code>city</code>→<code>cities</code>)<br>
+                             <span style="font-size:0.9em;">※<母音字> + y (例: <code>boy</code>, <code>key</code>) はそのまま <code>-s</code> を付ける (<code>boys</code>, <code>keys</code>)</span>
+                        </li>
+                         <li>
+                            <strong>f / fe を v に変えて -es を付ける場合:</strong> 語尾が <strong>f</strong> や <strong>fe</strong> のとき。(一部)<br>
+                            (例: <code>leaf</code>→<code>leaves</code>, <code>knife</code>→<code>knives</code>)<br>
+                            <span style="font-size:0.9em;">※<code>roof</code>→<code>roofs</code> のような例外もあるよ。</span>
+                        </li>
+                        <li>
+                            <strong>不規則変化:</strong> まったく違う形になるもの。<br>
+                            → リストは <strong>⑤</strong> を見てね！ (例: <code>man</code>→<code>men</code>, <code>child</code>→<code>children</code>)
+                        </li>
+                    </ul>
+                 </div>
             </section>
 
              <section id="common-mistakes">
-                <h2>② 要注意！日本人が間違いやすい名詞たち</h2>
-                <p>日本語の感覚だと数えられそうなのに、英語では不可算名詞になるものがあるんだ。「境界線」の考え方でスッキリ理解しよう！</p>
+                <h2>③ 要注意！日本人が間違いやすい名詞たち</h2>
+                <p>日本語の感覚だと数えられそうなのに、英語では不可算名詞になるものがあるんだ。「<strong class="shape-emphasis">姿・形</strong>」の考え方でスッキリ理解しよう！</p>
 
                 <details>
                     <summary>Furniture (家具)</summary>
                     <div class="details-content">
                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
-                        <p><strong>理由:</strong> 椅子、机、棚などの<strong>総称・集合体</strong>。個々の<code>a chair</code>や<code>a table</code>は可算だけど、<code>furniture</code>は「家具類」という境界が曖昧なカテゴリー全体を指すから。個々のアイテムではなく、種類全体として捉えるんだ。</p>
+                        <p><strong>理由:</strong> 椅子、机、棚などの<strong>総称・集合体</strong>。個々の<code>a chair</code>や<code>a table</code>は<strong class="shape-emphasis">形がある</strong>ので可算だけど、<code>furniture</code>は「家具類」という<strong class="shape-emphasis">境界が曖昧なカテゴリー全体</strong>を指すから。個々のアイテムではなく、種類全体として捉えるんだ。</p>
                         <p><strong>数えたい時:</strong> <code>a piece of furniture</code> (家具1点), <code>three pieces of furniture</code> (家具3点)</p>
                     </div>
                 </details>
@@ -419,7 +496,7 @@
                     <summary>Advice (助言)</summary>
                     <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
-                         <p><strong>理由:</strong> 形のない<strong>概念</strong>。「アドバイス」という中身そのものを指していて、明確な境界線や個数がないから。</p>
+                         <p><strong>理由:</strong> <strong class="shape-emphasis">形のない概念</strong>。「アドバイス」という中身そのものを指していて、明確な境界線や個数がないから。</p>
                          <p><strong>数えたい時:</strong> <code>a piece of advice</code> (一つの助言), <code>some advice</code> (いくつかのアドバイス)</p>
                      </div>
                 </details>
@@ -428,7 +505,7 @@
                     <summary>Information (情報)</summary>
                     <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
-                         <p><strong>理由:</strong>これも形のない<strong>抽象的な概念</strong>。境界線がないから、個数で数えない。</p>
+                         <p><strong>理由:</strong>これも<strong class="shape-emphasis">形のない抽象的な概念</strong>。境界線がないから、個数で数えない。</p>
                          <p><strong>数えたい時:</strong> <code>a piece of information</code> (一つの情報)</p>
                      </div>
                 </details>
@@ -437,7 +514,7 @@
                     <summary>News (ニュース)</summary>
                     <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 形は<code>-s</code>だけど単数扱い！</p>
-                         <p><strong>理由:</strong>「新しい出来事に関する知らせ」という<strong>単一の概念</strong>として扱われる。個々のニュース記事ではなく、「ニュースというもの」全体を指す感覚。</p>
+                         <p><strong>理由:</strong>「新しい出来事に関する知らせ」という<strong class="shape-emphasis">単一の概念</strong>として扱われる。個々のニュース記事ではなく、「ニュースというもの」全体を指す感覚。これも<strong class="shape-emphasis">決まった形はない</strong>ね。</p>
                          <p><strong>注意点:</strong> 常に単数動詞を使う！ (例: <code>The news <strong>is</strong> good.</code>)</p>
                      </div>
                 </details>
@@ -446,7 +523,7 @@
                     <summary>Luggage / Baggage (手荷物)</summary>
                      <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
-                         <p><strong>理由:</strong> スーツケース (<code>suitcase</code> - 可算) やバッグ (<code>bag</code> - 可算) などの<strong>集合体</strong>。<code>furniture</code>と同じ考え方。</p>
+                         <p><strong>理由:</strong> スーツケース (<code>suitcase</code> - 可算) やバッグ (<code>bag</code> - 可算) などの<strong>集合体</strong>。<code>furniture</code>と同じで、<strong class="shape-emphasis">個々の形ではなく、全体を指す</strong>から。</p>
                          <p><strong>数えたい時:</strong> <code>a piece of luggage/baggage</code> (手荷物1個)</p>
                      </div>
                 </details>
@@ -455,7 +532,7 @@
                     <summary>Bread (パン)</summary>
                     <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 基本的に</p>
-                         <p><strong>理由:</strong> 切る前の塊や、<strong>物質・材料</strong>として捉えることが多いから。明確な「1単位」が決まっていない感じ。</p>
+                         <p><strong>理由:</strong> 切る前の塊や、<strong><span class="shape-emphasis">物質・材料</span></strong>として捉えることが多いから。<strong class="shape-emphasis">明確な「1単位」の形が決まっていない</strong>感じ。</p>
                          <p><strong>数えたい時:</strong> <code>a slice of bread</code> (パン1切れ), <code>a loaf of bread</code> (パン1斤), <code>two pieces of bread</code> (パン2切れ)。ロールパンなど特定の形状のものは <code>a roll</code>, <code>two rolls</code> のように可算名詞で言うこともあるよ。</p>
                      </div>
                 </details>
@@ -464,10 +541,10 @@
                     <summary>Paper (紙)</summary>
                      <div class="details-content">
                          <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 物質として</p>
-                         <p><strong>理由:</strong> 書いたり印刷したりする<strong>素材・物質</strong>としての「紙」を指す時。 (例: <code>I need some paper.</code>)</p>
+                         <p><strong>理由:</strong> 書いたり印刷したりする<strong><span class="shape-emphasis">素材・物質</span>としての「紙」</strong>を指す時。 (例: <code>I need some paper.</code>)</p>
                          <hr>
                          <p><strong class="highlight-countable">可算 (Countable)</strong> - 書類・新聞として</p>
-                         <p><strong>理由:</strong> <code>a paper</code> = 「新聞 (<code>a newspaper</code>)」や「論文・レポート」など、特定の<strong>成果物・書類</strong>を指す時。この場合は、個別の「作品」としての境界線がある。</p>
+                         <p><strong>理由:</strong> <code>a paper</code> = 「新聞 (<code>a newspaper</code>)」や「論文・レポート」など、特定の<strong>成果物・書類 (<span class="shape-emphasis">特定の形になったもの</span>)</strong> を指す時。この場合は、個別の「作品」としての境界線がある。</p>
                      </div>
                 </details>
 
@@ -475,64 +552,63 @@
 
             <section id="pair-comparison">
                 <h2>④ 似てるけど違う！可算/不可算ペア対決</h2>
-                <p>意味が似ているのに、片方は可算、もう片方は不可算という紛らわしいペアがあるんだ。これも「境界線」を意識すれば見分けられる！</p>
+                <p>意味が似ているのに、片方は可算、もう片方は不可算という紛らわしいペアがあるんだ。これも「<strong class="shape-emphasis">具体的な姿・形があるか、それとも抽象的な概念や全体か</strong>」を意識すれば見分けられる！</p> 
                 <div class="comparison-grid">
-                    <div class="comparison-card">
+                     <div class="comparison-card">
                         <h4><span class="type-countable">Job</span> (可算) vs <span class="type-uncountable">Work</span> (不可算)</h4>
-                        <p><strong class="type-countable">Job:</strong> 具体的な「職業」「職務」「仕事口」。一つひとつ区別できるポジションやタスク。境界線が明確。</br>例: <code>I'm looking for a new job.</code> (新しい仕事を探している)</p>
+                        <p><strong class="type-countable">Job:</strong> 具体的な「職業」「職務」「仕事口」。<strong class="shape-emphasis">一つひとつ区別できる</strong>ポジションやタスク。境界線が明確。</br>例: <code>I'm looking for a new job.</code> (新しい仕事を探している)</p>
                         <hr>
-                        <p><strong class="type-uncountable">Work:</strong> 一般的な「労働」「作業」「仕事」という活動や概念全体。境界線が曖昧なエネルギーや時間を使う行為。</br>例: <code>I have a lot of work to do.</code> (やるべき仕事がたくさんある)</p>
+                        <p><strong class="type-uncountable">Work:</strong> 一般的な「労働」「作業」「仕事」という<strong class="shape-emphasis">活動や概念全体</strong>。<strong class="shape-emphasis">境界線が曖昧</strong>なエネルギーや時間を使う行為。</br>例: <code>I have a lot of work to do.</code> (やるべき仕事がたくさんある)</p>
                     </div>
 
                     <div class="comparison-card">
                         <h4><span class="type-countable">Journey / Trip</span> (可算) vs <span class="type-uncountable">Travel</span> (不可算)</h4>
-                        <p><strong class="type-countable">Journey/Trip:</strong> 特定の「旅行」「行程」。始まりと終わりがあり、一つのイベントとして個別に数えられる。境界線が明確。</br>例: <code>We had a wonderful trip to Kyoto.</code> (京都への素晴らしい旅行をした)</p>
+                        <p><strong class="type-countable">Journey/Trip:</strong> 特定の「旅行」「行程」。<strong class="shape-emphasis">始まりと終わりがあり、一つのイベント</strong>として個別に数えられる。境界線が明確。</br>例: <code>We had a wonderful trip to Kyoto.</code> (京都への素晴らしい旅行をした)</p>
                         <hr>
-                         <p><strong class="type-uncountable">Travel:</strong> 一般的な「旅行」「移動」という行為や概念全体。境界線が曖昧なアクティビティ。</br>例: <code>Travel broadens the mind.</code> (旅は視野を広げる)</p>
+                         <p><strong class="type-uncountable">Travel:</strong> 一般的な「旅行」「移動」という<strong class="shape-emphasis">行為や概念全体</strong>。<strong class="shape-emphasis">境界線が曖昧</strong>なアクティビティ。</br>例: <code>Travel broadens the mind.</code> (旅は視野を広げる)</p>
                     </div>
 
                      <div class="comparison-card">
                         <h4><span class="type-countable">Climate</span> (可算) vs <span class="type-uncountable">Weather</span> (不可算)</h4>
-                        <p><strong class="type-countable">Climate:</strong> 特定地域の長期的な「気候」。地域ごとに区別され、一つのパターンとして認識できる。境界線がある程度明確。</br>例: <code>Japan has several different climates.</code> (日本にはいくつかの異なる気候がある)</p>
+                        <p><strong class="type-countable">Climate:</strong> 特定地域の長期的な「気候」。地域ごとに区別され、<strong class="shape-emphasis">一つのパターン</strong>として認識できる。境界線がある程度明確。</br>例: <code>Japan has several different climates.</code> (日本にはいくつかの異なる気候がある)</p>
                         <hr>
-                        <p><strong class="type-uncountable">Weather:</strong> 日々の「天気」。絶えず変化し、特定の形や区切りがない状態。境界線が非常に曖昧。</br>例: <code>We had terrible weather yesterday.</code> (昨日はひどい天気だった)</p>
+                        <p><strong class="type-uncountable">Weather:</strong> 日々の「天気」。絶えず変化し、<strong class="shape-emphasis">特定の形や区切りがない状態</strong>。境界線が非常に曖昧。</br>例: <code>We had terrible weather yesterday.</code> (昨日はひどい天気だった)</p>
                     </div>
 
                     <div class="comparison-card">
                         <h4><span class="type-countable">Machine / Device</span> (可算) vs <span class="type-uncountable">Machinery / Equipment</span> (不可算)</h4>
-                        <p><strong class="type-countable">Machine/Device:</strong> 個々の「機械」「装置」。一つひとつ数えられる具体的な物。境界線が明確。</br>例: <code>This factory has many new machines.</code> (この工場には多くの新しい機械がある)</p>
+                        <p><strong class="type-countable">Machine/Device:</strong> 個々の「機械」「装置」。<strong class="shape-emphasis">一つひとつ数えられる具体的な物</strong>。境界線が明確。</br>例: <code>This factory has many new machines.</code> (この工場には多くの新しい機械がある)</p>
                         <hr>
-                         <p><strong class="type-uncountable">Machinery/Equipment:</strong> (集合的に)「機械類」「設備」「装置類」。個々の機械ではなく、システムやカテゴリー全体を指す。境界線が曖昧な集合体。</br>例: <code>The company invested in new machinery.</code> (その会社は新しい機械設備に投資した)</p>
+                         <p><strong class="type-uncountable">Machinery/Equipment:</strong> (集合的に)「機械類」「設備」「装置類」。個々の機械ではなく、<strong class="shape-emphasis">システムやカテゴリー全体</strong>を指す。<strong class="shape-emphasis">境界線が曖昧な集合体</strong>。</br>例: <code>The company invested in new machinery.</code> (その会社は新しい機械設備に投資した)</p>
                     </div>
 
                      <div class="comparison-card">
                         <h4><span class="type-countable">View</span> (可算) vs <span class="type-uncountable">Scenery</span> (不可算)</h4>
-                        <p><strong class="type-countable">View:</strong> 特定の場所から見える「眺め」「景色」。窓からの眺めなど、区切られた視界。境界線がある。</br>例: <code>The room has a beautiful view of the ocean.</code> (その部屋からは海の美しい眺めが見える)</p>
+                        <p><strong class="type-countable">View:</strong> 特定の場所から見える「眺め」「景色」。窓からの眺めなど、<strong class="shape-emphasis">区切られた視界</strong>。境界線がある。</br>例: <code>The room has a beautiful view of the ocean.</code> (その部屋からは海の美しい眺めが見える)</p>
                         <hr>
-                         <p><strong class="type-uncountable">Scenery:</strong> ある地域全体の「風景」「景色」。広範囲にわたる自然の眺め全体を指す。境界線が曖昧な全体像。</br>例: <code>We enjoyed the beautiful mountain scenery.</code> (私たちは美しい山の風景を楽しんだ)</p>
+                         <p><strong class="type-uncountable">Scenery:</strong> ある地域全体の「風景」「景色」。<strong class="shape-emphasis">広範囲にわたる自然の眺め全体</strong>を指す。<strong class="shape-emphasis">境界線が曖昧な全体像</strong>。</br>例: <code>We enjoyed the beautiful mountain scenery.</code> (私たちは美しい山の風景を楽しんだ)</p>
                     </div>
 
                     <div class="comparison-card">
                         <h4><span class="type-countable">Coin / Note(UK) / Bill(US)</span> (可算) vs <span class="type-uncountable">Money / Cash / Currency</span> (不可算)</h4>
-                        <p><strong class="type-countable">Coin/Note/Bill:</strong> 具体的な「硬貨」「紙幣」。物理的に一つひとつ数えられる物。境界線が明確。</br>例: <code>I found a 100 yen coin.</code> / <code>He paid with five £10 notes.</code></p>
+                        <p><strong class="type-countable">Coin/Note/Bill:</strong> 具体的な「硬貨」「紙幣」。<strong class="shape-emphasis">物理的に一つひとつ数えられる物</strong>。境界線が明確。</br>例: <code>I found a 100 yen coin.</code> / <code>He paid with five £10 notes.</code></p>
                         <hr>
-                         <p><strong class="type-uncountable">Money/Cash/Currency:</strong> 一般的な「お金」「現金」「通貨」という価値や概念全体。境界線が曖昧なシステムや抽象概念。</br>例: <code>How much money do you have?</code> (いくらお金を持っていますか？)</p>
+                         <p><strong class="type-uncountable">Money/Cash/Currency:</strong> 一般的な「お金」「現金」「通貨」という<strong class="shape-emphasis">価値や概念全体</strong>。<strong class="shape-emphasis">境界線が曖昧なシステムや抽象概念</strong>。</br>例: <code>How much money do you have?</code> (いくらお金を持っていますか？)</p>
                     </div>
 
                      <div class="comparison-card">
                         <h4><span class="type-countable">Song / Tune</span> (可算) vs <span class="type-uncountable">Music</span> (不可算)</h4>
-                        <p><strong class="type-countable">Song/Tune:</strong> 個々の「歌」「曲」。一つひとつ独立した作品として数えられる。境界線が明確。</br>例: <code>She sang a beautiful song.</code> (彼女は美しい歌を歌った)</p>
+                        <p><strong class="type-countable">Song/Tune:</strong> 個々の「歌」「曲」。<strong class="shape-emphasis">一つひとつ独立した作品</strong>として数えられる。境界線が明確。</br>例: <code>She sang a beautiful song.</code> (彼女は美しい歌を歌った)</p>
                         <hr>
-                         <p><strong class="type-uncountable">Music:</strong> 一般的な「音楽」という芸術形式や概念全体。境界線が曖昧な音の集合体。</br>例: <code>I love listening to music.</code> (私は音楽を聴くのが大好きだ)</p>
+                         <p><strong class="type-uncountable">Music:</strong> 一般的な「音楽」という<strong class="shape-emphasis">芸術形式や概念全体</strong>。<strong class="shape-emphasis">境界線が曖昧な音の集合体</strong>。</br>例: <code>I love listening to music.</code> (私は音楽を聴くのが大好きだ)</p>
                     </div>
 
                      <div class="comparison-card">
                         <h4><span class="type-countable">Vegetable</span> (可算) vs <span class="type-uncountable">Fruit</span> (通常不可算)</h4>
-                        <p><strong class="type-countable">Vegetable:</strong> 個々の「野菜」。通常、一つひとつ数えることができる。(例: <code>carrots</code>, <code>potatoes</code>)</br>例: <code>Eat plenty of fresh vegetables.</code> (新鮮な野菜をたくさん食べなさい)</p>
+                        <p><strong class="type-countable">Vegetable:</strong> 個々の「野菜」。通常、<strong class="shape-emphasis">一つひとつ数えることができる</strong>。(例: <code>carrots</code>, <code>potatoes</code>)</br>例: <code>Eat plenty of fresh vegetables.</code> (新鮮な野菜をたくさん食べなさい)</p>
                         <hr>
-                         <p><strong class="type-uncountable">Fruit:</strong> (集合的に)「果物」「果実類」。食品のカテゴリーとして全体を指すことが多い。境界線が曖昧な集合体。</br>例: <code>Fruit is good for your health.</code> (果物は健康に良い)<br><strong>※注意:</strong> 特定の「種類」の果物や、個数を意識する場合は可算 (例: <code>an apple</code>, <code>three bananas</code>, <code>We grow various fruits.</code>) になることもある、ややこしいヤツ！</p>
+                         <p><strong class="type-uncountable">Fruit:</strong> (集合的に)「果物」「果実類」。<strong class="shape-emphasis">食品のカテゴリーとして全体</strong>を指すことが多い。<strong class="shape-emphasis">境界線が曖昧な集合体</strong>。</br>例: <code>Fruit is good for your health.</code> (果物は健康に良い)<br><strong>※注意:</strong> 特定の「種類」の果物や、<strong class="shape-emphasis">個々の形を意識する</strong>場合は可算 (例: <code>an apple</code>, <code>three bananas</code>, <code>We grow various fruits.</code>) になることもある、ややこしいヤツ！</p>
                     </div>
-
                 </div>
             </section>
 
@@ -580,8 +656,8 @@
 
             <section id="summary">
                  <h2>まとめと補足</h2>
-                 <p>可算名詞と不可算名詞の区別は、英語の感覚を掴む上でとても大切だよ。「境界線」の考え方を基本に、迷ったら辞書で <code>[C]</code> (Countable) か <code>[U]</code> (Uncountable) のマークを確認する習慣をつけよう！</p>
-                 <p>文脈によって可算にも不可算にもなる名詞（<code>hair</code>, <code>time</code>, <code>experience</code>, <code>chicken</code> など）もあるけど、それも「具体的な事例・種類」を指すか「全体・物質・概念」を指すかで判断できることが多いよ。</p>
+                 <p>可算名詞と不可算名詞の区別は、英語の感覚を掴む上でとても大切だよ。「<strong class="shape-emphasis">具体的な姿・形が思い浮かぶか？</strong>」という考え方を基本に、迷ったら辞書で <code>[C]</code> (Countable) か <code>[U]</code> (Uncountable) のマークを確認する習慣をつけよう！</p>
+                 <p>文脈によって可算にも不可算にもなる名詞（<code>hair</code>, <code>time</code>, <code>experience</code>, <code>chicken</code> など）もあるけど、それも「具体的な事例・種類 (<strong class="shape-emphasis">形がある場合</strong>)」を指すか「全体・物質・概念 (<strong class="shape-emphasis">形がない/決まっていない場合</strong>)」を指すかで判断できることが多いよ。</p>
                  <p>このページが、みんなの名詞マスターへの道をサポートできたら嬉しいな！ Good luck! ✨</p>
             </section>
 
@@ -589,22 +665,10 @@
     </div>
 
     <script>
-        // Simple script for enhancing UI, e.g., smooth scrolling or future interactions
+        // Simple script for enhancing UI (future use)
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Noun Master Guide Loaded!");
-
-            // Example: Smooth scroll for internal links (if any were added)
-            // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            //     anchor.addEventListener('click', function (e) {
-            //         e.preventDefault();
-            //         document.querySelector(this.getAttribute('href')).scrollIntoView({
-            //             behavior: 'smooth'
-            //         });
-            //     });
-            // });
-
-            // The <details> tag provides basic accordion functionality natively.
-            // No complex JS needed for the current implementation.
+            // Potential future JavaScript interactions can be added here.
         });
     </script>
 
