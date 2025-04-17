@@ -3,87 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授業記録</title> <!-- タイトルを修正し、分かりやすく -->
+    <title>授業記録 (検索・タグ選択・ソート機能付き)</title>
     <style>
-        /* ここからCSSでのデザイン指定 */
-        body {
-            font-family: sans-serif; /* 見やすいフォントに */
-            line-height: 1.6;      /* 行間を少し広げる */
-            margin: 30px;          /* ページ全体の余白 */
-            background-color: #f8f9fa; /* 背景を薄いグレーに */
-            color: #333;           /* 基本の文字色 */
+        :root {
+            --primary-color: #007bff; --primary-hover-color: #0056b3; --secondary-color: #6c757d; --light-gray-bg: #f8f9fa; --white-bg: #fff; --text-color: #333; --border-color: #dee2e6; --tag-bg-color: #e2e3e5; --tag-text-color: #4f545c; --info-color: #0dcaf0; --info-hover-color: #0baccc; --warning-border: #ffc107; --warning-bg: #fff3cd; --warning-text: #856404; --warning-strong: #664d03; --danger-color: #dc3545; --danger-hover-color: #c82333; --success-color: #198754; --success-hover-color: #157347; --card-shadow: 0 4px 8px rgba(0,0,0,0.07); --card-hover-shadow: 0 8px 16px rgba(0,0,0,0.1); --border-radius: 8px;
         }
-        h1 {
-            color: #007bff;        /* 見出しの色を青系に */
-            border-bottom: 2px solid #dee2e6; /* 下線を追加 */
-            padding-bottom: 10px;  /* 下線とのスペース */
-        }
-        p {
-            margin-bottom: 20px;   /* 説明文の下に余白 */
-        }
-        ul {
-            list-style: none;      /* リストの・を消す */
-            padding: 0;            /* リストの左側の余白をなくす */
-        }
-        li {
-            background-color: #fff; /* 各項目の背景を白に */
-            margin-bottom: 10px;   /* 各項目の下の余白 */
-            border-radius: 5px;    /* 角を少し丸くする */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 薄い影をつける */
-            transition: transform 0.2s ease; /* ホバー時のアニメーション */
-        }
-        li:hover {
-            transform: translateY(-3px); /* ホバー時に少し浮き上がる */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* 影を少し濃くする */
-        }
-        a {
-            display: block;        /* リンクを項目全体でクリック可能に */
-            padding: 15px 20px;    /* リンク内の余白 */
-            text-decoration: none; /* 下線を消す */
-            color: #0d6efd;        /* リンクの文字色 */
-            font-weight: bold;     /* 文字を少し太く */
-        }
-        a:hover {
-            color: #0a58ca;        /* ホバー時の文字色 */
-            background-color: #e9ecef; /* ホバー時の背景色 */
-            border-radius: 5px;    /* ホバー時も角丸を維持 */
-        }
-        /* 注意書き用のスタイル */
-        .note {
-            margin-top: 30px;
-            padding: 15px;
-            border-left: 4px solid #ffc107; /* 左側に黄色の線 */
-            background-color: #fff3cd;      /* 背景を薄い黄色に */
-            color: #856404;                 /* 文字色 */
-            font-size: 0.9em;
-        }
-        .note strong {
-            color: #664d03;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: var(--light-gray-bg); color: var(--text-color); }
+        .page-container { max-width: 1140px; margin: 30px auto; padding: 20px; }
+        h1 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; font-size: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        p#description { margin-bottom: 20px; color: var(--secondary-color); font-size: 1.1rem; }
+
+#controls-toggle-area { text-align: right; margin-bottom: 20px; }
+#toggle-controls-button { background-color: var(--white-bg); color: var(--secondary-color); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; }
+#toggle-controls-button:hover { background-color: var(--secondary-color); color: #fff; }
+.controls { background-color: var(--white-bg); padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px; box-shadow: var(--card-shadow); display: none; }
+.control-section { margin-bottom: 20px; } .control-section:last-child { margin-bottom: 0; }
+.control-section label { display: block; font-weight: bold; margin-bottom: 10px; color: #495057; }
+#search-section { position: relative; }
+#search-box { width: 100%; padding: 12px 20px 12px 45px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1rem; box-sizing: border-box; }
+/* ★検索アイコン位置修正 */
+#search-section::before {
+    content: '🔍'; position: absolute; left: 15px;
+    top: calc(50% + 17px); /* ★calc()をやめて単純に50%に */
+    transform: translateY(-50%); font-size: 1.2rem;
+    color: var(--secondary-color); pointer-events: none; z-index: 1;
+}
+#tag-filter-buttons button { background-color: var(--tag-bg-color); color: var(--tag-text-color); border: none; padding: 6px 12px; margin-right: 8px; margin-bottom: 8px; border-radius: 15px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease; } #tag-filter-buttons button:hover { background-color: #ced4da; } #tag-filter-buttons button:active { transform: scale(0.95); } #tag-filter-buttons button.active { background-color: var(--primary-color); color: #fff; } #tag-filter-buttons button.show-all.active { background-color: var(--secondary-color); }
+
+/* --- リストヘッダーとソートアイコン --- */
+#list-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; }
+#sort-icon-button { background-color: transparent; border: none; color: var(--secondary-color); font-size: 0.9rem; cursor: pointer; padding: 5px 8px; border-radius: 4px; transition: background-color 0.2s ease, color 0.2s ease; display: flex; align-items: center; gap: 5px; }
+#sort-icon-button:hover { background-color: #e9ecef; }
+#sort-icon-button .sort-icon { font-weight: bold; font-size: 1.1em; line-height: 1; display: inline-block; width: 1em; text-align: center; }
+
+/* --- カードリスト関連 --- */
+#record-list-container {}
+.record-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+.record-card { background-color: var(--white-bg); border-radius: var(--border-radius); box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease; opacity: 1; position: relative; }
+.record-card.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
+.record-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover-shadow); }
+.edit-mode .record-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.05); pointer-events: none; z-index: 1; border-radius: var(--border-radius); }
+.record-card.editing { outline: 3px solid var(--success-color); outline-offset: -3px; }
+.card-link-area { padding: 20px; flex-grow: 1; }
+.card-link-area a { text-decoration: none; color: inherit; }
+.card-link-area h3 { margin-top: 0; margin-bottom: 10px; color: var(--primary-color); font-size: 1.25rem; transition: color 0.2s ease; }
+.record-card:hover .card-link-area h3 { color: var(--primary-hover-color); }
+.card-date { font-size: 0.9em; color: var(--secondary-color); margin-bottom: 15px; }
+.card-tags span { display: inline-block; background-color: var(--tag-bg-color); color: var(--tag-text-color); font-size: 0.8rem; font-weight: 500; padding: 4px 10px; border-radius: 12px; margin-right: 6px; margin-bottom: 6px; }
+.card-actions { position: absolute; top: 10px; right: 10px; display: none; z-index: 2; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 4px; }
+.edit-mode .card-actions { display: flex; gap: 5px; }
+.card-actions button { background: none; border: none; cursor: pointer; padding: 3px; font-size: 1.1rem; line-height: 1; transition: transform 0.1s ease; }
+.card-actions button:hover { transform: scale(1.1); }
+.edit-card-btn { color: var(--primary-color); }
+.delete-card-btn { color: var(--danger-color); }
+#no-results { text-align: center; color: var(--secondary-color); padding: 40px 20px; display: none; grid-column: 1 / -1; font-style: italic; }
+#admin-login-area { text-align: right; margin-top: 40px; }
+#show-admin-panel-button { padding: 10px 20px; font-size: 0.9rem; color: var(--secondary-color); background-color: transparent; border: 1px solid var(--secondary-color); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
+#show-admin-panel-button:hover { background-color: var(--secondary-color); color: #fff; }
+
+/* --- 管理者メニュー用スタイル --- */
+#admin-panel { display: none; padding: 25px; margin-top: 20px; background-color: #e7f1ff; border: 1px solid var(--primary-color); border-radius: var(--border-radius); box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1); }
+#admin-panel h3 { margin-top: 0; margin-bottom: 20px; color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 8px; font-size: 1.4rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+#admin-panel h4 { margin-top: 20px; margin-bottom: 10px; color: var(--secondary-color); font-size: 1.1rem; }
+#admin-panel label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--secondary-color); font-size: 0.9em; }
+#admin-panel input[type="text"], #admin-panel input[type="url"], #admin-panel input[type="date"] { width: 100%; padding: 10px 15px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+#admin-panel button { padding: 10px 20px; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease, color 0.2s ease, border-color 0.2s ease; font-size: 1rem; margin-right: 10px; }
+#admin-panel button:active { transform: scale(0.98); }
+#update-card-button { background-color: var(--success-color); display: none; } #update-card-button:hover { background-color: var(--success-hover-color); }
+#add-card-button { background-color: var(--primary-color); } #add-card-button:hover { background-color: var(--primary-hover-color); }
+#cancel-edit-button { background-color: var(--secondary-color); display: none; } #cancel-edit-button:hover { background-color: #5a6268; }
+#clear-cards-button { background-color: var(--danger-color); } #clear-cards-button:hover { background-color: var(--danger-hover-color); }
+#admin-panel hr { margin: 25px 0; border: 0; border-top: 1px dashed var(--primary-color); }
+#admin-panel .admin-note { font-size: 0.85em; color: var(--secondary-color); margin-top: 10px; }
+#toggle-edit-mode-button { font-size: 0.9rem; padding: 5px 10px; margin-left: auto; background-color: var(--info-color); color: white; }
+#toggle-edit-mode-button:hover { background-color: var(--info-hover-color); }
+#toggle-edit-mode-button.active { background-color: var(--warning-strong); }
+/* ★閉じるボタンの色変更 */
+#close-admin-panel-button {
+    background-color: var(--tag-bg-color); border: 1px solid var(--text-color); /* 枠線を黒っぽく */
+    color: var(--text-color); /* 文字色を黒っぽく */
+    font-size: 0.9rem; padding: 5px 10px; border-radius: 4px; cursor: pointer;
+    transition: all 0.2s ease; margin: 0; margin-left: 10px;
+}
+#close-admin-panel-button:hover {
+    background-color: var(--text-color); /* ホバーで背景を黒っぽく */
+    color: #fff; /* ホバーで文字色を白に */
+    border-color: var(--text-color);
+}        @media (max-width: 768px) { .page-container { margin: 15px; padding: 15px; } h1 { font-size: 1.8rem; flex-direction: column; align-items: flex-start; } #controls-toggle-area { text-align: left; /* スマホでは左寄せ */ width: 100%; margin-top: 10px; } .record-list { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; } #list-header { justify-content: flex-end; } }
+        @media (max-width: 576px) { .record-list { grid-template-columns: 1fr; } .controls { padding: 15px; } #tag-filter-buttons button { margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; } #admin-panel h3 { font-size: 1.2rem; flex-wrap: wrap; } #admin-panel button:not(#close-admin-panel-button) { width: calc(50% - 5px); margin-right: 10px; margin-bottom: 10px; } #admin-panel button:nth-of-type(2n):not(#close-admin-panel-button) { margin-right: 0; } #clear-cards-button { width: 100%; margin-right: 0; } #admin-login-area { text-align: center; } #toggle-edit-mode-button, #close-admin-panel-button { font-size: 0.8rem; padding: 4px 8px; margin-left: 5px; } .card-actions { top: 5px; right: 5px; } }
     </style>
 </head>
 <body>
 
+<div class="page-container">
+
     <h1>授業記録一覧</h1>
 
-    <p>ここでは、これまでの授業内容の記録をまとめています。</p>
-
-    <ul>
-        <li><a href="20250416selfintroduction.html">自己紹介 (2025/04/16)</a></li>
-        <li><a href="00可算不可算名詞.html">00 可算名詞と不可算名詞</a></li>
-        <!-- <li><a href="01_bun_no_shurui.html">01 文の種類</a></li> -->
-        <!-- ↑正しくコメントアウトしました。ファイル名も修正推奨です -->
-    </ul>
-
-    <div class="note">
-        <p><strong>【ファイル名について】</strong><br>
-        HTMLファイル名にスペース（空白）や日本語文字を使うと、リンクが正しく動作しないことがあります。アルファベット、数字、アンダースコア(<code>_</code>)、ハイフン(<code>-</code>)で構成することをおすすめします。<br>
-        例： <code>00 可算不可算名詞.html</code> → <code>00_kasan_fukasan.html</code> や <code>00-countable-uncountable.html</code>
-        </p>
-        <p><strong>【コメントアウトについて】</strong><br>
-        HTML内で一時的に表示したくない部分は、<code><!--</code> と <code>--></code> で囲んでください。
-        </p>
+    <div id="controls-toggle-area">
+        <button id="toggle-controls-button">フィルター/ソートを開く</button>
     </div>
+
+    <div class="controls" id="controls-area">
+        <div class="control-section" id="search-section">
+            <label for="search-box">検索:</label>
+            <input type="search" id="search-box" placeholder="タイトルやタグで検索...">
+        </div>
+        <div class="control-section">
+            <label>タグで絞り込み:</label>
+            <div id="tag-filter-buttons">
+                <button class="show-all active" data-tag="all">すべて表示</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="list-header">
+        <button id="sort-icon-button" title="日付で並び替え">
+             <span class="sort-icon">↓</span> <!-- 初期は降順アイコン -->
+             日付順
+        </button>
+    </div>
+
+    <div id="record-list-container">
+        <ul class="record-list" id="record-list"></ul>
+        <p id="no-results">該当する記録はありません。</p>
+    </div>
+
+    <div id="admin-panel">
+        <h3>
+            管理者メニュー
+            <button id="toggle-edit-mode-button">編集</button>
+            <button id="close-admin-panel-button" title="閉じる">閉じる</button>
+        </h3>
+        <div id="card-editor">
+            <h4 id="editor-mode-title">新しい授業記録カードを追加</h4>
+            <input type="hidden" id="editing-card-id">
+            <label for="card-title">カードタイトル:</label>
+            <input type="text" id="card-title" placeholder="例: 02 Be動詞">
+            <label for="card-url">リンクURL:</label>
+            <input type="url" id="card-url" placeholder="例: 02_be_verb.html">
+            <label for="card-date">日付:</label>
+            <input type="date" id="card-date">
+            <label for="card-tags">タグ (カンマ区切り):</label>
+            <input type="text" id="card-tags" placeholder="例: 文法,基本,#Be動詞">
+            <button id="add-card-button">カードを追加</button>
+            <button id="update-card-button">更新</button>
+            <button id="cancel-edit-button">キャンセル</button>
+        </div>
+        <hr>
+        <div>
+            <h4>全カード管理</h4>
+            <button id="clear-cards-button">追加したカードをすべて削除</button>
+            <p class="admin-note">※管理者メニューから追加したカードのみ削除されます。<br>※この操作は元に戻せません。</p>
+        </div>
+    </div>
+
+    <div id="admin-login-area">
+        <button id="show-admin-panel-button">管理者ログイン</button>
+    </div>
+
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const recordList = document.getElementById('record-list');
+            const searchBox = document.getElementById('search-box');
+            const toggleControlsButton = document.getElementById('toggle-controls-button');
+            const controlsArea = document.getElementById('controls-area');
+            const searchSection = document.getElementById('search-section');
+            const tagFilterButtonsContainer = document.getElementById('tag-filter-buttons');
+            const sortIconButton = document.getElementById('sort-icon-button');
+            const sortIcon = sortIconButton.querySelector('.sort-icon');
+            const noResultsMessage = document.getElementById('no-results');
+            const adminPanel = document.getElementById('admin-panel');
+            const cardEditor = document.getElementById('card-editor');
+            const editorModeTitle = document.getElementById('editor-mode-title');
+            const cardIdInput = document.getElementById('editing-card-id');
+            const cardTitleInput = document.getElementById('card-title');
+            const cardUrlInput = document.getElementById('card-url');
+            const cardDateInput = document.getElementById('card-date');
+            const cardTagsInput = document.getElementById('card-tags');
+            const addCardButton = document.getElementById('add-card-button');
+            const updateCardButton = document.getElementById('update-card-button');
+            const cancelEditButton = document.getElementById('cancel-edit-button');
+            const clearCardsButton = document.getElementById('clear-cards-button');
+            const showAdminButton = document.getElementById('show-admin-panel-button');
+            const closeAdminButton = document.getElementById('close-admin-panel-button');
+            const toggleEditModeButton = document.getElementById('toggle-edit-mode-button');
+
+            let allCardsData = [];
+            let currentSort = 'date-desc';
+            let activeTags = new Set();
+            let searchTerm = '';
+            const storageKey = 'lessonRecordCardsEnhanced';
+            const adminPassword = "oracle";
+            let isAdminInitialized = false;
+            let isEditMode = false;
+            let editingCardId = null;
+
+            const initialHtmlData = [
+                 { id: "init_0", title: "自己紹介", url: "20250416selfintroduction.html", date: "2025-04-16", tags: ["#導入", "#自己紹介"], isInitial: true },
+                 { id: "init_1", title: "可算名詞と不可算名詞", url: "00_kasan_fukasan.html", date: "2025-04-20", tags: ["#文法", "#名詞"], isInitial: true },
+                 { id: "init_2", title: "文の種類", url: "01_bun_no_shurui.html", date: "2025-04-22", tags: ["#文法", "#文構造"], isInitial: true },
+                 { id: "init_3", title: "未来の表現 (will / be going to)", url: "02_future_tense.html", date: "2025-04-18", tags: ["#文法", "#時制"], isInitial: true }
+            ];
+
+            const generateId = () => `card_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+            const getStoredCards = () => { const cardsJson = localStorage.getItem(storageKey); try { return cardsJson ? JSON.parse(cardsJson) : []; } catch (e) { console.error("Error parsing stored cards:", e); return []; } };
+            const storeAdminCards = () => { const adminCards = allCardsData.filter(card => !card.isInitial); localStorage.setItem(storageKey, JSON.stringify(adminCards)); };
+            const createCardElement = (cardData) => { const li = document.createElement('li'); li.classList.add('record-card'); if (!cardData.isInitial) { li.classList.add('admin-added'); } li.dataset.id = cardData.id; li.dataset.title = cardData.title.toLowerCase(); li.dataset.tags = cardData.tags.map(t => t.toLowerCase()).join(' '); li.dataset.date = cardData.date; const linkArea = document.createElement('div'); linkArea.classList.add('card-link-area'); const link = document.createElement('a'); link.href = cardData.url; const titleH3 = document.createElement('h3'); titleH3.textContent = cardData.title; link.appendChild(titleH3); const dateDiv = document.createElement('div'); dateDiv.classList.add('card-date'); dateDiv.textContent = cardData.date; link.appendChild(dateDiv); const tagsDiv = document.createElement('div'); tagsDiv.classList.add('card-tags'); cardData.tags.forEach(tag => { const tagSpan = document.createElement('span'); tagSpan.textContent = tag; tagsDiv.appendChild(tagSpan); }); link.appendChild(tagsDiv); linkArea.appendChild(link); li.appendChild(linkArea); const actionsDiv = document.createElement('div'); actionsDiv.classList.add('card-actions'); const editBtn = document.createElement('button'); editBtn.innerHTML = '✏️'; editBtn.title = '編集'; editBtn.classList.add('edit-card-btn'); editBtn.dataset.id = cardData.id; editBtn.addEventListener('click', (e) => { e.stopPropagation(); startEditing(cardData.id); }); const deleteBtn = document.createElement('button'); deleteBtn.innerHTML = '🗑️'; deleteBtn.title = '削除'; deleteBtn.classList.add('delete-card-btn'); deleteBtn.dataset.id = cardData.id; deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteCard(cardData.id); }); actionsDiv.appendChild(editBtn); actionsDiv.appendChild(deleteBtn); li.appendChild(actionsDiv); return li; };
+            const getAllUniqueTags = () => { const tags = new Set(); allCardsData.forEach(card => { card.tags.forEach(tag => tags.add(tag)); }); return Array.from(tags).sort(); };
+            const renderTagButtons = () => { const existingTagButtons = tagFilterButtonsContainer.querySelectorAll('button:not(.show-all)'); existingTagButtons.forEach(btn => btn.remove()); const uniqueTags = getAllUniqueTags(); uniqueTags.forEach(tag => { const button = document.createElement('button'); button.textContent = tag; button.dataset.tag = tag; if (activeTags.has(tag)) { button.classList.add('active'); } button.addEventListener('click', () => handleTagClick(button)); tagFilterButtonsContainer.appendChild(button); }); const showAllButton = tagFilterButtonsContainer.querySelector('.show-all'); showAllButton.classList.toggle('active', activeTags.size === 0); };
+            const handleTagClick = (clickedButton) => { const clickedTag = clickedButton.dataset.tag; const showAllButton = tagFilterButtonsContainer.querySelector('.show-all'); if (clickedTag === 'all') { activeTags.clear(); renderTagButtons(); } else { showAllButton.classList.remove('active'); if (activeTags.has(clickedTag)) { activeTags.delete(clickedTag); } else { activeTags.add(clickedTag); } clickedButton.classList.toggle('active'); if (activeTags.size === 0) { showAllButton.classList.add('active'); } } applyFiltersAndSort(); };
+
+            const updateSortIcon = () => {
+                sortIcon.textContent = currentSort === 'date-desc' ? '↓' : '↑';
+                sortIconButton.title = `日付で並び替え (${currentSort === 'date-desc' ? '新しい順' : '古い順'})`;
+            };
+
+            const applyFiltersAndSort = () => {
+                const normalizedSearch = searchTerm.toLowerCase();
+                let visibleCount = 0;
+                const fragment = document.createDocumentFragment();
+                allCardsData.forEach(cardData => {
+                    const cardElement = cardData.element;
+                    if (!cardElement) return;
+                    const searchMatch = normalizedSearch === '' || cardData.title.toLowerCase().includes(normalizedSearch) || cardData.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));
+                    const tagMatch = activeTags.size === 0 || cardData.tags.some(tag => activeTags.has(tag));
+                    if (searchMatch && tagMatch) { cardElement.classList.remove('hidden'); visibleCount++; } else { cardElement.classList.add('hidden'); }
+                });
+
+                const sortedVisibleCards = allCardsData
+                    .filter(card => !card.element.classList.contains('hidden'))
+                    .sort((a, b) => { const dateA = new Date(a.date); const dateB = new Date(b.date); switch (currentSort) { case 'date-asc': return dateA - dateB; case 'date-desc': default: return dateB - dateA; } });
+
+                recordList.innerHTML = '';
+                sortedVisibleCards.forEach(card => fragment.appendChild(card.element));
+                recordList.appendChild(fragment);
+                noResultsMessage.style.display = (visibleCount === 0) ? 'block' : 'none';
+            };
+
+            const startEditing = (cardId) => { editingCardId = cardId; const cardData = allCardsData.find(card => card.id === cardId); if (!cardData) return; cardIdInput.value = cardData.id; cardTitleInput.value = cardData.title; cardUrlInput.value = cardData.url; cardDateInput.value = cardData.date; cardTagsInput.value = cardData.tags.join(', '); editorModeTitle.textContent = 'カードを編集'; addCardButton.style.display = 'none'; updateCardButton.style.display = 'inline-block'; cancelEditButton.style.display = 'inline-block'; document.querySelectorAll('.record-card.editing').forEach(el => el.classList.remove('editing')); cardData.element.classList.add('editing'); adminPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); cardTitleInput.focus(); };
+            const cancelEditing = () => { editingCardId = null; cardIdInput.value = ''; cardEditor.reset(); editorModeTitle.textContent = '新しい授業記録カードを追加'; addCardButton.style.display = 'inline-block'; updateCardButton.style.display = 'none'; cancelEditButton.style.display = 'none'; document.querySelectorAll('.record-card.editing').forEach(el => el.classList.remove('editing')); };
+            const updateCard = () => { if (!editingCardId) return; const cardIndex = allCardsData.findIndex(card => card.id === editingCardId); if (cardIndex === -1) return; const title = cardTitleInput.value.trim(); const url = cardUrlInput.value.trim(); const date = cardDateInput.value; const tagsRaw = cardTagsInput.value.trim(); const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : []; if (title && url && date) { if (url.includes(' ') || url.includes('　')) { alert('URLにスペースを含めないでください。'); return; } const updatedCardData = { ...allCardsData[cardIndex], title, url, date, tags }; allCardsData[cardIndex] = updatedCardData; if (!updatedCardData.isInitial) { storeAdminCards(); } const newElement = createCardElement(updatedCardData); updatedCardData.element.replaceWith(newElement); updatedCardData.element = newElement; renderTagButtons(); applyFiltersAndSort(); cancelEditing(); alert('カードが更新されました！'); } else { alert('タイトル、URL、日付は必須です。'); } };
+            const deleteCard = (cardId) => { const cardIndex = allCardsData.findIndex(card => card.id === cardId); if (cardIndex === -1) return; const cardData = allCardsData[cardIndex]; if (confirm(`「${cardData.title}」を削除してもよろしいですか？`)) { cardData.element.remove(); allCardsData.splice(cardIndex, 1); if (!cardData.isInitial) { storeAdminCards(); } renderTagButtons(); applyFiltersAndSort(); if (editingCardId === cardId) { cancelEditing(); } alert('カードが削除されました。'); } };
+
+            const initAdminFeatures = () => {
+                cardDateInput.valueAsDate = new Date();
+                addCardButton.addEventListener('click', () => { const title = cardTitleInput.value.trim(); const url = cardUrlInput.value.trim(); const date = cardDateInput.value; const tagsRaw = cardTagsInput.value.trim(); const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : []; if (title && url && date) { if (url.includes(' ') || url.includes('　')) { alert('URLにスペースを含めないでください。'); return; } const newCardData = { id: generateId(), title, url, date, tags, isInitial: false }; newCardData.element = createCardElement(newCardData); allCardsData.push(newCardData); storeAdminCards(); renderTagButtons(); applyFiltersAndSort(); cardEditor.reset(); cardDateInput.valueAsDate = new Date(); alert('カードが追加されました！'); } else { alert('タイトル、URL、日付は必須です。'); } });
+                clearCardsButton.addEventListener('click', () => { const adminCardsExist = allCardsData.some(card => !card.isInitial); if (!adminCardsExist) { alert('管理者メニューから追加されたカードはありません。'); return; } if (confirm('本当に追加したすべてのカードを削除しますか？')) { allCardsData.filter(card => !card.isInitial).forEach(card => card.element?.remove()); allCardsData = allCardsData.filter(card => card.isInitial); storeAdminCards(); renderTagButtons(); applyFiltersAndSort(); if (editingCardId && !allCardsData.find(c => c.id === editingCardId)) { cancelEditing(); } alert('追加されたカードがすべて削除されました。'); } });
+                closeAdminButton.addEventListener('click', () => { adminPanel.style.display = 'none'; if (isEditMode) { isEditMode = false; document.body.classList.remove('edit-mode'); toggleEditModeButton.classList.remove('active'); if (editingCardId) { cancelEditing(); } } });
+                toggleEditModeButton.addEventListener('click', () => { isEditMode = !isEditMode; document.body.classList.toggle('edit-mode', isEditMode); toggleEditModeButton.classList.toggle('active', isEditMode); if (!isEditMode && editingCardId) { cancelEditing(); } });
+                updateCardButton.addEventListener('click', updateCard);
+                cancelEditButton.addEventListener('click', cancelEditing);
+                isAdminInitialized = true;
+            };
+
+            const initializeApp = () => {
+                const storedCards = getStoredCards();
+                const ensureId = (card) => ({ ...card, id: card.id || generateId() });
+                allCardsData = [...initialHtmlData.map(ensureId), ...storedCards.map(ensureId)];
+                recordList.innerHTML = '';
+                allCardsData.forEach(cardData => { cardData.element = createCardElement(cardData); recordList.appendChild(cardData.element); });
+                renderTagButtons();
+
+                toggleControlsButton.addEventListener('click', () => {
+                    const isHidden = controlsArea.style.display === 'none' || controlsArea.style.display === '';
+                    controlsArea.style.display = isHidden ? 'block' : 'none';
+                    toggleControlsButton.textContent = isHidden ? 'フィルター/ソートを閉じる' : 'フィルター/ソートを開く';
+                    if (!isHidden && searchTerm) {
+                        searchTerm = ''; searchBox.value = ''; applyFiltersAndSort();
+                    }
+                });
+
+                searchBox.addEventListener('input', (e) => { searchTerm = e.target.value; applyFiltersAndSort(); });
+
+                sortIconButton.addEventListener('click', () => {
+                    currentSort = currentSort === 'date-desc' ? 'date-asc' : 'date-desc';
+                    updateSortIcon();
+                    applyFiltersAndSort();
+                });
+
+                tagFilterButtonsContainer.querySelector('.show-all').addEventListener('click', () => handleTagClick(tagFilterButtonsContainer.querySelector('.show-all')));
+                showAdminButton.addEventListener('click', () => { if (adminPanel.style.display === 'block') return; const enteredPassword = prompt("管理者パスワードを入力してください:"); if (enteredPassword === adminPassword) { adminPanel.style.display = 'block'; if (!isAdminInitialized) { initAdminFeatures(); } } else if (enteredPassword !== null && enteredPassword !== "") { alert('パスワードが違います。'); } });
+
+                updateSortIcon(); // 初期アイコン設定
+                applyFiltersAndSort();
+            };
+
+            initializeApp();
+        });
+    </script>
 
 </body>
 </html>
