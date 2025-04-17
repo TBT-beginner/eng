@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Nouns: Countable vs. Uncountable</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2; /* A vibrant blue */
+            --secondary-color: #50e3c2; /* A fresh turquoise */
+            --accent-color: #f5a623; /* A warm orange */
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition-speed: 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            transition: box-shadow var(--transition-speed);
+        }
+        section:hover {
+           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block; /* Ensures border only spans text width */
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p, li {
+            margin-bottom: 15px;
+            font-size: 1em;
+            color: #555;
+        }
+
+        strong {
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        code {
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            margin: 0 0.2em;
+            font-size: 0.9em;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #c7254e; /* Bootstrap code color */
+        }
+
+        .highlight-countable {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .highlight-uncountable {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+
+        .explanation-box {
+            background-color: #f0f8ff; /* Light blue background */
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .explanation-box h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .rule-table th, .rule-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .rule-table thead {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .rule-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .rule-table tbody tr:hover {
+            background-color: #e9ecef;
+            transition: background-color var(--transition-speed);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .comparison-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: transform 0.2s ease-in-out, box-shadow var(--transition-speed);
+        }
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .comparison-card h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: var(--text-color);
+        }
+        .comparison-card .type-countable {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        .comparison-card .type-uncountable {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+        .comparison-card p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+        }
+        .comparison-card hr {
+            border: 0;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 15px 0;
+        }
+
+        .irregular-list {
+            list-style: none;
+            padding: 0;
+            columns: 2; /* Create columns for better readability */
+            column-gap: 40px;
+        }
+
+        .irregular-list li {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color var(--transition-speed);
+        }
+        .irregular-list li:hover {
+             background-color: #f1f1f1;
+        }
+
+        .irregular-list .singular {
+            font-weight: bold;
+            color: var(--primary-color);
+            display: inline-block;
+            width: 100px; /* Align plurals */
+        }
+
+        .irregular-list .plural {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        details {
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            color: var(--primary-color);
+            transition: background-color var(--transition-speed);
+            border-radius: 8px 8px 0 0; /* Only top corners rounded initially */
+            display: flex; /* Use flexbox for alignment */
+            justify-content: space-between; /* Space between text and marker */
+            align-items: center; /* Vertically center items */
+        }
+        details[open] summary {
+            background-color: #e7f3ff;
+            border-bottom: 1px solid var(--border-color);
+             border-radius: 8px 8px 0 0;
+        }
+
+        summary::marker { /* Hides default marker */
+             content: "";
+        }
+        summary::after { /* Custom marker */
+            content: '+';
+            font-size: 1.5em;
+            color: var(--primary-color);
+            transition: transform var(--transition-speed);
+            margin-left: 10px; /* Space between text and marker */
+        }
+        details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .details-content {
+            padding: 15px 20px 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: #fff;
+             border-radius: 0 0 8px 8px; /* Bottom corners rounded when open */
+        }
+        .details-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2em; }
+            h2 { font-size: 1.6em; }
+            h3 { font-size: 1.3em; }
+            .container { margin: 20px auto; padding: 0; border-radius: 0; box-shadow: none; }
+            main { padding: 20px; }
+            section { padding: 20px; }
+            .irregular-list { columns: 1; }
+            .rule-table th, .rule-table td { padding: 10px; font-size: 0.9em; }
+        }
+
+        @media (max-width: 480px) {
+             header h1 { font-size: 1.8em; }
+             header p { font-size: 1em; }
+             h2 { font-size: 1.4em; }
+             h3 { font-size: 1.2em; }
+             p, li { font-size: 0.95em;}
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>名詞マスターへの道</h1>
+            <p>数えられる？数えられない？もう迷わない！可算名詞と不可算名詞</p>
+        </header>
+
+        <main>
+            <section id="intro">
+                <h2>A 名詞ってなに？</h2>
+                <p>名詞は、人 (<code>Tom</code>)、物 (<code>apple</code>)、場所 (<code>park</code>)、概念 (<code>information</code>) などの名前を表す言葉だよ。英語の名詞を使いこなす上で超重要なのが、「数えられる」か「数えられない」かの区別なんだ。</p>
+                <p><em>例文:</em> Tom eats <code class="highlight-countable">an apple</code> and drinks <code class="highlight-uncountable">water</code> every morning. （トムは毎朝リンゴを1つ食べ、水を飲む。）</p>
+                <p>この違いが、<code>a</code>/<code>an</code> を付けるか、複数形 (<code>-s</code>) にするか、どんな言葉（<code>many</code> や <code>much</code> など）と一緒に使うかを決めるカギになるんだ！</p>
+            </section>
+
+            <section id="boundary">
+                <h2>① 境界線はどこ？ 〜可算と不可算を見分けるコツ〜</h2>
+                <p>この２つのグループを分ける<strong>本質的な境界線</strong>は、<strong>「明確な形・輪郭があって、1つ、2つ…と個別に指さして認識できるか？」</strong>という点にあるんだ。</p>
+
+                <div class="explanation-box">
+                    <h4>🤔 思考実験タイム 🤔</h4>
+                    <p>頭の中でそのモノやコトを思い浮かべてみて。「あ、これ1個」「こっちは2個目」ってはっきり区切れるかな？</p>
+                    <ul>
+                        <li><strong>YES! はっきり区切れる！</strong> → <span class="highlight-countable">可算名詞</span> の可能性大！ (例: <code class="highlight-countable">apple</code>, <code class="highlight-countable">chair</code>, <code class="highlight-countable">idea</code>) - ちゃんと輪郭が見える！</li>
+                        <li><strong>NO... なんか境界が曖昧...</strong> → <span class="highlight-uncountable">不可算名詞</span> かもしれない！ (例: <code class="highlight-uncountable">water</code>, <code class="highlight-uncountable">information</code>, <code class="highlight-uncountable">furniture</code>) - モノ全体とか、形のない概念を指してる感じ。</li>
+                    </ul>
+                </div>
+
+                <h3>具体例で見てみよう！</h3>
+                <ul>
+                    <li><code class="highlight-countable">apple</code> (リンゴ): 一つひとつ形がはっきり。数えやすいね！→ <strong>可算</strong></li>
+                    <li><code class="highlight-uncountable">water</code> (水): 液体そのもの。どこまでが「1つの水」か区切れない。→ <strong>不可算</strong></li>
+                    <li><code class="highlight-countable">chair</code> (椅子): これも形が明確。「1脚、2脚…」と数えられる。→ <strong>可算</strong></li>
+                    <li><code class="highlight-uncountable">information</code> (情報): 形のない概念。「1つの情報」とは普通言わない。→ <strong>不可算</strong></li>
+                </ul>
+            </section>
+
+            <section id="rules">
+                 <h2>③ 使い方のルール早見表</h2>
+                 <p>可算名詞と不可算名詞の基本的な使い方をまとめたよ。これさえ押さえれば、文法ミスがぐっと減るはず！</p>
+                 <div style="overflow-x: auto;"> <!-- Make table responsive -->
+                    <table class="rule-table">
+                        <thead>
+                            <tr>
+                                <th>特徴</th>
+                                <th><span class="highlight-countable">可算名詞 (Countable)</span></th>
+                                <th><span class="highlight-uncountable">不可算名詞 (Uncountable)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>単数形 (1つの時)</strong></td>
+                                <td><code>a</code> / <code>an</code> を付ける (例: <code>an apple</code>, <code>a book</code>)</td>
+                                <td><code>a</code> / <code>an</code> は<span style="color: var(--error-color); font-weight: bold;">付けない</span> (例: <code>water</code>, <code>information</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>複数形 (2つ以上の時)</strong></td>
+                                <td>語尾に <code>-s</code> / <code>-es</code> を付ける (例: <code>apples</code>, <code>boxes</code>)<br>※不規則変化あり (後述)</td>
+                                <td>複数形は通常<span style="color: var(--error-color); font-weight: bold;">ない</span> (<code>-s</code> / <code>-es</code> は付かない)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>数 (Numbers)</strong></td>
+                                <td>直接数えられる (例: <code>two cats</code>, <code>three ideas</code>)</td>
+                                <td>直接数えられない (❌ <code>two waters</code>)<br>※単位 (<code>piece</code>, <code>glass</code> など) を使う</td>
+                            </tr>
+                             <tr>
+                                <td><strong>量/数を表す言葉 (Quantifiers)</strong></td>
+                                <td><code>many</code>, <code>few</code>, <code>a few</code> (例: <code>many friends</code>)</td>
+                                <td><code>much</code>, <code>little</code>, <code>a little</code> (例: <code>much money</code>)</td>
+                            </tr>
+                             <tr>
+                                <td><strong>両方OKの言葉</strong></td>
+                                <td colspan="2" style="text-align: center;"><code>some</code>, <code>any</code>, <code>a lot of</code>, <code>lots of</code>, <code>plenty of</code> など<br>(例: <code>some books</code> / <code>some coffee</code>)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>数え方 (不可算の場合)</strong></td>
+                                <td>-</td>
+                                <td><code>a piece of ~</code>, <code>a slice of ~</code>, <code>a cup of ~</code> などの単位を使う (例: <code>a piece of advice</code>, <code>two glasses of water</code>)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </section>
+
+             <section id="common-mistakes">
+                <h2>② 要注意！日本人が間違いやすい名詞たち</h2>
+                <p>日本語の感覚だと数えられそうなのに、英語では不可算名詞になるものがあるんだ。「境界線」の考え方でスッキリ理解しよう！</p>
+
+                <details>
+                    <summary>Furniture (家具)</summary>
+                    <div class="details-content">
+                        <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
+                        <p><strong>理由:</strong> 椅子、机、棚などの<strong>総称・集合体</strong>。個々の<code>a chair</code>や<code>a table</code>は可算だけど、<code>furniture</code>は「家具類」という境界が曖昧なカテゴリー全体を指すから。個々のアイテムではなく、種類全体として捉えるんだ。</p>
+                        <p><strong>数えたい時:</strong> <code>a piece of furniture</code> (家具1点), <code>three pieces of furniture</code> (家具3点)</p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Advice (助言)</summary>
+                    <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
+                         <p><strong>理由:</strong> 形のない<strong>概念</strong>。「アドバイス」という中身そのものを指していて、明確な境界線や個数がないから。</p>
+                         <p><strong>数えたい時:</strong> <code>a piece of advice</code> (一つの助言), <code>some advice</code> (いくつかのアドバイス)</p>
+                     </div>
+                </details>
+
+                 <details>
+                    <summary>Information (情報)</summary>
+                    <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
+                         <p><strong>理由:</strong>これも形のない<strong>抽象的な概念</strong>。境界線がないから、個数で数えない。</p>
+                         <p><strong>数えたい時:</strong> <code>a piece of information</code> (一つの情報)</p>
+                     </div>
+                </details>
+
+                <details>
+                    <summary>News (ニュース)</summary>
+                    <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 形は<code>-s</code>だけど単数扱い！</p>
+                         <p><strong>理由:</strong>「新しい出来事に関する知らせ」という<strong>単一の概念</strong>として扱われる。個々のニュース記事ではなく、「ニュースというもの」全体を指す感覚。</p>
+                         <p><strong>注意点:</strong> 常に単数動詞を使う！ (例: <code>The news <strong>is</strong> good.</code>)</p>
+                     </div>
+                </details>
+
+                <details>
+                    <summary>Luggage / Baggage (手荷物)</summary>
+                     <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong></p>
+                         <p><strong>理由:</strong> スーツケース (<code>suitcase</code> - 可算) やバッグ (<code>bag</code> - 可算) などの<strong>集合体</strong>。<code>furniture</code>と同じ考え方。</p>
+                         <p><strong>数えたい時:</strong> <code>a piece of luggage/baggage</code> (手荷物1個)</p>
+                     </div>
+                </details>
+
+                <details>
+                    <summary>Bread (パン)</summary>
+                    <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 基本的に</p>
+                         <p><strong>理由:</strong> 切る前の塊や、<strong>物質・材料</strong>として捉えることが多いから。明確な「1単位」が決まっていない感じ。</p>
+                         <p><strong>数えたい時:</strong> <code>a slice of bread</code> (パン1切れ), <code>a loaf of bread</code> (パン1斤), <code>two pieces of bread</code> (パン2切れ)。ロールパンなど特定の形状のものは <code>a roll</code>, <code>two rolls</code> のように可算名詞で言うこともあるよ。</p>
+                     </div>
+                </details>
+
+                <details>
+                    <summary>Paper (紙)</summary>
+                     <div class="details-content">
+                         <p><strong class="highlight-uncountable">不可算 (Uncountable)</strong> - 物質として</p>
+                         <p><strong>理由:</strong> 書いたり印刷したりする<strong>素材・物質</strong>としての「紙」を指す時。 (例: <code>I need some paper.</code>)</p>
+                         <hr>
+                         <p><strong class="highlight-countable">可算 (Countable)</strong> - 書類・新聞として</p>
+                         <p><strong>理由:</strong> <code>a paper</code> = 「新聞 (<code>a newspaper</code>)」や「論文・レポート」など、特定の<strong>成果物・書類</strong>を指す時。この場合は、個別の「作品」としての境界線がある。</p>
+                     </div>
+                </details>
+
+            </section>
+
+            <section id="pair-comparison">
+                <h2>④ 似てるけど違う！可算/不可算ペア対決</h2>
+                <p>意味が似ているのに、片方は可算、もう片方は不可算という紛らわしいペアがあるんだ。これも「境界線」を意識すれば見分けられる！</p>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h4><span class="type-countable">Job</span> (可算) vs <span class="type-uncountable">Work</span> (不可算)</h4>
+                        <p><strong class="type-countable">Job:</strong> 具体的な「職業」「職務」「仕事口」。一つひとつ区別できるポジションやタスク。境界線が明確。</br>例: <code>I'm looking for a new job.</code> (新しい仕事を探している)</p>
+                        <hr>
+                        <p><strong class="type-uncountable">Work:</strong> 一般的な「労働」「作業」「仕事」という活動や概念全体。境界線が曖昧なエネルギーや時間を使う行為。</br>例: <code>I have a lot of work to do.</code> (やるべき仕事がたくさんある)</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4><span class="type-countable">Journey / Trip</span> (可算) vs <span class="type-uncountable">Travel</span> (不可算)</h4>
+                        <p><strong class="type-countable">Journey/Trip:</strong> 特定の「旅行」「行程」。始まりと終わりがあり、一つのイベントとして個別に数えられる。境界線が明確。</br>例: <code>We had a wonderful trip to Kyoto.</code> (京都への素晴らしい旅行をした)</p>
+                        <hr>
+                         <p><strong class="type-uncountable">Travel:</strong> 一般的な「旅行」「移動」という行為や概念全体。境界線が曖昧なアクティビティ。</br>例: <code>Travel broadens the mind.</code> (旅は視野を広げる)</p>
+                    </div>
+
+                     <div class="comparison-card">
+                        <h4><span class="type-countable">Climate</span> (可算) vs <span class="type-uncountable">Weather</span> (不可算)</h4>
+                        <p><strong class="type-countable">Climate:</strong> 特定地域の長期的な「気候」。地域ごとに区別され、一つのパターンとして認識できる。境界線がある程度明確。</br>例: <code>Japan has several different climates.</code> (日本にはいくつかの異なる気候がある)</p>
+                        <hr>
+                        <p><strong class="type-uncountable">Weather:</strong> 日々の「天気」。絶えず変化し、特定の形や区切りがない状態。境界線が非常に曖昧。</br>例: <code>We had terrible weather yesterday.</code> (昨日はひどい天気だった)</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4><span class="type-countable">Machine / Device</span> (可算) vs <span class="type-uncountable">Machinery / Equipment</span> (不可算)</h4>
+                        <p><strong class="type-countable">Machine/Device:</strong> 個々の「機械」「装置」。一つひとつ数えられる具体的な物。境界線が明確。</br>例: <code>This factory has many new machines.</code> (この工場には多くの新しい機械がある)</p>
+                        <hr>
+                         <p><strong class="type-uncountable">Machinery/Equipment:</strong> (集合的に)「機械類」「設備」「装置類」。個々の機械ではなく、システムやカテゴリー全体を指す。境界線が曖昧な集合体。</br>例: <code>The company invested in new machinery.</code> (その会社は新しい機械設備に投資した)</p>
+                    </div>
+
+                     <div class="comparison-card">
+                        <h4><span class="type-countable">View</span> (可算) vs <span class="type-uncountable">Scenery</span> (不可算)</h4>
+                        <p><strong class="type-countable">View:</strong> 特定の場所から見える「眺め」「景色」。窓からの眺めなど、区切られた視界。境界線がある。</br>例: <code>The room has a beautiful view of the ocean.</code> (その部屋からは海の美しい眺めが見える)</p>
+                        <hr>
+                         <p><strong class="type-uncountable">Scenery:</strong> ある地域全体の「風景」「景色」。広範囲にわたる自然の眺め全体を指す。境界線が曖昧な全体像。</br>例: <code>We enjoyed the beautiful mountain scenery.</code> (私たちは美しい山の風景を楽しんだ)</p>
+                    </div>
+
+                    <div class="comparison-card">
+                        <h4><span class="type-countable">Coin / Note(UK) / Bill(US)</span> (可算) vs <span class="type-uncountable">Money / Cash / Currency</span> (不可算)</h4>
+                        <p><strong class="type-countable">Coin/Note/Bill:</strong> 具体的な「硬貨」「紙幣」。物理的に一つひとつ数えられる物。境界線が明確。</br>例: <code>I found a 100 yen coin.</code> / <code>He paid with five £10 notes.</code></p>
+                        <hr>
+                         <p><strong class="type-uncountable">Money/Cash/Currency:</strong> 一般的な「お金」「現金」「通貨」という価値や概念全体。境界線が曖昧なシステムや抽象概念。</br>例: <code>How much money do you have?</code> (いくらお金を持っていますか？)</p>
+                    </div>
+
+                     <div class="comparison-card">
+                        <h4><span class="type-countable">Song / Tune</span> (可算) vs <span class="type-uncountable">Music</span> (不可算)</h4>
+                        <p><strong class="type-countable">Song/Tune:</strong> 個々の「歌」「曲」。一つひとつ独立した作品として数えられる。境界線が明確。</br>例: <code>She sang a beautiful song.</code> (彼女は美しい歌を歌った)</p>
+                        <hr>
+                         <p><strong class="type-uncountable">Music:</strong> 一般的な「音楽」という芸術形式や概念全体。境界線が曖昧な音の集合体。</br>例: <code>I love listening to music.</code> (私は音楽を聴くのが大好きだ)</p>
+                    </div>
+
+                     <div class="comparison-card">
+                        <h4><span class="type-countable">Vegetable</span> (可算) vs <span class="type-uncountable">Fruit</span> (通常不可算)</h4>
+                        <p><strong class="type-countable">Vegetable:</strong> 個々の「野菜」。通常、一つひとつ数えることができる。(例: <code>carrots</code>, <code>potatoes</code>)</br>例: <code>Eat plenty of fresh vegetables.</code> (新鮮な野菜をたくさん食べなさい)</p>
+                        <hr>
+                         <p><strong class="type-uncountable">Fruit:</strong> (集合的に)「果物」「果実類」。食品のカテゴリーとして全体を指すことが多い。境界線が曖昧な集合体。</br>例: <code>Fruit is good for your health.</code> (果物は健康に良い)<br><strong>※注意:</strong> 特定の「種類」の果物や、個数を意識する場合は可算 (例: <code>an apple</code>, <code>three bananas</code>, <code>We grow various fruits.</code>) になることもある、ややこしいヤツ！</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="irregular-plurals">
+                <h2>⑤ 不規則変化 可算名詞リスト</h2>
+                <p>複数形が <code>-s</code> や <code>-es</code> じゃない、ちょっと特別な可算名詞たち。よく使うものを覚えておこう！</p>
+                <ul class="irregular-list">
+                    <li><span class="singular">man</span> → <span class="plural">men</span></li>
+                    <li><span class="singular">woman</span> → <span class="plural">women</span></li>
+                    <li><span class="singular">child</span> → <span class="plural">children</span></li>
+                    <li><span class="singular">person</span> → <span class="plural">people</span></li>
+                    <li><span class="singular">foot</span> → <span class="plural">feet</span></li>
+                    <li><span class="singular">tooth</span> → <span class="plural">teeth</span></li>
+                    <li><span class="singular">goose</span> → <span class="plural">geese</span></li>
+                    <li><span class="singular">mouse</span> → <span class="plural">mice</span></li>
+                    <li><span class="singular">louse</span> → <span class="plural">lice</span></li>
+                    <li><span class="singular">ox</span> → <span class="plural">oxen</span></li>
+                    <li><span class="singular">die</span> → <span class="plural">dice</span> (サイコロ)</li>
+                    <li><span class="singular">leaf</span> → <span class="plural">leaves</span></li>
+                    <li><span class="singular">life</span> → <span class="plural">lives</span></li>
+                    <li><span class="singular">knife</span> → <span class="plural">knives</span></li>
+                    <li><span class="singular">wife</span> → <span class="plural">wives</span></li>
+                    <li><span class="singular">shelf</span> → <span class="plural">shelves</span></li>
+                    <li><span class="singular">wolf</span> → <span class="plural">wolves</span></li>
+                    <li><span class="singular">thief</span> → <span class="plural">thieves</span></li>
+                    <li><span class="singular">analysis</span> → <span class="plural">analyses</span></li>
+                    <li><span class="singular">basis</span> → <span class="plural">bases</span></li>
+                    <li><span class="singular">crisis</span> → <span class="plural">crises</span></li>
+                    <li><span class="singular">thesis</span> → <span class="plural">theses</span></li>
+                    <li><span class="singular">phenomenon</span> → <span class="plural">phenomena</span></li>
+                    <li><span class="singular">criterion</span> → <span class="plural">criteria</span></li>
+                    <li><span class="singular">datum</span> → <span class="plural">data</span> (※<code>data</code>は単数扱いも増えている)</li>
+                    <li><span class="singular">medium</span> → <span class="plural">media</span> (※<code>media</code>は単数扱いも)</li>
+                    <li><span class="singular">cactus</span> → <span class="plural">cacti / cactuses</span></li>
+                    <li><span class="singular">focus</span> → <span class="plural">foci / focuses</span></li>
+                    <li><span class="singular">fungus</span> → <span class="plural">fungi / funguses</span></li>
+                    <li><span class="singular">syllabus</span> → <span class="plural">syllabi / syllabuses</span></li>
+                     <li><span class="singular">fish</span> → <span class="plural">fish</span> (種類を言う場合は <code>fishes</code> も)</li>
+                     <li><span class="singular">sheep</span> → <span class="plural">sheep</span></li>
+                     <li><span class="singular">deer</span> → <span class="plural">deer</span></li>
+                     <li><span class="singular">series</span> → <span class="plural">series</span></li>
+                     <li><span class="singular">species</span> → <span class="plural">species</span></li>
+                </ul>
+            </section>
+
+            <section id="summary">
+                 <h2>まとめと補足</h2>
+                 <p>可算名詞と不可算名詞の区別は、英語の感覚を掴む上でとても大切だよ。「境界線」の考え方を基本に、迷ったら辞書で <code>[C]</code> (Countable) か <code>[U]</code> (Uncountable) のマークを確認する習慣をつけよう！</p>
+                 <p>文脈によって可算にも不可算にもなる名詞（<code>hair</code>, <code>time</code>, <code>experience</code>, <code>chicken</code> など）もあるけど、それも「具体的な事例・種類」を指すか「全体・物質・概念」を指すかで判断できることが多いよ。</p>
+                 <p>このページが、みんなの名詞マスターへの道をサポートできたら嬉しいな！ Good luck! ✨</p>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Simple script for enhancing UI, e.g., smooth scrolling or future interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Noun Master Guide Loaded!");
+
+            // Example: Smooth scroll for internal links (if any were added)
+            // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            //     anchor.addEventListener('click', function (e) {
+            //         e.preventDefault();
+            //         document.querySelector(this.getAttribute('href')).scrollIntoView({
+            //             behavior: 'smooth'
+            //         });
+            //     });
+            // });
+
+            // The <details> tag provides basic accordion functionality natively.
+            // No complex JS needed for the current implementation.
+        });
+    </script>
+
+</body>
+</html>
