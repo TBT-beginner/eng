@@ -1,27 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授業記録: 英語の基礎固め - 単語、発音、品詞、文型 (授業日: 2025-04-18)</title>
+    <title>授業記録: 英語学習の基礎 - 単語・発音・文法入門 (2025/4/18)</title>
     <style>
-        /* --- カラーパレット定義 --- */
+        /* --- 全体構成とスタイル --- */
         :root {
-            --bg-main: #F8F9FA; /* 背景 (Main) */
-            --bg-content: #FFFFFF; /* 背景 (Content) */
-            --text-main: #212529; /* テキスト (Main) */
-            --text-secondary: #6C757D; /* テキスト (Secondary) */
-            --primary-color: #4A90E2; /* メインカラー (Primary) - 見出しなど */
-            --accent-color: #F4A261; /* アクセントカラー (Accent) - 強調、ボタン */
-            --link-color: #4A90E2; /* リンクカラー (Link) */
-            --border-color: #E9ECEF; /* ボーダーカラー (Border) */
-            --code-bg: #F1F3F5; /* コードブロック背景 */
-            --box-bg: #E9ECEF; /* ボックス背景 */
-            --box-border: #CED4DA; /* ボックス境界線 */
-            --progress-bar-color: var(--accent-color); /* プログレスバーの色 */
+            /* 集中と信頼感のブルー基調パレット */
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #4A90E2; /* 見出しや強調 */
+            --color-accent: #F4A261;  /* ハイライトやボタン */
+            --color-link: #4A90E2;
+            --color-border: #E9ECEF;
+            --color-code-bg: #f1f3f5;
+            --color-code-text: #343a40;
+            --color-blockquote-border: #4A90E2;
+            --color-tooltip-bg: #343a40;
+            --color-tooltip-text: #FFFFFF;
+            --color-details-bg: #f8f9fa; /* 解答例の背景色 */
         }
 
-        /* --- 基本スタイル --- */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -30,703 +33,899 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px; /* ベースフォントサイズ */
         }
 
         body {
-            font-family: 'Noto Sans JP', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            font-size: 16px;
-            line-height: 1.75; /* 行間を広めに */
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.75;
             color: var(--text-main);
             background-color: var(--bg-main);
-            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* --- プログレスバー --- */
-        #progressBar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 5px;
-            background-color: var(--progress-bar-color);
-            z-index: 1000;
-            transition: width 0.1s ease-out;
-        }
-
-        /* --- レイアウト --- */
         .container {
-            max-width: 850px; /* 最大幅 */
-            margin: 40px auto; /* 上下にマージン、左右中央揃え */
-            padding: 30px 40px; /* コンテンツ内のパディング */
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
             background-color: var(--bg-content);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         /* --- タイポグラフィ --- */
         h1, h2, h3, h4, h5, h6 {
-            color: var(--primary-color);
+            color: var(--color-primary);
             margin-top: 1.8em;
             margin-bottom: 0.8em;
             line-height: 1.3;
+            font-weight: 600;
         }
 
-        h1 {
-            font-size: 2.2em;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5em;
-            margin-top: 0; /* 最初のh1は上マージン不要 */
-        }
-
-        h2 {
-            font-size: 1.7em;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.4em;
-            color: var(--accent-color); /* h3はアクセントカラー */
-        }
+        h1 { font-size: 2.2rem; margin-top: 0; border-bottom: 2px solid var(--color-primary); padding-bottom: 0.3em; }
+        h2 { font-size: 1.8rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.3em; }
+        h3 { font-size: 1.4rem; }
+        h4 { font-size: 1.2rem; color: var(--text-main); }
 
         p {
             margin-bottom: 1.2em;
         }
 
         a {
-            color: var(--link-color);
+            color: var(--color-link);
             text-decoration: none;
             transition: color 0.2s ease;
         }
-
-        a:hover, a:focus {
+        a:hover {
             text-decoration: underline;
-            color: darken(var(--link-color), 10%);
+            color: color-mix(in srgb, var(--color-link) 85%, black); /* 少し暗く */
         }
 
         ul, ol {
+            margin-left: 1.5em;
             margin-bottom: 1.2em;
-            padding-left: 1.8em; /* リストのインデント */
+            padding-left: 1em;
         }
-
-        li {
+        ul li, ol li {
             margin-bottom: 0.5em;
         }
+        /* 目次用の調整 */
+        #tableOfContents ol {
+            margin-left: 0; /* 左マージンリセット */
+            padding-left: 1.8em; /* 番号表示スペース確保 */
+        }
+         #tableOfContents ol li::marker { /* 番号の色など */
+             color: var(--color-primary);
+             font-weight: bold;
+         }
+
 
         strong {
             font-weight: 600;
-            color: var(--primary-color);
+            color: var(--color-primary);
         }
 
         .highlight {
-            background-color: #fff3cd; /* 黄色系のハイライト */
+            background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
             padding: 0.1em 0.3em;
             border-radius: 3px;
+            font-weight: bold;
         }
 
         code {
             font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-            background-color: var(--code-bg);
+            background-color: var(--color-code-bg);
+            color: var(--color-code-text);
             padding: 0.2em 0.4em;
-            font-size: 0.9em;
             border-radius: 3px;
-            color: var(--text-secondary);
+            font-size: 0.9em;
         }
 
         .code-block {
-            display: block;
-            background-color: var(--code-bg);
+            background-color: var(--color-code-bg);
             padding: 1em;
-            margin-bottom: 1.2em;
-            overflow-x: auto;
             border-radius: 5px;
-            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            margin-bottom: 1.2em;
+            border: 1px solid var(--color-border);
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap; /* 折り返し */
+            word-wrap: break-word;  /* 長い単語も折り返し */
+        }
+        .code-block pre code {
+            background-color: transparent;
+            padding: 0;
             font-size: 0.9em;
-            white-space: pre;
         }
 
         blockquote {
-            border-left: 4px solid var(--primary-color);
-            padding-left: 1em;
             margin: 1.5em 0;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* --- 特殊要素 --- */
-        .reading-time {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            margin-bottom: 1.5em;
-            display: block;
-        }
-
-        .summary-box {
-            background-color: var(--box-bg);
-            border: 1px solid var(--box-border);
-            border-left: 5px solid var(--primary-color);
             padding: 1em 1.5em;
-            margin-bottom: 2em;
+            border-left: 5px solid var(--color-blockquote-border);
+            background-color: color-mix(in srgb, var(--color-blockquote-border) 10%, transparent);
+            color: var(--text-secondary);
+            /* font-style: italic; スタイル変更 */
+        }
+        blockquote p {
+            margin-bottom: 0;
+            font-style: normal; /* イタリック解除 */
+        }
+        /* 強調部分のスタイル変更 */
+        blockquote strong {
+             font-style: normal;
+             color: var(--text-main); /* 強調の色をメインテキストに合わせる */
+             font-weight: bold;
+        }
+        blockquote .weak-word { /* 弱い単語のスタイル（任意） */
+             font-size: 0.9em;
+             color: var(--text-secondary);
+        }
+
+
+        .supplementary-box {
+            background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+            border-left: 5px solid var(--color-primary);
+            padding: 1em 1.5em;
+            margin: 1.5em 0;
             border-radius: 5px;
         }
-        .summary-box h3 {
+        .supplementary-box h4 {
             margin-top: 0;
             margin-bottom: 0.5em;
-            color: var(--primary-color);
-            font-size: 1.2em;
+            color: var(--color-primary);
         }
 
-        #tableOfContents {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            border: 1px solid var(--color-border);
+        }
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 0.8em;
+            text-align: left;
+        }
+        th {
             background-color: var(--bg-main);
+            font-weight: 600;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: color-mix(in srgb, var(--bg-main) 50%, transparent);
+        }
+
+        /* --- 必須のページ要素 --- */
+
+        /* プログレスバー */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* ヘッダーメタ情報 */
+        header .meta {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 2em;
+        }
+
+        /* 概要ボックス */
+        .summary-box {
+            background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+            border: 1px solid var(--color-border);
             padding: 1.5em;
             margin-bottom: 2.5em;
             border-radius: 5px;
-            border: 1px solid var(--border-color);
-            column-count: 2; /* 2カラム表示 */
-            column-gap: 2em;
         }
-        #tableOfContents h3 {
+        .summary-box h2 {
             margin-top: 0;
-            margin-bottom: 1em;
-            column-span: all; /* 見出しはカラムをまたぐ */
-            font-size: 1.3em;
+            margin-bottom: 0.8em;
+            font-size: 1.5rem;
+            border-bottom: none;
         }
-        #tableOfContents ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin-bottom: 0;
-        }
-        #tableOfContents li {
-            margin-bottom: 0.6em;
-            break-inside: avoid-column; /* カラム内で項目が分割されないように */
-        }
-        #tableOfContents a {
-            color: var(--text-main);
-            font-weight: 500;
-        }
-        #tableOfContents a:hover, #tableOfContents a:focus {
-            color: var(--primary-color);
-            text-decoration: none;
+        .summary-box ul {
+            margin-left: 0;
+            padding-left: 1.2em;
         }
 
-        .supplementary-box {
-            background-color: #e7f5ff; /* 水色系の背景 */
-            border: 1px solid #b3d7ff;
-            border-left: 5px solid var(--link-color);
+        /* 目次 */
+        #tableOfContents {
+            margin-bottom: 3em;
             padding: 1em 1.5em;
-            margin: 1.5em 0;
+            background-color: var(--bg-main);
             border-radius: 5px;
-            font-size: 0.95em;
+            border: 1px solid var(--color-border);
         }
-        .supplementary-box strong {
-            color: var(--link-color);
+        #tableOfContents h2 {
+            margin-top: 0;
+            margin-bottom: 1em;
+            font-size: 1.5rem;
+            border-bottom: none;
+        }
+        #tableOfContents ol { /* ulからolに変更 */
+            list-style: decimal; /* 番号表示を確実に */
+            padding-left: 1.8em; /* 番号用に調整 */
+            margin: 0;
+            column-count: 1; /* デフォルトは1カラム */
+        }
+        #tableOfContents ol li { /* ulからolに変更 */
+            margin-bottom: 0.6em;
+        }
+        #tableOfContents ol li a { /* ulからolに変更 */
+            color: var(--text-main);
+        }
+        #tableOfContents ol li a:hover { /* ulからolに変更 */
+            color: var(--color-link);
+            text-decoration: underline;
+        }
+
+        /* ツールチップ */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%; /* 上に表示 */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-tooltip-bg);
+            color: var(--color-tooltip-text);
+            padding: 0.5em 0.8em;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 10;
+            pointer-events: none; /* ホバーの邪魔にならないように */
+        }
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* 振り返りセクション */
         #review {
             margin-top: 3em;
             padding-top: 2em;
-            border-top: 2px solid var(--border-color);
+            border-top: 2px solid var(--color-border);
         }
-
-        .checklist ul {
+        .checklist {
             list-style: none;
             padding-left: 0;
         }
         .checklist li {
-            position: relative;
-            padding-left: 2em;
             margin-bottom: 0.8em;
+            display: flex;
+            align-items: center;
+        }
+        .checklist input[type="checkbox"] {
+            margin-right: 0.8em;
             cursor: pointer;
-            transition: color 0.2s ease;
+            width: 1.2em;
+            height: 1.2em;
+            accent-color: var(--color-primary); /* チェック時の色 */
         }
-        .checklist li::before {
-            content: "☐"; /* 未チェック */
-            position: absolute;
-            left: 0;
-            top: 0.1em;
-            font-size: 1.2em;
-            color: var(--primary-color);
+        .checklist label {
+            cursor: pointer;
+            flex: 1;
         }
-        .checklist li.checked::before {
-            content: "☑"; /* チェック済み */
-            color: var(--accent-color);
-        }
-        .checklist li.checked {
-            color: var(--text-secondary);
+        .checklist input[type="checkbox"]:checked + label {
             text-decoration: line-through;
+            color: var(--text-secondary);
         }
 
         .review-questions {
             margin-top: 2em;
         }
-        .review-questions h3 {
-            margin-bottom: 1em;
-        }
-        .review-questions .question {
+        .review-questions > div { /* 各質問ブロック */
             margin-bottom: 1.5em;
-            padding-left: 1em;
-            border-left: 3px solid var(--accent-color);
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            overflow: hidden; /* detailsの角丸調整用 */
+        }
+        .review-questions p { /* 質問文 */
+            margin-bottom: 0.5em;
+            font-weight: bold;
+            padding: 1em 1.5em;
+            background-color: var(--bg-main);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .review-questions textarea,
+        .review-questions input[type="text"] {
+            width: calc(100% - 3em); /* padding考慮 */
+            margin: 0 1.5em 1em 1.5em;
+            padding: 0.8em;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1em;
+            line-height: 1.5;
+            display: block; /* 幅指定のため */
+        }
+        .review-questions textarea {
+            min-height: 80px;
+            resize: vertical;
         }
         .review-questions .hint {
-            font-size: 0.9em;
+            font-size: 0.85em;
             color: var(--text-secondary);
-            margin-top: 0.5em;
-            padding-left: 1.2em;
+            margin: -0.5em 1.5em 1em 1.5em; /* 位置調整 */
+            display: block;
         }
-        .review-questions .hint::before {
-            content: "💡";
-            margin-right: 0.3em;
+        /* 解答表示 (details/summary) スタイル */
+        .review-questions details {
+             margin-top: 0; /* 上マージン除去 */
+        }
+        .review-questions summary {
+            padding: 0.8em 1.5em;
+            cursor: pointer;
+            background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+            color: var(--color-primary);
+            font-weight: bold;
+            list-style: none; /* マーカー除去 (ブラウザ依存) */
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
+        .review-questions summary:hover {
+             background-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+        }
+        .review-questions summary::-webkit-details-marker { /* Chrome/Safari マーカー除去 */
+            display: none;
+        }
+        .review-questions summary::before { /* 開閉アイコン */
+            content: '▶';
+            position: absolute;
+            left: 1.5em;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            margin-right: 0.5em;
+            transition: transform 0.2s ease;
+        }
+        .review-questions details[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        .review-questions .answer {
+            padding: 1em 1.5em 1.5em 1.5em; /* summaryの下に表示 */
+            background-color: var(--color-details-bg);
+            border-top: 1px solid var(--color-border);
+        }
+        .review-questions .answer p:last-child {
+            margin-bottom: 0;
         }
 
-        /* --- フッター --- */
+
+        /* フッター */
         footer {
             margin-top: 3em;
             padding-top: 1.5em;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--color-border);
             text-align: center;
             font-size: 0.9em;
             color: var(--text-secondary);
         }
-        footer a {
-            color: var(--text-secondary);
-        }
-        footer a:hover, footer a:focus {
-            color: var(--primary-color);
+        footer p {
+            margin-bottom: 0.5em;
         }
 
-        /* --- トップへ戻るボタン --- */
+        /* トップへ戻るボタン */
         #scrollTopBtn {
+            display: none; /* 初期状態は非表示 */
             position: fixed;
             bottom: 20px;
             right: 20px;
-            display: none; /* 初期状態は非表示 */
-            background-color: var(--primary-color);
+            z-index: 999;
+            background-color: var(--color-accent);
             color: white;
             border: none;
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            font-size: 24px;
+            font-size: 1.5rem;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            opacity: 0.8;
-            transition: opacity 0.3s ease, background-color 0.3s ease;
-            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0; /* 初期状態は透明 */
+            transition: background-color 0.2s ease, opacity 0.3s ease, display 0s linear 0.3s; /* displayは遅延させる */
         }
+        #scrollTopBtn.visible { /* 表示用クラス */
+             display: block;
+             opacity: 1;
+             transition: background-color 0.2s ease, opacity 0.3s ease;
+        }
+
         #scrollTopBtn:hover {
-            opacity: 1;
-            background-color: var(--accent-color);
+            background-color: color-mix(in srgb, var(--color-accent) 85%, black);
         }
 
         /* --- レスポンシブデザイン --- */
-        @media (max-width: 900px) {
-            .container {
-                margin: 20px auto;
-                padding: 20px;
-                max-width: 95%;
-            }
+        @media (max-width: 768px) {
+            html { font-size: 15px; }
+            .container { padding: 1.5rem 0.8rem; }
+            h1 { font-size: 1.9rem; }
+            h2 { font-size: 1.6rem; }
+            h3 { font-size: 1.3rem; }
+            #scrollTopBtn { width: 45px; height: 45px; font-size: 1.3rem; }
+            .review-questions summary::before { left: 1em; } /* アイコン位置調整 */
+            .review-questions summary { padding-left: 2.5em; } /* アイコンスペース確保 */
+            .review-questions .answer { padding-left: 1em; padding-right: 1em;}
         }
 
-        @media (max-width: 600px) {
-            body {
-                font-size: 15px;
-            }
-            h1 {
-                font-size: 1.9em;
-            }
-            h2 {
-                font-size: 1.5em;
-            }
-            h3 {
-                font-size: 1.3em;
-            }
-            .container {
-                padding: 15px;
-            }
-            #tableOfContents {
-                column-count: 1; /* スマートフォンでは1カラム */
-            }
-            #scrollTopBtn {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-                bottom: 15px;
-                right: 15px;
+        @media (min-width: 600px) {
+             /* 目次を2カラムに */
+            #tableOfContents ol {
+                column-count: 2;
+                column-gap: 2em;
             }
         }
-
     </style>
 </head>
 <body>
-
+    <!-- プログレスバー -->
     <div id="progressBar"></div>
 
     <div class="container">
         <header>
-            <h1>英語の基礎固め：単語、発音、品詞、文型</h1>
-            <span class="reading-time" id="readingTime">読了時間: 計算中...</span>
+            <h1>授業記録: 英語学習の基礎 - 単語・発音・文法入門</h1>
+            <!-- 日付を修正 -->
+            <p class="meta">日付: 2025/4/18 | <span id="readingTime">読了時間: 計算中...</span></p>
         </header>
 
         <main id="mainContent">
-
-            <div class="summary-box">
-                <h3>2025/04/18 授業概要</h3>
+            <!-- 概要 -->
+            <section class="summary-box">
+                <h2>授業概要</h2>
                 <ul>
-                    <li>単語学習の重要性と具体的な例 (store, shop, market の違い)</li>
-                    <li>英語らしい発音のポイント (二重母音、強弱、リンキング)</li>
-                    <li>主要4品詞と全9品詞の役割と見分け方</li>
-                    <li>英語の基本的な文構造（文型）の紹介</li>
-                    <li>効果的な暗唱練習の方法</li>
+                    <li>単語学習の重要性と、<code>store</code>, <code>shop</code>, <code>market</code> の違いや関連語彙 (<span class="tooltip" data-tooltip="店員">clerk</span>, <span class="tooltip" data-tooltip="商人">merchant</span>, <span class="tooltip" data-tooltip="ラテン語の「商う」が語源">mercari</span>) の解説。</li>
+                    <li>二重母音字 (例: <code>brain</code>) の発音ルール。</li>
+                    <li>主要4<span class="tooltip" data-tooltip="文の中での単語の役割分類 (名詞、動詞など)">品詞</span>（名詞、動詞、形容詞、副詞）の役割と、文中の発音における強弱の重要性。</li>
+                    <li>暗唱文を用いた発音練習（フリップライティング、グルグルメソッド）。</li>
+                    <li>英語特有の<span class="tooltip" data-tooltip="単語同士の音が繋がって発音される現象">リエゾン</span>（音の連結）についての解説。</li>
+                    <li>9つの品詞（主要4品詞 + <span class="tooltip" data-tooltip="名詞の代わり (I, youなど)">代名詞</span>, <span class="tooltip" data-tooltip="動詞を助ける (can, willなど)">助動詞</span>, <span class="tooltip" data-tooltip="名詞の前に置く (in, onなど)">前置詞</span>, <span class="tooltip" data-tooltip="語・句・文をつなぐ (and, butなど)">接続詞</span>, <span class="tooltip" data-tooltip="感情を表す (Wow!, Oh!)">間投詞</span>）の紹介。</li>
+                    <li>英語の基本的な5つの<span class="tooltip" data-tooltip="文の構造パターン (SV, SVC, SVOなど)">文型</span> (<span class="tooltip" data-tooltip="文の要素: Subject, Verb, Object, Complement, Modifier">SVOCM</span>) の導入と、予習課題の提示。</li>
                 </ul>
-            </div>
+            </section>
 
+            <!-- 目次 (olに変更) -->
             <nav id="tableOfContents">
-                <h3>目次</h3>
-                <ul>
-                    <li><a href="#intro">はじめに：単語学習の重要性</a></li>
-                    <li><a href="#vocabulary">単語学習：Store, Shop, Market の違い</a></li>
-                    <li><a href="#pronunciation">発音のポイント</a></li>
-                    <li><a href="#parts-of-speech-1">品詞（１）：主要4品詞と発音の強弱</a></li>
-                    <li><a href="#practice">暗唱文練習</a></li>
-                    <li><a href="#pronunciation-linking">発音のポイント：リンキング</a></li>
-                    <li><a href="#parts-of-speech-2">品詞（２）：9つの品詞</a></li>
-                    <li><a href="#sentence-structure">文型：英語の構造</a></li>
-                    <li><a href="#homework">演習と宿題</a></li>
+                <h2>目次</h2>
+                <ol>
+                    <li><a href="#introduction">はじめに：単語学習の重要性</a></li>
+                    <li><a href="#vocabulary">単語解説: store, shop, market</a></li>
+                    <li><a href="#pronunciation-vowels">発音: 二重母音字</a></li>
+                    <li><a href="#recitation-prep">暗唱文練習の準備</a></li>
+                    <li><a href="#parts-of-speech-1">品詞(1): 主要4品詞と発音の強弱</a></li>
+                    <li><a href="#pronunciation-linking">発音補足: 英語のリエゾン（連結）</a></li>
+                    <li><a href="#recitation-practice">暗唱文練習: 実践</a></li>
+                    <li><a href="#parts-of-speech-2">品詞(2): 9つの品詞</a></li>
+                    <li><a href="#sentence-patterns">文型: 英語の5つの基本パターン</a></li>
+                    <li><a href="#homework">宿題</a></li>
                     <li><a href="#review">振り返り</a></li>
-                </ul>
+                </ol>
             </nav>
 
-            <section id="intro">
+            <!-- コンテンツセクション -->
+            <section id="introduction">
                 <h2>はじめに：単語学習の重要性</h2>
-                <p>英語学習において、単語力は非常に重要です。単語を知っていれば、英検1級レベルまで到達することも可能です。今回は、単語のニュアンスの違いや、英語の基礎となる発音、品詞、文型について学んでいきましょう。</p>
-                <blockquote>自分でトライすることが大事です。やればやるほど伸びます。</blockquote>
+                <p>英語学習において、単語力は非常に重要です。自分で積極的に単語を覚えていくことで、英語力は確実に向上します。特に英検などの資格試験では、単語力が合否を左右すると言っても過言ではありません。</p>
+                <p>この授業では、単語のニュアンスの違いや発音のルール、そして英文法の基礎となる品詞や文型について学んでいきます。まずは、よく似た意味を持つ単語の違いから見ていきましょう。</p>
             </section>
 
             <section id="vocabulary">
-                <h2>単語学習：Store, Shop, Market の違い</h2>
-                <p>似た意味を持つ単語でも、ニュアンスが異なることがあります。例として <code>store</code>, <code>shop</code>, <code>market</code> の違いを見てみましょう。</p>
+                <h2>単語解説: store, shop, market</h2>
+                <p>「お店」を表す言葉として <code>store</code>, <code>shop</code>, <code>market</code> がありますが、これらのニュアンスには違いがあります。</p>
                 <ul>
-                    <li><strong>Store:</strong>
+                    <li><strong>Store:</strong> (主にアメリカ英語)
                         <ul>
-                            <li>商品を仕入れて蓄え (store)、販売する場所。</li>
-                            <li>その場で作ることは少ない（仕入れて保管がメイン）。</li>
-                            <li>アメリカ英語では <code>shop</code> との区別は曖昧だが、比較的規模が大きい場合がある。</li>
-                            <li>例: Department store (百貨店), Grocery store (食料品店)</li>
+                            <li>動詞では「蓄える」という意味があるように、商品を仕入れて保管し、販売する場所を指します。</li>
+                            <li>比較的大規模な店舗や、特定の種類の商品を多く扱う店（例: department store, grocery store）に使われることが多いです。その場で作るというよりは、仕入れたものを売るイメージです。</li>
                         </ul>
                     </li>
-                    <li><strong>Shop:</strong>
+                    <li><strong>Shop:</strong> (イギリス英語では小規模な店、アメリカ英語では store とほぼ同義)
                         <ul>
-                            <li>イギリス英語では比較的小規模な個人店を指すことが多い。</li>
-                            <li>その場で「作って売る」というニュアンスが強い場合がある。</li>
-                            <li>例: Coffee shop (その場で作る), Book shop (本屋)</li>
+                            <li>イギリス英語では、個人経営の小さな店を指すことが多いです。</li>
+                            <li>アメリカ英語では <code>store</code> と同様に使われますが、<strong class="highlight">その場で何かを作って売る</strong>ニュアンスが含まれることがあります。例えば、<code>coffee shop</code>（コーヒーを作って売る）や <code>repair shop</code>（修理をする）などが挙げられます。</li>
                         </ul>
                     </li>
                     <li><strong>Market:</strong>
                         <ul>
-                            <li>元々は「物を売り買いする場所」という意味。</li>
-                            <li>多くのお店が集まっている場所、市場。</li>
-                            <li>例: Fish market (魚市場), Flea market (フリーマーケット)</li>
+                            <li>もともとは「市場」を意味し、多くの売り手（お店）が集まって商品を売買する場所を指します。</li>
+                            <li><code>supermarket</code> のように大規模な小売店を指すこともありますが、本来は <code>fish market</code>（魚市場）のように、複数の専門業者が集まる場所のイメージです。</li>
                         </ul>
                     </li>
                 </ul>
                 <div class="supplementary-box">
-                    <strong>関連語:</strong>
+                    <h4>関連語彙と豆知識</h4>
                     <ul>
-                        <li><code>Clerk</code>: 店員</li>
-                        <li><code>Merchant</code> (マーチャント): 商人（ラテン語の「売る」が語源）</li>
-                        <li><code>Mercari</code> (メルカリ): フリマアプリの名前。これも「売る」に関連しており、現代の「マーケット」と言える。</li>
+                        <li><span class="tooltip" data-tooltip="店員のこと。">Clerk</span>: お店で働く店員さん。</li>
+                        <li><span class="tooltip" data-tooltip="商人のこと。商売をする人。">Merchant</span>: 商人。<code>Store</code> や <code>Shop</code> よりも広範な「商い」に関わる人を指すことがあります。</li>
+                        <li><span class="tooltip" data-tooltip="ラテン語の『mercari』（商う、取引する）が語源。売り買いする場所という意味。">Mercari</span>: フリマアプリ「メルカリ」の名前は、この「商う」という意味のラテン語に由来しており、現代の「マーケット」の一形態と言えます。</li>
                     </ul>
                 </div>
             </section>
 
-            <section id="pronunciation">
-                <h2>発音のポイント</h2>
-                <h3>二重母音字の発音</h3>
-                <p><code>ai</code>, <code>ea</code>, <code>ee</code>, <code>oa</code>, <code>ui</code> のように母音字が二つ並ぶ場合（二重母音字）、基本的なルールがあります。</p>
-                <p><strong>ルール:</strong> 最初の母音字をアルファベット読みし、二番目の母音字は発音しない。</p>
-                <ul>
-                    <li><code>brain</code> (ai): "a" をアルファベット読み → ブレイン</li>
-                    <li><code>eat</code> (ea): "e" をアルファベット読み → イート</li>
-                    <li><code>boat</code> (oa): "o" をアルファベット読み → ボート</li>
-                    <li><code>suit</code> (ui): "u" をアルファベット読み → スート</li>
-                </ul>
-                <p class="highlight">このルールを知っておくと、発音に迷うことが少なくなります。</p>
+            <section id="pronunciation-vowels">
+                 <h2>発音: 二重母音字</h2>
+                 <p>英語の発音で迷うことの一つに、母音字が二つ並んだ<span class="tooltip" data-tooltip="ai, ea, ie, oa, ue のように母音字が2つ連続し、1つの音を表すもの。">二重母音字</span>があります。例えば <code>brain</code> の <code>ai</code> はどう発音するでしょうか？</p>
+                 <p>簡単なルールとして、<strong class="highlight">多くの場合、最初の母音字のアルファベット名を読み、二番目の母音字は発音しません。</strong></p>
+                 <ul>
+                    <li><code>ai</code> (例: brain, train, wait) → 最初の 'a' をアルファベット名の /eɪ/ (エイ) と読む → /breɪn/</li>
+                    <li><code>ea</code> (例: eat, read, sea) → 最初の 'e' をアルファベット名の /iː/ (イー) と読む → /iːt/</li>
+                    <li><code>ie</code> (例: pie, lie, tie) → 最初の 'i' をアルファベット名の /aɪ/ (アイ) と読む → /paɪ/</li>
+                    <li><code>oa</code> (例: boat, coat, road) → 最初の 'o' をアルファベット名の /oʊ/ (オウ) と読む → /boʊt/</li>
+                    <li><code>ue</code> (例: blue, true, glue) → 最初の 'u' をアルファベット名の /uː/ (ウー) と読む → /bluː/</li>
+                 </ul>
+                 <p>このルールを覚えておくと、初めて見る単語でもある程度発音が推測できるようになります。（例外もあります）</p>
+            </section>
 
-                <h3>英語の強弱（内容語 vs 機能語）</h3>
-                <p>英語の自然なリズムを作る上で、「強く読む単語」と「弱く読む単語」の区別が重要です。</p>
-                <ul>
-                    <li><strong>強く読む単語 (内容語):</strong> 名詞、動詞、形容詞、副詞など、文の意味の中心となる単語。</li>
-                    <li><strong>弱く読む単語 (機能語):</strong> 冠詞 (a, an, the)、前置詞 (in, on, at)、接続詞 (and, but)、助動詞 (can, will)、代名詞 (he, she, it) など、文法的な機能を持つ単語。</li>
-                </ul>
-                <p>例: <code>Tom eats an apple and drinks water every morning.</code></p>
-                <ul>
-                    <li>強く: <strong>Tom</strong>, <strong>eats</strong>, <strong>apple</strong>, <strong>drinks</strong>, <strong>water</strong>, <strong>every</strong>, <strong>morning</strong></li>
-                    <li>弱く: an, and</li>
-                </ul>
-                <p>機能語を弱く、短く発音することで、英語らしいリズムが生まれます。<code>and</code> は /ən/ や /n/ のように聞こえることもあります。</p>
-                <code class="code-block">Tom eats an apple 'n drinks water every morning.</code>
+            <section id="recitation-prep">
+                <h2>暗唱文練習の準備</h2>
+                <p>昨日の授業で扱った以下の文を暗唱しましたね。今日はこの文を使って、英語の発音と文法の重要なポイントを学びます。</p>
+                <div class="code-block">
+                    <pre><code>Tom eats an apple and drinks water every morning.</code></pre>
+                    <p style="margin-top: 0.5em; font-size: 0.9em; color: var(--text-secondary);">(トムは毎朝、リンゴを一つ食べ、そして水を飲みます。)</p>
+                </div>
+                <p>まずはこの文を、意味を意識しながら何度か音読してみましょう。慣れてきたら、顔を上げて、テキストを見ずに言えるように練習すると、より記憶に定着しやすくなります。</p>
             </section>
 
             <section id="parts-of-speech-1">
-                <h2>品詞（１）：主要4品詞と発音の強弱</h2>
-                <p>単語を文法的な役割で分類したものが「品詞」です。まず、特に重要な4つの品詞（内容語）を理解しましょう。これらは文の中で意味の中心となり、通常強く発音されます。</p>
-                <ul>
-                    <li><strong>名詞 (Noun):</strong> モノやヒト、概念の名前 (例: Tom, apple, water, morning, friendship)。文の主語 (S) や目的語 (O) になる。</li>
-                    <li><strong>動詞 (Verb):</strong> 動作や状態、心の動きを表す (例: eats, drinks, like, think)。文の述語 (V) になる。</li>
-                    <li><strong>形容詞 (Adjective):</strong> 名詞を修飾（説明）する (例: beautiful sky の beautiful, old man の old)。</li>
-                    <li><strong>副詞 (Adverb):</strong> 動詞、形容詞、他の副詞、文全体を修飾する (例: run <strong>fast</strong>, <strong>very</strong> fast, <strong>every morning</strong>)。「いつ」「どこで」「どのように」などの情報を示すことが多い。</li>
-                </ul>
-
-                <h3>副詞の働き</h3>
-                <p>副詞は少し複雑ですが、以下の働きをします。</p>
-                <ol>
-                    <li><strong>動詞を修飾:</strong> <code>He runs <strong>fast</strong>.</code> (どのように走るか → 速く)</li>
-                    <li><strong>形容詞を修飾:</strong> <code>She is <strong>very</strong> old.</code> (どれくらい年取っているか → とても)</li>
-                    <li><strong>他の副詞を修飾:</strong> <code>This car runs <strong>very</strong> fast.</code> (どれくらい速くか → とても)</li>
-                </ol>
-
+                <h2>品詞(1): 主要4品詞と発音の強弱</h2>
+                <p>英語の文を理解し、正しく発音するためには、<span class="tooltip" data-tooltip="文中での単語の機能や意味による分類。名詞、動詞、形容詞、副詞などがある。">品詞</span>の理解が不可欠です。中学校で習った主要な4つの品詞を復習しましょう。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>品詞</th>
+                            <th>役割</th>
+                            <th>例文 (Tom eats an apple...) 中の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="tooltip" data-tooltip="物、人、場所、概念などの名前を表す言葉。文の主語や目的語になる。">名詞 (Noun)</strong></td>
+                            <td>モノや人の名前</td>
+                            <td><code>Tom</code>, <code>apple</code>, <code>water</code>, <code>morning</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong class="tooltip" data-tooltip="動作や状態を表す言葉。文の述語の中心となる。">動詞 (Verb)</strong></td>
+                            <td>動きや状態（心の動きも含む）</td>
+                            <td><code>eats</code>, <code>drinks</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong class="tooltip" data-tooltip="名詞や代名詞の性質や状態を説明（修飾）する言葉。">形容詞 (Adjective)</strong></td>
+                            <td>名詞を説明する</td>
+                            <td>(この文では <code>every</code> が <code>morning</code> を修飾しており、形容詞的な働き)</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="tooltip" data-tooltip="動詞、形容詞、他の副詞、または文全体を修飾し、様態、場所、時間、頻度などを詳しく説明する言葉。">副詞 (Adverb)</strong></td>
+                            <td>名詞<span style="text-decoration: underline; font-weight: bold;">以外</span>を説明する（主に動詞、形容詞、他の副詞、文全体）</td>
+                            <td><code>every morning</code> (「毎朝」という時を表し、動詞 <code>eats</code>, <code>drinks</code> を修飾)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>ここで重要なのは、英語の発音における<strong class="highlight">強弱のリズム</strong>です。文の中で意味の中心となる<strong style="color: var(--text-main);">名詞、動詞、形容詞、副詞</strong>は比較的<strong style="color: var(--text-main);">強く、はっきりと</strong>発音されます。</p>
+                <p>一方で、文法的な機能を持つ単語（<span class="tooltip" data-tooltip="冠詞 (a, an, the), 前置詞 (in, on, at), 接続詞 (and, but, or), 代名詞 (I, you, he), 助動詞 (can, will) など">機能語</span>と呼ばれる、<code>an</code> や <code>and</code> など）は、<strong class="highlight">弱く、短く</strong>発音される傾向があります。</p>
+                <p>例の文で見てみましょう：</p>
+                <p><strong>強く:</strong> <code>Tom</code>, <code>eats</code>, <code>apple</code>, <code>drinks</code>, <code>water</code>, <code>morning</code></p>
+                <p><strong>弱く:</strong> <code>an</code>, <code>and</code>, (<code>every</code>)</p>
+                <p><code>Tom eats AN apple AND drinks water EVERY morning.</code> のように、全ての単語を同じ強さで発音すると、不自然な英語に聞こえてしまいます。</p>
+                <!-- 強弱の表現を修正 -->
+                <blockquote>
+                    <p><strong>Tom</strong> <strong>eats</strong> <span class="weak-word">an</span> <strong>apple</strong> <span class="weak-word">and</span> <strong>drinks</strong> <strong>water</strong> <span class="weak-word">every</span> <strong>morning</strong>.</p>
+                </blockquote>
+                <p>このように、意味を持つ単語を強く、機能的な単語を弱く発音することで、英語らしい自然なリズムが生まれます。この強弱を意識することが、リスニング力とスピーキング力の向上に繋がります。</p>
                 <div class="supplementary-box">
-                    <strong>品詞の働きまとめ（簡易版）:</strong>
-                    <ul>
-                        <li><strong>形容詞</strong> → <strong>名詞</strong> を説明</li>
-                        <li><strong>副詞</strong> → <strong>動詞</strong>、<strong>形容詞</strong>、<strong>副詞</strong> を説明</li>
-                    </ul>
-                    <p>この関係性を理解しておくことが重要です。</p>
-                </div>
-            </section>
-
-            <section id="practice">
-                <h2>暗唱文練習</h2>
-                <p>覚えた英文を定着させるための練習方法を紹介します。</p>
-                <h3>練習方法１：フリップライティング</h3>
-                <ol>
-                    <li>英文を意味の区切り（スラッシュ）ごとに覚える。</li>
-                    <li>プリントの裏面（日本語訳）を見ながら、覚えた英語を「空書き」（指で書くなど）する。</li>
-                    <li>詰まったら表面（英語）を見て確認し、再度挑戦する。</li>
-                    <li>スムーズに空書きできるようになったら、実際に書いてみる。</li>
-                </ol>
-                <p class="highlight">ポイント：発音しながら書く（空書きする）と効果的です。</p>
-
-                <h3>練習方法２：グルグルメソッド（発音チェック）</h3>
-                <ol>
-                    <li>一人ずつ暗唱文を発音する。</li>
-                    <li>教員が発音の強弱（内容語・機能語の区別）が適切かチェックする。</li>
-                    <li>適切ならOK、改善点があればフィードバック。</li>
-                </ol>
-                <p>この練習を通して、自然な英語のリズムを身につけます。</p>
+                     <h4>SとVについて</h4>
+                     <p>高校英語では、文の構造を分析する際、<span class="tooltip" data-tooltip="Subject (サブジェクト): 文の主体となるもの">主語</span>を <code>S</code>、<span class="tooltip" data-tooltip="Verb (ヴァーブ): 主語の動作や状態を表すもの">動詞</span>を <code>V</code> と表記することが一般的です。例えば、"Tom eats an apple." は「<code>S</code> (Tom) + <code>V</code> (eats) + 目的語 (an apple)」という構造になります。今後よく出てくるので覚えておきましょう。</p>
+                 </div>
             </section>
 
             <section id="pronunciation-linking">
-                <h2>発音のポイント：リンキング（音の連結）</h2>
-                <p>日本語には「っ」（促音）があり、音が一瞬止まることがありますが、英語には基本的に促音がありません。そのため、単語と単語の音が繋がって発音される（リンキング）ことがよくあります。</p>
-                <p>例:</p>
+                <h2>発音補足: 英語のリエゾン（連結）</h2>
+                <p>日本語には「っ」（促音）のように息を止める瞬間がありますが、英語は基本的に<strong class="highlight">単語と単語の音をつなげて滑らかに発音</strong>します。これを<span class="tooltip" data-tooltip="Liaison (リエゾン): フランス語由来の用語で、言語学では「連結」や「連声」と呼ばれる。">リエゾン</span>（連結）と言います。</p>
+                <p>例えば、<code>eats an apple</code> の部分は、<code>eats</code> の最後の /s/ の音と <code>an</code> の /æ/ の音が繋がり、さらに <code>an</code> の /n/ の音と <code>apple</code> の /æ/ の音が繋がって、あたかも一つの単語のように聞こえます。</p>
+                <p><code>Tom / eats an / apple / and / drinks / water / every / morning.</code> (トム / イーツァン / アッポォ / ン / ドリンクス / ウォーター / エヴリ / モーニン)</p>
+                <p>日本人が英語を聞き取りにくい、あるいは話すのが速いと感じる原因の一つは、このリエゾンに慣れていないためです。「トム・イーツ・アン・アップル」のように一語一語区切って発音してしまうと、ネイティブスピーカーには不自然に聞こえ、また、繋がった音を聞き取る練習にもなりません。</p>
+                <p><strong class="highlight">音を繋げて発音する練習</strong>を意識的に行うことが、リスニング力とスピーキング力向上の鍵となります。</p>
+                 <div class="supplementary-box">
+                     <h4>練習のポイント</h4>
+                     <p>暗唱文を発音する際、単語の切れ目で息を止めず、滑らかに次の単語へ移行するように意識しましょう。特に「子音で終わる単語 + 母音で始まる単語」（例: eat<span style="text-decoration: underline;">s</span> <span style="text-decoration: underline;">a</span>n）や、「同じ子音が続く場合」（例: bi<span style="text-decoration: underline;">g</span> <span style="text-decoration: underline;">g</span>ame → ビッゲームのように1回だけ発音）でリエゾンが起こりやすいです。</p>
+                 </div>
+            </section>
+
+            <section id="recitation-practice">
+                <h2>暗唱文練習: 実践</h2>
+                <p>ここまでの「発音の強弱」と「リエゾン」を意識して、暗唱文の練習を行います。以下の2つの方法で取り組みました。</p>
+
+                <h3>1. フリップライティング</h3>
+                <p>これは、英語を見て覚え、裏返して日本語訳を見ながら、意味の区切り（スラッシュ）ごとに英語を書き出す練習です。</p>
+                <ol>
+                    <li>教材プリントの表面（英語、スラッシュ入り）を見て、最初の区切り（例: <code>Tom eats an apple /</code>）を覚える。</li>
+                    <li>プリントを裏返し、対応する日本語訳（例: トムはリンゴを一つ食べる /）を見ながら、覚えた英語を<span class="tooltip" data-tooltip="実際に声に出しながら、あるいは頭の中で発音しながら書くこと。">空書き</span>（そらがき）する。</li>
+                    <li>書けたら次の区切りへ進む。もし書けなくなったら、再度表面を見て覚え直す。</li>
+                    <li>ペンで書くのは最後、完全に覚えたと思ったら行う。</li>
+                </ol>
+                <p>この練習は、<strong class="highlight">意味のまとまりで英語を捉え、記憶し、アウトプットする力</strong>を養います。発音しながら書くことで、音と文字を結びつける効果も期待できます。</p>
+
+                <h3>2. グルグルメソッド（発音チェック）</h3>
+                <p>クラスを半分に分け、一人ずつ先生の前で暗唱文を発音し、チェックを受ける練習です。</p>
+                <p><strong>チェックポイント:</strong></p>
                 <ul>
-                    <li><code>Tom eats an apple</code> → <code>Tom ee-tsa-napple</code> のように聞こえる。</li>
-                    <li>区切って <code>Tom / eats / an / apple</code> と発音すると、不自然に聞こえ、聞き取りも難しくなります。</li>
+                    <li>主要4品詞（名詞、動詞、形容詞、副詞）が<strong>強く</strong>発音されているか？</li>
+                    <li>機能語（<code>an</code>, <code>and</code> など）が<strong>弱く短く</strong>発音されているか？</li>
+                    <li>単語と単語が滑らかに<strong class="highlight">リエゾン</strong>（連結）しているか？</li>
                 </ul>
-                <blockquote>日本人が英語を「速い」と感じる一因は、このリンキングに慣れていないためです。ゆっくり話してもらう際も、日本人の「ゆっくり」とネイティブの「ゆっくり」は異なり、ネイティブは繋げたまま話すことが多いです。</blockquote>
-                <p class="highlight">聞き取り力と発話力を向上させるためには、リンキングを意識して練習することが非常に大切です。</p>
+                <p><code>Tom eats an apple and drinks water every morning.</code> のように、全ての単語を同じ強さで区切って発音するのはNG。自然なリズムと連結を意識して発音できているかを確認しました。</p>
             </section>
 
             <section id="parts-of-speech-2">
-                <h2>品詞（２）：9つの品詞</h2>
-                <p>主要4品詞に加え、以下の品詞（機能語が多い）も理解しておくと、英文構造の把握が容易になります。</p>
-                <ol>
-                    <li><strong>名詞 (Noun)</strong> - モノ・ヒト・コトの名前</li>
-                    <li><strong>代名詞 (Pronoun)</strong> - 名詞の代わり (I, you, he, she, it, this, that など)</li>
-                    <li><strong>動詞 (Verb)</strong> - 動作・状態</li>
-                    <li><strong>助動詞 (Auxiliary Verb)</strong> - 動詞を助ける (can, will, may, must など)。動詞とセットで考える。</li>
-                    <li><strong>形容詞 (Adjective)</strong> - 名詞を修飾</li>
-                    <li><strong>副詞 (Adverb)</strong> - 名詞以外（動詞・形容詞・副詞・文全体）を修飾</li>
-                    <li><strong>前置詞 (Preposition)</strong> - 名詞の前に置き、場所・時・方向などを示す (in, on, at, for, to, with など)。「前置詞 + 名詞」で形容詞句や副詞句の働きをする。</li>
-                    <li><strong>接続詞 (Conjunction)</strong> - 単語、句、文をつなぐ (and, but, or, because, when, if など)</li>
-                    <li><strong>間投詞 (Interjection)</strong> - 感情を表す (Oh!, Wow!, Oops! など)</li>
-                </ol>
-                <p>これらの品詞の役割を徐々に覚えていきましょう。</p>
+                <h2>品詞(2): 9つの品詞</h2>
+                <p>主要な4品詞に加え、英語を深く理解するためには、以下の品詞も知っておくと便利です。合計で8つ（または9つ）の品詞を意識できると良いでしょう。</p>
+                <dl>
+                    <dt>1. <strong class="tooltip" data-tooltip="物、人、場所、概念などの名前 (例: dog, teacher, park, happiness)">名詞 (Noun)</strong></dt>
+                    <dd>モノや人の名前。</dd>
+                    <dt>2. <strong class="tooltip" data-tooltip="名詞の代わりをする言葉 (例: I, my, me, you, he, she, it, this, that, someone)">代名詞 (Pronoun)</strong></dt>
+                    <dd>名詞の代わり。「これ」「それ」「彼」など。</dd>
+                    <dt>3. <strong class="tooltip" data-tooltip="動作や状態を表す (例: run, study, is, feel, seem)">動詞 (Verb)</strong></dt>
+                    <dd>動きや状態。</dd>
+                    <dt>4. <strong class="tooltip" data-tooltip="動詞を助け、可能性、義務、許可などの意味を加える (例: can, will, may, must, should)">助動詞 (Auxiliary Verb)</strong></dt>
+                    <dd>動詞を助ける（※厳密には品詞分類に含まない考え方もあるが、機能として重要）。<code>can</code>, <code>will</code> など。</dd>
+                    <dt>5. <strong class="tooltip" data-tooltip="名詞や代名詞を修飾する (例: beautiful, large, happy, interesting)">形容詞 (Adjective)</strong></dt>
+                    <dd>名詞を説明する。「きれいな」「大きい」など。</dd>
+                    <dt>6. <strong class="tooltip" data-tooltip="動詞、形容詞、他の副詞、文全体を修飾する (例: quickly, very, well, often, here, tomorrow)">副詞 (Adverb)</strong></dt>
+                    <dd>名詞以外（主に動詞、形容詞、他の副詞、文）を説明。「速く」「とても」など。</dd>
+                    <dt>7. <strong class="tooltip" data-tooltip="名詞や代名詞の前に置き、場所、時間、方向などを示す句を作る (例: in, on, at, to, from, with, for, about)">前置詞 (Preposition)</strong></dt>
+                    <dd>名詞の前に置かれ、場所や時などを示す。「～の中に (<code>in</code>)」「～の上に (<code>on</code>)」など。後ろに必ず名詞（または名詞相当の語句）が来る。</dd>
+                    <dt>8. <strong class="tooltip" data-tooltip="語、句、節、文をつなぐ (例: and, but, or, so, because, if, when, although)">接続詞 (Conjunction)</strong></dt>
+                    <dd>文や語句をつなぐ。「そして (<code>and</code>)」「しかし (<code>but</code>)」など。</dd>
+                    <dt>9. <strong class="tooltip" data-tooltip="驚き、喜び、呼びかけなどの感情を表す (例: Oh!, Wow!, Ouch!, Hey!, Well)">間投詞 (Interjection)</strong></dt>
+                    <dd>感動や呼びかけを表す。「わぁ！ (<code>Wow!</code>)」「おっと (<code>Oops!</code>)」など。</dd>
+                </dl>
+                <p>これらの品詞の働きを理解することは、文の構造を正確に把握し、より複雑な英文を読み解くための基礎となります。</p>
+                 <div class="supplementary-box">
+                     <h4>前置詞の働き</h4>
+                     <p>前置詞は単独では意味をなさず、後ろの名詞とセットになって<strong class="highlight">形容詞句</strong>（名詞を修飾する）や<strong class="highlight">副詞句</strong>（動詞などを修飾する）を作ります。</p>
+                     <ul>
+                         <li>例: <code>the book <span style="text-decoration: underline;">on the desk</span></code> (机の<span style="font-weight: bold;">上にある</span>本) → <code>on the desk</code> が <code>book</code> (名詞) を修飾するので形容詞句</li>
+                         <li>例: <code>He studied <span style="text-decoration: underline;">in the library</span></code> (彼は図書館<span style="font-weight: bold;">で</span>勉強した) → <code>in the library</code> が <code>studied</code> (動詞) を修飾するので副詞句</li>
+                     </ul>
+                     <p>このように、前置詞+名詞のカタマリが文の中でどのような役割を果たしているかを見抜くことが重要です。</p>
+                 </div>
             </section>
 
-            <section id="sentence-structure">
-                <h2>文型：英語の構造</h2>
-                <p>英語の文は、基本的に5つのパターン（文型）に分類できます。日本語と比べて文の構造が比較的シンプルです。</p>
-                <ul>
-                    <li>第1文型: S + V (例: Birds fly.)</li>
-                    <li>第2文型: S + V + C (例: She is happy.)</li>
-                    <li>第3文型: S + V + O (例: I play tennis.)</li>
-                    <li>第4文型: S + V + O + O (例: He gave me a book.)</li>
-                    <li>第5文型: S + V + O + C (例: We call him Bob.)</li>
-                </ul>
-                <p>(S: 主語, V: 動詞, O: 目的語, C: 補語)</p>
-                <p>この文型を理解することは、英文を正確に読み解き、また正しく書くための基礎となります。最初は少し複雑に感じるかもしれませんが、慣れると英語の構造がクリアに見えてきます。</p>
-                <div class="supplementary-box">
-                    <strong>予習のお願い:</strong>
-                    <p>文型については、スタディサプリの動画教材で詳しく解説されています。今週末、指定された動画を見て、SVOCM（Mは修飾語）の考え方と5文型の分類方法について学習しておいてください。（詳細は別途連絡します）</p>
-                </div>
+            <section id="sentence-patterns">
+                <h2>文型: 英語の5つの基本パターン</h2>
+                <p>英語の文は、一見複雑に見えても、その基本的な骨組みは限られています。主に<strong class="highlight">5つのパターン（文型）</strong>に分類できるとされています。これは、文の必須要素である<span class="tooltip" data-tooltip="Subject: 主語">S</span> (主語)、<span class="tooltip" data-tooltip="Verb: 動詞">V</span> (動詞)、<span class="tooltip" data-tooltip="Object: 目的語（～を、～に）">O</span> (目的語)、<span class="tooltip" data-tooltip="Complement: 補語（SやOを説明する語）">C</span> (補語) の組み合わせによって決まります。（<span class="tooltip" data-tooltip="Modifier: 修飾語（副詞句など、文の必須要素ではない）">M</span> は修飾語で、文型には含まれません）</p>
+                <p><strong>英語の主な5文型:</strong></p>
+                <ol>
+                    <li><strong>SV</strong> (主語 + 動詞) - 例: Birds sing.</li>
+                    <li><strong>SVC</strong> (主語 + 動詞 + 補語) - 例: She is happy. (S=C)</li>
+                    <li><strong>SVO</strong> (主語 + 動詞 + 目的語) - 例: I play tennis.</li>
+                    <li><strong>SVOO</strong> (主語 + 動詞 + 目的語1 + 目的語2) - 例: He gave me a book.</li>
+                    <li><strong>SVOC</strong> (主語 + 動詞 + 目的語 + 補語) - 例: We call him Ken. (O=C)</li>
+                </ol>
+                <p>この文型を理解すると、<strong class="highlight">英文の構造を素早く正確に把握</strong>できるようになり、読解力や英作文力の向上に大きく貢献します。最初は少し面倒に感じるかもしれませんが、英語学習を効率的に進める上で非常に強力なツールとなります。</p>
+                <p>詳細は、次回の授業や宿題で触れていきます。</p>
             </section>
 
             <section id="homework">
-                <h2>演習と宿題</h2>
-                <p>本日の内容を定着させるために、以下の課題に取り組んでください。</p>
+                <h2>宿題</h2>
+                <p>今回の授業内容を踏まえ、以下の宿題に取り組んでください。</p>
                 <ol>
-                    <li><strong>暗唱文の書き上げ:</strong>
+                    <li><strong>暗唱文の書き取り練習:</strong>
                         <ul>
-                            <li>教材の暗唱文 (<code>Tom eats an apple...</code> など) を、フリップライティングの方法で練習し、見ずに書けるようにする。</li>
-                            <li>お手本をよく見て、正確に書けるように何度も練習することが大切です。</li>
+                            <li>配布されたプリント（表面: 英語スラッシュ入り、裏面: 日本語訳）を使って、「フリップライティング」の練習を行う。</li>
+                            <li><code>Tom eats an apple...</code> の文だけでなく、プリントにある他の例文も同様に、意味の区切りごとに「覚えて→裏返して→日本語見ながら空書き」を繰り返し、完全に書けるようになるまで練習する。</li>
+                            <li>発音の強弱とリエゾンを意識しながら行うと、より効果的。</li>
                         </ul>
                     </li>
-                    <li><strong>スタディサプリ視聴:</strong>
+                    <li><strong>スタディサプリ動画視聴 (文型):</strong>
                         <ul>
-                            <li>指定された文型に関する動画（SVOCM、5文型）を視聴し、内容を理解する。</li>
+                            <li>スタディサプリにログインし、指定された「文の要素 (SVOCM)」と「5文型」に関する解説動画を視聴する。</li>
+                            <li>動画を見て、それぞれの文型がどのような要素で構成され、どのような意味を表すのかを理解する。</li>
+                            <li>(視聴する動画の具体的な単元名やURLは別途指示します)</li>
                         </ul>
                     </li>
                 </ol>
-                <p>単語帳の学習など、他の英語学習も並行して進めましょう。</p>
-                <blockquote>面倒だと感じる作業ほど、記憶に残りやすくなります。反復練習を大切にしてください。</blockquote>
+                <p>これらの宿題を通して、今回学んだ発音、品詞、そして文型の基礎知識を定着させましょう。単語帳など、各自の学習も並行して進めてください。</p>
             </section>
 
+            <!-- 振り返り (解答トグル追加) -->
             <section id="review">
                 <h2>振り返り</h2>
-                <p>今日の授業内容が理解できたか、以下の項目で確認してみましょう。</p>
+                <h3>理解度チェックリスト</h3>
+                <p>今回の授業内容について、以下の項目を理解できたか確認しましょう。</p>
+                <ul class="checklist">
+                    <li><input type="checkbox" id="check1"><label for="check1"><code>store</code>, <code>shop</code>, <code>market</code> の意味とニュアンスの違いを説明できる。</label></li>
+                    <li><input type="checkbox" id="check2"><label for="check2">二重母音字（例: <code>brain</code> の <code>ai</code>）の発音ルールを説明できる。</label></li>
+                    <li><input type="checkbox" id="check3"><label for="check3">主要4品詞（名詞、動詞、形容詞、副詞）の主な役割を説明できる。</label></li>
+                    <li><input type="checkbox" id="check4"><label for="check4">英語の文における発音の強弱（内容語 vs 機能語）の重要性を理解した。</label></li>
+                    <li><input type="checkbox" id="check5"><label for="check5">リエゾン（音の連結）とは何か、なぜ重要なのかを理解した。</label></li>
+                    <li><input type="checkbox" id="check6"><label for="check6">9つの品詞（主要4＋代名詞、助動詞、前置詞、接続詞、間投詞）の名前を挙げられる。</label></li>
+                    <li><input type="checkbox" id="check7"><label for="check7">英語には基本的な5つの文型があることを理解した。</label></li>
+                </ul>
 
-                <div class="checklist">
-                    <h3>理解度チェックリスト（クリックしてチェック）</h3>
-                    <ul>
-                        <li data-checked="false">`store`, `shop`, `market` の違いを説明できる。</li>
-                        <li data-checked="false">二重母音字の発音ルールを理解した。</li>
-                        <li data-checked="false">英語の強弱（内容語・機能語）を意識して発音できる。</li>
-                        <li data-checked="false">主要4品詞（名詞、動詞、形容詞、副詞）の役割を説明できる。</li>
-                        <li data-checked="false">品詞の働きを図で説明できる。</li>
-                        <li data-checked="false">リンキング（音のつながり）の重要性を理解した。</li>
-                        <li data-checked="false">9つの品詞の名前を挙げられる。</li>
-                        <li data-checked="false">文型の基本的な考え方を理解した。</li>
-                        <li data-checked="false">暗唱文の練習方法（フリップライティング、グルグルメソッド）を理解した。</li>
-                    </ul>
-                </div>
-
+                <h3>確認問題</h3>
+                <p>授業内容をさらに深めるために、以下の問題に挑戦してみましょう。</p>
                 <div class="review-questions">
-                    <h3>確認問題</h3>
-                    <div class="question">
-                        <strong>1.</strong> `store`, `shop`, `market` の違いを、それぞれの単語が持つニュアンスを含めて説明してください。
-                        <div class="hint">規模、扱う商品（仕入れか、その場で作るか）、場所の概念に注目。</div>
+                    <div>
+                        <p>1. <code>store</code>, <code>shop</code>, <code>market</code> の違いを、特に「何を扱っているか」「規模」「由来」などの観点から説明してください。</p>
+                        <textarea placeholder="解答をここに記述してください..."></textarea>
+                        <span class="hint">ヒント: 仕入れて売る？作って売る？たくさんの店が集まる場所？</span>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <p><strong>Store:</strong> 主に商品を仕入れて保管・販売する場所。比較的大規模なことが多い（米）。動詞「蓄える」が語源。</p>
+                                <p><strong>Shop:</strong> イギリスでは小規模な個人店。アメリカではstoreと似るが、「その場で作って売る」ニュアンスも（例: coffee shop）。</p>
+                                <p><strong>Market:</strong> 本来は多くの売り手（店）が集まる「市場」。商品を売買する場所（例: fish market）。Supermarketのように大規模小売店を指すことも。</p>
+                            </div>
+                        </details>
                     </div>
-                    <div class="question">
-                        <strong>2.</strong> `Tom eats an apple and drinks water every morning.` という文で、強く発音されるべき単語（内容語）と弱く発音されるべき単語（機能語）を区別してください。
-                        <div class="hint">文の意味を伝える上で重要な単語は？ 文法的な役割を果たす単語は？</div>
+                    <div>
+                        <p>2. <code>boat</code> (oa) や <code>blue</code> (ue) のような二重母音字を含む単語の発音ルールを説明してください。</p>
+                        <textarea placeholder="解答をここに記述してください..."></textarea>
+                        <span class="hint">ヒント: どちらのアルファベットを読みますか？</span>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <p>多くの場合、二重母音字の<strong class="highlight">最初の母音字のアルファベット名を読み、二番目の母音字は発音しません</strong>。</p>
+                                <ul>
+                                    <li><code>boat</code> (oa): 最初の 'o' のアルファベット名 /oʊ/ (オウ) と読む → /boʊt/</li>
+                                    <li><code>blue</code> (ue): 最初の 'u' のアルファベット名 /uː/ (ウー) と読む → /bluː/</li>
+                                </ul>
+                            </div>
+                        </details>
                     </div>
-                    <div class="question">
-                        <strong>3.</strong> 以下の文の下線部の単語の品詞を答えてください: `This car runs <strong><u>very</u></strong> <strong><u>fast</u></strong>.`
-                        <div class="hint">`fast` は何を修飾していますか？ `very` は何を修飾していますか？</div>
+                    <div>
+                        <p>3. 暗唱文 <code>Tom eats an apple and drinks water every morning.</code> において、強く発音されるべき単語（内容語）と、弱く短く発音されるべき単語（機能語）をそれぞれ挙げてください。</p>
+                        <textarea placeholder="解答をここに記述してください..."></textarea>
+                        <span class="hint">ヒント: 名詞、動詞、形容詞、副詞はどっち？冠詞、接続詞はどっち？</span>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <p><strong>強く発音される単語 (内容語):</strong></p>
+                                <ul>
+                                    <li><code>Tom</code> (名詞)</li>
+                                    <li><code>eats</code> (動詞)</li>
+                                    <li><code>apple</code> (名詞)</li>
+                                    <li><code>drinks</code> (動詞)</li>
+                                    <li><code>water</code> (名詞)</li>
+                                    <li><code>morning</code> (名詞)</li>
+                                    <li>(<code>every</code> も形容詞だが、morningと一体となりリズムによっては弱まることも)</li>
+                                </ul>
+                                <p><strong>弱く短く発音される単語 (機能語):</strong></p>
+                                <ul>
+                                    <li><code>an</code> (冠詞)</li>
+                                    <li><code>and</code> (接続詞)</li>
+                                </ul>
+                            </div>
+                        </details>
                     </div>
-                     <div class="question">
-                        <strong>4.</strong> 品詞の働きを図で示してください。名詞、動詞、形容詞、副詞がそれぞれ何を修飾（説明）するかを矢印などで表現しましょう。
-                        <div class="hint">形容詞 → 名詞、副詞 → 動詞、形容詞、副詞</div>
-                    </div>
-                    <div class="question">
-                        <strong>5.</strong> 英語の発音において、音をつなげて発音すること（リンキング）が重要な理由を説明してください。
-                        <div class="hint">自然な発音、聞き取りやすさの観点から考えてみましょう。</div>
+                     <div>
+                        <p>4. 授業で紹介された9つの品詞名をすべて挙げてください。</p>
+                        <textarea placeholder="解答をここに記述してください..."></textarea>
+                        <span class="hint">ヒント: 名詞、代名詞、動詞、助動詞、形容詞、副詞、前置詞、接続詞、間投詞</span>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <ol>
+                                    <li>名詞 (Noun)</li>
+                                    <li>代名詞 (Pronoun)</li>
+                                    <li>動詞 (Verb)</li>
+                                    <li>助動詞 (Auxiliary Verb)</li>
+                                    <li>形容詞 (Adjective)</li>
+                                    <li>副詞 (Adverb)</li>
+                                    <li>前置詞 (Preposition)</li>
+                                    <li>接続詞 (Conjunction)</li>
+                                    <li>間投詞 (Interjection)</li>
+                                </ol>
+                            </div>
+                        </details>
                     </div>
                 </div>
             </section>
         </main>
 
         <footer>
-            <p>英語学習の基礎を固めることは、今後の成長に不可欠です。焦らず、着実にステップアップしていきましょう。</p>
-            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイト</a></p>
+            <p>授業記録を最後まで読んでいただき、ありがとうございました。</p>
+            <p>日々の学習を積み重ねて、英語力を着実に伸ばしていきましょう。</p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイトに戻る</a></p>
         </footer>
 
-    </div>
+    </div> <!-- /container -->
 
-    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+    <!-- トップへ戻るボタン -->
+    <button id="scrollTopBtn" title="トップへ戻る">&uarr;</button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // --- プログレスバー ---
             const progressBar = document.getElementById('progressBar');
-            const body = document.body;
-            const html = document.documentElement;
-
-            function updateProgressBar() {
-                const scrollHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-                const scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop;
-                const windowHeight = html.clientHeight;
-                const scrolled = (scrollTop / (scrollHeight - windowHeight)) * 100;
+            const updateProgressBar = () => {
+                const scrollY = window.scrollY || window.pageYOffset;
+                const height = document.documentElement.scrollHeight - window.innerHeight;
+                // ゼロ除算を避ける
+                const scrolled = height > 0 ? (scrollY / height) * 100 : 0;
                 progressBar.style.width = scrolled + '%';
-            }
-
-            window.addEventListener('scroll', updateProgressBar);
-            updateProgressBar(); // 初期表示
-
-            // --- 読了時間計算 ---
-            const mainContent = document.getElementById('mainContent');
-            const text = mainContent.innerText || mainContent.textContent;
-            const wordsPerMinute = 500; // 日本語の平均読書速度（目安）
-            const wordCount = text.replace(/\s+/g, '').length; // 空白を除いた文字数
-            const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
-            const readingTimeElement = document.getElementById('readingTime');
-            readingTimeElement.textContent = `読了時間: 約${readingTimeMinutes}分`;
-
-            // --- チェックリスト ---
-            const checklistItems = document.querySelectorAll('.checklist li');
-            checklistItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const isChecked = item.getAttribute('data-checked') === 'true';
-                    item.setAttribute('data-checked', !isChecked);
-                    item.classList.toggle('checked');
-                });
-                // 初期状態の復元（もしlocalStorageなど使う場合）
-                // const storedState = localStorage.getItem('checklist_' + item.textContent.trim());
-                // if (storedState === 'true') {
-                //     item.setAttribute('data-checked', 'true');
-                //     item.classList.add('checked');
-                // }
-            });
+            };
 
             // --- トップへ戻るボタン ---
             const scrollTopBtn = document.getElementById('scrollTopBtn');
-
-            function toggleScrollTopButton() {
-                if (window.pageYOffset > 300) { // 300pxスクロールしたら表示
-                    scrollTopBtn.style.display = 'block';
+            const toggleScrollTopBtn = () => {
+                // クラス付け替えによる表示/非表示制御
+                if (window.scrollY > 300) {
+                    scrollTopBtn.classList.add('visible');
                 } else {
-                    scrollTopBtn.style.display = 'none';
+                    scrollTopBtn.classList.remove('visible');
                 }
-            }
-
-            window.addEventListener('scroll', toggleScrollTopButton);
+            };
 
             scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- 読了時間計算 ---
+            const readingTimeElement = document.getElementById('readingTime');
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent && readingTimeElement) {
+                const text = mainContent.textContent || mainContent.innerText || "";
+                // 日本語コンテンツも考慮して少し遅めに設定 or 単純に文字数ベースにする
+                // const chars = text.trim().length;
+                // const charsPerMinute = 800; // 日本語の平均的な読書速度（目安）
+                // const minutes = Math.ceil(chars / charsPerMinute);
+
+                // 英語コンテンツ基準 (WPM: Words Per Minute)
+                 const words = text.trim().split(/\s+/).length;
+                 const wordsPerMinute = 200; // 平均的な英語読書速度
+                 const minutes = Math.ceil(words / wordsPerMinute);
+
+                readingTimeElement.textContent = `読了時間: 約${minutes}分`;
+            } else {
+                 readingTimeElement.textContent = `読了時間: 計算不可`;
+            }
+
+            // --- スクロールイベントリスナー ---
+            window.addEventListener('scroll', () => {
+                updateProgressBar();
+                toggleScrollTopBtn();
+            });
+
+            // --- チェックリストのラベルクリック対応 ---
+            const checklists = document.querySelectorAll('.checklist');
+            checklists.forEach(list => {
+                list.addEventListener('click', (event) => {
+                    if (event.target.tagName === 'LABEL') {
+                        const checkboxId = event.target.getAttribute('for');
+                        const checkbox = document.getElementById(checkboxId);
+                        // ブラウザのデフォルト動作に任せるのが安全
+                        // if (checkbox) { checkbox.click(); } // クリックイベントをトリガー
+                    }
                 });
             });
 
-            // --- 目次のスムーススクロール（オプション）---
-            const tocLinks = document.querySelectorAll('#tableOfContents a');
-            tocLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href');
-                    // 基本的なページ内リンクはHTMLのデフォルト動作で十分な場合が多い
-                    // より高度な制御が必要な場合に以下を有効化
-                    /*
-                    if (targetId.startsWith('#')) {
-                        e.preventDefault();
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            const offsetTop = targetElement.offsetTop - 20; // ヘッダーなどの高さを考慮
-                            window.scrollTo({
-                                top: offsetTop,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                    */
-                });
-            });
+             // --- 解答例トグルの初期状態調整 (任意) ---
+             // 必要であれば、最初はすべて閉じた状態にするなどの処理を追加
+
+            // 初期表示時の状態を反映
+            updateProgressBar();
+            toggleScrollTopBtn(); // 初期表示でボタンが表示されるべきか判定
 
         });
     </script>
-
 </body>
 </html>
