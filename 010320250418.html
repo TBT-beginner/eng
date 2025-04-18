@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 2025/4/18 - 名詞、冠詞、代名詞の復習と演習</title>
+    <style>
+        /* カラーパレット定義 (青色系統) */
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #4A90E2; /* 見出し、強調 */
+            --color-accent: #F4A261; /* ハイライト、ボタン、プログレスバー */
+            --color-link: #4A90E2;
+            --color-border: #E9ECEF;
+            --color-answer-bg: #F8F9FA; /* 解答例背景 */
+            --font-family-base: 'Noto Sans JP', sans-serif;
+            --line-height-base: 1.75;
+        }
+
+        /* 基本スタイル */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding-top: 5px; /* プログレスバーの高さ分 */
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            font-size: 16px;
+        }
+
+        /* プログレスバー */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* コンテナ */
+        .container {
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 1.5rem 2rem;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* ヘッダー */
+        header {
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .date, .reading-time {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 概要ボックス */
+        .summary-box {
+            background-color: var(--bg-main);
+            border-left: 5px solid var(--color-primary);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        .summary-box h2 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--color-primary);
+        }
+        .summary-box ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        /* 目次 */
+        #toc {
+            margin-bottom: 2.5rem;
+            padding: 1rem;
+            background-color: #fdfdff;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+        }
+
+        #toc h2 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            color: var(--color-primary);
+            text-align: center;
+        }
+
+        #tableOfContents {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+            column-count: 2;
+            column-gap: 25px;
+        }
+
+        #tableOfContents li {
+            margin-bottom: 0.6rem;
+            line-height: 1.5;
+        }
+
+        #tableOfContents a {
+            text-decoration: none;
+            color: var(--color-link);
+            transition: color 0.2s ease;
+        }
+
+        #tableOfContents a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+
+        /* コンテンツセクション */
+        main section {
+            margin-bottom: 2.5rem;
+            padding-top: 1rem; /* Add padding for anchor links */
+        }
+
+        h2 {
+            color: var(--color-primary);
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 0.3rem;
+            margin-top: 2.5rem; /* Space before h2 */
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            color: var(--color-primary);
+            font-size: 1.4rem;
+            margin-top: 2rem; /* Space before h3 */
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--color-accent);
+            padding-left: 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .highlight {
+            background-color: #fefae0; /* Light yellow highlight */
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            font-size: 0.9em;
+            border-radius: 3px;
+        }
+
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.9em;
+            margin-bottom: 1rem;
+            white-space: pre;
+        }
+
+        blockquote {
+            border-left: 5px solid var(--color-border);
+            padding-left: 1.5rem;
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .supplementary-box {
+            background-color: #e7f5ff; /* Light blue */
+            border: 1px solid #bde0fe;
+            border-left: 5px solid var(--color-link);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        .supplementary-box h4 {
+            margin-top: 0;
+            color: var(--color-link);
+            font-size: 1.1rem;
+        }
+
+        /* ツールチップ */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%; /* Position above the text */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 振り返りセクション */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            position: relative;
+            padding-left: 2em;
+            margin-bottom: 0.8em;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .checklist li::before {
+            content: "☐"; /* Unchecked box */
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+            font-size: 1.2em;
+            color: var(--color-primary);
+            transition: content 0.2s ease;
+        }
+        .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+        .checklist li.checked::before {
+            content: "☑"; /* Checked box */
+            color: var(--color-accent);
+        }
+
+        .review-questions .question {
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .review-questions details {
+            margin-top: 0.5rem;
+        }
+
+        .review-questions summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--color-link);
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            background-color: #e7f5ff;
+            transition: background-color 0.2s;
+        }
+        .review-questions summary:hover {
+             background-color: #d0ebff;
+        }
+
+        .review-questions .answer {
+            margin-top: 0.8rem;
+            padding: 0.8rem 1rem;
+            background-color: var(--color-answer-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+        }
+        .review-questions .hint {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+        }
+
+
+        /* フッター */
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        footer a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* トップへ戻るボタン */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--color-accent);
+            color: var(--bg-content);
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            transition: opacity 0.3s, background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        #scrollTopBtn:hover {
+            opacity: 1;
+            background-color: #e08a4a; /* Darker accent */
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 900px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            #tableOfContents {
+                column-count: 1;
+            }
+            body { font-size: 15px; }
+            .container {
+                padding: 1rem;
+            }
+             #scrollTopBtn {
+                padding: 8px 12px;
+                font-size: 1rem;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="progressBar"></div>
+
+    <div class="container">
+        <header>
+            <h1>授業記録: 名詞、冠詞、代名詞の復習と演習</h1>
+            <p class="date">実施日: 2025年4月18日</p>
+            <p class="reading-time">読了時間の目安: <span id="estimatedTime"></span> 分</p>
+        </header>
+
+        <div class="summary-box">
+            <h2>今回の授業のポイント</h2>
+            <ul>
+                <li>名詞の種類（可算名詞・不可算名詞）とその区別</li>
+                <li>冠詞（a/an, the）の基本的な使い方</li>
+                <li>人称代名詞の格変化（主格、所有格、目的格、所有代名詞）の確認</li>
+                <li>演習問題を通じた理解度の確認と解説</li>
+                <li>間違いやすいポイントの共有</li>
+                <li>次回の宿題について</li>
+            </ul>
+        </div>
+
+        <nav id="toc">
+            <h2>目次</h2>
+            <ol id="tableOfContents">
+                <li><a href="#intro">導入・前回の復習</a></li>
+                <li><a href="#nouns">名詞 (可算・不可算)</a></li>
+                <li><a href="#articles">冠詞 (a/an, the)</a></li>
+                <li><a href="#pronouns">人称代名詞</a></li>
+                <li><a href="#exercise-review">問題演習の確認</a></li>
+                <li><a href="#common-mistakes">よくあった間違い</a></li>
+                <li><a href="#homework">次回の宿題</a></li>
+                <li><a href="#review">理解度の振り返り</a></li>
+                <li><a href="#application">知識の応用と発展</a></li>
+            </ol>
+        </nav>
+
+        <main id="mainContent">
+            <section id="intro">
+                <h2>1. 導入・前回の復習</h2>
+                <p>前回の授業では、基本的な動詞や名詞の語彙を確認しました。（face, touch, store, pay, deal with, save, happen, occur, function, work, change, run, turn, return, stand, lie, mind, language, idea, knowledge, skill, technology, culture, experience, resultなど）単語学習は反復が重要です。発音したり書いたりする回数で定着度が変わりますので、継続して努力しましょう。</p>
+                <p>前回は<code>Tom eats an apple and drinks water every morning.</code>という文を例に、名詞には数えられるものと数えられないものがあることを確認しました。今回はその続きとして、名詞と、名詞と密接に関わる冠詞、そして代名詞について詳しく見ていきます。</p>
+            </section>
+
+            <section id="nouns">
+                <h2>2. 名詞 (<span class="tooltip" data-tooltip="数えられる名詞 (例: apple, book)">可算</span>・<span class="tooltip" data-tooltip="数えられない名詞 (例: water, information)">不可算</span>)</h2>
+                <p>名詞は人や物の名前を表す言葉で、大きく「<strong class="highlight">可算名詞 (Countable Nouns)</strong>」と「<strong class="highlight">不可算名詞 (Uncountable Nouns)</strong>」に分けられます。</p>
+
+                <h3>可算名詞 (Countable Nouns)</h3>
+                <ul>
+                    <li><strong>特徴:</strong> 形がはっきりしていて、一つ、二つと数えられる名詞。</li>
+                    <li><strong>単数形 (1つ):</strong> 通常、前に <code>a</code> または <code>an</code> を付けます。(例: <code>a book</code>, <code>an apple</code>)</li>
+                    <li><strong>複数形 (2つ以上):</strong> 通常、語尾に <code>-s</code> または <code>-es</code> を付けます。(例: <code>books</code>, <code>classes</code>)</li>
+                    <li><strong>不規則変化:</strong> 複数形が特殊な形になるものもあります。(例: <code>child</code> → <code>children</code>, <code>woman</code> → <code>women</code>) (詳細は教科書 p.146 / α p.128 参照)</li>
+                </ul>
+
+                <h3>不可算名詞 (Uncountable Nouns)</h3>
+                <ul>
+                    <li><strong>特徴:</strong> 形がはっきり決まっていない、液体、気体、材料、抽象的な概念など、一つ、二つと数えない（数えにくい）名詞。</li>
+                    <li><strong>使い方:</strong>
+                        <ul>
+                            <li>前に <code>a</code> / <code>an</code> は付きません。</li>
+                            <li>複数形の <code>-s</code> / <code>-es</code> は付きません。</li>
+                            <li>量を表すときは <code>some</code>, <code>much</code>, <code>a piece of</code>, <code>a glass of</code> などの表現を使います。(例: <code>some water</code>, <code>a piece of information</code>)</li>
+                        </ul>
+                    </li>
+                    <li><strong>例:</strong> <code>water</code> (水), <code>bread</code> (パン), <code>butter</code> (バター), <code>information</code> (情報), <code>homework</code> (宿題), <code>money</code> (お金), <code>music</code> (音楽)</li>
+                </ul>
+
+                <div class="supplementary-box">
+                    <h4>補足: 同じ単語でも意味によって可算・不可算が変わる場合</h4>
+                    <p>例えば <code>chicken</code> という単語は：</p>
+                    <ul>
+                        <li>「鶏（一羽、二羽...）」として数える場合 → <strong class="highlight">可算名詞</strong> (例: <code>I ate a chicken.</code> - 鶏を丸ごと一羽食べた、という意味合い)</li>
+                        <li>「鶏肉（食材）」として量で考える場合 → <strong class="highlight">不可算名詞</strong> (例: <code>I ate chicken last night.</code> - 昨晩、鶏肉を食べた)</li>
+                    </ul>
+                    <p>このように、具体的な「形」を思い浮かべられるかどうかが一つの判断基準になります。鶏一羽は特定の形がありますが、鶏肉は唐揚げ、ひき肉など様々な形になり得ます。</p>
+                </div>
+            </section>
+
+            <section id="articles">
+                <h2>3. <span class="tooltip" data-tooltip="名詞の前につく a, an, the などの語">冠詞</span> (a/an, the)</h2>
+                <p>冠詞は名詞の前に付き、その名詞が特定のものか、不特定のものかを示します。</p>
+
+                <h3>a / an</h3>
+                <ul>
+                    <li><strong>意味:</strong> 「<strong class="highlight">不特定</strong>」の「<strong class="highlight">一つ</strong>」を表します。話し手や聞き手が「どれのことか具体的に特定していない」可算名詞の単数形に付きます。</li>
+                    <li><strong>由来:</strong> もともとは数字の <code>one</code> (一つ) から来ています。（フランス語の <code>un</code>/<code>une</code> に相当）</li>
+                    <li><strong>使い分け:</strong>
+                        <ul>
+                            <li><code>a</code>: 次に来る単語の発音が<span class="tooltip" data-tooltip="a, i, u, e, o 以外の音">子音</span>で始まるとき (例: <code>a book</code>, <code>a useful tool</code> ← useful は /j/ の子音で始まる)</li>
+                            <li><code>an</code>: 次に来る単語の発音が<span class="tooltip" data-tooltip="a, i, u, e, o に近い音">母音</span>で始まるとき (例: <code>an apple</code>, <code>an hour</code> ← hour は /aʊ/ の母音で始まる)</li>
+                        </ul>
+                    </li>
+                    <li><strong>注意:</strong> 不可算名詞や、可算名詞の複数形には付きません。</li>
+                </ul>
+
+                <h3>the</h3>
+                <ul>
+                    <li><strong>意味:</strong> 「<strong class="highlight">特定</strong>」のものを表します。話し手と聞き手の間で「<strong class="highlight">どれのことか分かっている</strong>」名詞に付きます。可算名詞（単数・複数）、不可算名詞のどちらにも使えます。</li>
+                    <li><strong>特定できる場合の例:</strong>
+                        <ul>
+                            <li><strong>文脈でわかる場合:</strong> 一度話題に出たもの (例: I have <strong>a</strong> dog. <strong>The</strong> dog is cute.)</li>
+                            <li><strong>状況でわかる場合:</strong> その場にある唯一のもの (例: Look at <strong>the</strong> clock. - 教室の時計を指して)</li>
+                            <li><strong>唯一のもの:</strong> この世に一つしかないと考えられるもの (例: <strong>the</strong> earth, <strong>the</strong> moon, <strong>the</strong> sun)</li>
+                            <li><strong>修飾語句で特定される場合:</strong> (例: <strong>the</strong> book on the desk)</li>
+                        </ul>
+                    </li>
+                     <li><strong>発音:</strong>
+                        <ul>
+                            <li><code>/ðə/ (ザ)</code>: 次の単語が子音で始まるとき (例: <code>the book</code>)</li>
+                            <li><code>/ði/ (ジ)</code>: 次の単語が母音で始まるとき (例: <code>the apple</code>, <code>the earth</code>)</li>
+                        </ul>
+                     </li>
+                </ul>
+                <p>教師の例え話にもあったように、「この教室の時計を見て」と言うときは、どの時計か皆がわかるので <code>the clock</code> を使います。同様に、「地球」や「月」も基本的に一つしかないので <code>the earth</code>, <code>the moon</code> となります。</p>
+            </section>
+
+            <section id="pronouns">
+                <h2>4. <span class="tooltip" data-tooltip="I, my, me, you, your など、人や物を指す代名詞">人称代名詞</span></h2>
+                <p>人称代名詞は、一度出てきた名詞の繰り返しを避けるために使われます。主語になるか目的語になるか、誰かの所有物を示すかなど、文中での役割によって形が変わります（<strong class="highlight">格変化</strong>）。</p>
+                <p>主な人称代名詞の格変化は以下の通りです。（詳細は教科書 C の表を参照）</p>
+                <ul>
+                    <li><strong>主格 (～は):</strong> I, you, he, she, it, we, they</li>
+                    <li><strong>所有格 (～の):</strong> my, your, his, her, its, our, their</li>
+                    <li><strong>目的格 (～を, ～に):</strong> me, you, him, her, it, us, them</li>
+                    <li><strong>所有代名詞 (～のもの):</strong> mine, yours, his, hers, ---, ours, theirs</li>
+                </ul>
+                <div class="supplementary-box">
+                    <h4>補足: 先生のコメント</h4>
+                    <p>授業では時間の都合上、この表の暗記は各自に任されました。特に中学レベルの英語でつまずいていた場合、ここをしっかり覚えていない可能性があります。曖昧な人は必ず表を見直して覚えましょう。（先生自身も高校生の時に必死で覚えた経験があるとのことです！）</p>
+                </div>
+            </section>
+
+            <section id="exercise-review">
+                <h2>5. 問題演習の確認</h2>
+                <p>授業では、4～5人のグループに分かれて、Get Ready ① の Drill 問題に取り組み、答え合わせと議論を行いました。以下に問題と解答・解説を記載します。</p>
+
+                <h3>Drill 1: 名詞の形</h3>
+                <div class="review-questions">
+                    <div class="question">
+                        <strong>1. 彼には兄[弟]が１人と，姉[妹]が２人いる。</strong><br>
+                        He has a [ brother ] and two [ sister ].
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                He has a <strong>brother</strong> and two <strong>sisters</strong>.<br>
+                                【解説】brother は単数なので a を付け、そのまま。sister は複数 (two) なので -s を付ける。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>2. 私はバター付きのパンを食べる。</strong><br>
+                        I have [ bread ] and [ butter ].
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                I have <strong>bread</strong> and <strong>butter</strong>.<br>
+                                【解説】bread, butter は通常、不可算名詞。a や複数形の -s は付けない。
+                            </div>
+                        </details>
+                    </div>
+                     <div class="question">
+                        <strong>3. 彼女はたくさんの国を訪れた。</strong><br>
+                        She visited many [ country ].
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                She visited many <strong>countries</strong>.<br>
+                                【解説】country は可算名詞。many の後なので複数形にする。語尾が「子音字 + y」なので、y を i に変えて -es を付ける。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>4. 今日は何時間授業がありますか。</strong><br>
+                        How many [ class ] do you have today?
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                How many <strong>classes</strong> do you have today?<br>
+                                【解説】class は可算名詞。How many の後なので複数形にする。語尾が s なので -es を付ける。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>5. 彼は夕食用にいくつかジャガイモを買った。</strong><br>
+                        He bought some [ potato ].
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                He bought some <strong>potatoes</strong>.<br>
+                                【解説】potato は可算名詞。some の後なので複数形にする。語尾が「子音字 + o」なので -es を付けることが多い。(pianos, photos など例外あり)
+                            </div>
+                        </details>
+                    </div>
+                     <div class="question">
+                        <strong>6. その子どもたちは３日間のキャンプに出かけた。</strong><br>
+                        The [ child ] went camping for three [ day ].
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                The <strong>children</strong> went camping for three <strong>days</strong>.<br>
+                                【解説】child は不規則変化名詞で、複数形は children。day は複数 (three) なので -s を付ける。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>7. あの女の人たちは私の学校の先生だ。</strong><br>
+                        Those [ woman ] are [ teacher ] at my school.
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                Those <strong>women</strong> are <strong>teachers</strong> at my school.<br>
+                                【解説】woman は不規則変化名詞で、複数形は women (/wɪmɪn/)。Those が複数を示すので、teacher も複数形 teachers にする。
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                 <h3>Drill 2: 冠詞</h3>
+                 <div class="review-questions">
+                    <div class="question">
+                        <strong>1. Take ___ umbrella.</strong> [ a / an / the / × ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                Take <strong>an</strong> umbrella.<br>
+                                【解説】umbrella は母音 /ʌ/ で始まる可算名詞の単数形。特定の傘を指していない一般的な状況なので an を使う。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>2. I have ___ dog and a cat. ___ dog sleeps under my bed.</strong> [ a / an / the / × ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                I have <strong>a</strong> dog and a cat. <strong>The</strong> dog sleeps under my bed.<br>
+                                【解説】最初の dog は不特定の1匹なので a を使う。2回目に出てくる dog は「先ほど述べた犬」として特定されるので the を使う。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>3. He has ___ useful information.</strong> [ a / an / the / × ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                He has <strong>×</strong> useful information.<br>
+                                【解説】information は不可算名詞なので、a/an は付かない。特定の情報なら the が付くこともあるが、ここでは一般的状況なので冠詞なし (×)。useful は /j/ の子音で始まるが、不可算名詞なので a は使えない。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>4. I don’t have ___ homework today.</strong> [ a / an / the / × ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                I don’t have <strong>×</strong> homework today.<br>
+                                【解説】homework は不可算名詞なので、a/an は付かない。特定の宿題なら the が付くこともあるが、ここでは一般的状況なので冠詞なし (×)。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>5. ___ moon is smaller than ___ earth.</strong> [ a / an / the / × ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <strong>The</strong> moon is smaller than <strong>the</strong> earth.<br>
+                                【解説】moon (月) と earth (地球) は、通常、唯一無二の存在として認識されるため the を付ける。
+                            </div>
+                        </details>
+                    </div>
+                 </div>
+
+                <h3>Drill 3: 人称代名詞</h3>
+                 <div class="review-questions">
+                    <div class="question">
+                        <strong>1. ___ visited ___ grandmother yesterday.</strong> [ I ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                <strong>I</strong> visited <strong>my</strong> grandmother yesterday.<br>
+                                【解説】文頭の主語なので主格の I。grandmother の前で「私の」という意味なので所有格の my。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>2. I saw ___ at the party.</strong> [ he ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                I saw <strong>him</strong> at the party.<br>
+                                【解説】動詞 saw (見る) の目的語「彼を」なので目的格の him。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>3. Tom showed ___ the picture.</strong> [ we ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                Tom showed <strong>us</strong> the picture.<br>
+                                【解説】動詞 showed (見せた) の間接目的語「私たちに」なので目的格の us。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>4. We went to watch ___ soccer game.</strong> [ they ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                We went to watch <strong>their</strong> soccer game.<br>
+                                【解説】名詞 soccer game の前で「彼らの」という意味なので所有格の their。
+                            </div>
+                        </details>
+                    </div>
+                    <div class="question">
+                        <strong>5. “Is this yours?” “No, it’s ___.”</strong> [ she ]
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                “Is this yours?” “No, it’s <strong>hers</strong>.”<br>
+                                【解説】「彼女のもの」という意味で、〈所有格 + 名詞〉(her bag など) の代わりになる所有代名詞の hers。
+                            </div>
+                        </details>
+                    </div>
+                 </div>
+            </section>
+
+            <section id="common-mistakes">
+                <h2>6. よくあった間違い</h2>
+                <p>演習の中で見られた、間違いやすいポイントをいくつか共有します。ルールをしっかり確認しましょう。</p>
+                <ul>
+                    <li><strong>不可算名詞に a/an を付ける:</strong> <code>information</code> や <code>homework</code> は不可算名詞なので、原則として <code>a/an</code> は付きません。(誤: <del>an information</del>, <del>a homework</del>)</li>
+                    <li><strong>複数形の作り方の間違い:</strong>
+                        <ul>
+                            <li><strong>y で終わる名詞:</strong> <span class="tooltip" data-tooltip="子音字: a, i, u, e, o 以外">子音字</span> + y で終わる場合は y を i に変えて -es (例: <code>country</code> → <code>countries</code>, <code>city</code> → <code>cities</code>)。<span class="tooltip" data-tooltip="母音字: a, i, u, e, o">母音字</span> + y で終わる場合はそのまま -s (例: <code>day</code> → <code>days</code>, <code>boy</code> → <code>boys</code>)。<br>
+                            【理由の補足】もし <code>play</code> を <code>plaies</code> とすると、母音字 (a, i, e) が3つ連続してしまい、英語では基本的に避けられる形になるためです。（例外: <code>beautiful</code> など、もともと母音字が続く単語はあります）</li>
+                            <li><strong>o で終わる名詞:</strong> 子音字 + o で終わる場合は -es を付けることが多い (例: <code>potato</code> → <code>potatoes</code>, <code>tomato</code> → <code>tomatoes</code>)。ただし、そのまま -s を付けるだけの単語も多い (例: <code>piano</code> → <code>pianos</code>, <code>photo</code> → <code>photos</code>)。</li>
+                            <li><strong>f, fe で終わる名詞:</strong> f や fe を v に変えて -es を付けるものがあります (例: <code>knife</code> → <code>knives</code>, <code>leaf</code> → <code>leaves</code>, <code>shelf</code> → <code>shelves</code>)。</li>
+                            <li><strong>不規則変化:</strong> <code>child</code> → <code>children</code>, <code>woman</code> → <code>women</code>, <code>man</code> → <code>men</code>, <code>foot</code> → <code>feet</code>, <code>tooth</code> → <code>teeth</code> など、暗記が必要なもの。</li>
+                        </ul>
+                    </li>
+                     <li><strong><code>people</code> の扱い:</strong> <code>people</code> は通常「人々」という意味の<strong class="highlight">複数扱い</strong>です。単数形は <code>person</code> です。(誤: <del>a people</del> は通常使わない)。
+                        <div class="supplementary-box">
+                            <h4>補足: people の発展的な意味</h4>
+                            <p>高校2年生レベルになると、<code>people</code> が「国民、民族」という意味で使われることがあります。この場合は可算名詞として扱われ、単数形 (a people) や複数形 (peoples) も存在します。(例: <code>various peoples of Asia</code> - アジアの様々な民族)</p>
+                            <p>しかし、まずは「人々」= 複数扱い、と覚えておきましょう。</p>
+                        </div>
+                    </li>
+                    <li><strong><code>need</code> の後の動詞の形:</strong> <code>need</code> は<span class="tooltip" data-tooltip="can, will, must など、動詞の原形を伴う助け動詞">助動詞</span>として使われる場合があり（主に否定文・疑問文）、その場合は後ろに動詞の原形が来ます。(例: <code>You need not worry.</code>) 授業で少し触れられましたが、これは少し発展的な内容です。まずは一般動詞としての <code>need to do</code> (～する必要がある) の形をしっかり覚えましょう。</li>
+                </ul>
+            </section>
+
+            <section id="homework">
+                <h2>7. 次回の宿題</h2>
+                <p>次回までに、配布されたプリントの2枚目 (Get Ready ②) に取り組んできてください。特に力を入れてほしいのは以下の点です。</p>
+                <ol>
+                    <li><strong>動詞の活用形:</strong> 表を完成させてください。
+                        <ul>
+                            <li>過去形</li>
+                            <li>過去分詞形</li>
+                            <li>-ing 形 (現在分詞/動名詞)</li>
+                        </ul>
+                        動詞は「原形 - 過去形 - 過去分詞形」の3点セット (+ ING形) で覚えるのが基本です。今後、様々な文法事項で活用形が必要になるため、早い段階でしっかり覚えておきましょう。今回学んだ「yをiに変える」ルールは動詞の活用でも使われます (例: <code>study</code> → <code>studied</code>)。
+                    </li>
+                    <li><strong>形容詞・副詞:</strong> こちらも目を通しておいてください。</li>
+                </ol>
+                 <p>次回、授業の最初にこれらの内容を確認します。</p>
+            </section>
+
+            <section id="review">
+                <h2>8. 理解度の振り返り</h2>
+                <p>今回の内容が理解できたか、以下の項目をチェックしてみましょう。</p>
+                <ul class="checklist" id="checklist">
+                    <li>可算名詞と不可算名詞の違いを説明できる。</li>
+                    <li>名詞の単数形と複数形の基本的な作り方がわかる。</li>
+                    <li><code>a</code> / <code>an</code> の使い分けができる。</li>
+                    <li><code>a</code> / <code>an</code> と <code>the</code> の基本的な違い（不特定 vs 特定）がわかる。</li>
+                    <li><code>the</code> を使う具体的な場面（文脈、状況、唯一のもの）がわかる。</li>
+                    <li>人称代名詞の主格・所有格・目的格・所有代名詞の区別がつく。</li>
+                    <li>よくある間違い（不可算名詞に a/an、複数形の誤りなど）を避けられる。</li>
+                </ul>
+
+                <h3>確認問題</h3>
+                <div class="review-questions">
+                    <div class="question">
+                        <strong>問題 1:</strong> 次の名詞は可算名詞 (C) ですか、不可算名詞 (U) ですか？
+                        <ol type="a">
+                            <li>advice</li>
+                            <li>table</li>
+                            <li>water</li>
+                            <li>furniture</li>
+                            <li>job</li>
+                        </ol>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                a. advice (U) - 不可算。「いくつかの助言」は some advice や a piece of advice。<br>
+                                b. table (C) - 可算。 a table, two tables。<br>
+                                c. water (U) - 不可算。液体。<br>
+                                d. furniture (U) - 不可算。「家具」という集合的な概念。個々の家具 (chair, desk など) は可算。<br>
+                                e. job (C) - 可算。 a job, many jobs。 (※ work (仕事) は通常不可算)
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="question">
+                        <strong>問題 2:</strong> 次の文の下線部に <code>a</code>, <code>an</code>, <code>the</code> のいずれかを入れるか、不要なら <code>×</code> を入れなさい。
+                        <ol type="a">
+                            <li>She is eating ___ apple.</li>
+                            <li>I saw ___ beautiful bird in the park. ___ bird was singing.</li>
+                            <li>We need ___ milk.</li>
+                            <li>He gave me ___ good advice.</li>
+                            <li>Look! ___ sun is setting.</li>
+                        </ol>
+                        <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                a. She is eating <strong>an</strong> apple. (apple は母音で始まる可算名詞単数形)<br>
+                                b. I saw <strong>a</strong> beautiful bird in the park. <strong>The</strong> bird was singing. (最初の bird は不特定、2回目は特定)<br>
+                                c. We need <strong>×</strong> milk. (milk は不可算名詞)<br>
+                                d. He gave me <strong>×</strong> good advice. (advice は不可算名詞。good が付いても変わらない)<br>
+                                e. Look! <strong>The</strong> sun is setting. (sun は唯一のもの)
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="question">
+                        <strong>問題 3:</strong> ( ) 内の単語を適切な形に変えなさい。
+                         <ol type="a">
+                            <li>My brother has two (child).</li>
+                            <li>These (box) are heavy.</li>
+                            <li>Do you know those (woman)?</li>
+                            <li>Can you give (I) that book?</li>
+                            <li>This pen is not mine. It's (she).</li>
+                        </ol>
+                         <details>
+                            <summary>解答例を見る</summary>
+                            <div class="answer">
+                                a. My brother has two <strong>children</strong>. (child の複数形)<br>
+                                b. These <strong>boxes</strong> are heavy. (box の複数形。x で終わるので -es)<br>
+                                c. Do you know those <strong>women</strong>? (woman の複数形)<br>
+                                d. Can you give <strong>me</strong> that book? (give の目的語なので目的格 me)<br>
+                                e. This pen is not mine. It's <strong>hers</strong>. (「彼女のもの」なので所有代名詞 hers)
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+
+            <section id="application">
+                <h2>9. 知識の応用と発展</h2>
+                <h3>今回の知識の活かし方</h3>
+                <ul>
+                    <li><strong>正確な英作文:</strong> 単数・複数の区別や冠詞の使い分けは、自然で正確な英語を書くための基礎です。メールやレポート作成時に意識しましょう。</li>
+                    <li><strong>英文読解:</strong> 冠詞の有無や種類から、筆者がその名詞をどのように捉えているか（特定か不特定か、可算か不可算か）を読み取るヒントになります。</li>
+                    <li><strong>語彙学習:</strong> 新しい名詞を覚える際に、それが可算か不可算かを意識する習慣をつけると、より深く単語を理解できます。</li>
+                </ul>
+
+                <h3>今後の学習へのつながり</h3>
+                <ul>
+                    <li><strong>文型:</strong> 名詞や代名詞は文の主語(S)や目的語(O)、補語(C)となる重要な要素です。文型 (SV, SVC, SVO, SVOO, SVOC) の理解に不可欠です。</li>
+                    <li><strong>形容詞・副詞:</strong> 名詞を修飾するのが形容詞です。冠詞・形容詞・名詞の語順なども今後学びます。</li>
+                    <li><strong>時制・相・法:</strong> 動詞の活用（宿題内容）は、過去・現在・未来などの時制や、完了形、受動態、助動詞（法）などを学ぶ上で必須となります。</li>
+                </ul>
+
+                <h3>今後気をつけるべき点</h3>
+                <ul>
+                    <li><strong>日本語との違い:</strong> 日本語には冠詞や単数・複数の厳密な区別がないため、英語特有のルールとして意識的に学習する必要があります。</li>
+                    <li><strong>例外の存在:</strong> 文法ルールには例外がつきものです。基本的なルールを覚えた上で、例外的な用法（例: potato→potatoes だが photo→photos）にも注意しましょう。</li>
+                    <li><strong>不可算名詞の多様性:</strong> 物質名詞（water）、抽象名詞（information, happiness）、集合名詞（furniture）など、不可算名詞には様々な種類があります。少しずつ慣れていきましょう。</li>
+                </ul>
+
+                <h3>さらに深く学ぶための資料</h3>
+                <ul>
+                    <li><strong>オンライン辞書:</strong>
+                        <ul>
+                            <li><a href="https://dictionary.cambridge.org/" target="_blank" rel="noopener noreferrer">Cambridge Dictionary</a>: [C] (Countable), [U] (Uncountable) の表示があり、非常に参考になります。</li>
+                            <li><a href="https://www.oxfordlearnersdictionaries.com/" target="_blank" rel="noopener noreferrer">Oxford Learner's Dictionaries</a>: 同様に可算・不可算の表示や用例が豊富です。</li>
+                        </ul>
+                    </li>
+                    <li><strong>文法解説サイト:</strong>
+                        <ul>
+                            <li><a href="https://learnenglish.britishcouncil.org/grammar" target="_blank" rel="noopener noreferrer">British Council LearnEnglish - Grammar</a>: 名詞や冠詞に関する詳しい解説があります。</li>
+                            <li><a href="https://www.englishclub.com/grammar/" target="_blank" rel="noopener noreferrer">EnglishClub - Grammar</a>: 各文法項目が分かりやすく解説されています。</li>
+                        </ul>
+                    </li>
+                    <li><strong>教科書・参考書:</strong> 配布された教材 (Get Ready) や、市販の総合英語の参考書（例: Forest, Evergreen など）で該当箇所を復習するのも有効です。</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>今回の授業記録は以上です。次回も頑張りましょう！</p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイト トップへ</a></p>
+            <p>&copy; 2025 授業記録</p>
+        </footer>
+
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        // --- Reading Time Estimation ---
+        function calculateReadingTime() {
+            const content = document.getElementById('mainContent');
+            if (!content) return;
+            const text = content.innerText || content.textContent;
+            const words = text.split(/\s+/).filter(word => word.length > 0).length;
+            // 日本語コンテンツなので、英語基準(200WPM)より遅い速度(例: 500文字/分)を仮定
+            // または、簡便的に英語換算で計算 (ここでは仮に英語200WPM相当とする)
+            // const wpm = 200;
+            // const time = Math.ceil(words / wpm);
+
+            // 文字数ベースで計算 (より日本語向け)
+            const characters = text.replace(/\s+/g, '').length;
+            const cpm = 500; // 1分あたり500文字読むと仮定
+            const time = Math.ceil(characters / cpm);
+
+            const timeElement = document.getElementById('estimatedTime');
+            if (timeElement) {
+                timeElement.textContent = time;
+            }
+        }
+
+        // --- Progress Bar ---
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            if (!progressBar) return;
+
+            const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTotal > 0) {
+                 const scrolled = (scrollPosition / scrollTotal) * 100;
+                 progressBar.style.width = scrolled + '%';
+            } else {
+                 progressBar.style.width = '0%'; // Handle case where content is shorter than viewport
+            }
+        }
+
+        // --- Scroll To Top Button ---
+        function handleScrollButton() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (!scrollTopBtn) return;
+
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Checklist ---
+        function setupChecklist() {
+            const checklist = document.getElementById('checklist');
+            if (checklist) {
+                const items = checklist.getElementsByTagName('li');
+                for (let item of items) {
+                    item.addEventListener('click', function() {
+                        this.classList.toggle('checked');
+                    });
+                    // Make checklist items accessible via keyboard
+                    item.setAttribute('tabindex', '0');
+                    item.addEventListener('keydown', function(event) {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault(); // Prevent page scrolling with spacebar
+                            this.click();
+                        }
+                    });
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+        window.addEventListener('scroll', () => {
+            updateProgressBar();
+            handleScrollButton();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateReadingTime();
+            setupChecklist();
+
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', scrollToTop);
+            }
+
+            // Initial checks in case the page loads scrolled down
+            updateProgressBar();
+            handleScrollButton();
+        });
+
+    </script>
+
+</body>
+</html>
