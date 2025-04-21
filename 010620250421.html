@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 英語学習法 - 音読筆写と名詞の使い分け</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- カラーパレット定義 (緑色系統) --- */
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --primary: #28A745; /* 見出しや強調 */
+            --accent: #FD7E14;  /* ハイライトやボタン */
+            --link: #28A745;
+            --border: #DEE2E6;
+            --answer-bg: #F8F9FA;
+            --code-bg: #E9ECEF;
+            --tooltip-bg: #343A40;
+            --tooltip-text: #FFFFFF;
+            --progress-bar: var(--accent); /* プログレスバーの色 */
+        }
+
+        /* --- 基本スタイル --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.75;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 1.5rem 2rem;
+            background-color: var(--bg-content);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- タイポグラフィ --- */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--primary);
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-top: 0;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            opacity: 0.9;
+        }
+
+        p {
+            margin-bottom: 1.2em;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #1c7430; /* 少し濃い緑 */
+        }
+
+        ul, ol {
+            margin-bottom: 1.2em;
+            padding-left: 2em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        strong {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .highlight {
+            background-color: rgba(253, 126, 20, 0.2); /* Accent color with transparency */
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        blockquote {
+            margin: 1.5em 0;
+            padding: 1em 1.5em;
+            border-left: 5px solid var(--primary);
+            background-color: var(--bg-main);
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #343A40;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1.2em;
+            font-size: 0.9em;
+        }
+
+        .code-block code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            color: inherit;
+        }
+
+        /* --- プログレスバー --- */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--progress-bar);
+            z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* --- 読了時間目安 --- */
+        .estimated-reading-time {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: -0.5em;
+            margin-bottom: 1.5em;
+        }
+
+        /* --- 概要ボックス --- */
+        .summary-box {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--accent);
+            padding: 1.5em;
+            margin: 2em 0;
+            border-radius: 5px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+         .summary-box ul {
+            padding-left: 1.5em;
+            margin-bottom: 0;
+        }
+
+        /* --- 目次 --- */
+        #tableOfContents {
+            background-color: var(--bg-main);
+            padding: 1.5em;
+            border-radius: 5px;
+            margin: 2em 0;
+            border: 1px solid var(--border);
+        }
+        #tableOfContents h2 {
+            margin-top: 0;
+            margin-bottom: 1em;
+            font-size: 1.5rem;
+            border-bottom: none;
+        }
+        #tableOfContents ol {
+            list-style-type: decimal;
+            padding-left: 1.5em;
+            margin-bottom: 0;
+            column-count: 2; /* 2カラム */
+            column-gap: 2em;
+        }
+         #tableOfContents li {
+             margin-bottom: 0.6em;
+         }
+        #tableOfContents a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        #tableOfContents a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- 補足情報ボックス --- */
+        .supplementary-box {
+            background-color: #e7f5ff; /* Light blue background */
+            border: 1px solid #b3d9ff; /* Light blue border */
+            border-left: 5px solid #4dabf7; /* Blue accent */
+            padding: 1em 1.5em;
+            margin: 1.5em 0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .supplementary-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: #1864ab;
+            font-size: 1.1em;
+        }
+
+        /* --- 振り返りセクション --- */
+        .checklist li {
+            list-style-type: none;
+            position: relative;
+            padding-left: 2em;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+        .checklist li::before {
+            content: "☐"; /* 未チェック */
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: var(--primary);
+        }
+        .checklist li.checked::before {
+            content: "☑"; /* チェック済み */
+        }
+        .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .review-questions .question {
+            margin-bottom: 1.5em;
+            padding-bottom: 1.5em;
+            border-bottom: 1px dashed var(--border);
+        }
+        .review-questions .question:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .toggle-answer {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4em 0.8em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            transition: background-color 0.2s ease;
+        }
+        .toggle-answer:hover {
+            background-color: #e08e4f; /* 少し濃いアクセントカラー */
+        }
+        .answer {
+            display: none;
+            margin-top: 1em;
+            padding: 1em;
+            background-color: var(--answer-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .answer.visible {
+            display: block;
+        }
+
+        /* --- フッター --- */
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        footer a {
+            color: var(--link);
+        }
+
+        /* --- トップへ戻るボタン --- */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--accent);
+            color: white;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 50%;
+            font-size: 1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #scrollTopBtn:hover {
+            background-color: #e08e4f;
+            opacity: 1;
+        }
+
+        /* --- ツールチップ (簡易版: title属性利用でも可) --- */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--text-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 100%;
+            margin-bottom: 5px;
+            background-color: var(--tooltip-bg);
+            color: var(--tooltip-text);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        /* --- レスポンシブデザイン --- */
+        @media (max-width: 900px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                font-size: 15px;
+            }
+            .container {
+                margin: 0.5rem;
+                padding: 1rem;
+            }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+
+            #tableOfContents ol {
+                column-count: 1; /* スマートフォンでは1カラム */
+            }
+
+            .code-block {
+                font-size: 0.85em;
+            }
+
+            #scrollTopBtn {
+                padding: 10px 13px;
+                font-size: 0.9rem;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <div class="container">
+        <header>
+            <h1>英語学習法: 音読筆写と名詞の使い分け</h1>
+            <p class="estimated-reading-time">読了時間の目安: 約 15 分</p>
+        </header>
+
+        <div class="summary-box">
+            <h3>今回の授業のポイント</h3>
+            <ul>
+                <li>効果的な暗唱法「音読筆写」の実践方法とその効果</li>
+                <li><span data-tooltip="数えられる名詞 (例: apple, book)">可算名詞</span>と<span data-tooltip="数えられない名詞 (例: water, information)">不可算名詞</span>の基本的な見分け方と使い方</li>
+                <li>名詞の複数形の作り方のルールと例外</li>
+                <li>学習ワークシートを用いた自己分析と今後の学習計画</li>
+                <li>宿題の確認</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h2>目次</h2>
+            <ol>
+                <li><a href="#introduction">はじめに：前回の復習と今日の流れ</a></li>
+                <li><a href="#ondoku-hissha">暗唱の技術：音読筆写</a></li>
+                <li><a href="#kasan-fukasan">名詞の使い分け：可算名詞と不可算名詞</a></li>
+                <li><a href="#plural-rules">複数形のルール</a></li>
+                <li><a href="#homework">宿題について</a></li>
+                <li><a href="#worksheet">学習ワークシート：自己分析</a></li>
+                <li><a href="#review">振り返り：理解度チェックと問題</a></li>
+                <li><a href="#application">応用：学びを次に活かす</a></li>
+            </ol>
+        </nav>
+
+        <main>
+            <section id="introduction">
+                <h2>1. はじめに：前回の復習と今日の流れ</h2>
+                <p>皆さん、こんにちは。前回の授業では、<code>Tom eats an apple and drinks water every morning.</code> という例文の発音練習と暗唱に取り組んでもらいましたね。書いて覚える「フリップライティング」も試してもらいました。</p>
+                <p>今日の授業では、まず単語テスト（教材参照）を実施しました。その後、英文を覚えるためのもう一つの効果的な練習方法「音読筆写」を紹介し、実際に試してみます。後半は、英文法の基礎である名詞の使い分け、特に<span data-tooltip="Countable Noun: 数えられる名詞">可算名詞</span>と<span data-tooltip="Uncountable Noun: 数えられない名詞">不可算名詞</span>の違いについて解説します。最後に、宿題の指示と、今後の学習に役立つワークシートの紹介を行います。</p>
+            </section>
+
+            <section id="ondoku-hissha">
+                <h2>2. 暗唱の技術：音読筆写</h2>
+                <p>前回は主に「音」で覚える方法と「書いて」覚える方法を試しましたが、今回は「音読筆写」という方法を紹介します。これは、音（聴覚）、文字（視覚）、書く動作（体感覚）を組み合わせた学習法で、特に音だけでは覚えにくいと感じる人にも効果的です。</p>
+                <h3>音読筆写のやり方</h3>
+                <ol>
+                    <li>覚えたい英文を、まずは一文だけ丁寧にノートや紙の一番上に書き写します。
+                        <div class="code-block"><pre><code>Tom eats an apple and drinks water every morning.</code></pre></div>
+                    </li>
+                    <li>その英文を見ながら、<strong class="highlight">声に出して読み上げつつ、</strong>できるだけ速く、下のスペースに書き写していきます。スペルは正確に、しかし文字は自分が読めれば多少乱雑でも構いません。</li>
+                    <li>一定時間（例えば1分間）で、何回書き写せるか挑戦します。目標は5回程度です。</li>
+                </ol>
+                <p>授業内での実践では、1分間で4回書けた人もいましたね。素晴らしいスピードです！最初は遅くても、練習を重ねることで必ず速く、そして正確に書けるようになります。</p>
+                <blockquote>
+                    <p>「どのスペリングがどの音に対応してるかなって自分に言い聞かせてるんです。だから（発音しながら書くのが）大事じゃん」</p>
+                </blockquote>
+                <p>音読筆写の目的は、単に速く書くことだけではありません。<strong>発音しながら書く</strong>ことで、単語のスペルと音の結びつき（<span data-tooltip="音と文字の対応関係">フォニックス</span>的な意識）を強化し、記憶の定着を促します。また、「次の単語は何かな？」と考えながら書くことで、文の構造や流れも自然と頭に入ってきます。</p>
+                <div class="supplementary-box">
+                    <h4>学習スタイルと音読筆写</h4>
+                    <p>人にはそれぞれ得意な学習スタイル（視覚優位、聴覚優位、体感覚優位など）があると言われています。音読筆写は、視覚（文字を見る）、聴覚（発音を聞く）、体感覚（書く動作）の全てを使うため、どのタイプの人にも効果が期待できるバランスの取れた学習法と言えます。</p>
+                </div>
+                <p>実際に、この方法で毎日練習を続けた先輩が、英語が苦手な状態から英検準2級、2級へと短期間で合格した例もあります。地道な努力が大きな成果に繋がる良い例ですね。</p>
+            </section>
+
+            <section id="kasan-fukasan">
+                <h2>3. 名詞の使い分け：可算名詞と不可算名詞</h2>
+                <p>前回の例文 <code>Tom eats an apple and drinks water every morning.</code> に戻ってみましょう。なぜ <code>apple</code> には <code>an</code> が付いていて、<code>water</code> には付いていないのでしょうか？</p>
+                <p><code>apple</code> は「一つ、二つ」と数えられる名詞、つまり<strong data-tooltip="Countable Noun: 数えられる名詞">可算名詞</strong>です。一方、<code>water</code> は液体であり、特定の形がなく、通常は「一つ、二つ」とは数えません。これは<strong data-tooltip="Uncountable Noun: 数えられない名詞">不可算名詞</strong>（物質名詞）と呼ばれます。</p>
+                <p>英語では、名詞が可算か不可算かによって、冠詞（a/an, the）の付け方や複数形にするかどうかが変わってきます。辞書では、可算名詞には [C] (Countable)、不可算名詞には [U] (Uncountable) という記号が付いていることが多いので、確認する習慣をつけましょう。</p>
+
+                <h3>見分け方のヒント：「形」があるか？</h3>
+                <p>一つの目安として、「<strong class="highlight">決まった形がイメージできるか</strong>」で考えてみることができます。</p>
+                <ul>
+                    <li><strong>可算名詞 (Countable):</strong> 「鶏 (a chicken)」と言われれば、多くの人が一羽の鳥の姿を思い浮かべます。具体的な形や輪郭があるものは、数えられることが多いです。例: <code>book</code>, <code>chair</code>, <code>student</code>, <code>idea</code></li>
+                    <li><strong>不可算名詞 (Uncountable):</strong> 「鶏肉 (chicken)」と言われると、もも肉、むね肉、ひき肉など、様々な状態を想像します。決まった形がありません。同様に「水 (water)」もコップに入っていたり、川に流れていたりと、決まった形はありません。例: <code>information</code> (情報), <code>advice</code> (助言), <code>furniture</code> (家具), <code>music</code> (音楽), <code>bread</code> (パン)</li>
+                </ul>
+                <div class="supplementary-box">
+                    <h4>「形」だけで判断するのは注意！</h4>
+                    <p>「形があるか」はあくまでヒントの一つです。例えば <code>information</code> (情報) や <code>advice</code> (助言) は具体的な形はありませんが、英語では不可算名詞として扱われます。また、<code>furniture</code> (家具) は個々の家具 (chair, table) は数えられますが、集合的な「家具類」としては不可算です。最終的には辞書で確認したり、多くの英文に触れて慣れていくことが重要です。</p>
+                </div>
+
+                <h3>基本的なルール</h3>
+                <ol>
+                    <li><strong>可算名詞 (C):</strong>
+                        <ul>
+                            <li>単数形（一つの場合）は、通常 <code>a</code> または <code>an</code> を前に付けます。（<code>an</code> は母音の音 [ア・イ・ウ・エ・オ] で始まる単語の前。例: <code>an apple</code>, <code>an hour</code> ← hを発音しない）</li>
+                            <li>複数形（二つ以上の場合）は、通常 <code>-s</code> や <code>-es</code> を付けて複数形にします。 (例: <code>two apples</code>, <code>many books</code>)</li>
+                            <li>数を表す語 (<code>many</code>, <code>few</code>, 数字) と一緒に使えます。</li>
+                        </ul>
+                    </li>
+                    <li><strong>不可算名詞 (U):</strong>
+                        <ul>
+                            <li>通常、<code>a</code> や <code>an</code> は付けません。</li>
+                            <li>通常、複数形にはしません (<code>-s</code> を付けません)。</li>
+                            <li>量を表す語 (<code>much</code>, <code>little</code>) と一緒に使えます。</li>
+                            <li>数えたい場合は、単位を表す語句を使います。(例: <code>a glass of water</code>, <code>a piece of information</code>, <code>two loaves of bread</code>)</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><code>I ate chicken.</code> は「鶏肉を食べた」、<code>I ate a chicken.</code> は「鶏をまるごと一羽食べた」という意味になり、かなり怖く聞こえますね！ この違いをしっかり意識しましょう。</p>
+            </section>
+
+            <section id="plural-rules">
+                <h2>4. 複数形のルール</h2>
+                <p>可算名詞を複数形にする際の基本的なルールを確認しましょう。</p>
+                <ul>
+                    <li><strong>原則:</strong> 語尾に <code>-s</code> をつける (<code>books</code>, <code>cats</code>, <code>dogs</code>)</li>
+                    <li><strong>語尾が -s, -x, -sh, -ch, -o の場合:</strong> <code>-es</code> をつけることが多い。
+                        <ul>
+                            <li>例: <code>buses</code>, <code>boxes</code>, <code>dishes</code>, <code>churches</code>, <code>tomatoes</code></li>
+                            <li>覚え方: 「<strong class="highlight">ソックス履いて集中</strong> (s, o, x, sh, ch, [z])」 + <code>es</code></li>
+                            <li><strong class="highlight">例外:</strong> <code>-o</code> で終わる語でも <code>-s</code> だけの場合がある (特に外来語や短縮語)。 例: <code>pianos</code> (piano forteの略), <code>photos</code> (photographの略), <code>radios</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>語尾が「子音字 + y」の場合:</strong> <code>y</code> を <code>i</code> に変えて <code>-es</code> をつける。
+                        <ul>
+                            <li>例: <code>country</code> → <code>countries</code>, <code>study</code> → <code>studies</code>, <code>party</code> → <code>parties</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>語尾が「母音字 + y」の場合:</strong> そのまま <code>-s</code> をつける。
+                        <ul>
+                            <li>例: <code>boy</code> → <code>boys</code>, <code>key</code> → <code>keys</code>, <code>play</code> (名詞:劇) → <code>plays</code></li>
+                        </ul>
+                    </li>
+                     <li><strong>語尾が -f, -fe の場合:</strong> <code>f</code>, <code>fe</code> を <code>v</code> に変えて <code>-es</code> をつけることが多い。
+                        <ul>
+                            <li>例: <code>leaf</code> → <code>leaves</code>, <code>knife</code> → <code>knives</code>, <code>life</code> → <code>lives</code></li>
+                            <li><strong class="highlight">例外:</strong> <code>roofs</code>, <code>chiefs</code> など</li>
+                        </ul>
+                    </li>
+                    <li><strong>不規則に変化するもの:</strong> これらは覚える必要があります。
+                        <ul>
+                            <li>例: <code>man</code> → <code>men</code>, <code>woman</code> → <code>women</code>, <code>child</code> → <code>children</code>, <code>foot</code> → <code>feet</code>, <code>tooth</code> → <code>teeth</code>, <code>mouse</code> → <code>mice</code>, <code>sheep</code> → <code>sheep</code> (単複同形), <code>fish</code> → <code>fish</code> (単複同形)</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>これらのルールは英語の基礎となりますので、しっかり復習しておきましょう。</p>
+            </section>
+
+            <section id="homework">
+                <h2>5. 宿題について</h2>
+                <p>今日の宿題は、配布したプリント（名詞・冠詞・代名詞、リードする一般動詞の問題）の右側の練習問題です。</p>
+                <ul>
+                    <li>名詞・冠詞・代名詞プリント：右側の問題</li>
+                    <li>リードする一般動詞プリント：右側の問題</li>
+                </ul>
+                <p>明日、単語チェックの後にすぐに解説と確認を行いますので、必ずやってきてください。宿題は出されたらすぐに取り組む習慣をつけるのがおすすめです。</p>
+                <div class="code-block"><pre><code>※ 教材「名詞監視代名詞」プリントの指示に従ってください。
+※ 教材「一般動詞の問題（リードする）」プリントの指示に従ってください。</code></pre></div>
+            </section>
+
+            <section id="worksheet">
+                 <h2>6. 学習ワークシート：自己分析</h2>
+                <p>最後に、新しいワークシート（Lesson Workbook）をお配りしました。これは今後のリーディングの授業で使っていくものです。</p>
+                <p>まず、1枚目の表紙にある「あなたの位置」というブロックを見てください。学習習慣、文法・語法、語彙、発音/Listening、Speaking/Writing、知識への姿勢、<span data-tooltip="Common European Framework of Reference for Languages: ヨーロッパ言語共通参照枠。言語能力を評価する国際的な指標。">CEFR</span>(英検)の各項目について、現在の自分のレベルに最も近いと思うところに正直に丸をつけてみてください。</p>
+                <p>これは、自分自身の英語学習における現在地を客観的に把握し、今後の学習計画を立てるためのものです。評価は他人に見せるためではなく、自分のためのものです。</p>
+                 <div class="supplementary-box">
+                    <h4>学習のプロセスを意識しよう</h4>
+                    <p>ワークシートにも記載されていますが、効果的な学習は以下のプロセスを意識すると良いでしょう。</p>
+                    <ol>
+                        <li>未知との遭遇（新しいことを知る）</li>
+                        <li>あぶりだし（わかるところ/わからないところを区別）</li>
+                        <li>覚える（復習・暗記）</li>
+                        <li>使ってみる（実践・説明）</li>
+                        <li>応用する（他のことへの活用）</li>
+                        <li>振り返る（自己評価・テスト）</li>
+                    </ol>
+                    <p>この授業記録も「振り返る」プロセスの一部ですね！</p>
+                </div>
+                 <p>ワークシートの他の部分（授業の進め方、使う教材、評価の目安など）も、時間があるときに目を通しておいてください。</p>
+            </section>
+
+            <section id="review">
+                <h2>7. 振り返り：理解度チェックと問題</h2>
+                <p>今日の授業内容を理解できたか、以下のチェックリストと確認問題で確認してみましょう。</p>
+
+                <h3>理解度チェックリスト</h3>
+                <ul class="checklist">
+                    <li>音読筆写の具体的なやり方を理解した。</li>
+                    <li>音読筆写がなぜ記憶に効果的なのか説明できる。</li>
+                    <li>可算名詞と不可算名詞の基本的な違いを理解した。</li>
+                    <li><code>a chicken</code> と <code>chicken</code> の意味の違いがわかる。</li>
+                    <li>可算名詞（単数）には原則 <code>a/an</code> が必要だと理解した。</li>
+                    <li>不可算名詞には原則 <code>a/an</code> を付けず、複数形にもしないことを理解した。</li>
+                    <li>名詞の複数形の基本的な作り方（-s, -es, -ies）を覚えた。</li>
+                    <li><code>-es</code> がつく単語の語尾のパターン（ソックス履いて集中）を覚えた。</li>
+                    <li>今日の宿題の内容を把握した。</li>
+                </ul>
+
+                <h3>確認問題</h3>
+                <div class="review-questions">
+                    <div class="question">
+                        <p><strong>問1:</strong> 音読筆写を行う主な目的・効果を2つ挙げてください。</p>
+                        <small>ヒント: 音と文字の関係、記憶、書くスピード...</small><br>
+                        <button class="toggle-answer">解答例を見る</button>
+                        <div class="answer">
+                            <p><strong>解答例:</strong></p>
+                            <ul>
+                                <li>単語のスペルと発音の結びつきを強化するため。</li>
+                                <li>視覚・聴覚・体感覚を同時に使い、記憶の定着を促すため。</li>
+                                <li>英文を素早く正確に書く練習になるため。（など）</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <p><strong>問2:</strong> "information" (情報) は可算名詞ですか、不可算名詞ですか？ その主な理由も説明してください。</p>
+                        <small>ヒント: 決まった形はありますか？ 1つ、2つと数えますか？</small><br>
+                        <button class="toggle-answer">解答例を見る</button>
+                        <div class="answer">
+                            <p><strong>解答例:</strong> 不可算名詞です。理由は、情報には具体的な決まった形がなく、「1つの情報、2つの情報」のように直接数えることが一般的ではないためです。数えたい場合は <code>a piece of information</code> のように単位を使います。</p>
+                        </div>
+                    </div>
+                     <div class="question">
+                        <p><strong>問3:</strong> 次の単語を複数形にしなさい: (1) box, (2) party, (3) life, (4) tomato</p>
+                        <small>ヒント: 語尾のルールを確認しましょう。「ソックス履いて集中」？ yの前は？ fで終わる単語は？</small><br>
+                        <button class="toggle-answer">解答例を見る</button>
+                        <div class="answer">
+                            <p><strong>解答例:</strong></p>
+                            <ol>
+                                <li><strong>boxes</strong> (-x で終わるので -es)</li>
+                                <li><strong>parties</strong> (子音字+y なので y を i に変えて -es)</li>
+                                <li><strong>lives</strong> (-fe で終わるので fe を v に変えて -es)</li>
+                                <li><strong>tomatoes</strong> (-o で終わるので -es ※例外ではない)</li>
+                            </ol>
+                        </div>
+                    </div>
+                     <div class="question">
+                        <p><strong>問4:</strong> 「たくさんの本」と「たくさんの水」を英語で表現する際、それぞれどのような単語を使って表現するのが一般的ですか？</p>
+                        <small>ヒント: 可算名詞に使う「たくさん」、不可算名詞に使う「たくさん」</small><br>
+                        <button class="toggle-answer">解答例を見る</button>
+                        <div class="answer">
+                            <p><strong>解答例:</strong></p>
+                             <ul>
+                                <li>たくさんの本 (book: 可算名詞): <strong>many</strong> books</li>
+                                <li>たくさんの水 (water: 不可算名詞): <strong>much</strong> water</li>
+                             </ul>
+                            <p>(※口語では <code>a lot of</code> / <code>lots of</code> が両方に使える)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <section id="application">
+                <h2>8. 応用：学びを次に活かす</h2>
+                <p>今回の授業で学んだことは、今後の英語学習において様々な場面で役立ちます。</p>
+                <h3>今回の知識の活かし方</h3>
+                <ul>
+                    <li><strong>英文の暗唱・記憶:</strong> 音読筆写は、単語帳の例文や教科書の重要文を覚える際に非常に有効です。</li>
+                    <li><strong>英作文・スピーキング:</strong> 可算・不可算の区別、複数形の正しい使い方は、正確な英文を作る・話すための基礎となります。間違いやすいポイントなので、意識して使う練習をしましょう。</li>
+                    <li><strong>辞書活用:</strong> 単語を調べる際に、意味だけでなく [C] [U] の区別や複数形も確認する習慣をつけることで、語彙力がより深まります。</li>
+                </ul>
+                <h3>今後の学習への繋がり</h3>
+                <ul>
+                    <li><strong>冠詞 (a/an, the):</strong> 名詞の可算・不可算は、冠詞の使い分けと密接に関連しています。今後、冠詞のルールを学ぶ上で今回の知識が土台となります。</li>
+                    <li><strong>数量詞:</strong> <code>many</code>, <code>much</code>, <code>few</code>, <code>little</code>, <code>some</code>, <code>any</code> など、名詞の量を表す言葉の使い分けも、可算・不可算の理解が前提となります。</li>
+                    <li><strong>より複雑な名詞:</strong> 集合名詞 (family, team) や物質名詞 (paper, glass) の特殊な用法など、さらに進んだ名詞の学習に進んでいきます。</li>
+                </ul>
+                <h3>今後の注意点</h3>
+                <ul>
+                    <li><strong>「形」だけで判断しない:</strong> 可算・不可算の判断は「形」がヒントになりますが、<code>information</code>, <code>advice</code>, <code>furniture</code> のような例外も多いことを常に意識しましょう。迷ったら辞書！</li>
+                    <li><strong>不規則変化の暗記:</strong> 複数形の不規則変化 (<code>children</code>, <code>feet</code> など) は、地道に覚えるしかありません。</li>
+                    <li><strong>不可算名詞の数え方:</strong> 不可算名詞を具体的に数えたい場合の表現 (<code>a cup of tea</code>, <code>two pieces of furniture</code> など) を少しずつ覚えていきましょう。</li>
+                </ul>
+                 <h3>参考資料</h3>
+                <ul>
+                    <li><strong>オンライン辞書:</strong>
+                        <ul>
+                            <li><a href="https://dictionary.cambridge.org/" target="_blank" rel="noopener noreferrer">Cambridge Dictionary</a></li>
+                            <li><a href="https://www.oxfordlearnersdictionaries.com/" target="_blank" rel="noopener noreferrer">Oxford Learner's Dictionaries</a></li>
+                            <li>（[C][U] の表示や例文が豊富です）</li>
+                        </ul>
+                    </li>
+                    <li><strong>文法解説サイト:</strong>
+                        <ul>
+                            <li>NHKゴガク: <a href="https://www.nhk.or.jp/gogaku/" target="_blank" rel="noopener noreferrer">https://www.nhk.or.jp/gogaku/</a> (様々なレベルの文法解説があります)</li>
+                            <li>（信頼できる文法サイトや、学校で使っている文法書も参照しましょう）</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>今日の授業はここまでです。音読筆写や名詞のルールをしっかり復習し、今後の学習に活かしてください。</p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイトへ</a></p>
+            <p>&copy; 2024 授業記録</p>
+        </footer>
+
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        // --- プログレスバー ---
+        const progressBar = document.getElementById('progressBar');
+        function updateProgressBar() {
+            const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = document.documentElement.scrollTop;
+            const progress = (scrolled / scrollTotal) * 100;
+            progressBar.style.width = progress + '%';
+        }
+        window.addEventListener('scroll', updateProgressBar);
+        window.addEventListener('resize', updateProgressBar); // リサイズ時も更新
+        document.addEventListener('DOMContentLoaded', updateProgressBar); // 初期表示
+
+        // --- トップへ戻るボタン ---
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        }
+
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- チェックリスト ---
+        const checklistItems = document.querySelectorAll('.checklist li');
+        checklistItems.forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+            // アクセシビリティのため、Enterキーでもトグルできるように
+            item.setAttribute('tabindex', '0'); // フォーカス可能にする
+            item.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    this.click();
+                }
+            });
+        });
+
+        // --- 解答トグル ---
+        const toggleButtons = document.querySelectorAll('.toggle-answer');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const answer = this.nextElementSibling; // ボタンの直後の要素が解答だと仮定
+                if (answer && answer.classList.contains('answer')) {
+                    answer.classList.toggle('visible');
+                    if (answer.classList.contains('visible')) {
+                        this.textContent = '解答を隠す';
+                    } else {
+                        this.textContent = '解答例を見る';
+                    }
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
