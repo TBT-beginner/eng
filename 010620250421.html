@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -23,387 +24,137 @@
             --tooltip-bg: #343A40;
             --tooltip-text: #FFFFFF;
             --progress-bar: var(--accent); /* プログレスバーの色 */
+            --test-result-bg: #FFFBEB; /* 結果表示エリアの背景色 (薄い黄色系) */
+            --test-result-border: #FFEEBA;
+            --test-result-title: #856404;
         }
 
-        /* --- 基本スタイル --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        /* --- 基本スタイル (省略) --- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Noto Sans JP', sans-serif; line-height: 1.75; background-color: var(--bg-main); color: var(--text-main); font-size: 16px; }
+        .container { max-width: 850px; margin: 2rem auto; padding: 1.5rem 2rem; background-color: var(--bg-content); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        h1, h2, h3, h4, h5, h6 { color: var(--primary); margin-top: 1.8em; margin-bottom: 0.8em; line-height: 1.3; font-weight: 700; }
+        h1 { font-size: 2.2rem; margin-top: 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5em; }
+        h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+        h3 { font-size: 1.4rem; color: var(--primary); opacity: 0.9; }
+        p { margin-bottom: 1.2em; }
+        a { color: var(--link); text-decoration: none; transition: color 0.2s ease; }
+        a:hover { text-decoration: underline; color: #1c7430; }
+        ul, ol { margin-bottom: 1.2em; padding-left: 2em; }
+        li { margin-bottom: 0.5em; }
+        strong { font-weight: 700; color: var(--text-main); }
+        .highlight { background-color: rgba(253, 126, 20, 0.2); padding: 0.1em 0.3em; border-radius: 3px; }
+        blockquote { margin: 1.5em 0; padding: 1em 1.5em; border-left: 5px solid var(--primary); background-color: var(--bg-main); color: var(--text-secondary); font-style: italic; }
+        code { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; background-color: var(--code-bg); padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; color: #343A40; }
+        .code-block { background-color: var(--code-bg); padding: 1em; border-radius: 5px; overflow-x: auto; margin-bottom: 1.2em; font-size: 0.9em; }
+        .code-block code { background-color: transparent; padding: 0; border-radius: 0; color: inherit; }
+        #progressBar { position: fixed; top: 0; left: 0; width: 0%; height: 5px; background-color: var(--progress-bar); z-index: 1000; transition: width 0.1s linear; }
+        .estimated-reading-time { color: var(--text-secondary); font-size: 0.9em; margin-top: -0.5em; margin-bottom: 1.5em; }
+        .summary-box { background-color: var(--bg-main); border: 1px solid var(--border); border-left: 5px solid var(--accent); padding: 1.5em; margin: 2em 0; border-radius: 5px; }
+        .summary-box h3 { margin-top: 0; margin-bottom: 0.5em; color: var(--accent); font-size: 1.3rem; }
+        .summary-box ul { padding-left: 1.5em; margin-bottom: 0; }
+        #tableOfContents { background-color: var(--bg-main); padding: 1.5em; border-radius: 5px; margin: 2em 0; border: 1px solid var(--border); }
+        #tableOfContents h2 { margin-top: 0; margin-bottom: 1em; font-size: 1.5rem; border-bottom: none; }
+        #tableOfContents ol { list-style-type: decimal; padding-left: 1.5em; margin-bottom: 0; column-count: 2; column-gap: 2em; }
+        #tableOfContents li { margin-bottom: 0.6em; }
+        #tableOfContents a { color: var(--link); text-decoration: none; }
+        #tableOfContents a:hover { text-decoration: underline; }
+        .supplementary-box { background-color: #e7f5ff; border: 1px solid #b3d9ff; border-left: 5px solid #4dabf7; padding: 1em 1.5em; margin: 1.5em 0; border-radius: 5px; font-size: 0.95em; }
+        .supplementary-box h4 { margin-top: 0; margin-bottom: 0.5em; color: #1864ab; font-size: 1.1em; }
+        .checklist li { list-style-type: none; position: relative; padding-left: 2em; cursor: pointer; user-select: none; transition: color 0.2s ease; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; font-size: 1.2em; color: var(--primary); }
+        .checklist li.checked::before { content: "☑"; }
+        .checklist li.checked { color: var(--text-secondary); text-decoration: line-through; }
+        .review-questions .question { margin-bottom: 1.5em; padding-bottom: 1.5em; border-bottom: 1px dashed var(--border); }
+        .review-questions .question:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+        .toggle-answer { display: inline-block; background-color: var(--accent); color: white; border: none; padding: 0.4em 0.8em; border-radius: 4px; cursor: pointer; font-size: 0.9em; margin-top: 0.5em; transition: background-color 0.2s ease; }
+        .toggle-answer:hover { background-color: #e08e4f; }
+        .answer { display: none; margin-top: 1em; padding: 1em; background-color: var(--answer-bg); border: 1px solid var(--border); border-radius: 4px; font-size: 0.95em; }
+        .answer.visible { display: block; }
+        footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.9em; color: var(--text-secondary); }
+        footer a { color: var(--link); }
+        #scrollTopBtn { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 99; border: none; outline: none; background-color: var(--accent); color: white; cursor: pointer; padding: 12px 15px; border-radius: 50%; font-size: 1rem; opacity: 0.8; transition: opacity 0.2s ease, background-color 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        #scrollTopBtn:hover { background-color: #e08e4f; opacity: 1; }
+        [data-tooltip] { position: relative; cursor: help; text-decoration: underline dotted var(--text-secondary); }
+        [data-tooltip]::after { content: attr(data-tooltip); position: absolute; left: 50%; transform: translateX(-50%); bottom: 100%; margin-bottom: 5px; background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 5px 10px; border-radius: 4px; font-size: 0.85em; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; z-index: 10; }
+        [data-tooltip]:hover::after { opacity: 1; visibility: visible; }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            line-height: 1.75;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 850px;
-            margin: 2rem auto;
-            padding: 1.5rem 2rem;
-            background-color: var(--bg-content);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        /* --- タイポグラフィ --- */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--primary);
-            margin-top: 1.8em;
-            margin-bottom: 0.8em;
-            line-height: 1.3;
-            font-weight: 700;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            margin-top: 0;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5em;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.3em;
-        }
-
-        h3 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            opacity: 0.9;
-        }
-
-        p {
-            margin-bottom: 1.2em;
-        }
-
-        a {
-            color: var(--link);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        a:hover {
-            text-decoration: underline;
-            color: #1c7430; /* 少し濃い緑 */
-        }
-
-        ul, ol {
-            margin-bottom: 1.2em;
-            padding-left: 2em;
-        }
-
-        li {
-            margin-bottom: 0.5em;
-        }
-
-        strong {
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .highlight {
-            background-color: rgba(253, 126, 20, 0.2); /* Accent color with transparency */
-            padding: 0.1em 0.3em;
-            border-radius: 3px;
-        }
-
-        blockquote {
-            margin: 1.5em 0;
-            padding: 1em 1.5em;
-            border-left: 5px solid var(--primary);
-            background-color: var(--bg-main);
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        code {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            background-color: var(--code-bg);
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-size: 0.9em;
-            color: #343A40;
-        }
-
-        .code-block {
-            background-color: var(--code-bg);
-            padding: 1em;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin-bottom: 1.2em;
-            font-size: 0.9em;
-        }
-
-        .code-block code {
-            background-color: transparent;
-            padding: 0;
-            border-radius: 0;
-            color: inherit;
-        }
-
-        /* --- プログレスバー --- */
-        #progressBar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 5px;
-            background-color: var(--progress-bar);
-            z-index: 1000;
-            transition: width 0.1s linear;
-        }
-
-        /* --- 読了時間目安 --- */
-        .estimated-reading-time {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            margin-top: -0.5em;
-            margin-bottom: 1.5em;
-        }
-
-        /* --- 概要ボックス --- */
-        .summary-box {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border);
-            border-left: 5px solid var(--accent);
+        /* --- ▼▼▼ テスト結果表示エリアのスタイル ▼▼▼ --- */
+        #persistentTestResults {
+            background-color: var(--test-result-bg);
+            border: 1px solid var(--test-result-border);
+            border-left: 5px solid var(--primary); /* 左のボーダーは緑 */
             padding: 1.5em;
             margin: 2em 0;
             border-radius: 5px;
         }
-        .summary-box h3 {
-            margin-top: 0;
-            margin-bottom: 0.5em;
-            color: var(--accent);
-            font-size: 1.3rem;
-        }
-         .summary-box ul {
-            padding-left: 1.5em;
-            margin-bottom: 0;
-        }
-
-        /* --- 目次 --- */
-        #tableOfContents {
-            background-color: var(--bg-main);
-            padding: 1.5em;
-            border-radius: 5px;
-            margin: 2em 0;
-            border: 1px solid var(--border);
-        }
-        #tableOfContents h2 {
+        #persistentTestResults h3 {
             margin-top: 0;
             margin-bottom: 1em;
-            font-size: 1.5rem;
-            border-bottom: none;
+            color: var(--test-result-title); /* タイトルの色 */
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--test-result-border);
+            padding-bottom: 0.5em;
         }
-        #tableOfContents ol {
-            list-style-type: decimal;
-            padding-left: 1.5em;
-            margin-bottom: 0;
-            column-count: 2; /* 2カラム */
-            column-gap: 2em;
+        #persistentTestResults p {
+            margin-bottom: 0.8em;
         }
-         #tableOfContents li {
-             margin-bottom: 0.6em;
-         }
-        #tableOfContents a {
-            color: var(--link);
-            text-decoration: none;
-        }
-        #tableOfContents a:hover {
-            text-decoration: underline;
-        }
-
-        /* --- 補足情報ボックス --- */
-        .supplementary-box {
-            background-color: #e7f5ff; /* Light blue background */
-            border: 1px solid #b3d9ff; /* Light blue border */
-            border-left: 5px solid #4dabf7; /* Blue accent */
-            padding: 1em 1.5em;
-            margin: 1.5em 0;
-            border-radius: 5px;
-            font-size: 0.95em;
-        }
-        .supplementary-box h4 {
-            margin-top: 0;
-            margin-bottom: 0.5em;
-            color: #1864ab;
-            font-size: 1.1em;
-        }
-
-        /* --- 振り返りセクション --- */
-        .checklist li {
-            list-style-type: none;
-            position: relative;
-            padding-left: 2em;
-            cursor: pointer;
-            user-select: none;
-            transition: color 0.2s ease;
-        }
-        .checklist li::before {
-            content: "☐"; /* 未チェック */
-            position: absolute;
-            left: 0;
-            font-size: 1.2em;
-            color: var(--primary);
-        }
-        .checklist li.checked::before {
-            content: "☑"; /* チェック済み */
-        }
-        .checklist li.checked {
-            color: var(--text-secondary);
-            text-decoration: line-through;
-        }
-
-        .review-questions .question {
-            margin-bottom: 1.5em;
-            padding-bottom: 1.5em;
-            border-bottom: 1px dashed var(--border);
-        }
-        .review-questions .question:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-            margin-bottom: 0;
-        }
-
-        .toggle-answer {
-            display: inline-block;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.4em 0.8em;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-top: 0.5em;
-            transition: background-color 0.2s ease;
-        }
-        .toggle-answer:hover {
-            background-color: #e08e4f; /* 少し濃いアクセントカラー */
-        }
-        .answer {
-            display: none;
+        #persistentTestResults ul {
+            list-style: none;
+            padding-left: 0;
             margin-top: 1em;
-            padding: 1em;
-            background-color: var(--answer-bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 0.95em;
+            margin-bottom: 0; /* ul自体の下マージン削除 */
         }
-        .answer.visible {
-            display: block;
+        #persistentTestResults li {
+            margin-bottom: 0.8em;
         }
-
-        /* --- フッター --- */
-        footer {
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-        }
-        footer a {
+        #persistentTestResults a {
             color: var(--link);
+            text-decoration: underline;
+            font-weight: bold; /* リンクを強調 */
         }
-
-        /* --- トップへ戻るボタン --- */
-        #scrollTopBtn {
-            display: none;
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 99;
-            border: none;
-            outline: none;
-            background-color: var(--accent);
-            color: white;
-            cursor: pointer;
-            padding: 12px 15px;
-            border-radius: 50%;
-            font-size: 1rem;
-            opacity: 0.8;
-            transition: opacity 0.2s ease, background-color 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        #persistentTestResults a:hover {
+            color: #1c7430; /* リンクホバー時の色 */
         }
-        #scrollTopBtn:hover {
-            background-color: #e08e4f;
-            opacity: 1;
-        }
-
-        /* --- ツールチップ (簡易版: title属性利用でも可) --- */
-        [data-tooltip] {
-            position: relative;
-            cursor: help;
-            text-decoration: underline dotted var(--text-secondary);
-        }
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 100%;
-            margin-bottom: 5px;
-            background-color: var(--tooltip-bg);
-            color: var(--tooltip-text);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            z-index: 10;
-        }
-        [data-tooltip]:hover::after {
-            opacity: 1;
-            visibility: visible;
-        }
+        /* --- ▲▲▲ テスト結果表示エリアのスタイル ▲▲▲ --- */
 
 
-        /* --- レスポンシブデザイン --- */
-        @media (max-width: 900px) {
-            .container {
-                margin: 1rem;
-                padding: 1rem 1.5rem;
-            }
-        }
-
+        /* --- レスポンシブデザイン (省略) --- */
+        @media (max-width: 900px) { .container { margin: 1rem; padding: 1rem 1.5rem; } }
         @media (max-width: 600px) {
-            body {
-                font-size: 15px;
-            }
-            .container {
-                margin: 0.5rem;
-                padding: 1rem;
-            }
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.5rem; }
-            h3 { font-size: 1.2rem; }
+            body { font-size: 15px; }
+            .container { margin: 0.5rem; padding: 1rem; }
+            h1 { font-size: 1.8rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.2rem; }
+            #tableOfContents ol { column-count: 1; }
+            .code-block { font-size: 0.85em; }
+            #scrollTopBtn { padding: 10px 13px; font-size: 0.9rem; bottom: 15px; right: 15px; }
+        }
 
-            #tableOfContents ol {
-                column-count: 1; /* スマートフォンでは1カラム */
-            }
-
-            .code-block {
-                font-size: 0.85em;
-            }
-
-            #scrollTopBtn {
-                padding: 10px 13px;
-                font-size: 0.9rem;
-                bottom: 15px;
-                right: 15px;
-            }
+        /* --- モーダル用CSS (省略 - 変更なし) --- */
+        #preTestModalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1001; opacity: 1; transition: opacity 0.3s ease; color: var(--text-main); }
+        #preTestModalContent { background-color: var(--bg-content); padding: 2rem 2.5rem; border-radius: 8px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #preTestModalContent h2 { margin-top: 0; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 1.6rem; }
+        #preTestModalContent p { margin-bottom: 1rem; line-height: 1.6; }
+        .test-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+        .test-question:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 2rem; }
+        .test-question p strong { color: var(--text-main); font-weight: bold; }
+        .test-question label { display: block; margin: 0.6rem 0 0.6rem 0.5rem; cursor: pointer; line-height: 1.5; }
+        .test-question input[type="radio"] { margin-right: 0.5em; vertical-align: middle; }
+        #preTestForm button[type="submit"], #preTestForm button[type="button"], #testResults button { background-color: var(--accent); color: white; border: none; padding: 0.8em 1.5em; border-radius: 4px; cursor: pointer; font-size: 1em; margin-right: 0.8em; margin-top: 1em; transition: background-color 0.2s ease; }
+        #preTestForm button[type="submit"]:hover, #preTestForm button[type="button"]:hover, #testResults button:hover { background-color: #e08e4f; }
+        #preTestForm button#skipTestBtn { background-color: var(--text-secondary); }
+        #preTestForm button#skipTestBtn:hover { background-color: #5a6268; }
+        #testResults { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        #testResults h3 { color: var(--primary); margin-bottom: 1rem; }
+        #testResults ul { list-style: none; padding-left: 0; margin-top: 1rem; }
+        #testResults li { margin-bottom: 0.8rem; }
+        #testResults a { color: var(--link); text-decoration: underline; font-weight: bold; }
+        #testResults a:hover { color: #1c7430; }
+        @media (max-width: 600px) {
+            #preTestModalContent { padding: 1.5rem; }
+            #preTestModalContent h2 { font-size: 1.4rem; }
+            #preTestForm button[type="submit"], #preTestForm button[type="button"], #testResults button { padding: 0.7em 1.2em; font-size: 0.95em; }
         }
 
     </style>
@@ -441,6 +192,14 @@
                 <li><a href="#application">応用：学びを次に活かす</a></li>
             </ol>
         </nav>
+
+        <!-- ▼▼▼ テスト結果表示エリア (メインコンテンツ内) ▼▼▼ -->
+        <div id="persistentTestResults" style="display: none;">
+            <h3>理解度チェックの結果</h3>
+            <div id="persistentScore"></div>
+            <div id="persistentReviewLinks"></div>
+        </div>
+        <!-- ▲▲▲ テスト結果表示エリア ▲▲▲ -->
 
         <main>
             <section id="introduction">
@@ -696,70 +455,288 @@
             <p>&copy; 2024 授業記録</p>
         </footer>
 
-    </div>
+    </div><!-- /.container -->
 
     <button id="scrollTopBtn" title="トップへ戻る">▲</button>
 
+    <!-- ▼▼▼ 理解度チェックテスト用モーダル ▼▼▼ -->
+    <div id="preTestModalOverlay" style="display: none;">
+        <div id="preTestModalContent">
+            <h2>最初に理解度をチェック！</h2>
+            <p>いくつかの簡単な質問で、この記事の内容をどれだけ知っているか確認しましょう。</p>
+            <form id="preTestForm">
+                <!-- 質問1 -->
+                <div class="test-question" data-section-id="ondoku-hissha">
+                    <p><strong>質問1:</strong> 音読筆写の主な目的として <strong>適切でない</strong> ものは？</p>
+                    <label><input type="radio" name="q1" value="a" required> スペルと音を結びつける</label><br>
+                    <label><input type="radio" name="q1" value="b"> 速く書く練習</label><br>
+                    <label><input type="radio" name="q1" value="c"> 文法ルールを深く理解する</label><br>
+                </div>
+                <!-- 質問2 -->
+                <div class="test-question" data-section-id="kasan-fukasan">
+                    <p><strong>質問2:</strong> "water" は一般的にどちらの名詞？</p>
+                    <label><input type="radio" name="q2" value="a" required> 可算名詞</label><br>
+                    <label><input type="radio" name="q2" value="b"> 不可算名詞</label><br>
+                </div>
+                <!-- 質問3 -->
+                <div class="test-question" data-section-id="plural-rules">
+                    <p><strong>質問3:</strong> "party" の複数形は？</p>
+                    <label><input type="radio" name="q3" value="a" required> partys</label><br>
+                    <label><input type="radio" name="q3" value="b"> parties</label><br>
+                    <label><input type="radio" name="q3" value="c"> partyies</label><br>
+                </div>
+                 <!-- 質問4 -->
+                 <div class="test-question" data-section-id="kasan-fukasan">
+                    <p><strong>質問4:</strong> 「一つのリンゴ」を英語で正しく表すのは？</p>
+                    <label><input type="radio" name="q4" value="a" required> apple</label><br>
+                    <label><input type="radio" name="q4" value="b"> an apple</label><br>
+                    <label><input type="radio" name="q4" value="c"> apples</label><br>
+                </div>
+                 <!-- 質問5 -->
+                 <div class="test-question" data-section-id="plural-rules">
+                    <p><strong>質問5:</strong> "box" の複数形は？</p>
+                    <label><input type="radio" name="q5" value="a" required> boxs</label><br>
+                    <label><input type="radio" name="q5" value="b"> boxies</label><br>
+                    <label><input type="radio" name="q5" value="c"> boxes</label><br>
+                </div>
+
+                <button type="submit">採点する</button>
+                <button type="button" id="skipTestBtn">テストをスキップ</button>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3>テスト結果</h3>
+                <p id="score"></p>
+                <div id="reviewLinks"></div>
+                <button id="closeTestBtn">内容を読む</button>
+            </div>
+        </div>
+    </div>
+    <!-- ▲▲▲ 理解度チェックテスト用モーダル ▲▲▲ -->
+
     <script>
-        // --- プログレスバー ---
-        const progressBar = document.getElementById('progressBar');
-        function updateProgressBar() {
-            const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = document.documentElement.scrollTop;
-            const progress = (scrolled / scrollTotal) * 100;
-            progressBar.style.width = progress + '%';
-        }
-        window.addEventListener('scroll', updateProgressBar);
-        window.addEventListener('resize', updateProgressBar); // リサイズ時も更新
-        document.addEventListener('DOMContentLoaded', updateProgressBar); // 初期表示
-
-        // --- トップへ戻るボタン ---
-        const scrollTopBtn = document.getElementById('scrollTopBtn');
-        window.onscroll = function() { scrollFunction() };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                scrollTopBtn.style.display = "block";
-            } else {
-                scrollTopBtn.style.display = "none";
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 既存のJSコード ---
+            const progressBar = document.getElementById('progressBar');
+            function updateProgressBar() {
+                const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = document.documentElement.scrollTop;
+                const progress = (scrollTotal > 0) ? (scrolled / scrollTotal) * 100 : 0;
+                progressBar.style.width = progress + '%';
             }
-        }
+            window.addEventListener('scroll', updateProgressBar);
+            window.addEventListener('resize', updateProgressBar);
+            updateProgressBar();
 
-        scrollTopBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.onscroll = function() { scrollFunction() };
 
-        // --- チェックリスト ---
-        const checklistItems = document.querySelectorAll('.checklist li');
-        checklistItems.forEach(item => {
-            item.addEventListener('click', function() {
-                this.classList.toggle('checked');
-            });
-            // アクセシビリティのため、Enterキーでもトグルできるように
-            item.setAttribute('tabindex', '0'); // フォーカス可能にする
-            item.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    this.click();
+            function scrollFunction() {
+                if (scrollTopBtn && (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
+                    scrollTopBtn.style.display = "block";
+                } else if (scrollTopBtn) {
+                    scrollTopBtn.style.display = "none";
                 }
-            });
-        });
+            }
 
-        // --- 解答トグル ---
-        const toggleButtons = document.querySelectorAll('.toggle-answer');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const answer = this.nextElementSibling; // ボタンの直後の要素が解答だと仮定
-                if (answer && answer.classList.contains('answer')) {
-                    answer.classList.toggle('visible');
-                    if (answer.classList.contains('visible')) {
-                        this.textContent = '解答を隠す';
-                    } else {
-                        this.textContent = '解答例を見る';
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            const checklistItems = document.querySelectorAll('.checklist li');
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                });
+                item.setAttribute('tabindex', '0');
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        this.click();
                     }
-                }
+                });
             });
-        });
 
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    if (answer && answer.classList.contains('answer')) {
+                        answer.classList.toggle('visible');
+                        this.textContent = answer.classList.contains('visible') ? '解答を隠す' : '解答例を見る';
+                    }
+                });
+            });
+
+            // --- ▼▼▼ 理解度チェックテスト用JS ▼▼▼ ---
+            const modalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults');
+            const scoreP = document.getElementById('score');
+            const reviewLinksDiv = document.getElementById('reviewLinks');
+            const closeTestBtn = document.getElementById('closeTestBtn');
+            const questions = document.querySelectorAll('.test-question');
+
+            // --- メインコンテンツ内の結果表示エリア ---
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreDiv = document.getElementById('persistentScore');
+            const persistentReviewLinksDiv = document.getElementById('persistentReviewLinks');
+
+            // --- 正解を定義 ---
+            const answers = { q1: 'c', q2: 'b', q3: 'b', q4: 'b', q5: 'c' };
+            const questionTitles = { q1: '音読筆写', q2: '可算・不可算名詞', q3: '複数形のルール', q4: '冠詞と可算名詞', q5: '複数形のルール (-es)' };
+
+            // --- スクロール＆ハイライト関数 ---
+            function scrollToSection(sectionId) {
+                const targetElement = document.getElementById(sectionId);
+                if (targetElement) {
+                    // ヘッダー等の高さを考慮する場合 (必要なら調整)
+                    // const headerOffset = 0;
+                    // const elementPosition = targetElement.getBoundingClientRect().top;
+                    // const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    // window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    // 一時的なハイライト
+                    targetElement.style.transition = 'background-color 0.5s ease-in-out';
+                    targetElement.style.backgroundColor = 'rgba(253, 126, 20, 0.1)';
+                    setTimeout(() => {
+                        targetElement.style.backgroundColor = '';
+                        targetElement.style.transition = '';
+                    }, 2500);
+                }
+            }
+
+            // --- モーダルを閉じる関数 ---
+            function closeModal() {
+                if (modalOverlay) modalOverlay.style.display = 'none';
+                document.body.style.overflow = ''; // 背景スクロール許可
+            }
+
+            // --- モーダル内のリンククリック処理 ---
+            function setupModalReviewLinks() {
+                const modalLinks = reviewLinksDiv.querySelectorAll('a[data-section-id]');
+                modalLinks.forEach(link => {
+                    // 既存のリスナーを削除してから追加（重複防止）
+                    link.removeEventListener('click', handleModalLinkClick);
+                    link.addEventListener('click', handleModalLinkClick);
+                });
+            }
+            function handleModalLinkClick(e) {
+                e.preventDefault();
+                const sectionId = e.target.dataset.sectionId;
+                closeModal(); // モーダルを閉じる
+                scrollToSection(sectionId); // スクロール実行
+            }
+
+            // --- メインコンテンツ内の結果表示エリア用 イベント委任 ---
+            if (persistentReviewLinksDiv) {
+                persistentReviewLinksDiv.addEventListener('click', (e) => {
+                    // クリックされた要素が A タグで、data-section-id 属性を持つか確認
+                    if (e.target.tagName === 'A' && e.target.dataset.sectionId) {
+                        e.preventDefault(); // デフォルトのリンク動作をキャンセル
+                        scrollToSection(e.target.dataset.sectionId); // スクロール実行
+                    }
+                });
+            }
+
+            // --- モーダル表示 (初回訪問時のみ) ---
+            if (!sessionStorage.getItem('preTestCompleted')) {
+                if (modalOverlay) modalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                 // 既にテスト完了済みの場合は、保存された結果を再表示
+                 const savedResult = JSON.parse(sessionStorage.getItem('preTestResult'));
+                 if (savedResult && persistentTestResultsDiv) {
+                     if (persistentScoreDiv) persistentScoreDiv.innerHTML = savedResult.scoreHTML || ''; // HTMLとしてセット
+                     if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = savedResult.linksHTML || '';
+                     persistentTestResultsDiv.style.display = 'block';
+                 }
+            }
+
+            // --- 採点処理 ---
+            if (preTestForm) {
+                preTestForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    let score = 0;
+                    const incorrectQuestions = [];
+                    const formData = new FormData(preTestForm);
+
+                    questions.forEach(questionDiv => {
+                        const radioInput = questionDiv.querySelector('input[type="radio"]');
+                        if (!radioInput) return;
+                        const questionName = radioInput.name;
+                        const selectedValue = formData.get(questionName);
+                        const sectionId = questionDiv.dataset.sectionId;
+                        const title = questionTitles[questionName] || '関連項目';
+
+                        if (answers[questionName] === selectedValue) {
+                            score++;
+                        } else if (answers[questionName]) {
+                            incorrectQuestions.push({ name: questionName, sectionId: sectionId, title: title });
+                        }
+                    });
+
+                    // --- 結果表示内容を生成 ---
+                    const totalQuestions = Object.keys(answers).length;
+                    const scoreHTML = `<p>結果: ${totalQuestions}問中 ${score}問正解</p>`; // HTMLとして保持
+                    let linksHTML = '';
+                    if (incorrectQuestions.length > 0) {
+                        linksHTML += '<p><strong>復習が必要な項目:</strong></p><ul>';
+                        incorrectQuestions.forEach(qInfo => {
+                            // data-section-id をリンクに含める
+                            linksHTML += `<li><a href="#${qInfo.sectionId}" data-section-id="${qInfo.sectionId}">「${qInfo.title}」について確認する</a></li>`;
+                        });
+                        linksHTML += '</ul>';
+                    } else {
+                        linksHTML = '<p>素晴らしい！全問正解です。</p>';
+                    }
+
+                    // --- モーダル内に結果表示 ---
+                    if (scoreP) scoreP.innerHTML = scoreHTML; // innerHTML でセット
+                    if (reviewLinksDiv) reviewLinksDiv.innerHTML = linksHTML;
+                    setupModalReviewLinks(); // モーダル内のリンクにイベントリスナーを設定
+                    preTestForm.style.display = 'none';
+                    if (testResultsDiv) testResultsDiv.style.display = 'block';
+
+                    // --- メインコンテンツ内にも結果表示 ---
+                    if (persistentScoreDiv) persistentScoreDiv.innerHTML = scoreHTML; // HTMLとしてセット
+                    if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = linksHTML; // HTMLとしてセット
+                    if (persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block'; // 表示
+
+                    // --- 結果をセッションストレージに保存 ---
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResult', JSON.stringify({ scoreHTML: scoreHTML, linksHTML: linksHTML }));
+
+                });
+            }
+
+            // --- スキップボタン ---
+            if (skipTestBtn) {
+                skipTestBtn.addEventListener('click', () => {
+                    closeModal();
+                    // --- メインコンテンツにスキップ情報を表示 ---
+                    const skipMessage = '<p>理解度チェックテストはスキップしました。</p>';
+                    if (persistentScoreDiv) persistentScoreDiv.innerHTML = ''; // スコア部分はクリア
+                    if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = skipMessage;
+                    if (persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block'; // 表示
+
+                    // --- スキップ情報も保存 ---
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                     sessionStorage.setItem('preTestResult', JSON.stringify({ scoreHTML: '', linksHTML: skipMessage }));
+                });
+            }
+
+            // --- モーダル閉じるボタン ---
+            if (closeTestBtn) {
+                closeTestBtn.addEventListener('click', () => {
+                    closeModal();
+                });
+            }
+
+        }); // End of DOMContentLoaded
     </script>
 </body>
 </html>
