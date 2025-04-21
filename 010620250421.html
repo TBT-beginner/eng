@@ -759,7 +759,341 @@
                 }
             });
         });
+<!-- ▼▼▼ 理解度チェックテスト用モーダル ▼▼▼ -->
+<div id="preTestModalOverlay" style="display: none;">
+    <div id="preTestModalContent">
+        <h2>最初に理解度をチェック！</h2>
+        <p>いくつかの簡単な質問で、この記事の内容をどれだけ知っているか確認しましょう。</p>
+        <form id="preTestForm">
+            <!-- 質問1 -->
+            <div class="test-question" data-section-id="ondoku-hissha">
+                <p><strong>質問1:</strong> 音読筆写の主な目的として <strong>適切でない</strong> ものは？</p>
+                <label><input type="radio" name="q1" value="a" required> スペルと音を結びつける</label><br>
+                <label><input type="radio" name="q1" value="b"> 速く書く練習</label><br>
+                <label><input type="radio" name="q1" value="c"> 文法ルールを深く理解する</label><br>
+            </div>
+            <!-- 質問2 -->
+            <div class="test-question" data-section-id="kasan-fukasan">
+                <p><strong>質問2:</strong> "water" は一般的にどちらの名詞？</p>
+                <label><input type="radio" name="q2" value="a" required> 可算名詞</label><br>
+                <label><input type="radio" name="q2" value="b"> 不可算名詞</label><br>
+            </div>
+            <!-- 質問3 -->
+            <div class="test-question" data-section-id="plural-rules">
+                <p><strong>質問3:</strong> "party" の複数形は？</p>
+                <label><input type="radio" name="q3" value="a" required> partys</label><br>
+                <label><input type="radio" name="q3" value="b"> parties</label><br>
+                <label><input type="radio" name="q3" value="c"> partyies</label><br>
+            </div>
+             <!-- 質問4 -->
+             <div class="test-question" data-section-id="kasan-fukasan">
+                <p><strong>質問4:</strong> 「一つのリンゴ」を英語で正しく表すのは？</p>
+                <label><input type="radio" name="q4" value="a" required> apple</label><br>
+                <label><input type="radio" name="q4" value="b"> an apple</label><br>
+                <label><input type="radio" name="q4" value="c"> apples</label><br>
+            </div>
+             <!-- 質問5 -->
+             <div class="test-question" data-section-id="plural-rules">
+                <p><strong>質問5:</strong> "box" の複数形は？</p>
+                <label><input type="radio" name="q5" value="a" required> boxs</label><br>
+                <label><input type="radio" name="q5" value="b"> boxies</label><br>
+                <label><input type="radio" name="q5" value="c"> boxes</label><br>
+            </div>
 
+            <button type="submit">採点する</button>
+            <button type="button" id="skipTestBtn">テストをスキップ</button>
+        </form>
+        <div id="testResults" style="display: none;">
+            <h3>テスト結果</h3>
+            <p id="score"></p>
+            <div id="reviewLinks"></div>
+            <button id="closeTestBtn">内容を読む</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- 既存のJSコード ---
+    const progressBar = document.getElementById('progressBar');
+    // ... (以下、既存のプログレスバー、トップへ戻るボタン、チェックリスト、解答トグルのJSはそのまま) ...
+    const toggleButtons = document.querySelectorAll('.toggle-answer');
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const answer = this.nextElementSibling;
+            if (answer && answer.classList.contains('answer')) {
+                answer.classList.toggle('visible');
+                if (answer.classList.contains('visible')) {
+                    this.textContent = '解答を隠す';
+                } else {
+                    this.textContent = '解答例を見る';
+                }
+            }
+        });
+    });
+
+    // --- ▼▼▼ 理解度チェックテスト用JS ▼▼▼ ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalOverlay = document.getElementById('preTestModalOverlay');
+        const preTestForm = document.getElementById('preTestForm');
+        const skipTestBtn = document.getElementById('skipTestBtn');
+        const testResultsDiv = document.getElementById('testResults');
+        const scoreP = document.getElementById('score');
+        const reviewLinksDiv = document.getElementById('reviewLinks');
+        const closeTestBtn = document.getElementById('closeTestBtn');
+        const questions = document.querySelectorAll('.test-question'); // 質問要素を取得
+
+        // --- 正解を定義 (質問名: 正しい選択肢の値) ---
+        const answers = {
+            q1: 'c', // 設問「適切でないもの」なので、これが正解扱い
+            q2: 'b',
+            q3: 'b',
+            q4: 'b',
+            q5: 'c'
+        };
+        // --- 質問とセクションタイトル (リンク表示用) ---
+        const questionTitles = {
+            q1: '音読筆写',
+            q2: '可算・不可算名詞',
+            q3: '複数形のルール',
+            q4: '冠詞と可算名詞',
+            q5: '複数形のルール (-es)'
+        };
+
+        // --- モーダル表示 (初回訪問時のみ表示する例) ---
+        if (!sessionStorage.getItem('preTestCompleted')) {
+            modalOverlay.style.display = 'flex'; // モーダルを表示
+            document.body.style.overflow = 'hidden'; // 背景スクロール禁止
+        }
+
+        // --- 採点処理 ---
+        preTestForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // デフォルトの送信をキャンセル
+
+            let score = 0;
+            const incorrectQuestions = []; // 間違えた質問の情報 {name, sectionId, title} を格納
+            const formData = new FormData(preTestForm);
+
+            questions.forEach(questionDiv => {
+                const questionName = questionDiv.querySelector('input[type="radio"]').name;
+                const selectedValue = formData.get(questionName);
+                const sectionId = questionDiv.dataset.sectionId;
+                const title = questionTitles[questionName] || '関連項目'; // タイトル取得
+
+                if (answers[questionName] && answers[questionName] === selectedValue) {
+                    score++;
+                } else if (answers[questionName]) { // 正解定義がある質問で不正解の場合
+                    incorrectQuestions.push({ name: questionName, sectionId: sectionId, title: title });
+                }
+            });
+
+            // --- 結果表示 ---
+            preTestForm.style.display = 'none'; // フォームを隠す
+            testResultsDiv.style.display = 'block'; // 結果表示エリアを表示
+            sessionStorage.setItem('preTestCompleted', 'true'); // テスト完了フラグをセッションストレージに保存
+
+            const totalQuestions = Object.keys(answers).length;
+            scoreP.textContent = `結果: ${totalQuestions}問中 ${score}問正解`;
+
+            reviewLinksDiv.innerHTML = ''; // 前回のリンクをクリア
+            if (incorrectQuestions.length > 0) {
+                const list = document.createElement('ul');
+                list.innerHTML = '<p><strong>復習が必要な項目:</strong></p>';
+                incorrectQuestions.forEach(qInfo => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `#${qInfo.sectionId}`;
+                    link.textContent = `「${qInfo.title}」について確認する`;
+                    link.dataset.sectionId = qInfo.sectionId; // スクロール用にIDを保持
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault(); // デフォルトのアンカー動作を防ぐ
+                        closeModalAndScroll(qInfo.sectionId);
+                    });
+                    listItem.appendChild(link);
+                    list.appendChild(listItem);
+                });
+                reviewLinksDiv.appendChild(list);
+            } else {
+                reviewLinksDiv.innerHTML = '<p>素晴らしい！全問正解です。</p>';
+            }
+        });
+
+        // --- スキップボタン ---
+        skipTestBtn.addEventListener('click', () => {
+            sessionStorage.setItem('preTestCompleted', 'true'); // スキップでもフラグを立てる
+            closeModal();
+        });
+
+        // --- 閉じるボタン ---
+        closeTestBtn.addEventListener('click', () => {
+            closeModal();
+        });
+
+        // --- モーダルを閉じる共通関数 ---
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = ''; // 背景スクロール許可
+        }
+
+        // --- モーダルを閉じてスクロールする関数 ---
+        function closeModalAndScroll(sectionId) {
+            closeModal();
+            const targetElement = document.getElementById(sectionId);
+            if (targetElement) {
+                // 少し遅延させてからスクロールすると確実
+                setTimeout(() => {
+                     // ヘッダー等の高さを考慮する場合、オフセットを追加
+                     // const headerOffset = 50; // 例: ヘッダーの高さ
+                     // const elementPosition = targetElement.getBoundingClientRect().top;
+                     // const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                     // window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+                     // シンプルなスクロール
+                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                     // ジャンプ先を一時的にハイライト (任意)
+                     targetElement.style.transition = 'background-color 0.5s ease-in-out';
+                     targetElement.style.backgroundColor = 'rgba(253, 126, 20, 0.1)'; // highlightの色を薄く
+                     setTimeout(() => {
+                         targetElement.style.backgroundColor = ''; // 元に戻す
+                     }, 2500); // 2.5秒後にハイライト解除
+                }, 100); // 100msの遅延
+            }
+        }
+
+        // --- モーダル用CSS (簡易版) ---
+        // CSSは別ファイルにするか、<style>タグでHTMLに埋め込む
+        const modalStyle = document.createElement('style');
+        modalStyle.textContent = `
+            #preTestModalOverlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7); /* 少し濃く */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1001;
+                opacity: 1;
+                transition: opacity 0.3s ease;
+                color: var(--text-main); /* 文字色を指定 */
+            }
+            #preTestModalContent {
+                background-color: var(--bg-content);
+                padding: 2rem 2.5rem;
+                border-radius: 8px;
+                max-width: 600px;
+                width: 90%;
+                max-height: 90vh; /* 高さを少し大きく */
+                overflow-y: auto;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            #preTestModalContent h2 {
+                margin-top: 0;
+                color: var(--primary);
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 0.5rem;
+                margin-bottom: 1rem;
+                font-size: 1.6rem; /* 少し大きく */
+            }
+            #preTestModalContent p {
+                margin-bottom: 1rem;
+                line-height: 1.6;
+            }
+            .test-question {
+                margin-bottom: 1.5rem;
+                padding-bottom: 1.5rem; /* パディング調整 */
+                border-bottom: 1px dashed var(--border);
+            }
+            .test-question:last-of-type {
+                 border-bottom: none;
+                 padding-bottom: 0; /* 最後の質問の下パディング削除 */
+                 margin-bottom: 2rem; /* ボタンとのスペース */
+            }
+            .test-question p strong {
+                 color: var(--text-main);
+                 font-weight: bold; /* 強調 */
+            }
+            .test-question label {
+                display: block;
+                margin: 0.6rem 0 0.6rem 0.5rem; /* マージン調整 */
+                cursor: pointer;
+                line-height: 1.5;
+            }
+            .test-question input[type="radio"] {
+                 margin-right: 0.5em;
+                 vertical-align: middle; /* ラベルと縦位置を合わせる */
+            }
+            #preTestForm button[type="submit"],
+            #preTestForm button[type="button"],
+            #testResults button {
+                background-color: var(--accent);
+                color: white;
+                border: none;
+                padding: 0.8em 1.5em; /* 少し大きく */
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1em; /* 少し大きく */
+                margin-right: 0.8em; /* マージン調整 */
+                margin-top: 1em; /* 上マージン追加 */
+                transition: background-color 0.2s ease;
+            }
+             #preTestForm button[type="submit"]:hover,
+             #preTestForm button[type="button"]:hover,
+             #testResults button:hover {
+                background-color: #e08e4f;
+             }
+             #preTestForm button#skipTestBtn {
+                background-color: var(--text-secondary);
+             }
+             #preTestForm button#skipTestBtn:hover {
+                background-color: #5a6268;
+             }
+             #testResults {
+                 margin-top: 1.5rem; /* 結果表示の上マージン */
+                 padding-top: 1rem;
+                 border-top: 1px solid var(--border);
+             }
+             #testResults h3 {
+                 color: var(--primary);
+                 margin-bottom: 1rem;
+             }
+             #testResults ul {
+                list-style: none;
+                padding-left: 0;
+                margin-top: 1rem;
+             }
+             #testResults li {
+                 margin-bottom: 0.8rem;
+             }
+             #testResults a {
+                 color: var(--link);
+                 text-decoration: underline;
+                 font-weight: bold; /* リンクを強調 */
+             }
+             #testResults a:hover {
+                 color: #1c7430;
+             }
+
+             @media (max-width: 600px) {
+                #preTestModalContent {
+                    padding: 1.5rem;
+                }
+                #preTestModalContent h2 {
+                    font-size: 1.4rem;
+                }
+                #preTestForm button[type="submit"],
+                #preTestForm button[type="button"],
+                #testResults button {
+                    padding: 0.7em 1.2em;
+                    font-size: 0.95em;
+                }
+             }
+        `;
+        document.head.appendChild(modalStyle);
+
+    }); // End of DOMContentLoaded
     </script>
 </body>
 </html>
