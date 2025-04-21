@@ -9,48 +9,18 @@
     <style>
         /* --- CSS変数定義 --- */
         :root {
-            --bg-main: #F8F9FA; /* 背景 (Main) */
-            --bg-content: #FFFFFF; /* 背景 (Content) */
-            --text-main: #212529; /* テキスト (Main) */
-            --text-secondary: #6C757D; /* テキスト (Secondary) */
-            --color-primary: #28A745; /* メインカラー (Primary) - グリーン系 */
-            --color-accent: #FD7E14; /* アクセントカラー (Accent) - オレンジ系 */
-            --color-link: #28A745; /* リンクカラー (Link) */
-            --color-border: #DEE2E6; /* ボーダーカラー (Border) */
+            --bg-main: #F8F9FA; --bg-content: #FFFFFF; --text-main: #212529; --text-secondary: #6C757D;
+            --color-primary: #28A745; --color-accent: #FD7E14; --color-link: #28A745; --color-border: #DEE2E6;
             --font-family-base: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            --color-tooltip-bg: #343a40; /* ツールチップ背景 */
-            --color-tooltip-text: #FFFFFF; /* ツールチップ文字 */
+            --color-tooltip-bg: #343a40; --color-tooltip-text: #FFFFFF;
+            --test-result-bg: #FFFBEB; --test-result-border: #FFEEBA; --test-result-title: #856404;
         }
 
         /* --- 基本スタイル --- */
-        body {
-            font-family: var(--font-family-base);
-            line-height: 1.75;
-            color: var(--text-main);
-            background-color: var(--bg-main);
-            margin: 0;
-            padding: 0;
-        }
-
-        /* --- プログレスバー --- */
-        #progressBar {
-            position: fixed; top: 0; left: 0; width: 0; height: 5px;
-            background-color: var(--color-accent); z-index: 1000;
-            transition: width 0.1s ease-out;
-        }
-
-        /* --- コンテナ --- */
-        .container {
-            max-width: 850px; margin: 40px auto; padding: 30px 40px;
-            background-color: var(--bg-content); border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border: 1px solid var(--color-border);
-        }
-
-        /* --- タイポグラフィ --- */
-        h1, h2, h3 {
-            color: var(--color-primary); margin-top: 1.8em; margin-bottom: 0.8em; line-height: 1.3;
-        }
+        body { font-family: var(--font-family-base); line-height: 1.75; color: var(--text-main); background-color: var(--bg-main); margin: 0; padding: 0; }
+        #progressBar { position: fixed; top: 0; left: 0; width: 0; height: 5px; background-color: var(--color-accent); z-index: 1000; transition: width 0.1s ease-out; }
+        .container { max-width: 850px; margin: 40px auto; padding: 30px 40px; background-color: var(--bg-content); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid var(--color-border); }
+        h1, h2, h3 { color: var(--color-primary); margin-top: 1.8em; margin-bottom: 0.8em; line-height: 1.3; }
         h1 { font-size: 2.0em; text-align: center; margin-bottom: 1em; margin-top: 0; }
         h2 { font-size: 1.7em; border-bottom: 2px solid var(--color-border); padding-bottom: 0.3em; }
         h3 { font-size: 1.3em; color: var(--color-accent); border-left: 4px solid var(--color-accent); padding-left: 0.5em; }
@@ -60,209 +30,115 @@
         ul, ol { margin-bottom: 1.2em; padding-left: 1.5em; }
         li { margin-bottom: 0.6em; }
         strong { color: var(--color-primary); }
-        .highlight { background-color: #FFF3CD; padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; color: var(--text-main); } /* テキスト色指定追加 */
+        .highlight { background-color: #FFF3CD; padding: 0.1em 0.4em; border-radius: 3px; font-weight: bold; color: var(--text-main); }
         code { font-family: 'Courier New', Courier, monospace; background-color: #E9ECEF; padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; color: var(--text-main); }
         .code-block { background-color: #212529; color: #F8F9FA; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; font-size: 0.9em; margin-bottom: 1.2em; white-space: pre; }
         blockquote { border-left: 4px solid var(--color-primary); margin: 1.5em 0 1.5em 1em; padding: 0.5em 1em; color: var(--text-secondary); background-color: #f8f9fa; }
         blockquote p { margin-bottom: 0.5em; }
-
-        /* --- ツールチップスタイル --- */
-        .tooltip {
-            position: relative;
-            cursor: help;
-            border-bottom: 1px dotted var(--text-secondary);
-            /* white-space: nowrap; /* 必要に応じて改行を防ぐ */
-        }
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 125%; /* 上に表示 */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--color-tooltip-bg);
-            color: var(--color-tooltip-text);
-            padding: 0.5em 0.8em;
-            border-radius: 4px;
-            font-size: 0.85em;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            z-index: 10;
-            pointer-events: none; /* ホバーの邪魔にならないように */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* --- 読了時間目安 --- */
+        .tooltip { position: relative; cursor: help; border-bottom: 1px dotted var(--text-secondary); }
+        .tooltip::after { content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%); background-color: var(--color-tooltip-bg); color: var(--color-tooltip-text); padding: 0.5em 0.8em; border-radius: 4px; font-size: 0.85em; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; z-index: 10; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .tooltip:hover::after { opacity: 1; visibility: visible; }
         #readingTime { text-align: center; color: var(--text-secondary); font-size: 0.9em; margin-bottom: 25px; }
-
-        /* --- 新しいセクション用共通スタイル --- */
-        .content-section {
-            margin-bottom: 40px; padding-top: 10px;
-        }
+        .content-section { margin-bottom: 40px; padding-top: 10px; }
         .content-section h2, .content-section h3, .content-section h4 { margin-top: 1.5em; }
         .content-section h2:first-child, .content-section h3:first-child, .content-section h4:first-child { margin-top: 0; }
-
-        .content-section h2 > i, .content-section h3 > i, .content-section h4 > i {
-            margin-right: 10px; color: var(--color-accent); width: 1.2em; text-align: center;
-        }
+        .content-section h2 > i, .content-section h3 > i, .content-section h4 > i { margin-right: 10px; color: var(--color-accent); width: 1.2em; text-align: center; }
         #learning-objectives h2 > i, #practice h2 > i, #application h2 > i { color: var(--color-primary); }
         #summary h2 > i { color: var(--color-accent); }
-
-        /* --- 学習目標ボックス --- */
-        #learning-objectives {
-            background-color: #E8F5E9; border: 1px solid var(--color-primary);
-            border-left: 5px solid var(--color-primary); padding: 20px 25px;
-            border-radius: 5px; margin-bottom: 30px;
-        }
+        #learning-objectives { background-color: #E8F5E9; border: 1px solid var(--color-primary); border-left: 5px solid var(--color-primary); padding: 20px 25px; border-radius: 5px; margin-bottom: 30px; }
         #learning-objectives h2 { margin-top: 0; border-bottom: none; color: var(--color-primary); }
         #learning-objectives ul { padding-left: 1.5em; margin-bottom: 0; list-style: disc; }
         #learning-objectives li { margin-bottom: 0.8em; }
-
-        /* --- 導入ボックス --- */
-        #warm-up {
-             background-color: #fffaf0; border: 1px solid #ffe0b2;
-             border-left: 5px solid var(--color-accent); padding: 20px 25px;
-             border-radius: 5px; margin-bottom: 30px;
-        }
+        #warm-up { background-color: #fffaf0; border: 1px solid #ffe0b2; border-left: 5px solid var(--color-accent); padding: 20px 25px; border-radius: 5px; margin-bottom: 30px; }
         #warm-up h2 { margin-top: 0; border-bottom: none; color: var(--color-accent); }
         #warm-up blockquote { background-color: #ffffff; border-left-color: var(--color-accent); margin-left: 0;}
-
-        /* --- 目次 --- */
-        #tableOfContents {
-            background-color: #fdfdfe; border: 1px solid var(--color-border);
-            padding: 20px 25px; margin-bottom: 40px; border-radius: 5px;
-        }
+        #tableOfContents { background-color: #fdfdfe; border: 1px solid var(--color-border); padding: 20px 25px; margin-bottom: 40px; border-radius: 5px; }
         #tableOfContents h2 { margin-top: 0; margin-bottom: 15px; font-size: 1.4em; border-bottom: none; text-align: center; color: var(--text-main); }
         #tableOfContents ul { list-style: none; padding: 0; margin: 0; column-count: 1; }
-         @media (min-width: 600px) { #tableOfContents ul { column-count: 2; column-gap: 30px; } }
+        @media (min-width: 600px) { #tableOfContents ul { column-count: 2; column-gap: 30px; } }
         #tableOfContents li { margin-bottom: 8px; }
         #tableOfContents a { display: block; font-size: 0.95em; }
-
-        /* --- 漢字の部首との比較ボックス --- */
-        .analogy-box {
-            background-color: #f0f8ff; border: 1px solid #cce5ff;
-            border-left: 5px solid #6c757d; padding: 15px 20px;
-            margin: 25px 0; border-radius: 5px;
-        }
+        .analogy-box { background-color: #f0f8ff; border: 1px solid #cce5ff; border-left: 5px solid #6c757d; padding: 15px 20px; margin: 25px 0; border-radius: 5px; }
         .analogy-box h3 { margin-top: 0; color: #6c757d; border: none; padding-left: 0; font-size: 1.2em;}
         .analogy-box h3 i { color: #6c757d; }
         .analogy-box p:last-child { margin-bottom: 0; }
-        .analogy-box blockquote {
-             border-left: 4px solid var(--color-primary); margin: 1em 0 1em 1em;
-             padding: 0.5em 1em; color: var(--text-secondary); background-color: #f8f9fa;
-         }
-
-        /* --- 接頭辞・語根・接尾辞 例ボックス --- */
-        .prefix-example, .root-example, .suffix-example {
-            margin-bottom: 30px; padding: 15px 0px 15px 15px;
-            border-left: 3px solid var(--color-border);
-        }
-        .prefix-example h4, .root-example h4, .suffix-example h4 {
-            margin-top: 0; margin-bottom: 10px; color: var(--text-main);
-            border: none; padding-left: 0; font-size: 1.15em;
-        }
-         .prefix-example h4 strong, .root-example h4 strong, .suffix-example h4 strong {
-            color: var(--color-primary); font-size: 1.05em;
-         }
-        .prefix-example ul, .root-example ul, .suffix-example ul {
-            margin-bottom: 10px; padding-left: 1.2em; list-style: none;
-        }
-        .prefix-example ul li::before, .root-example ul li::before, .suffix-example ul li::before {
-             content: "✓"; color: var(--color-accent); margin-right: 8px; font-weight: bold;
-        }
-        .example-sentence {
-            font-style: italic; color: var(--text-secondary); margin-left: 1.2em;
-            display: block; margin-top: 8px; font-size: 0.95em;
-         }
-
-        /* --- 確認クイズボックス --- */
-        .quiz-box {
-            background-color: #f8f9fa; border: 1px solid var(--color-border);
-            padding: 15px 20px; margin-top: 25px; margin-bottom: 25px; border-radius: 5px;
-        }
+        .analogy-box blockquote { border-left: 4px solid var(--color-primary); margin: 1em 0 1em 1em; padding: 0.5em 1em; color: var(--text-secondary); background-color: #f8f9fa; }
+        .prefix-example, .root-example, .suffix-example { margin-bottom: 30px; padding: 15px 0px 15px 15px; border-left: 3px solid var(--color-border); }
+        .prefix-example h4, .root-example h4, .suffix-example h4 { margin-top: 0; margin-bottom: 10px; color: var(--text-main); border: none; padding-left: 0; font-size: 1.15em; }
+        .prefix-example h4 strong, .root-example h4 strong, .suffix-example h4 strong { color: var(--color-primary); font-size: 1.05em; }
+        .prefix-example ul, .root-example ul, .suffix-example ul { margin-bottom: 10px; padding-left: 1.2em; list-style: none; }
+        .prefix-example ul li::before, .root-example ul li::before, .suffix-example ul li::before { content: "✓"; color: var(--color-accent); margin-right: 8px; font-weight: bold; }
+        .example-sentence { font-style: italic; color: var(--text-secondary); margin-left: 1.2em; display: block; margin-top: 8px; font-size: 0.95em; }
+        .quiz-box { background-color: #f8f9fa; border: 1px solid var(--color-border); padding: 15px 20px; margin-top: 25px; margin-bottom: 25px; border-radius: 5px; }
         .quiz-box p:first-child { margin-top: 0; font-weight: bold;}
         .quiz-box p:last-child { margin-bottom: 0; }
         .quiz-box ol { padding-left: 2em; margin-top: 10px; margin-bottom: 15px; }
         .quiz-box input[type="text"] { width: calc(100% - 22px); max-width: 300px; padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px;}
-        .toggle-answer-btn {
-             background-color: var(--color-accent); color: white; border: none;
-             padding: 5px 12px; border-radius: 4px; cursor: pointer;
-             font-size: 0.9em; transition: background-color 0.3s ease; margin-top: 10px;
-        }
+        .toggle-answer-btn { background-color: var(--color-accent); color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.9em; transition: background-color 0.3s ease; margin-top: 10px; }
         .toggle-answer-btn:hover { background-color: #d6680c; }
-        .answer {
-            margin-top: 10px; padding: 10px; background-color: #e9ecef;
-            border-radius: 4px; font-size: 0.95em; border-left: 3px solid var(--color-primary);
-        }
+        .answer { margin-top: 10px; padding: 10px; background-color: #e9ecef; border-radius: 4px; font-size: 0.95em; border-left: 3px solid var(--color-primary); /* ▼▼▼ 初期状態を非表示にするCSSを追加 ▼▼▼ */ display: none; }
         .answer strong { color: var(--color-primary); }
-
-        /* --- 練習問題ボックス --- */
-        #practice {
-            background-color: #f0f9f4; border-top: 3px solid var(--color-primary);
-            padding: 25px 30px; border-radius: 5px; margin-top: 40px;
-        }
+        #practice { background-color: #f0f9f4; border-top: 3px solid var(--color-primary); padding: 25px 30px; border-radius: 5px; margin-top: 40px; }
         #practice h2 { margin-top: 0; border-bottom: none; color: var(--color-primary); }
-        .practice-item {
-            margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px dashed var(--color-border);
-        }
+        .practice-item { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px dashed var(--color-border); }
         .practice-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
         .practice-item > p:first-of-type { font-weight: bold; margin-bottom: 15px; }
         .practice-item ol { padding-left: 1.5em; }
         .practice-item input[type="text"] { margin-bottom: 5px; width: calc(90% - 22px); padding: 6px 10px; border: 1px solid #ced4da; border-radius: 4px;}
         .practice-item .answer ol, .practice-item .answer ul { padding-left: 1.5em; margin-top: 10px; }
         .practice-item .answer li { margin-bottom: 5px; }
-
-        /* --- 応用・発展ボックス --- */
-        #application {
-            background-color: #fdf7e5; border: 1px solid #ffe7ba;
-            border-left: 5px solid var(--color-primary); padding: 20px 25px;
-            border-radius: 5px;
-        }
+        #application { background-color: #fdf7e5; border: 1px solid #ffe7ba; border-left: 5px solid var(--color-primary); padding: 20px 25px; border-radius: 5px; }
         #application h2, #application h3 { margin-top: 0; color: var(--color-primary); border: none; padding-left: 0; }
         #application h3 { font-size: 1.2em; margin-top: 25px; margin-bottom: 10px; color: var(--color-accent); }
         #application h3:first-of-type { margin-top: 0; }
         #application ol, #application ul { padding-left: 1.5em; margin-bottom: 15px; }
         #application li { margin-bottom: 0.8em; }
-
-        /* --- まとめボックス --- */
-        #summary {
-            background-color: #FFF8E1; border: 1px solid var(--color-accent);
-            border-left: 5px solid var(--color-accent); padding: 20px 25px;
-            border-radius: 5px; margin-top: 40px;
-        }
+        #summary { background-color: #FFF8E1; border: 1px solid var(--color-accent); border-left: 5px solid var(--color-accent); padding: 20px 25px; border-radius: 5px; margin-top: 40px; }
         #summary h2 { margin-top: 0; border-bottom: none; color: var(--color-accent); }
         #summary ul { padding-left: 1.5em; margin-bottom: 0; list-style: disc; }
         #summary li { margin-bottom: 0.8em; }
-
-        /* --- フッター --- */
         footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--color-border); font-size: 0.9em; color: var(--text-secondary); }
         footer p { margin-bottom: 5px; }
-
-        /* --- トップへ戻るボタン --- */
         #scrollTopBtn { display: none; position: fixed; bottom: 25px; right: 25px; z-index: 99; border: none; outline: none; background-color: var(--color-primary); color: white; cursor: pointer; padding: 12px 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, opacity 0.3s ease; opacity: 0; }
         #scrollTopBtn:hover { background-color: var(--color-accent); }
-
-        /* --- レスポンシブデザイン --- */
-        @media (max-width: 900px) {
-            .container { margin: 20px; padding: 20px 25px; width: auto; max-width: none; }
-        }
+        #persistentTestResults { background-color: var(--test-result-bg); border: 1px solid var(--test-result-border); border-left: 5px solid var(--color-primary); padding: 1.5em; margin: 2em 0; border-radius: 5px; }
+        #persistentTestResults h3 { margin-top: 0; margin-bottom: 1em; color: var(--test-result-title); font-size: 1.3rem; border-bottom: 1px solid var(--test-result-border); padding-bottom: 0.5em; }
+        #persistentTestResults p { margin-bottom: 0.8em; }
+        #persistentTestResults ul { list-style: none; padding-left: 0; margin-top: 1em; margin-bottom: 0; }
+        #persistentTestResults li { margin-bottom: 0.8em; }
+        #persistentTestResults a { color: var(--color-link); text-decoration: underline; font-weight: bold; }
+        #persistentTestResults a:hover { color: var(--color-accent); }
+        #preTestModalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1001; opacity: 1; transition: opacity 0.3s ease; color: var(--text-main); }
+        #preTestModalContent { background-color: var(--bg-content); padding: 2rem 2.5rem; border-radius: 8px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #preTestModalContent h2 { margin-top: 0; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 1.6rem; }
+        #preTestModalContent p { margin-bottom: 1rem; line-height: 1.6; }
+        .test-question { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--color-border); }
+        .test-question:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 2rem; }
+        .test-question p strong { color: var(--text-main); font-weight: bold; }
+        .test-question label { display: block; margin: 0.6rem 0 0.6rem 0.5rem; cursor: pointer; line-height: 1.5; }
+        .test-question input[type="radio"] { margin-right: 0.5em; vertical-align: middle; }
+        #preTestForm button[type="submit"], #preTestForm button[type="button"], #testResults button { background-color: var(--color-accent); color: white; border: none; padding: 0.8em 1.5em; border-radius: 4px; cursor: pointer; font-size: 1em; margin-right: 0.8em; margin-top: 1em; transition: background-color 0.2s ease; }
+        #preTestForm button[type="submit"]:hover, #preTestForm button[type="button"]:hover, #testResults button:hover { background-color: #d6680c; }
+        #preTestForm button#skipTestBtn { background-color: var(--text-secondary); }
+        #preTestForm button#skipTestBtn:hover { background-color: #5a6268; }
+        #testResults { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+        #testResults h3 { color: var(--color-primary); margin-bottom: 1rem; }
+        #testResults ul { list-style: none; padding-left: 0; margin-top: 1rem; }
+        #testResults li { margin-bottom: 0.8em; }
+        #testResults a { color: var(--color-link); text-decoration: underline; font-weight: bold; }
+        #testResults a:hover { color: var(--color-accent); }
+        @media (max-width: 900px) { .container { margin: 20px; padding: 20px 25px; width: auto; max-width: none; } }
         @media (max-width: 600px) {
-            h1 { font-size: 1.8em; }
-            h2 { font-size: 1.5em; }
-            h3 { font-size: 1.2em; }
+            h1 { font-size: 1.8em; } h2 { font-size: 1.5em; } h3 { font-size: 1.2em; }
             .container { padding: 15px 20px; }
             #scrollTopBtn { padding: 10px 13px; font-size: 16px; bottom: 15px; right: 15px; }
             .code-block { font-size: 0.85em; padding: 10px;}
             .practice-item input[type="text"] { width: calc(85% - 22px); }
-             /* スマートフォンでツールチップが読みにくくならないように調整 */
-             .tooltip::after { max-width: 80vw; white-space: normal; /* 必要なら改行許可 */ }
+            .tooltip::after { max-width: 80vw; white-space: normal; }
+            #preTestModalContent { padding: 1.5rem; }
+            #preTestModalContent h2 { font-size: 1.4rem; }
+            #preTestForm button[type="submit"], #preTestForm button[type="button"], #testResults button { padding: 0.7em 1.2em; font-size: 0.95em; }
         }
-
     </style>
 </head>
 <body>
@@ -270,13 +146,9 @@
     <div id="progressBar"></div>
 
     <div class="container">
-        <!-- 1. タイトル -->
+        <!-- ▼▼▼ 本文コンテンツをここに入れる ▼▼▼ -->
         <h1>接頭辞でパワーアップ！英単語の「意味」が見えるようになるレッスン</h1>
-
-        <!-- 読了時間目安 -->
         <div id="readingTime">読了時間の目安: 計算中...</div>
-
-        <!-- 2. 学習目標 -->
         <section id="learning-objectives" class="content-section">
             <h2><i class="fas fa-bullseye"></i> このレッスンでできるようになること</h2>
             <ul>
@@ -287,8 +159,6 @@
                 <li>知らない単語に出会ったときに、分解して意味を考える<span class="tooltip" data-tooltip="Strategy: 目標達成のための計画や方法">戦略</span>を立てられる。</li>
             </ul>
         </section>
-
-        <!-- 3. 導入 -->
         <section id="warm-up" class="content-section">
             <h2><i class="fas fa-mug-hot"></i>接頭辞の力: 'turn' と 'return'</h2>
             <p>英語の授業で <code>turn</code> という単語について話しましたね。「方向を変える」という意味だと知っているでしょう。そして <code>return</code> という単語を見ました。この <strong>re-</strong> という部分はどんな働きをしているのでしょうか？</p>
@@ -296,8 +166,6 @@
             <p><code>redo</code> (やり直す) や <code>misunderstand</code> (<span class="tooltip" data-tooltip="誤って理解すること">誤解する</span>) のように、単語の頭に付く <code>re-</code> や <code>mis-</code>。これが今回のテーマ、<strong>接頭辞 (Prefix)</strong> です！</p>
             <p>これがわかると、知らない英単語でも意味がぐっと推測しやすくなります。まるで漢字の「へん」や「つくり」みたいだと思いませんか？ 一緒に探っていきましょう！</p>
         </section>
-
-        <!-- 目次 -->
         <nav id="tableOfContents">
             <h2>目次</h2>
             <ul>
@@ -310,12 +178,14 @@
                 <li><a href="#summary"><i class="fas fa-check-double"></i> まとめ</a></li>
             </ul>
         </nav>
-
-        <!-- 4. 解説セクション 1: 接頭辞 -->
+        <div id="persistentTestResults" style="display: none;">
+            <h3>理解度チェックの結果</h3>
+            <div id="persistentScore"></div>
+            <div id="persistentReviewLinks"></div>
+        </div>
         <section id="explanation1" class="content-section">
             <h2><i class="fas fa-puzzle-piece"></i> 解説1：接頭辞 (Prefix) ってなに？ - 単語の「顔」を変えるパーツ</h2>
             <p><span class="tooltip" data-tooltip="単語の先頭 (pre=前) に付く (fix=付ける) 部分">接頭辞 (Prefix)</span> は、単語の<strong>最初</strong>にくっついて、元の単語の意味に特定の<span class="tooltip" data-tooltip="Nuance: 微妙な意味合いの違い">ニュアンス</span>を加える<span class="tooltip" data-tooltip="Component: 全体を構成する要素、部品">部品</span>です。「方向」「否定」「時間」「程度」などを表すことが多いです。</p>
-
             <div class="analogy-box">
                 <h3><i class="fas fa-lightbulb"></i> 漢字の部首に似ている！</h3>
                 <p>日本語で使われる漢字について考えてみましょう。例えば <strong class="highlight">蒜</strong>（にんにく）という難しい漢字の正確な読み方や意味を知らなくても、<span class="tooltip" data-tooltip="漢字を構成する部分で、意味や分類を示すことが多い">部首</span>の <strong class="highlight">艹</strong>（くさかんむり）が付いていることから、<span class="highlight">植物</span>に関係する言葉だと推測できるかもしれません。</p>
@@ -325,342 +195,118 @@
                 <p>英語の接頭辞もこれと同じで (このような考え方を <span class="tooltip" data-tooltip="Analogy: 似ている点から他の事柄を推測すること、類推">アナロジー</span> と言います)、<code>re-</code> が付けば「再び」や「元へ」、<code>un-</code> が付けば「否定」の意味が加わることが多いんです。これを知っていると、知らない単語でも意味を推測しやすくなります。</p>
                  <p>例： <code>turn</code> (方向を変える) + <code><strong>re-</strong></code> (元へ) = <code>return</code> (<strong>元に</strong>戻る、帰る)</p>
             </div>
-
             <h3><i class="fas fa-tags"></i> よく使われる接頭辞を見てみよう！</h3>
-
-            <div class="prefix-example">
-                <h4><strong>un-</strong> (意味: <span class="highlight tooltip" data-tooltip="否定 (not) や反対 (opposite) を表す">〜でない、反対の</span>)</h4>
-                <ul>
-                    <li>happy (幸せな) → <strong class="highlight">un</strong>happy (幸せ<strong>でない</strong>、不幸な)</li>
-                    <li>lock (鍵をかける) → <strong class="highlight">un</strong>lock (鍵をかけるの<strong>反対</strong> = 鍵を開ける)</li>
-                    <li>kind (親切な) → <strong class="highlight">un</strong>kind (親切<strong>でない</strong>、不親切な)</li>
-                </ul>
-                <span class="example-sentence">He felt <strong>un</strong>happy after failing the exam. (彼は試験に落ちて不幸だと感じた。)</span>
-            </div>
-
-            <div class="prefix-example">
-                <h4><strong>re-</strong> (意味: <span class="highlight tooltip" data-tooltip="「再び (again)」や「元へ (back)」を表す">再び、元の場所へ</span>)</h4>
-                <ul>
-                    <li>view (見る) → <strong class="highlight">re</strong>view (<strong>再び</strong>見る = 復習する、見直す)</li>
-                    <li>build (建てる) → <strong class="highlight">re</strong>build (<strong>再び</strong>建てる = 再建する)</li>
-                    <li>play (再生する) → <strong class="highlight">re</strong>play (<strong>再び</strong>再生する)</li>
-                    <li>turn (方向転換) → <strong class="highlight">re</strong>turn (<strong>元へ</strong>方向転換 = 戻る)</li>
-                </ul>
-                 <span class="example-sentence">Please <strong>re</strong>view your notes before the test. (テストの前にノートを復習してください。)</span>
-            </div>
-
-            <div class="prefix-example">
-                <h4><strong>pre-</strong> (意味: <span class="highlight tooltip" data-tooltip="時間的・空間的に「前 (before)」を表す">前に、〜より先に</span>)</h4>
-                <ul>
-                    <li>view (見る) → <strong class="highlight">pre</strong>view (<strong>前に</strong>見る = 予告編、下見)</li>
-                    <li>heat (熱する) → <strong class="highlight">pre</strong>heat (<strong>前に</strong>熱する = 予熱する)</li>
-                    <li>paid (支払われた) → <strong class="highlight">pre</strong>paid (<strong>前に</strong>支払われた = 前払いの)</li>
-                </ul>
-                <span class="example-sentence">We watched a <strong>pre</strong>view of the new movie. (私たちは新作映画の予告編を見た。)</span>
-            </div>
-
-            <div class="prefix-example">
-                <h4><strong>dis-</strong> (意味: <span class="highlight tooltip" data-tooltip="否定 (not)、反対 (opposite)、分離 (apart) を表す">〜でない、反対、分離</span>)</h4>
-                <ul>
-                    <li>like (好き) → <strong class="highlight">dis</strong>like (好き<strong>でない</strong> = 嫌う)</li>
-                    <li>agree (同意する) → <strong class="highlight">dis</strong>agree (同意し<strong>ない</strong>)</li>
-                    <li>connect (接続する) → <strong class="highlight">dis</strong>connect (接続を<strong>断つ</strong>)</li>
-                    <li>appear (現れる) → <strong class="highlight">dis</strong>appear (見えなくなる、消える)</li>
-                </ul>
-                <span class="example-sentence">I <strong>dis</strong>agree with his opinion. (私は彼の意見に同意しない。)</span>
-            </div>
-
-            <div class="prefix-example">
-                <h4><strong>mis-</strong> (意味: <span class="highlight tooltip" data-tooltip="「誤って (wrongly)」や「悪く (badly)」を表す">誤って、悪く</span>)</h4>
-                <ul>
-                    <li>understand (理解する) → <strong class="highlight">mis</strong>understand (<strong>誤って</strong>理解する = 誤解する)</li>
-                    <li>lead (導く) → <strong class="highlight">mis</strong>lead (<strong>誤って</strong>導く = 誤解させる)</li>
-                    <li>spell (綴る) → <strong class="highlight">mis</strong>spell (<strong>誤って</strong>綴る)</li>
-                    <li>fortune (幸運) → <strong class="highlight">mis</strong>fortune (<strong>悪い</strong>運 = 不運)</li>
-                </ul>
-                <span class="example-sentence">He <strong>mis</strong>spelled my name. (彼は私の名前を綴り間違えた。)</span>
-            </div>
-
+            <div class="prefix-example"><h4><strong>un-</strong> (意味: <span class="highlight tooltip" data-tooltip="否定 (not) や反対 (opposite) を表す">〜でない、反対の</span>)</h4><ul><li>happy (幸せな) → <strong class="highlight">un</strong>happy (幸せ<strong>でない</strong>、不幸な)</li><li>lock (鍵をかける) → <strong class="highlight">un</strong>lock (鍵をかけるの<strong>反対</strong> = 鍵を開ける)</li><li>kind (親切な) → <strong class="highlight">un</strong>kind (親切<strong>でない</strong>、不親切な)</li></ul><span class="example-sentence">He felt <strong>un</strong>happy after failing the exam. (彼は試験に落ちて不幸だと感じた。)</span></div>
+            <div class="prefix-example"><h4><strong>re-</strong> (意味: <span class="highlight tooltip" data-tooltip="「再び (again)」や「元へ (back)」を表す">再び、元の場所へ</span>)</h4><ul><li>view (見る) → <strong class="highlight">re</strong>view (<strong>再び</strong>見る = 復習する、見直す)</li><li>build (建てる) → <strong class="highlight">re</strong>build (<strong>再び</strong>建てる = 再建する)</li><li>play (再生する) → <strong class="highlight">re</strong>play (<strong>再び</strong>再生する)</li><li>turn (方向転換) → <strong class="highlight">re</strong>turn (<strong>元へ</strong>方向転換 = 戻る)</li></ul><span class="example-sentence">Please <strong>re</strong>view your notes before the test. (テストの前にノートを復習してください。)</span></div>
+            <div class="prefix-example"><h4><strong>pre-</strong> (意味: <span class="highlight tooltip" data-tooltip="時間的・空間的に「前 (before)」を表す">前に、〜より先に</span>)</h4><ul><li>view (見る) → <strong class="highlight">pre</strong>view (<strong>前に</strong>見る = 予告編、下見)</li><li>heat (熱する) → <strong class="highlight">pre</strong>heat (<strong>前に</strong>熱する = 予熱する)</li><li>paid (支払われた) → <strong class="highlight">pre</strong>paid (<strong>前に</strong>支払われた = 前払いの)</li></ul><span class="example-sentence">We watched a <strong>pre</strong>view of the new movie. (私たちは新作映画の予告編を見た。)</span></div>
+            <div class="prefix-example"><h4><strong>dis-</strong> (意味: <span class="highlight tooltip" data-tooltip="否定 (not)、反対 (opposite)、分離 (apart) を表す">〜でない、反対、分離</span>)</h4><ul><li>like (好き) → <strong class="highlight">dis</strong>like (好き<strong>でない</strong> = 嫌う)</li><li>agree (同意する) → <strong class="highlight">dis</strong>agree (同意し<strong>ない</strong>)</li><li>connect (接続する) → <strong class="highlight">dis</strong>connect (接続を<strong>断つ</strong>)</li><li>appear (現れる) → <strong class="highlight">dis</strong>appear (見えなくなる、消える)</li></ul><span class="example-sentence">I <strong>dis</strong>agree with his opinion. (私は彼の意見に同意しない。)</span></div>
+            <div class="prefix-example"><h4><strong>mis-</strong> (意味: <span class="highlight tooltip" data-tooltip="「誤って (wrongly)」や「悪く (badly)」を表す">誤って、悪く</span>)</h4><ul><li>understand (理解する) → <strong class="highlight">mis</strong>understand (<strong>誤って</strong>理解する = 誤解する)</li><li>lead (導く) → <strong class="highlight">mis</strong>lead (<strong>誤って</strong>導く = 誤解させる)</li><li>spell (綴る) → <strong class="highlight">mis</strong>spell (<strong>誤って</strong>綴る)</li><li>fortune (幸運) → <strong class="highlight">mis</strong>fortune (<strong>悪い</strong>運 = 不運)</li></ul><span class="example-sentence">He <strong>mis</strong>spelled my name. (彼は私の名前を綴り間違えた。)</span></div>
             <h4><i class="fas fa-question-circle"></i> 確認クイズ (接頭辞)</h4>
-            <div class="quiz-box">
-                <p>問題1: 接頭辞 "pre-" (前に) と "view" (見る) から成る "preview" の意味は？</p>
-                <ol style="list-style-type: lower-alpha;">
-                    <li>再び見ること</li>
-                    <li>前もって見ること (下見、予告編)</li>
-                    <li>見えないこと</li>
-                </ol>
-                <p><button class="toggle-answer-btn" data-answer="q1-answer">答えを見る</button></p>
-                <p class="answer q1-answer" style="display: none;"><strong>答え: b) 前もって見ること</strong> (例: 映画の予告編)</p>
-            </div>
-             <div class="quiz-box">
-                 <p>問題2: "agree" (同意する) の反対の意味を表すには、どの接頭辞をつけますか？</p>
-                 <input type="text" placeholder="接頭辞を入力 (例: un-)">
-                 <p><button class="toggle-answer-btn" data-answer="q2-answer">答えを見る</button></p>
-                 <p class="answer q2-answer" style="display: none;"><strong>答え: dis-</strong> (→ disagree 同意しない)</p>
-             </div>
+            <div class="quiz-box"><p>問題1: 接頭辞 "pre-" (前に) と "view" (見る) から成る "preview" の意味は？</p><ol style="list-style-type: lower-alpha;"><li>再び見ること</li><li>前もって見ること (下見、予告編)</li><li>見えないこと</li></ol><p><button class="toggle-answer-btn" data-answer="q1-answer">答えを見る</button></p><p class="answer q1-answer"><strong>答え: b) 前もって見ること</strong> (例: 映画の予告編)</p></div>
+            <div class="quiz-box"><p>問題2: "agree" (同意する) の反対の意味を表すには、どの接頭辞をつけますか？</p><input type="text" placeholder="接頭辞を入力 (例: un-)"><p><button class="toggle-answer-btn" data-answer="q2-answer">答えを見る</button></p><p class="answer q2-answer"><strong>答え: dis-</strong> (→ disagree 同意しない)</p></div>
         </section>
-
-        <!-- 5. 解説セクション 2: 語根と接尾辞 -->
         <section id="explanation2" class="content-section">
             <h2><i class="fas fa-seedling"></i> 解説2：語根 (Root) と接尾辞 (Suffix) - 単語の「幹」と「飾り」</h2>
             <p>単語は接頭辞だけでなく、中心的な意味を持つ<strong><span class="tooltip" data-tooltip="単語の中心的な意味を持つ部分。多くはラテン語やギリシャ語由来。">語根 (Root)</span></strong> と、単語の<strong>最後</strong>について<span class="tooltip" data-tooltip="名詞、動詞、形容詞などの単語の種類">品詞</span>を変えたり意味を調整したりする<strong><span class="tooltip" data-tooltip="単語の末尾 (suf=後) に付く (fix=付ける) 部分。品詞を変えることが多い。">接尾辞 (Suffix)</span></strong> からも成り立っています。</p>
-            <div class="code-block" style="text-align: center; padding: 20px;">
-[接頭辞 Prefix] + [語根 Root] + [接尾辞 Suffix]
-例： un (否定) + comfort (快適さ) + able (できる) = uncomfortable (不快な)
-            </div>
+            <div class="code-block" style="text-align: center; padding: 20px;">[接頭辞 Prefix] + [語根 Root] + [接尾辞 Suffix]<br>例： un (否定) + comfort (快適さ) + able (できる) = uncomfortable (不快な)</div>
             <p>(※全ての単語に3つのパーツがあるわけではありません)</p>
-
             <h3><i class="fas fa-tree"></i> 単語の「根っこ」：語根 (Root)</h3>
-             <p>語根は単語の<span class="tooltip" data-tooltip="Core: 中心、核となる部分">コア</span>となる基本的な意味を持ちます。多くはラテン語やギリシャ語に由来します。同じ語根を持つ単語は、似たような意味合いを持つことが多いです。</p>
-
-            <div class="root-example">
-                <h4><strong>port</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 portare (運ぶ) に由来">運ぶ</span>)</h4>
-                <ul>
-                    <li>im<strong class="highlight">port</strong> (im[=in 中へ] + port) → 中へ運ぶ = <strong><span class="tooltip" data-tooltip="外国から商品などを自国に運び入れること">輸入する</span></strong></li>
-                    <li>ex<strong class="highlight">port</strong> (ex[=out 外へ] + port) → 外へ運ぶ = <strong><span class="tooltip" data-tooltip="自国の商品などを外国へ運び出すこと">輸出する</span></strong></li>
-                    <li>trans<strong class="highlight">port</strong> (trans[=across 横切って] + port) → 横切って運ぶ = <strong>輸送する</strong></li>
-                    <li>sup<strong class="highlight">port</strong> (sup[=sub 下から] + port) → 下から運ぶ/支える = <strong>支える</strong></li>
-                    <li><strong class="highlight">port</strong>able (-able[できる] を伴う) → 運ぶことができる = <strong>持ち運び可能な</strong></li>
-                 </ul>
-                 <span class="example-sentence">This suitcase is very <strong>port</strong>able. (このスーツケースはとても持ち運びやすい。)</span>
-            </div>
-
-            <div class="root-example">
-                 <h4><strong>vis / vid</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 videre (見る) に由来">見る</span>)</h4>
-                 <ul>
-                     <li><strong class="highlight">vis</strong>it (見に行く → <strong>訪れる</strong>)</li>
-                     <li><strong class="highlight">vis</strong>ible (-ible[できる]) → 見ることができる → <strong>目に見える</strong></li>
-                     <li>tele<strong class="highlight">vis</strong>ion (tele[遠く] + vision) → 遠くを見るもの → <strong>テレビ</strong></li>
-                     <li>e<strong class="highlight">vid</strong>ence (e[=ex 外に] + vid + ence[こと]) → 外に見えるもの → <strong>証拠</strong></li>
-                     <li>re<strong class="highlight">vis</strong>e (re[再び] + vise) → 再び見る → <strong>修正する</strong></li>
-                 </ul>
-                 <span class="example-sentence">Stars are not <strong>vis</strong>ible during the day. (昼間は星が見えない。)</span>
-            </div>
-
-            <div class="root-example">
-                 <h4><strong>struct</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 struere (積み重ねる、建てる) に由来">建てる、組み立てる</span>)</h4>
-                 <ul>
-                     <li>con<strong class="highlight">struct</strong> (con[共に] + struct) → 共に建てる → <strong>建設する</strong></li>
-                     <li>de<strong class="highlight">struct</strong>ion (de[破壊] + struct + ion[こと]) → 建てたものを壊すこと → <strong>破壊</strong></li>
-                     <li>in<strong class="highlight">struct</strong>ion (in[中に] + struct + ion[こと]) → 中に知識を築くこと → <strong>指示、教育</strong></li>
-                     <li><strong class="highlight">struct</strong>ure (-ure[もの]) → 建てられたもの → <strong><span class="tooltip" data-tooltip="Structure: 物事が組み合わさってできている仕組みや構造">構造</span>、建造物</strong></li>
-                     <li>ob<strong class="highlight">struct</strong> (ob[対して] + struct) → 対抗するように建てる → <strong>妨害する</strong></li>
-                 </ul>
-                  <span class="example-sentence">Follow the <strong>instruct</strong>ions carefully. (指示に注意深く従ってください。)</span>
-            </div>
-
+            <p>語根は単語の<span class="tooltip" data-tooltip="Core: 中心、核となる部分">コア</span>となる基本的な意味を持ちます。多くはラテン語やギリシャ語に由来します。同じ語根を持つ単語は、似たような意味合いを持つことが多いです。</p>
+            <div class="root-example"><h4><strong>port</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 portare (運ぶ) に由来">運ぶ</span>)</h4><ul><li>im<strong class="highlight">port</strong> (im[=in 中へ] + port) → 中へ運ぶ = <strong><span class="tooltip" data-tooltip="外国から商品などを自国に運び入れること">輸入する</span></strong></li><li>ex<strong class="highlight">port</strong> (ex[=out 外へ] + port) → 外へ運ぶ = <strong><span class="tooltip" data-tooltip="自国の商品などを外国へ運び出すこと">輸出する</span></strong></li><li>trans<strong class="highlight">port</strong> (trans[=across 横切って] + port) → 横切って運ぶ = <strong>輸送する</strong></li><li>sup<strong class="highlight">port</strong> (sup[=sub 下から] + port) → 下から運ぶ/支える = <strong>支える</strong></li><li><strong class="highlight">port</strong>able (-able[できる] を伴う) → 運ぶことができる = <strong>持ち運び可能な</strong></li></ul><span class="example-sentence">This suitcase is very <strong>port</strong>able. (このスーツケースはとても持ち運びやすい。)</span></div>
+            <div class="root-example"><h4><strong>vis / vid</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 videre (見る) に由来">見る</span>)</h4><ul><li><strong class="highlight">vis</strong>it (見に行く → <strong>訪れる</strong>)</li><li><strong class="highlight">vis</strong>ible (-ible[できる]) → 見ることができる → <strong>目に見える</strong></li><li>tele<strong class="highlight">vis</strong>ion (tele[遠く] + vision) → 遠くを見るもの → <strong>テレビ</strong></li><li>e<strong class="highlight">vid</strong>ence (e[=ex 外に] + vid + ence[こと]) → 外に見えるもの → <strong>証拠</strong></li><li>re<strong class="highlight">vis</strong>e (re[再び] + vise) → 再び見る → <strong>修正する</strong></li></ul><span class="example-sentence">Stars are not <strong>vis</strong>ible during the day. (昼間は星が見えない。)</span></div>
+            <div class="root-example"><h4><strong>struct</strong> (意味: <span class="highlight tooltip" data-tooltip="ラテン語 struere (積み重ねる、建てる) に由来">建てる、組み立てる</span>)</h4><ul><li>con<strong class="highlight">struct</strong> (con[共に] + struct) → 共に建てる → <strong>建設する</strong></li><li>de<strong class="highlight">struct</strong>ion (de[破壊] + struct + ion[こと]) → 建てたものを壊すこと → <strong>破壊</strong></li><li>in<strong class="highlight">struct</strong>ion (in[中に] + struct + ion[こと]) → 中に知識を築くこと → <strong>指示、教育</strong></li><li><strong class="highlight">struct</strong>ure (-ure[もの]) → 建てられたもの → <strong><span class="tooltip" data-tooltip="Structure: 物事が組み合わさってできている仕組みや構造">構造</span>、建造物</strong></li><li>ob<strong class="highlight">struct</strong> (ob[対して] + struct) → 対抗するように建てる → <strong>妨害する</strong></li></ul><span class="example-sentence">Follow the <strong>instruct</strong>ions carefully. (指示に注意深く従ってください。)</span></div>
             <h3><i class="fas fa-cogs"></i> 単語の「飾り」：接尾辞 (Suffix)</h3>
-             <p>接尾辞は単語の終わりについて、主に<strong>品詞</strong>を変えます（例: 動詞→名詞、形容詞→副詞）。意味を少し調整することもあります。</p>
-
-            <div class="suffix-example">
-                <h4><strong>-able / -ible</strong> (意味: <span class="highlight tooltip" data-tooltip="可能 (can be done) を表す。形容詞を作る。">〜できる</span> → <span class="highlight">形容詞</span>を作る)</h4>
-                <ul>
-                     <li>read (読む[動]) → read<strong class="highlight">able</strong> (読める、読みやすい[形])</li>
-                     <li>comfort (快適さ[名]) → comfort<strong class="highlight">able</strong> (快適な[形])</li>
-                     <li>vis<strong class="highlight">ible</strong> (目に見える[形]) ← (語根vis + ible)</li>
-                     <li>flex<strong class="highlight">ible</strong> (曲げられる、柔軟な[形])</li>
-                 </ul>
-                 <span class="example-sentence">This chair is very <strong>comfort</strong>able. (この椅子はとても快適だ。)</span>
-             </div>
-
-            <div class="suffix-example">
-                 <h4><strong>-ly</strong> (意味: <span class="highlight tooltip" data-tooltip="様態 (manner) を表す。主に形容詞から副詞を作る。">〜な様子で</span> → 主に<span class="highlight">副詞</span>を作る)</h4>
-                 <ul>
-                     <li>quick (速い[形]) → quick<strong class="highlight">ly</strong> (速く[副])</li>
-                     <li>slow (遅い[形]) → slow<strong class="highlight">ly</strong> (ゆっくりと[副])</li>
-                     <li>careful (注意深い[形]) → careful<strong class="highlight">ly</strong> (注意深く[副])</li>
-                     <li>recent (最近の[形]) → recent<strong class="highlight">ly</strong> (最近[副])</li>
-                 </ul>
-                 <span class="example-sentence">He speaks English slow<strong>ly</strong> but clear<strong>ly</strong>. (彼はゆっくりだがはっきりと英語を話す。)</span>
-            </div>
-
-             <div class="suffix-example">
-                 <h4><strong>-tion / -sion</strong> (意味: <span class="highlight tooltip" data-tooltip="行為、状態、結果を表す。主に動詞から名詞を作る。">〜すること、状態</span> → 主に<span class="highlight">名詞</span>を作る)</h4>
-                 <ul>
-                     <li>educate (教育する[動]) → educa<strong class="highlight">tion</strong> (教育[名])</li>
-                     <li>inform (知らせる[動]) → informa<strong class="highlight">tion</strong> (情報[名])</li>
-                     <li>decide (決める[動]) → deci<strong class="highlight">sion</strong> (決定[名])</li>
-                     <li>act (行動する[動]) → ac<strong class="highlight">tion</strong> (行動[名])</li>
-                 </ul>
-                 <span class="example-sentence">We need more <strong>informa</strong>tion. (もっと情報が必要です。)</span>
-            </div>
-
-            <div class="suffix-example">
-                 <h4><strong>-er / -or</strong> (意味: <span class="highlight tooltip" data-tooltip="行為者 (agent) や道具を表す。主に動詞から名詞を作る。">〜する人、もの</span> → <span class="highlight">名詞</span>を作る)</h4>
-                 <ul>
-                     <li>teach (教える[動]) → teach<strong class="highlight">er</strong> (教える人 → 教師[名])</li>
-                     <li>work (働く[動]) → work<strong class="highlight">er</strong> (働く人 → 労働者[名])</li>
-                     <li>act (演じる[動]) → act<strong class="highlight">or</strong> (演じる人 → 俳優[名])</li>
-                     <li>calculate (計算する[動]) → calculat<strong class="highlight">or</strong> (計算するもの → 計算機[名])</li>
-                 </ul>
-                 <span class="example-sentence">My father is a teach<strong>er</strong>. (私の父は教師です。)</span>
-            </div>
-
+            <p>接尾辞は単語の終わりについて、主に<strong>品詞</strong>を変えます（例: 動詞→名詞、形容詞→副詞）。意味を少し調整することもあります。</p>
+            <div class="suffix-example"><h4><strong>-able / -ible</strong> (意味: <span class="highlight tooltip" data-tooltip="可能 (can be done) を表す。形容詞を作る。">〜できる</span> → <span class="highlight">形容詞</span>を作る)</h4><ul><li>read (読む[動]) → read<strong class="highlight">able</strong> (読める、読みやすい[形])</li><li>comfort (快適さ[名]) → comfort<strong class="highlight">able</strong> (快適な[形])</li><li>vis<strong class="highlight">ible</strong> (目に見える[形]) ← (語根vis + ible)</li><li>flex<strong class="highlight">ible</strong> (曲げられる、柔軟な[形])</li></ul><span class="example-sentence">This chair is very <strong>comfort</strong>able. (この椅子はとても快適だ。)</span></div>
+            <div class="suffix-example"><h4><strong>-ly</strong> (意味: <span class="highlight tooltip" data-tooltip="様態 (manner) を表す。主に形容詞から副詞を作る。">〜な様子で</span> → 主に<span class="highlight">副詞</span>を作る)</h4><ul><li>quick (速い[形]) → quick<strong class="highlight">ly</strong> (速く[副])</li><li>slow (遅い[形]) → slow<strong class="highlight">ly</strong> (ゆっくりと[副])</li><li>careful (注意深い[形]) → careful<strong class="highlight">ly</strong> (注意深く[副])</li><li>recent (最近の[形]) → recent<strong class="highlight">ly</strong> (最近[副])</li></ul><span class="example-sentence">He speaks English slow<strong>ly</strong> but clear<strong>ly</strong>. (彼はゆっくりだがはっきりと英語を話す。)</span></div>
+            <div class="suffix-example"><h4><strong>-tion / -sion</strong> (意味: <span class="highlight tooltip" data-tooltip="行為、状態、結果を表す。主に動詞から名詞を作る。">〜すること、状態</span> → 主に<span class="highlight">名詞</span>を作る)</h4><ul><li>educate (教育する[動]) → educa<strong class="highlight">tion</strong> (教育[名])</li><li>inform (知らせる[動]) → informa<strong class="highlight">tion</strong> (情報[名])</li><li>decide (決める[動]) → deci<strong class="highlight">sion</strong> (決定[名])</li><li>act (行動する[動]) → ac<strong class="highlight">tion</strong> (行動[名])</li></ul><span class="example-sentence">We need more <strong>informa</strong>tion. (もっと情報が必要です。)</span></div>
+            <div class="suffix-example"><h4><strong>-er / -or</strong> (意味: <span class="highlight tooltip" data-tooltip="行為者 (agent) や道具を表す。主に動詞から名詞を作る。">〜する人、もの</span> → <span class="highlight">名詞</span>を作る)</h4><ul><li>teach (教える[動]) → teach<strong class="highlight">er</strong> (教える人 → 教師[名])</li><li>work (働く[動]) → work<strong class="highlight">er</strong> (働く人 → 労働者[名])</li><li>act (演じる[動]) → act<strong class="highlight">or</strong> (演じる人 → 俳優[名])</li><li>calculate (計算する[動]) → calculat<strong class="highlight">or</strong> (計算するもの → 計算機[名])</li></ul><span class="example-sentence">My father is a teach<strong>er</strong>. (私の父は教師です。)</span></div>
             <h4><i class="fas fa-question-circle"></i> 確認クイズ (語根・接尾辞)</h4>
-            <div class="quiz-box">
-                <p>問題3: 語根 "struct" (建てる) と接尾辞 "-ion" (こと/もの) を組み合わせた "construction" の意味は？</p>
-                <ol style="list-style-type: lower-alpha;">
-                    <li>破壊</li>
-                    <li>建設</li>
-                    <li>指示</li>
-                </ol>
-                <p><button class="toggle-answer-btn" data-answer="q3-answer">答えを見る</button></p>
-                <p class="answer q3-answer" style="display: none;"><strong>答え: b) 建設</strong> (con[共に] + struct[建てる] + ion[こと] → 共に建てること)</p>
-            </div>
-             <div class="quiz-box">
-                 <p>問題4: "slow" (遅い [形容詞]) に接尾辞 "-ly" をつけると、どんな意味でどんな品詞の単語になりますか？</p>
-                 <input type="text" placeholder="意味と品詞を入力 (例: 速く [副詞])">
-                 <p><button class="toggle-answer-btn" data-answer="q4-answer">答えを見る</button></p>
-                 <p class="answer q4-answer" style="display: none;"><strong>答え: ゆっくりと [副詞]</strong> (slowly)</p>
-             </div>
+            <div class="quiz-box"><p>問題3: 語根 "struct" (建てる) と接尾辞 "-ion" (こと/もの) を組み合わせた "construction" の意味は？</p><ol style="list-style-type: lower-alpha;"><li>破壊</li><li>建設</li><li>指示</li></ol><p><button class="toggle-answer-btn" data-answer="q3-answer">答えを見る</button></p><p class="answer q3-answer"><strong>答え: b) 建設</strong> (con[共に] + struct[建てる] + ion[こと] → 共に建てること)</p></div>
+            <div class="quiz-box"><p>問題4: "slow" (遅い [形容詞]) に接尾辞 "-ly" をつけると、どんな意味でどんな品詞の単語になりますか？</p><input type="text" placeholder="意味と品詞を入力 (例: 速く [副詞])"><p><button class="toggle-answer-btn" data-answer="q4-answer">答えを見る</button></p><p class="answer q4-answer"><strong>答え: ゆっくりと [副詞]</strong> (slowly)</p></div>
         </section>
-
-        <!-- 6. 練習問題 -->
         <section id="practice" class="content-section">
             <h2><i class="fas fa-pencil-alt"></i> 練習問題：知識を使ってみよう！</h2>
-
-             <div class="practice-item">
-                 <p>問1: 次の単語を【接頭辞】+【語根】+【接尾辞】に分解し、推測される意味を書きましょう。(ないパーツは書かなくてOK)</p>
-                 <p style="font-size: 0.9em; color: var(--text-secondary);">例: unhappy → 【un (否定)】+【happy (幸せな)】= 不幸な</p>
-                 <ol>
-                    <li><strong>dislike:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】= <input type="text" placeholder="意味"></li>
-                    <li><strong>portable:</strong> 【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li>
-                    <li><strong>rebuild:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】= <input type="text" placeholder="意味"></li>
-                    <li><strong>information:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li>
-                    <li><strong>invisible:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li>
-                 </ol>
-                 <button class="toggle-answer-btn" data-answer="pa1-answers">答えを見る</button>
-                 <div class="answer pa1-answers" style="display: none;">
-                     <p><strong>解答例:</strong></p>
-                     <ol>
-                        <li><strong>dislike:</strong> 【dis (否定)】+【like (好む)】= 嫌う</li>
-                        <li><strong>portable:</strong> 【port (運ぶ)】+【able (できる)】= 持ち運び可能な</li>
-                        <li><strong>rebuild:</strong> 【re (再び)】+【build (建てる)】= 再建する</li>
-                        <li><strong>information:</strong> 【in (中に)】+【form (形作る)】+【ation (こと)】= 情報</li>
-                        <li><strong>invisible:</strong> 【in (否定)】+【vis (見る)】+【ible (できる)】= 見えない</li>
-                     </ol>
-                 </div>
-             </div>
-
-            <div class="practice-item">
-                 <p>問2: ( ) に適切な接頭辞 (un-, re-, pre-, dis-, mis-) を入れて文を完成させましょう。</p>
-                 <ol>
-                    <li>Could you please (__)connect the Wi-Fi? It's not working. (Wi-Fiを<span class="tooltip" data-tooltip="接続を切ること">切断して</span>いただけますか？動いていません。)</li>
-                    <li>I made a mistake, so I need to (__)do my homework. (間違えたので、宿題を<span class="tooltip" data-tooltip="再び行うこと">やり直す</span>必要があります。)</li>
-                    <li>It's (__)usual for it to snow here in summer. (夏にここで雪が降るのは<span class="tooltip" data-tooltip="普通ではないこと">普通ではありません</span>。)</li>
-                    <li>Don't (__)judge the situation before you know all the facts. (全ての事実を知る前に状況を<span class="tooltip" data-tooltip="前もって判断すること、早合点すること">予断しないで</span>ください。)</li>
-                     <li>Sorry, I (__)heard what you said. Could you repeat it? (すみません、あなたの言ったことを<span class="tooltip" data-tooltip="誤って聞くこと">聞き間違えました</span>。もう一度言っていただけますか？)</li>
-                 </ol>
-                 <button class="toggle-answer-btn" data-answer="pa2-answers">答えを見る</button>
-                 <div class="answer pa2-answers" style="display: none;">
-                     <p><strong>解答:</strong></p>
-                     <ol>
-                        <li><strong>dis</strong>connect</li>
-                        <li><strong>re</strong>do</li>
-                        <li><strong>un</strong>usual</li>
-                        <li><strong>pre</strong>judge</li>
-                        <li><strong>mis</strong>heard</li>
-                     </ol>
-                 </div>
-             </div>
-
-             <div class="practice-item">
-                 <p>問3: 次の動詞や名詞に適切な接尾辞 (-able, -ly, -tion, -er) をつけて、指定された品詞の単語を作りましょう。</p>
-                 <ol>
-                    <li>comfort (快適さ [名]) → 形容詞: comfort<input type="text" placeholder="接尾辞"> (快適な)</li>
-                    <li>quick (速い [形]) → 副詞: quick<input type="text" placeholder="接尾辞"> (速く)</li>
-                    <li>create (創造する [動]) → 名詞: crea<input type="text" placeholder="接尾辞"> (創造)</li>
-                    <li>drive (運転する [動]) → 名詞(人): driv<input type="text" placeholder="接尾辞"> (運転手)</li>
-                 </ol>
-                 <button class="toggle-answer-btn" data-answer="pa3-answers">答えを見る</button>
-                 <div class="answer pa3-answers" style="display: none;">
-                     <p><strong>解答:</strong></p>
-                     <ol>
-                        <li>comfort<strong>able</strong></li>
-                        <li>quick<strong>ly</strong></li>
-                        <li>crea<strong>tion</strong></li>
-                        <li>driv<strong>er</strong></li>
-                     </ol>
-                 </div>
-             </div>
-
+             <div class="practice-item"><p>問1: 次の単語を【接頭辞】+【語根】+【接尾辞】に分解し、推測される意味を書きましょう。(ないパーツは書かなくてOK)</p><p style="font-size: 0.9em; color: var(--text-secondary);">例: unhappy → 【un (否定)】+【happy (幸せな)】= 不幸な</p><ol><li><strong>dislike:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】= <input type="text" placeholder="意味"></li><li><strong>portable:</strong> 【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li><li><strong>rebuild:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】= <input type="text" placeholder="意味"></li><li><strong>information:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li><li><strong>invisible:</strong> 【<input type="text" placeholder="接頭辞">】+【<input type="text" placeholder="語根">】+【<input type="text" placeholder="接尾辞">】= <input type="text" placeholder="意味"></li></ol><button class="toggle-answer-btn" data-answer="pa1-answers">答えを見る</button><div class="answer pa1-answers"><p><strong>解答例:</strong></p><ol><li><strong>dislike:</strong> 【dis (否定)】+【like (好む)】= 嫌う</li><li><strong>portable:</strong> 【port (運ぶ)】+【able (できる)】= 持ち運び可能な</li><li><strong>rebuild:</strong> 【re (再び)】+【build (建てる)】= 再建する</li><li><strong>information:</strong> 【in (中に)】+【form (形作る)】+【ation (こと)】= 情報</li><li><strong>invisible:</strong> 【in (否定)】+【vis (見る)】+【ible (できる)】= 見えない</li></ol></div></div>
+            <div class="practice-item"><p>問2: ( ) に適切な接頭辞 (un-, re-, pre-, dis-, mis-) を入れて文を完成させましょう。</p><ol><li>Could you please (__)connect the Wi-Fi? It's not working. (Wi-Fiを<span class="tooltip" data-tooltip="接続を切ること">切断して</span>いただけますか？動いていません。)</li><li>I made a mistake, so I need to (__)do my homework. (間違えたので、宿題を<span class="tooltip" data-tooltip="再び行うこと">やり直す</span>必要があります。)</li><li>It's (__)usual for it to snow here in summer. (夏にここで雪が降るのは<span class="tooltip" data-tooltip="普通ではないこと">普通ではありません</span>。)</li><li>Don't (__)judge the situation before you know all the facts. (全ての事実を知る前に状況を<span class="tooltip" data-tooltip="前もって判断すること、早合点すること">予断しないで</span>ください。)</li><li>Sorry, I (__)heard what you said. Could you repeat it? (すみません、あなたの言ったことを<span class="tooltip" data-tooltip="誤って聞くこと">聞き間違えました</span>。もう一度言っていただけますか？)</li></ol><button class="toggle-answer-btn" data-answer="pa2-answers">答えを見る</button><div class="answer pa2-answers"><p><strong>解答:</strong></p><ol><li><strong>dis</strong>connect</li><li><strong>re</strong>do</li><li><strong>un</strong>usual</li><li><strong>pre</strong>judge</li><li><strong>mis</strong>heard</li></ol></div></div>
+             <div class="practice-item"><p>問3: 次の動詞や名詞に適切な接尾辞 (-able, -ly, -tion, -er) をつけて、指定された品詞の単語を作りましょう。</p><ol><li>comfort (快適さ [名]) → 形容詞: comfort<input type="text" placeholder="接尾辞"> (快適な)</li><li>quick (速い [形]) → 副詞: quick<input type="text" placeholder="接尾辞"> (速く)</li><li>create (創造する [動]) → 名詞: crea<input type="text" placeholder="接尾辞"> (創造)</li><li>drive (運転する [動]) → 名詞(人): driv<input type="text" placeholder="接尾辞"> (運転手)</li></ol><button class="toggle-answer-btn" data-answer="pa3-answers">答えを見る</button><div class="answer pa3-answers"><p><strong>解答:</strong></p><ol><li>comfort<strong>able</strong></li><li>quick<strong>ly</strong></li><li>crea<strong>tion</strong></li><li>driv<strong>er</strong></li></ol></div></div>
         </section>
-
-        <!-- 7. 応用・発展 -->
         <section id="application" class="content-section">
             <h2><i class="fas fa-rocket"></i> 応用・発展：もっと語彙を増やそう！</h2>
-
              <h3><i class="fas fa-search"></i> 新しい単語に出会ったら？ 分解 & 推測！</h3>
              <p>知らない単語に出会っても、もう怖くありません！このレッスンで学んだ「分解→推測→確認」の<span class="tooltip" data-tooltip="Strategy: 目標達成のための計画や方法">戦略</span>を使ってみましょう。</p>
-             <ol>
-                 <li><strong>Step 1: 接頭辞</strong>はついてる？ (un-, re-, pre-, ...) → 意味の方向性は？</li>
-                 <li><strong>Step 2: 接尾辞</strong>はついてる？ (-able, -ly, -tion, -er, ...) → 品詞は？</li>
-                 <li><strong>Step 3: 残った部分（語根）</strong>に見覚えはある？ (port, vis, struct, ...) → 中核の意味は？</li>
-                 <li><strong>Step 4:</strong> 部品の意味を組み合わせて、全体の意味を<strong><span class="tooltip" data-tooltip="Infer: 手がかりから判断すること">推測</span></strong>してみる。</li>
-                 <li><strong>Step 5:</strong> 最後に<strong>辞書</strong>や<span class="tooltip" data-tooltip="Context: 文脈、文章の前後関係">文脈</span>で確認！</li>
-             </ol>
+             <ol><li><strong>Step 1: 接頭辞</strong>はついてる？ (un-, re-, pre-, ...) → 意味の方向性は？</li><li><strong>Step 2: 接尾辞</strong>はついてる？ (-able, -ly, -tion, -er, ...) → 品詞は？</li><li><strong>Step 3: 残った部分（語根）</strong>に見覚えはある？ (port, vis, struct, ...) → 中核の意味は？</li><li><strong>Step 4:</strong> 部品の意味を組み合わせて、全体の意味を<strong><span class="tooltip" data-tooltip="Infer: 手がかりから判断すること">推測</span></strong>してみる。</li><li><strong>Step 5:</strong> 最後に<strong>辞書</strong>や<span class="tooltip" data-tooltip="Context: 文脈、文章の前後関係">文脈</span>で確認！</li></ol>
              <p>例： "transportation" という単語を見つけたら…</p>
-             <ol>
-                 <li>接頭辞: trans- (横切って)</li>
-                 <li>接尾辞: -ation (こと) → 名詞だな</li>
-                 <li>語根: port (運ぶ)</li>
-                 <li>推測: 横切って運ぶこと？ → 輸送かな？</li>
-                 <li>確認: 辞書で調べると「輸送、交通機関」。推測と近い！</li>
-             </ol>
+             <ol><li>接頭辞: trans- (横切って)</li><li>接尾辞: -ation (こと) → 名詞だな</li><li>語根: port (運ぶ)</li><li>推測: 横切って運ぶこと？ → 輸送かな？</li><li>確認: 辞書で調べると「輸送、交通機関」。推測と近い！</li></ol>
              <p>この<span class="tooltip" data-tooltip="Process: 過程、手順">プロセス</span>を繰り返すことで、<span class="tooltip" data-tooltip="Vocabulary: ある言語や人が知っている単語の全体、語彙">語彙</span>は芋づる式に増えていきます！</p>
-
             <h3><i class="fas fa-book-open"></i> さらに探求するために</h3>
-             <ul>
-                 <li><strong><span class="tooltip" data-tooltip="Etymology: 言葉の起源や歴史的変化を研究する学問、語源学">語源</span>辞典を使ってみる:</strong> オンラインの語源辞典 (例: <a href="https://www.etymonline.com/" target="_blank" rel="noopener noreferrer">Online Etymology Dictionary</a> (英語) や、日本語で解説しているサイト) を使うと、単語の成り立ちが分かって面白いですよ。</li>
-                 <li><strong>他のパーツも学んでみる:</strong> 他にもよく使われる接頭辞（例: <code>inter-</code> (間に), <code>sub-</code> (下に), <code>co-</code> (共に)）や語根 (例: <code>ject</code> (投げる), <code>scrib</code> (書く))、接尾辞 (例: <code>-ment</code> (こと), <code>-less</code> (〜ない)) がたくさんあります。</li>
-                 <li><strong>読むときに意識する:</strong> 英語のニュース記事や好きな本を読むときに、「この単語、分解できるかな？」と意識してみましょう。</li>
-             </ul>
-
+             <ul><li><strong><span class="tooltip" data-tooltip="Etymology: 言葉の起源や歴史的変化を研究する学問、語源学">語源</span>辞典を使ってみる:</strong> オンラインの語源辞典 (例: <a href="https://www.etymonline.com/" target="_blank" rel="noopener noreferrer">Online Etymology Dictionary</a> (英語) や、日本語で解説しているサイト) を使うと、単語の成り立ちが分かって面白いですよ。</li><li><strong>他のパーツも学んでみる:</strong> 他にもよく使われる接頭辞（例: <code>inter-</code> (間に), <code>sub-</code> (下に), <code>co-</code> (共に)）や語根 (例: <code>ject</code> (投げる), <code>scrib</code> (書く))、接尾辞 (例: <code>-ment</code> (こと), <code>-less</code> (〜ない)) がたくさんあります。</li><li><strong>読むときに意識する:</strong> 英語のニュース記事や好きな本を読むときに、「この単語、分解できるかな？」と意識してみましょう。</li></ul>
              <h3><i class="fas fa-edit"></i> やってみよう！ (任意)</h3>
              <p>身の回りにあるカタカナ語や英単語で、今日学んだ接頭辞や語根が使われているものを3つ見つけて、分解・意味推測をノートに書いてみましょう！</p>
              <p style="font-size: 0.9em; color: var(--text-secondary);">例： インポート (import) → im (中に) + port (運ぶ) = 輸入する</p>
         </section>
-
-        <!-- 8. まとめ -->
         <section id="summary" class="content-section">
             <h2><i class="fas fa-check-double"></i> まとめ：今日のポイント</h2>
-            <ul>
-                <li><strong>接頭辞 (Prefix)</strong> は単語の<span class="highlight">前</span>について意味を変える (例: <code>un-</code>=否定, <code>re-</code>=再び)。</li>
-                <li><strong>語根 (Root)</strong> は単語の<span class="highlight">中心</span>的な意味を持つ (例: <code>port</code>=運ぶ, <code>vis</code>=見る)。</li>
-                <li><strong>接尾辞 (Suffix)</strong> は単語の<span class="highlight">後</span>について品詞を変えたりする (例: <code>-able</code>=できる[形], <code>-ly</code>=〜な様子で[副])。</li>
-                <li>単語をパーツに<strong>分解</strong>することで、知らない単語の意味も<strong><span class="tooltip" data-tooltip="Infer: 手がかりから判断すること">推測</span></strong>できる！</li>
-                <li>漢字の部首のように、パーツの意味を知ることが語彙力アップの<span class="highlight">強力な武器</span>になる。</li>
-            </ul>
+            <ul><li><strong>接頭辞 (Prefix)</strong> は単語の<span class="highlight">前</span>について意味を変える (例: <code>un-</code>=否定, <code>re-</code>=再び)。</li><li><strong>語根 (Root)</strong> は単語の<span class="highlight">中心</span>的な意味を持つ (例: <code>port</code>=運ぶ, <code>vis</code>=見る)。</li><li><strong>接尾辞 (Suffix)</strong> は単語の<span class="highlight">後</span>について品詞を変えたりする (例: <code>-able</code>=できる[形], <code>-ly</code>=〜な様子で[副])。</li><li>単語をパーツに<strong>分解</strong>することで、知らない単語の意味も<strong><span class="tooltip" data-tooltip="Infer: 手がかりから判断すること">推測</span></strong>できる！</li><li>漢字の部首のように、パーツの意味を知ることが語彙力アップの<span class="highlight">強力な武器</span>になる。</li></ul>
         </section>
-
-        <!-- フッター -->
         <footer>
             <p>言葉の世界を探求し続けましょう！</p>
-            <p>
-                <a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">
-                    授業記録ウェブサイト本体へ
-                </a>
-            </p>
-             <p style="margin-top:15px; font-size: 0.8em;">
-                授業日: 2025/4/17
-            </p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録ウェブサイト本体へ</a></p>
+            <p style="margin-top:15px; font-size: 0.8em;">授業日: 2025/4/17</p>
         </footer>
-
+        <!-- ▲▲▲ 本文コンテンツ ▲▲▲ -->
     </div> <!-- /container -->
 
-    <!-- トップへ戻るボタン -->
     <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <!-- ▼▼▼ 理解度チェックテスト用モーダルHTML (変更なし) ▼▼▼ -->
+    <div id="preTestModalOverlay" style="display: none;">
+        <div id="preTestModalContent">
+            <h2>最初に理解度をチェック！</h2>
+            <p>単語の仕組みについて、基本的な知識を確認しましょう。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="explanation1"><p><strong>質問1:</strong> "unhappy" の "un-" のように、単語の<span style="color:var(--color-accent); font-weight:bold;">最初</span>について意味を変える部分を何と呼びますか？</p><label><input type="radio" name="q1" value="a" required> 接尾辞 (Suffix)</label><br><label><input type="radio" name="q1" value="b"> 語根 (Root)</label><br><label><input type="radio" name="q1" value="c"> 接頭辞 (Prefix)</label><br></div>
+                <div class="test-question" data-section-id="explanation1"><p><strong>質問2:</strong> "review" (復習する) や "return" (戻る) に含まれる接頭辞 "re-" の主な意味は？</p><label><input type="radio" name="q2" value="a" required> 否定 (〜ない)</label><br><label><input type="radio" name="q2" value="b"> 再び、元の場所へ</label><br><label><input type="radio" name="q2" value="c"> 前に</label><br></div>
+                <div class="test-question" data-section-id="explanation2"><p><strong>質問3:</strong> "import" (輸入する) や "portable" (持ち運び可能な) に共通する、<span style="color:var(--color-accent); font-weight:bold;">中心的な意味</span>を持つ部分 (語根) は何でしょう？</p><label><input type="radio" name="q3" value="a" required> vis (見る)</label><br><label><input type="radio" name="q3" value="b"> struct (建てる)</label><br><label><input type="radio" name="q3" value="c"> port (運ぶ)</label><br></div>
+                 <div class="test-question" data-section-id="explanation2"><p><strong>質問4:</strong> "comfortable" (快適な) の "-able" や "quickly" (速く) の "-ly" のように、単語の<span style="color:var(--color-accent); font-weight:bold;">最後</span>について品詞を変える部分を何と呼びますか？</p><label><input type="radio" name="q4" value="a" required> 接尾辞 (Suffix)</label><br><label><input type="radio" name="q4" value="b"> 語根 (Root)</label><br><label><input type="radio" name="q4" value="c"> 接頭辞 (Prefix)</label><br></div>
+                 <div class="test-question" data-section-id="explanation2"><p><strong>質問5:</strong> "teacher" (教師) や "worker" (労働者) に含まれる接尾辞 "-er" は、主にどのような意味を加えますか？</p><label><input type="radio" name="q5" value="a" required> 〜できる (可能)</label><br><label><input type="radio" name="q5" value="b"> 〜する人/もの</label><br><label><input type="radio" name="q5" value="c"> 〜な様子で (様態)</label><br></div>
+                <button type="submit">採点する</button>
+                <button type="button" id="skipTestBtn">テストをスキップ</button>
+            </form>
+            <div id="testResults" style="display: none;"><h3>テスト結果</h3><p id="score"></p><div id="reviewLinks"></div><button id="closeTestBtn">内容を読む</button></div>
+        </div>
+    </div>
+    <!-- ▲▲▲ 理解度チェックテスト用モーダルHTML ▲▲▲ -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 要素取得 ---
+            // --- 要素取得 (Nullチェック強化) ---
             const progressBar = document.getElementById('progressBar');
             const readingTimeEl = document.getElementById('readingTime');
             const scrollTopBtn = document.getElementById('scrollTopBtn');
-            const contentContainer = document.querySelector('.container');
+            const contentContainer = document.querySelector('.container'); // メインコンテナ
+            const modalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults'); // モーダル内の結果表示
+            const scoreP = document.getElementById('score'); // モーダル内のスコア表示
+            const reviewLinksDiv = document.getElementById('reviewLinks'); // モーダル内の復習リンク
+            const closeTestBtn = document.getElementById('closeTestBtn');
+            const questions = document.querySelectorAll('.test-question'); // モーダル内の質問
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreDiv = document.getElementById('persistentScore');
+            const persistentReviewLinksDiv = document.getElementById('persistentReviewLinks');
 
-            // --- プログレスバー処理 ---
+            // --- エラーチェック: 主要な要素が存在するか確認 ---
+            if (!contentContainer) {
+                console.error("Fatal Error: .container element not found. Page content cannot be displayed.");
+                // ここで処理を中断するか、最低限の表示を試みるかなどを決定
+                return; // 以降の処理を中断
+            }
+
+            // --- 既存の機能 (プログレスバー、読了時間、トップへ戻る、目次スクロール) ---
             function updateProgressBar() {
+                if (!progressBar) return; // 要素なければ何もしない
                 const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolled = window.scrollY;
                 const progress = (scrollTotal > 0) ? (scrolled / scrollTotal) * 100 : 0;
@@ -669,57 +315,30 @@
             window.addEventListener('scroll', updateProgressBar);
             updateProgressBar();
 
-            // --- 読了時間計算 (日本語テキスト基準) ---
             function calculateReadingTime() {
                 if (!readingTimeEl || !contentContainer) return;
                 const mainContentText = contentContainer.innerText || contentContainer.textContent || '';
-                const japaneseText = mainContentText.replace(/\s+/g, ''); // スペース除去
+                const japaneseText = mainContentText.replace(/\s+/g, '');
                 const charCount = japaneseText.length;
-                // 日本語と英語が混在するため、少し遅めの速度(400-600字/分)で計算
                 const charsPerMinute = 500;
                 const minutes = Math.ceil(charCount / charsPerMinute);
                 readingTimeEl.textContent = `読了時間の目安: 約 ${minutes} 分`;
             }
             calculateReadingTime();
 
-            // --- クイズ・練習問題の答え表示 ---
-            document.querySelectorAll('.toggle-answer-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const answerSelector = this.dataset.answer;
-                    const answerElement = this.closest('.quiz-box, .practice-item').querySelector('.' + answerSelector);
-                    if (answerElement) {
-                        const isHidden = answerElement.style.display === 'none' || answerElement.style.display === '';
-                        answerElement.style.display = isHidden ? 'block' : 'none';
-                        this.textContent = isHidden ? '答えを隠す' : '答えを見る';
-                         this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
-                    }
-                });
-                 // 初期状態の aria-expanded 設定
-                 const answerSelector = button.dataset.answer;
-                 const answerElement = button.closest('.quiz-box, .practice-item').querySelector('.' + answerSelector);
-                 if(answerElement && answerElement.style.display !== 'block'){
-                    button.setAttribute('aria-expanded', 'false');
-                 } else if (answerElement) {
-                     button.setAttribute('aria-expanded', 'true');
-                 }
-            });
-
-            // --- トップへ戻るボタン処理 ---
             function toggleScrollTopButton() {
                  if (!scrollTopBtn) return;
                 const scrollThreshold = 150;
                 if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
                     if (scrollTopBtn.style.opacity !== '1') {
                          scrollTopBtn.style.display = "block";
-                         // アニメーションのために少し遅延させる
-                         requestAnimationFrame(() => { scrollTopBtn.style.opacity = '1'; });
+                         requestAnimationFrame(() => { if(scrollTopBtn) scrollTopBtn.style.opacity = '1'; });
                     }
                 } else {
                     if (scrollTopBtn.style.opacity === '1') {
                          scrollTopBtn.style.opacity = '0';
-                         // transitionが終わってから非表示にする (約0.3秒後)
                          setTimeout(() => {
-                              if (scrollTopBtn.style.opacity === '0') { scrollTopBtn.style.display = "none"; }
+                              if (scrollTopBtn && scrollTopBtn.style.opacity === '0') { scrollTopBtn.style.display = "none"; }
                          }, 300);
                     }
                 }
@@ -728,32 +347,215 @@
             if (scrollTopBtn) {
                 scrollTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
             }
-             // 初期表示時にもチェック
              toggleScrollTopButton();
 
-
-             // --- 目次リンクのスムーズスクロール ---
              document.querySelectorAll('#tableOfContents a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
+                    if (!targetId || targetId === "#") return; // hrefが空や#だけの場合は無視
                     try {
                         const targetElement = document.querySelector(targetId);
                         if(targetElement) {
                             const progressBarHeight = progressBar ? progressBar.offsetHeight : 0;
-                            const headerOffset = 20; // 少し余裕を持たせる
+                            const headerOffset = 20;
                             const elementPosition = targetElement.getBoundingClientRect().top;
                             const offsetPosition = elementPosition + window.pageYOffset - progressBarHeight - headerOffset;
-
-                            // ページ最上部より上にはスクロールしないように調整
                             const finalPosition = Math.max(0, offsetPosition);
-
                             window.scrollTo({ top: finalPosition, behavior: 'smooth' });
+                        } else {
+                            console.warn(`Target element not found for selector: ${targetId}`);
                         }
-                    } catch (error) { console.error("Smooth scroll error:", error); }
+                    } catch (error) { console.error(`Smooth scroll error for selector ${targetId}:`, error); }
                 });
             });
-        });
+
+            // --- ▼▼▼ クイズ・練習問題の答え表示 (修正版) ▼▼▼ ---
+            document.querySelectorAll('.toggle-answer-btn').forEach(button => {
+                const answerSelector = button.dataset.answer;
+                if (!answerSelector) {
+                    console.warn("Button is missing data-answer attribute:", button);
+                    return; // data-answerがない場合はスキップ
+                }
+
+                const parentContainer = button.closest('.quiz-box, .practice-item');
+                if (!parentContainer) {
+                     console.warn("Parent container (.quiz-box or .practice-item) not found for button:", button);
+                     return; // 親が見つからない場合はスキップ
+                }
+
+                const answerElement = parentContainer.querySelector('.' + answerSelector);
+                if (!answerElement) {
+                    console.warn(`Answer element ".${answerSelector}" not found within:`, parentContainer);
+                    return; // 答え要素が見つからない場合はスキップ
+                }
+
+                // 初期状態設定 (CSSで display: none; が設定されている前提)
+                const initiallyHidden = true; // CSSで制御するため、JSでは常に最初は隠れているとみなす
+                button.setAttribute('aria-expanded', 'false'); // 初期値は閉じてる
+                button.textContent = '答えを見る'; // 初期テキスト
+
+                // クリックイベント
+                button.addEventListener('click', function() {
+                    console.log("Toggle Answer Button clicked:", this);
+                    const currentAnswerElement = parentContainer.querySelector('.' + answerSelector); // 再度取得が安全
+                    if (currentAnswerElement) {
+                        const isHidden = currentAnswerElement.style.display === 'none';
+                        currentAnswerElement.style.display = isHidden ? 'block' : 'none';
+                        this.textContent = isHidden ? '答えを隠す' : '答えを見る';
+                        this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                        console.log("Toggled display to:", currentAnswerElement.style.display);
+                    } else {
+                         console.error(`Answer element ".${answerSelector}" not found on click within:`, parentContainer);
+                    }
+                });
+            });
+            // --- ▲▲▲ クイズ・練習問題の答え表示 (修正版) ▲▲▲ ---
+
+
+            // --- ▼▼▼ 理解度チェックテスト用JS (変更なし - 動作確認済みと仮定) ▼▼▼ ---
+            const prefixAnswers = { q1: 'c', q2: 'b', q3: 'c', q4: 'a', q5: 'b' };
+            const prefixQuestionTitles = { q1: '接頭辞とは？', q2: '接頭辞 re- の意味', q3: '語根 port の意味', q4: '接尾辞とは？', q5: '接尾辞 -er の意味' };
+
+            function prefixScrollToSection(sectionId) {
+                 const targetElement = document.getElementById(sectionId);
+                 if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    targetElement.style.transition = 'background-color 0.5s ease-in-out';
+                    targetElement.style.backgroundColor = 'rgba(253, 126, 20, 0.1)';
+                    setTimeout(() => {
+                        if (targetElement) { // 要素が存在するか再確認
+                            targetElement.style.backgroundColor = '';
+                            targetElement.style.transition = '';
+                        }
+                    }, 2500);
+                 } else {
+                     console.warn(`Scroll target element not found: #${sectionId}`);
+                 }
+             }
+             function prefixCloseModal() {
+                 if (modalOverlay) modalOverlay.style.display = 'none';
+                 document.body.style.overflow = '';
+             }
+             function prefixHandleModalLinkClick(e) {
+                 e.preventDefault();
+                 const sectionId = e.target.dataset.sectionId;
+                 prefixCloseModal();
+                 prefixScrollToSection(sectionId); // prefix用スクロールを呼ぶ
+             }
+
+             // メインコンテンツ内の結果表示エリア用 イベント委任
+            if (persistentReviewLinksDiv) {
+                persistentReviewLinksDiv.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A' && e.target.dataset.sectionId) {
+                        e.preventDefault();
+                        const sectionId = e.target.dataset.sectionId;
+                        // スクロール関数を呼び出す (prefixScrollToSectionでも良いが、ハイライトなしの標準スクロールも可)
+                        const targetElement = document.getElementById(sectionId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                             // ハイライトが必要なら prefixScrollToSection(sectionId); を使う
+                        } else {
+                             console.warn(`Persistent link scroll target element not found: #${sectionId}`);
+                        }
+                    }
+                });
+            }
+
+            // モーダル表示 (初回訪問時のみ or 結果再表示)
+            if (modalOverlay && preTestForm) { // 要素存在チェックを追加
+                 if (!sessionStorage.getItem('preTestCompleted')) {
+                    modalOverlay.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                     const savedResult = JSON.parse(sessionStorage.getItem('preTestResult'));
+                     if (savedResult && persistentTestResultsDiv) {
+                         if (persistentScoreDiv) persistentScoreDiv.innerHTML = savedResult.scoreHTML || '';
+                         if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = savedResult.linksHTML || '';
+                         persistentTestResultsDiv.style.display = 'block';
+                     }
+                }
+            } else {
+                console.warn("Pre-test modal elements not found. Skipping pre-test logic.");
+            }
+
+            // 採点処理
+            if (preTestForm) {
+                preTestForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    let score = 0;
+                    const incorrectQuestions = [];
+                    const formData = new FormData(preTestForm);
+
+                    questions.forEach(questionDiv => {
+                        const radioInput = questionDiv.querySelector('input[type="radio"]');
+                        if (!radioInput) return;
+                        const questionName = radioInput.name;
+                        const selectedValue = formData.get(questionName);
+                        const sectionId = questionDiv.dataset.sectionId;
+                        const title = prefixQuestionTitles[questionName] || '関連項目';
+                        if (prefixAnswers[questionName] === selectedValue) {
+                            score++;
+                        } else if (prefixAnswers[questionName]) {
+                            incorrectQuestions.push({ name: questionName, sectionId: sectionId, title: title });
+                        }
+                    });
+
+                    const totalQuestions = Object.keys(prefixAnswers).length;
+                    const scoreHTML = `<p>結果: ${totalQuestions}問中 ${score}問正解</p>`;
+                    let linksHTML = '';
+                    if (incorrectQuestions.length > 0) {
+                        linksHTML += '<p><strong>復習が必要な項目:</strong></p><ul>';
+                        incorrectQuestions.forEach(qInfo => {
+                            linksHTML += `<li><a href="#${qInfo.sectionId}" data-section-id="${qInfo.sectionId}">「${qInfo.title}」について確認する</a></li>`;
+                        });
+                        linksHTML += '</ul>';
+                    } else {
+                        linksHTML = '<p>素晴らしい！基本的な理解はできているようです。</p>';
+                    }
+
+                    if (scoreP) scoreP.innerHTML = scoreHTML;
+                    if (reviewLinksDiv) {
+                        reviewLinksDiv.innerHTML = linksHTML;
+                        reviewLinksDiv.querySelectorAll('a[data-section-id]').forEach(link => {
+                             link.removeEventListener('click', prefixHandleModalLinkClick); // 既存リスナー削除
+                             link.addEventListener('click', prefixHandleModalLinkClick);
+                         });
+                    }
+                    preTestForm.style.display = 'none';
+                    if (testResultsDiv) testResultsDiv.style.display = 'block';
+
+                    if (persistentScoreDiv) persistentScoreDiv.innerHTML = scoreHTML;
+                    if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = linksHTML;
+                    if (persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block';
+
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResult', JSON.stringify({ scoreHTML: scoreHTML, linksHTML: linksHTML }));
+                });
+            }
+
+            // スキップボタン
+            if (skipTestBtn) {
+                skipTestBtn.addEventListener('click', () => {
+                    prefixCloseModal();
+                    const skipMessage = '<p>理解度チェックテストはスキップしました。</p>';
+                    if (persistentScoreDiv) persistentScoreDiv.innerHTML = '';
+                    if (persistentReviewLinksDiv) persistentReviewLinksDiv.innerHTML = skipMessage;
+                    if (persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block';
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResult', JSON.stringify({ scoreHTML: '', linksHTML: skipMessage }));
+                });
+            }
+
+            // モーダル閉じるボタン
+            if (closeTestBtn) {
+                closeTestBtn.addEventListener('click', () => {
+                    prefixCloseModal();
+                });
+            }
+            // --- ▲▲▲ 理解度チェックテスト用JS ▲▲▲ ---
+
+        }); // End of DOMContentLoaded
     </script>
 
 </body>
