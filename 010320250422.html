@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 単語学習法と動詞・形容詞・副詞の活用 (2025/4/22)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 緑色系統カラーパレット */
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #28A745; /* メインカラー (緑) */
+            --color-accent: #FD7E14; /* アクセントカラー (オレンジ) */
+            --color-link: #28A745;
+            --color-border: #DEE2E6;
+            --color-highlight-bg: #e9f5ec; /* 緑系の薄い背景 */
+            --color-box-bg: #F8F9FA;
+            --color-code-bg: #f1f1f1;
+            --color-answer-bg: #F8F9FA; /* 解答例の背景 */
+            --color-test-result-bg: #FFFBEB; /* テスト結果エリア背景 (黄色系) */
+            --color-test-result-border: #FFEEBA; /* テスト結果エリア境界線 */
+            --color-related-test-bg: #f1f8e9; /* 関連テストエリア背景 (薄緑系) */
+            --color-related-test-border: #dcedc8; /* 関連テストエリア境界線 */
+
+
+            --font-family-base: 'Noto Sans JP', sans-serif;
+            --line-height-base: 1.75;
+            --container-max-width: 850px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            font-size: 16px;
+        }
+        body.modal-open {
+            overflow: hidden; /* モーダル表示中の背景スクロール禁止 */
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: var(--color-primary);
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--color-primary);
+            font-weight: 700;
+        }
+
+        h3 {
+            color: var(--color-primary);
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        /* Specific h4 for related test */
+        .related-pretest h4 {
+             font-size: 1.1rem;
+             color: var(--color-primary);
+             margin-top: 0;
+             margin-bottom: 15px;
+             padding-bottom: 5px;
+             border-bottom: 1px solid var(--color-related-test-border);
+        }
+         /* Drill answer titles */
+         #drill-answers h3 {
+            font-size: 1.3rem;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--color-border);
+         }
+
+
+        p, ul, ol {
+            margin-bottom: 1.2em;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: darken(var(--color-link), 15%);
+            text-decoration: underline;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        .highlight {
+            background-color: var(--color-highlight-bg);
+            padding: 0.1em 0.4em;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        /* セクションハイライト用 */
+        .highlight-temp {
+            background-color: var(--color-highlight-bg);
+            transition: background-color 1s ease-out;
+        }
+
+        .code-block {
+            background-color: var(--color-code-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            padding: 15px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin-bottom: 1.2em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        code {
+            background-color: var(--color-code-bg);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--color-primary);
+            padding-left: 15px;
+            margin: 20px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .summary-box, .supplementary-box, .review-questions, .answer, .related-pretest {
+            background-color: var(--color-box-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .answer { /* Specific style for toggle answers */
+            background-color: var(--color-answer-bg);
+            display: none; /* Initially hidden */
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--color-border);
+        }
+        .related-pretest {
+            background-color: var(--color-related-test-bg);
+            border: 1px solid var(--color-related-test-border);
+            margin-top: 30px; /* Add space after section content */
+        }
+         .related-pretest .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .related-pretest .answer { /* Style for answer within related test */
+            background-color: transparent; /* Use parent background */
+            border: none;
+            padding-left: 0;
+            padding-right: 0;
+            padding-bottom: 0;
+            margin-top: 10px; /* Space between button and answer */
+            border-top: 1px dashed var(--color-related-test-border); /* Separator */
+        }
+        #drill-answers .answer { /* Style for answers within drill section */
+             background-color: var(--color-answer-bg); /* Or keep default box-bg */
+             margin-top: 10px;
+             padding: 15px;
+             border-top: 1px dashed var(--color-border);
+        }
+
+        .summary-box h3, .supplementary-box h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+
+        #tableOfContents {
+            background-color: var(--color-box-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        #tableOfContents h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        #tocList {
+            list-style-type: none;
+            padding-left: 0;
+            column-count: 2; /* 2カラム表示 */
+            column-gap: 20px;
+        }
+
+        #tocList li {
+            margin-bottom: 8px;
+            counter-increment: toc-counter; /* 番号用カウンター */
+            page-break-inside: avoid; /* カラム区切りで項目が分断されないように */
+        }
+        #tocList li::before {
+            content: counter(toc-counter) ". "; /* 番号を表示 */
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 5px;
+        }
+
+        #tocList a {
+            color: var(--text-main);
+        }
+
+        #persistentTestResults {
+            display: none; /* 初期非表示 */
+            background-color: var(--color-test-result-bg);
+            border: 1px solid var(--color-test-result-border);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        #persistentTestResults h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+        #persistentTestResults ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+         #persistentTestResults li a {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 10px;
+        }
+
+        .checklist li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--color-border);
+            background-color: #fff;
+            border-radius: 3px;
+        }
+
+        .checklist li.checked::before {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .checklist li.checked::after {
+            content: '✔';
+            position: absolute;
+            left: 3px;
+            top: 1px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .review-questions strong {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+        .review-questions input[type="text"],
+        .review-questions textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: var(--font-family-base);
+        }
+        .toggle-answer { /* General toggle button style */
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .toggle-answer:hover {
+            background-color: darken(var(--color-accent), 10%);
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--color-box-bg);
+            font-weight: bold;
+        }
+
+        /* Tooltip Styles */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 200px;
+            max-width: 300px;
+            background-color: #333;
+            color: #fff;
+            font-size: 0.85em;
+            font-weight: normal;
+            line-height: 1.5;
+            padding: 8px 10px;
+            border-radius: 4px;
+            white-space: normal; /* Allow wrapping */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+            pointer-events: none; /* Prevent tooltip from interfering with hover */
+        }
+         /* Tooltip Arrow */
+        [data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: 125% - 5px; /* Position arrow slightly below tooltip */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 11;
+             pointer-events: none;
+        }
+
+        [data-tooltip]:hover::after,
+        [data-tooltip]:hover::before {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--color-primary);
+            color: white;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: darken(var(--color-primary), 10%);
+        }
+
+        /* Pre-Test Modal Styles */
+        #preTestModalOverlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1050;
+            overflow-y: auto; /* Allow modal scrolling if content is long */
+            justify-content: center;
+            align-items: flex-start; /* Align modal to top */
+            padding-top: 5vh; /* Add some space from top */
+        }
+
+        #preTestModalContent {
+            background-color: var(--bg-content);
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            margin: auto; /* Center horizontally */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-height: 90vh; /* Limit height */
+            overflow-y: auto; /* Enable scrolling within the modal */
+        }
+
+        #preTestModalContent h2 {
+            margin-top: 0;
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .test-question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .test-question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .test-question label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 8px;
+        }
+
+        #testButtons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #submitTest, #skipTest {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 0 10px;
+            transition: background-color 0.2s ease;
+        }
+        #submitTest:hover, #skipTest:hover {
+            background-color: darken(var(--color-primary), 10%);
+        }
+        #skipTest {
+            background-color: var(--text-secondary);
+        }
+         #skipTest:hover {
+            background-color: darken(var(--text-secondary), 10%);
+        }
+
+
+        #testResults { /* Modal results area */
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed var(--color-accent);
+            border-radius: 5px;
+            background-color: var(--color-test-result-bg);
+        }
+        #testResults h3 {
+             margin-top: 0;
+             margin-bottom: 10px;
+             color: var(--color-primary);
+             font-size: 1.2rem;
+        }
+         #testResults ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        #testResults li a {
+            text-decoration: underline;
+            cursor: pointer; /* Indicate clickable */
+        }
+        #persistentReviewLinks ul { /* Ensure list style is reset */
+             list-style-type: none;
+             padding-left: 0;
+        }
+        #persistentReviewLinks li {
+             margin-bottom: 0.5em; /* Add some spacing between links */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            body { font-size: 15px; }
+            #tocList {
+                column-count: 1; /* スマートフォンでは1カラム */
+            }
+            [data-tooltip]::after {
+                min-width: 150px;
+                max-width: 250px;
+            }
+            #preTestModalContent {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px auto;
+                padding: 15px;
+                border-radius: 0;
+            }
+            h1 { font-size: 1.6rem; }
+            h2 { font-size: 1.3rem; }
+            h3 { font-size: 1.1rem; }
+            body { font-size: 14px; }
+            .code-block { padding: 10px; }
+            #scrollTopBtn { padding: 10px 13px; font-size: 16px; }
+            [data-tooltip]::after {
+                 left: 10%;
+                 transform: translateX(0);
+                 min-width: unset;
+                 width: 80%;
+            }
+             [data-tooltip]::before {
+                left: 20%; /* Adjust arrow position */
+                transform: translateX(0);
+            }
+             #testButtons button {
+                 padding: 10px 15px;
+                 font-size: 0.9em;
+                 display: block;
+                 width: 80%;
+                 margin: 10px auto;
+             }
+        }
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <!-- Pre-Test Modal -->
+    <div id="preTestModalOverlay">
+        <div id="preTestModalContent">
+            <h2>事前理解度チェック</h2>
+            <p>このページの学習を始める前に、現在の理解度を確認しましょう。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="section6">
+                    <p>1. 動詞 "plan" の過去形はどれ？</p>
+                    <label><input type="radio" name="q1" value="a"> planed</label>
+                    <label><input type="radio" name="q1" value="b" data-correct="true"> planned</label>
+                    <label><input type="radio" name="q1" value="c"> plant</label>
+                </div>
+                <div class="test-question" data-section-id="section5">
+                    <p>2. 動詞 "come" の過去分詞形はどれ？</p>
+                    <label><input type="radio" name="q2" value="a"> came</label>
+                    <label><input type="radio" name="q2" value="b"> comed</label>
+                    <label><input type="radio" name="q2" value="c" data-correct="true"> come</label>
+                </div>
+                <div class="test-question" data-section-id="section7">
+                    <p>3. "The flower is beautiful." の "beautiful" はどの用法？</p>
+                    <label><input type="radio" name="q3" value="a"> 限定用法</label>
+                    <label><input type="radio" name="q3" value="b" data-correct="true"> 叙述用法</label>
+                    <label><input type="radio" name="q3" value="c"> 副詞的用法</label>
+                </div>
+                 <div class="test-question" data-section-id="section8">
+                    <p>4. "good" の比較級はどれ？</p>
+                    <label><input type="radio" name="q4" value="a"> gooder</label>
+                    <label><input type="radio" name="q4" value="b" data-correct="true"> better</label>
+                    <label><input type="radio" name="q4" value="c"> best</label>
+                </div>
+                 <div class="test-question" data-section-id="section8">
+                    <p>5. "carefully" の最上級はどれ？</p>
+                    <label><input type="radio" name="q5" value="a"> carefulliest</label>
+                    <label><input type="radio" name="q5" value="b" data-correct="true"> most carefully</label>
+                    <label><input type="radio" name="q5" value="c"> more carefully</label>
+                </div>
+                <!-- Results Area Inside Modal -->
+                <div id="testResults" style="display: none;">
+                    <h3>テスト結果</h3>
+                    <p id="testScore"></p>
+                    <div id="reviewLinks"></div>
+                    <p><small>（復習リンクをクリックすると、モーダルが閉じて該当箇所に移動します）</small></p>
+                </div>
+
+                <div id="testButtons">
+                    <button type="submit" id="submitTest">採点する</button>
+                    <button type="button" id="skipTest">テストをスキップ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>授業記録: 単語学習法と動詞・形容詞・副詞の活用</h1>
+            <p style="color: var(--text-secondary);">実施日: 2025年4月22日</p>
+            <p style="color: var(--text-secondary);" id="readingTime">読了時間: 約 0分</p>
+        </header>
+
+        <div class="summary-box">
+            <h3><span data-tooltip="この授業で扱った主な内容のまとめです。">概要</span></h3>
+            <ul>
+                <li>効果的な英単語学習法（イメージ、間違いを恐れない心構え）</li>
+                <li>規則動詞の活用（過去形・過去分詞形・-ing形）</li>
+                <li>不規則動詞の活用パターン（A-A-A, A-B-A, A-B-B, A-B-C型）</li>
+                <li>動詞活用の注意点（子音字を重ねるルールとフォニックス）</li>
+                <li>形容詞の用法（限定用法・叙述用法）</li>
+                <li>副詞の役割と修飾関係</li>
+                <li>形容詞・副詞の比較級・最上級の作り方</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h2>目次</h2>
+            <ol id="tocList">
+                 <li><a href="#section1">導入と単語学習の心構え</a></li>
+                <li><a href="#section2">失敗談から学ぶこと</a></li>
+                <li><a href="#section3">学習の進め方と比喩</a></li>
+                <li><a href="#section4">動詞の活用：規則動詞</a></li>
+                <li><a href="#section5">動詞の活用：不規則動詞</a></li>
+                <li><a href="#section6">動詞活用の注意点：子音字を重ねるルール</a></li>
+                <li><a href="#section7">形容詞と副詞の基本</a></li>
+                <li><a href="#section8">形容詞・副詞の比較級・最上級</a></li>
+                <li><a href="#drill-answers">ドリル解答・解説</a></li> 
+                <li><a href="#review">振り返り：理解度チェックと確認問題</a></li>
+                <li><a href="#application">応用：知識の活用と今後の学習</a></li>
+            </ol>
+        </nav>
+
+        <!-- Persistent Test Results Area -->
+        <div id="persistentTestResults">
+             <h3>事前理解度チェック結果</h3>
+             <div id="persistentScore"></div>
+             <div id="persistentReviewLinks"></div>
+         </div>
+
+
+        <main>
+             <section id="section1">
+                <h2>導入と単語学習の心構え</h2>
+                <p>授業の冒頭では、前回の内容確認と今回のテーマである単語練習の導入が行われました。英単語を覚える際には、単に文字を覚えるだけでなく、<strong>単語が持つイメージを頭の中で思い浮かべること</strong>が非常に重要であると強調されました。</p>
+                <blockquote>例：<code>believe</code>（信じる）なら、誰かが何かを真剣に信じている場面や、宗教的な信仰のイメージなど。<code>apple</code> なら赤いリンゴそのものを思い浮かべる。</blockquote>
+                <p>これにより、単語が単なる記号ではなく、具体的な意味と結びつき、記憶に定着しやすくなります。また、英語学習においては、<strong>間違いを恐れずに積極的に発言・練習すること</strong>が成長の鍵であると述べられました。特に、発音練習などで間違えても恥ずかしがる必要はなく、むしろ間違えた経験の方が記憶に残りやすいという点が指摘されました。</p>
+                <div class="supplementary-box">
+                    <h3><span data-tooltip="より深く理解するための追加情報です。">補足</span>：単語学習とイメージ化</h3>
+                    <p>単語とその意味を1対1で暗記するだけでなく、単語が使われる文脈や具体的なイメージと結びつけることは、<span data-tooltip="記憶、学習、思考などの心の働きを科学的に研究する心理学の一分野です。">認知心理学</span>の観点からも効果的とされています。これにより、<span data-tooltip="脳内で単語や概念が互いに関連付けられて構成されているネットワークのこと。関連性が強いほど記憶を引き出しやすい。">意味ネットワーク</span>が豊かになり、思い出しやすさ（想起）が向上します。</p>
+                </div>
+                <!-- Related pretest will be injected here by JS -->
+            </section>
+
+            <section id="section2">
+                <h2>失敗談から学ぶこと</h2>
+                <p>先生自身の高校時代の英語の授業での失敗談が共有されました。<code>choir</code>（<span data-tooltip="聖歌隊や合唱団のこと。通常、教会などで歌うグループを指す。">クワイア</span>）という単語を「チョア」と読んでしまい、クラスで笑われた経験が語られました。授業では<code>chore</code>（チョア；<span data-tooltip="家庭や農場での日常的な雑用、決まりきった仕事。">雑用、日課</span>）という発音が似ている単語にも触れられましたが、ポイントは、このような<strong class="highlight">恥ずかしかった経験</strong>が、かえって単語の発音や意味を強く記憶に残すきっかけになったということです。</p>
+                <p>このエピソードを通して伝えられたメッセージは以下の通りです。</p>
+                <ul>
+                    <li>間違いは学習プロセスの一部であり、記憶を強化するきっかけになる。</li>
+                    <li>周りのクラスメイトも同じように学習中の初心者であり、互いに間違いを許容する雰囲気を持つことが大切。</li>
+                    <li>恥ずかしいと感じる経験ほど、記憶に残りやすい。</li>
+                </ul>
+                 <blockquote>「間違えた方が人間記憶に残りやすいんで、特に恥ずかしいなって思った時のことの方が記憶に残ります。」</blockquote>
+                 <!-- Related pretest will be injected here by JS -->
+            </section>
+
+            <section id="section3">
+                <h2>学習の進め方と比喩</h2>
+                <p>学習の優先順位や進め方について、「壺に大きな岩、中くらいの石、砂を入れる順番」の比喩が用いられました。壺（学習時間や容量）を効率的に満たすためには、<strong>まず大きな岩（重要な基本事項）から入れ、次に中くらいの石（応用的な事項）、最後に砂（細かい知識）を入れる</strong>のが最適であるという話です。砂から入れてしまうと、後から大きな岩を入れるスペースがなくなってしまいます。</p>
+                <p>これを英単語学習に応用すると、以下のような進め方が提案されました。</p>
+                <ol>
+                    <li><strong>まずは大きな岩から：</strong> 頻出単語や基本単語、簡単なタスク（例：英語→日本語の意味理解）から始める。</li>
+                    <li><strong>次に中くらいの石：</strong> 少し難しい単語や、派生語、関連語を覚える。</li>
+                    <li><strong>最後に砂：</strong> 細かいニュアンスの違いや、高度な単語、応用的なタスク（例：日本語→英語への変換）に取り組む。</li>
+                </ol>
+                <p>先生の英検1級学習体験として、<strong>1週間に100個の単語を覚える</strong>という目標が紹介されました。これは一見大変そうですが、以下のような工夫で実現可能だったとのことです。</p>
+                <ul>
+                    <li>既に知っている単語は除外する。</li>
+                    <li>毎日少しずつ（例：20個ずつ）復習を組み込む。</li>
+                    <li>最初は簡単なタスク（英語→日本語）に集中する。</li>
+                    <li>徐々に覚える単語が増え、1日の負担は減っていく（復習対象が増えるため）。</li>
+                </ul>
+                <p>この方法により、数ヶ月で単語帳1冊を終えることが可能であり、その後、より難しいタスク（日本語→英語）に進むことができます。重要なのは、<strong class="highlight">自分に合ったペースで継続すること</strong>であり、完璧主義にならず、まずは「大きな岩」から着実に取り組むことが推奨されました。</p>
+                 <div class="supplementary-box">
+                    <h3><span data-tooltip="より深く理解するための追加情報です。">補足</span>：分散学習とインターリービング</h3>
+                    <p>毎日少しずつ復習を組み込む方法は「<span data-tooltip="学習時間を一度に集中させるのではなく、時間を空けて複数回に分けて行う学習法。記憶の定着に効果的。">分散学習</span>」と呼ばれ、記憶の定着に効果的です。また、新しい単語と復習を混ぜて学習することは「<span data-tooltip="一つのトピックを集中的に学ぶのではなく、複数の異なるトピックを交互に学習する方法。応用力や問題解決能力の向上に繋がる。">インターリービング</span>」に似た効果をもたらし、知識の混同を防ぎ、応用力を高める可能性があります。</p>
+                </div>
+                 <!-- Related pretest will be injected here by JS -->
+            </section>
+
+             <section id="section4">
+                <h2>動詞の活用：規則動詞</h2>
+                <p>授業後半では、文法事項として動詞の活用が取り上げられました。まず、規則動詞の過去形・過去分詞形の作り方について、基本的なルールが確認されました。</p>
+                <p>教材「Get Ready ③」の A の内容に基づき、<code>-ed</code> や <code>-d</code> の付け方のルールがまとめられています。</p>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>原形の語尾</th>
+                            <th>-ed, -dのつけ方</th>
+                            <th>例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>下記以外</td>
+                            <td>-edを付ける</td>
+                            <td>talk → talked, want → wanted</td>
+                        </tr>
+                        <tr>
+                            <td>-e</td>
+                            <td>-dだけを付ける</td>
+                            <td>like → liked, die → died</td>
+                        </tr>
+                        <tr>
+                            <td>&lt;子音字＋y&gt;</td>
+                            <td>yをiに変えて-edを付ける</td>
+                            <td>cry → cried, study → studied</td>
+                        </tr>
+                        <tr>
+                            <td>&lt;母音字＋y&gt;</td>
+                            <td>そのまま-edを付ける</td>
+                            <td>play → played, enjoy → enjoyed</td>
+                        </tr>
+                        <tr>
+                            <td>&lt;<span data-tooltip="単語の中で特に強く発音される部分。">アクセント</span>がある<span data-tooltip="短く発音される母音。例: /ɪ/ (sit), /e/ (set), /æ/ (sat), /ɒ/ (hot - 英), /ʌ/ (cut), /ʊ/ (put)。">短母音</span>＋１子音字&gt;</td>
+                            <td>最後の子音字を重ねて-edを付ける</td>
+                            <td>stóp → stopped, plan → planned, occúr → occurred</td>
+                        </tr>
+                         <tr>
+                            <td>&lt;アクセントがない短母音＋１子音字&gt;</td>
+                            <td>そのまま-edを付ける</td>
+                            <td>vísit → visited, óffer → offered</td>
+                        </tr>
+                         <tr>
+                            <td>&lt;２母音字＋１子音字&gt;</td>
+                            <td>そのまま-edを付ける</td>
+                            <td>look → looked, pour → poured</td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <p>特に注意が必要なのは、<strong>最後の子音字を重ねるルール</strong>です。これについては、<a href="#section6">セクション6</a>で詳しく解説されます。</p>
+                 <!-- Related pretest will be injected here by JS -->
+            </section>
+
+             <section id="section5">
+                <h2>動詞の活用：不規則動詞</h2>
+                <p>規則動詞とは異なり、決まったルールに従わず独自に形を変えるのが不規則動詞です。これらは基本的に<strong>個別に覚える必要があります</strong>。</p>
+                 <p>教材「Get Ready ③」の B では、いくつかのパターンに分類されています。</p>
+                <ul>
+                    <li><strong>A-A-A型:</strong> 原形・過去形・過去分詞形がすべて同じ (例: cut, hit)</li>
+                    <li><strong>A-B-A型:</strong> 原形と過去分詞形が同じ (例: come-came-come, run-ran-run)</li>
+                    <li><strong>A-B-B型:</strong> 過去形と過去分詞形が同じ (例: catch-caught-caught, feel-felt-felt, make-made-made)</li>
+                    <li><strong>A-B-C型:</strong> 原形・過去形・過去分詞形がすべて異なる (例: break-broke-broken, go-went-gone, see-saw-seen)</li>
+                </ul>
+                 <!-- Related pretest (Question 2) will be injected here by JS -->
+            </section>
+
+             <section id="section6">
+                <h2>動詞活用の注意点：子音字を重ねるルール</h2>
+                <p>規則動詞の活用で特に間違いやすいのが、<code>-ed</code> や <code>-ing</code> を付ける際に<strong>最後の子音字を重ねるかどうか</strong>のルールです。授業では、このルールがなぜ存在するのか、発音（フォニックス）の観点から解説されました。</p>
+                <p>基本ルール：<strong><span data-tooltip="単語の中で特に強く発音される部分。">アクセント</span>のある<span data-tooltip="短く発音される母音。例: /ɪ/, /e/, /æ/, /ɒ/, /ʌ/, /ʊ/">短母音</span> ＋ 1つの子音字</strong>で終わる動詞は、その子音字を重ねて <code>-ed</code> や <code>-ing</code> を付けます。</p>
+                <p>例：</p>
+                <ul>
+                    <li><code>stop</code> → <code class="highlight">stopped</code>, <code class="highlight">stopping</code> （o は短母音 /ɒ/ でアクセントあり）</li>
+                    <li><code>plan</code> → <code class="highlight">planned</code>, <code class="highlight">planning</code> （a は短母音 /æ/ でアクセントあり）</li>
+                    <li><code>refer</code> <span data-tooltip="言及する、参照する"></span> → <code class="highlight">referred</code>, <code class="highlight">referring</code> （最後の音節 -fer にアクセントがあり、e は短母音 /ɜː/ の一部と見なされる）</li>
+                </ul>
+                 <p>なぜ重ねる必要があるのか？それは、重ねないと<strong>母音の発音が変わってしまう</strong>からです。</p>
+                 <p>英語の<span data-tooltip="文字（綴り）と発音の関係性を学ぶ学習法。">フォニックス</span>には、以下のような基本的なルールがあります（<code>hide - hid - hidden</code> の例から説明）。</p>
+                <ol>
+                    <li><strong>母音字 + 子音字 + e (VCe) の形 (例: hide):</strong> 最後の 'e' (サイレントe) は発音せず、直前の母音字を<span data-tooltip="アルファベットの名前読み。例: A /eɪ/, I /aɪ/, O /oʊ/, U /juː/, E /iː/。長母音とも言う。">長く読む</span>（アルファベット読み）。→ <code>hide</code> /haɪd/</li>
+                    <li><strong>母音字 + 子音字 (VC) の形 (例: hid の元):</strong> 母音字を<span data-tooltip="アルファベットの名前読みとは異なる短い音。例: a /æ/, i /ɪ/, o /ɒ/, u /ʌ/, e /e/。短母音とも言う。">短く読む</span>。</li>
+                    <li><strong>母音字 + 子音字 + 子音字 (VCC) の形 (例: hidden):</strong> 母音字を短く読む。→ <code>hidden</code> /hɪdn/</li>
+                </ol>
+                 <p>このルールを <code>drop</code> に当てはめて考えてみましょう。</p>
+                 <ul>
+                    <li>もし子音字 p を重ねずに <code>droped</code> と書くと、ルール1 (VCe に似た形) が適用され、「ドロウプト /droʊpt/」のような発音になってしまう可能性があります（元の /ɒ/ の音が変わる）。</li>
+                    <li>そこで、p を重ねて <code>dropped</code> (VCC の形) にすることで、ルール3が適用され、o は短母音 /ɒ/ のまま「ドロップト /drɒpt/」と発音されることが保証されます。</li>
+                </ul>
+                 <blockquote>つまり、子音字を重ねるのは、<strong class="highlight">直前の母音を短く読むことを維持するため</strong>の発音上のルールなのです。</blockquote>
+                 <p><code>prefer</code> <span data-tooltip="～の方を好む"></span> や <code>refer</code> のように、最後の音節にアクセントがある場合も同様の理由で子音字を重ねます。</p>
+                 <div class="supplementary-box">
+                     <h3><span data-tooltip="より深く理解するための追加情報です。">補足</span>：例外と注意点</h3>
+                     <p>このルールは非常に役立ちますが、例外も存在します（特にイギリス英語とアメリカ英語での違い、例えば <code>travel</code> は米語では重ねないが英語では重ねることがある）。また、アクセントの位置が重要です。例えば <code>visit</code> は <code>vísited</code> であり、最後の音節にアクセントがないため t は重ねません。迷った場合は辞書で確認するのが最も確実です。</p>
+                 </div>
+                  <!-- Related pretest (Question 1) will be injected here by JS -->
+            </section>
+
+             <section id="section7">
+                <h2>形容詞と副詞の基本</h2>
+                <p>教材「Get Ready ④」の内容に基づき、形容詞と副詞の基本的な役割と用法が解説されました。</p>
+                <h3>形容詞 (Adjectives)</h3>
+                <p>人や物事の<strong>性質や状態</strong>を表す語です。主な用法は2つあります。</p>
+                <ul>
+                    <li><strong><span data-tooltip="名詞の「前」に置いて、その名詞を直接修飾する使い方。「どんな」名詞かを限定する。">限定用法</span> (Attributive use):</strong> 形容詞が名詞の直前に置かれ、その名詞を直接修飾します。<br>
+                        例: Tom bought some <strong class="highlight">beautiful</strong> flowers. (美しい花)</li>
+                    <li><strong><span data-tooltip="動詞の「後」に置いて、主語や目的語の状態を説明（叙述）する使い方。主にSVCやSVOCの文型で使われる。">叙述用法</span> (Predicative use):</strong> 形容詞が動詞の後ろに置かれ、主語や目的語の状態を説明します。<br>
+                        例1 (SVC): The flowers are <strong class="highlight">beautiful</strong>. (花は美しい)<br>
+                        例2 (SVOC): She painted the wall <strong class="highlight">brown</strong>. (壁を茶色に塗った → 壁が茶色である状態を説明)</li>
+                </ul>
+
+                <h3>副詞 (Adverbs)</h3>
+                <p>主に<strong>動詞、形容詞、他の副詞、あるいは文全体</strong>を修飾し、「いつ」「どこで」「どのように」「どの程度」などの情報 を加える語です。</p>
+                <ul>
+                    <li>動詞を修飾: Tom speaks very <strong class="highlight">slowly</strong>. (ゆっくり話す)</li>
+                    <li>形容詞を修飾: His advice was <strong class="highlight">very</strong> useful. (とても役に立つ)</li>
+                    <li>副詞を修飾: Tom speaks <strong class="highlight">very</strong> slowly. (とてもゆっくり)</li>
+                </ul>
+                 <!-- Related pretest (Question 3) will be injected here by JS -->
+            </section>
+
+            <section id="section8">
+                <h2>形容詞・副詞の比較級・最上級</h2>
+                <p>形容詞や副詞は、物事を比較するために形を変えることがあります。</p>
+                <ul>
+                    <li><strong>比較級 (Comparative):</strong> 2つのものを比べて「より～」「もっと～」という意味を表します。通常 <code>than</code> と一緒に使われます。</li>
+                    <li><strong>最上級 (Superlative):</strong> 3つ以上のものの中で「いちばん～」「最も～」という意味を表します。通常 <code>the</code> と一緒に使われ、範囲を示す語句 (<code>in ...</code>, <code>of ...</code>) を伴います。</li>
+                </ul>
+                <p>例:</p>
+                <ul>
+                    <li>Emily runs <strong class="highlight">faster than</strong> I. (エミリーは私より速く走る - 副詞fastの比較級)</li>
+                    <li>Emily is <strong class="highlight">more careful than</strong> her sister. (エミリーは姉[妹]より注意深い - 形容詞carefulの比較級)</li>
+                    <li>Emily is <strong class="highlight">the most careful in</strong> her family. (エミリーは家族の中でいちばん注意深い - 形容詞carefulの最上級)</li>
+                </ul>
+
+                <h3>比較級・最上級の作り方</h3>
+                <h4>規則変化 (-er, -est型)</h4>
+                 <table border="1">
+                    <thead>
+                        <tr><th>原級の語尾</th><th>つくり方</th><th>原 級</th><th>比較級</th><th>最上級</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>下記以外</td><td>-er, -estを付ける</td><td>fast</td><td>faster</td><td>fastest</td></tr>
+                        <tr><td>-e</td><td>-r, -stを付ける</td><td>large</td><td>larger</td><td>largest</td></tr>
+                        <tr><td>&lt;子音字＋y&gt;</td><td>yをiに変えて-er, -est を付ける</td><td>happy</td><td>happier</td><td>happiest</td></tr>
+                        <tr><td>&lt;短母音＋１子音字&gt;</td><td>子音字を重ねて -er, -est を付ける</td><td>big</td><td>bigger</td><td>biggest</td></tr>
+                    </tbody>
+                </table>
+
+                <h4>規則変化 (more, most型)</h4>
+                 <table border="1">
+                    <thead>
+                        <tr><th><span data-tooltip="発音上の区切りとなる単位。母音を中心とした音のまとまり。">音節</span>・語尾</th><th>つくり方</th><th>原 級</th><th>比較級</th><th>最上級</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>２音節の語の多く</td><td rowspan="3">more, most を付ける</td><td>care･ful</td><td>more careful</td><td>most careful</td></tr>
+                        <tr><td>３音節以上の語</td><td>beau･ti･ful</td><td>more beautiful</td><td>most beautiful</td></tr>
+                        <tr><td>語尾が-lyの副詞 (early除く)</td><td>slowly</td><td>more slowly</td><td>most slowly</td></tr>
+                    </tbody>
+                </table>
+                <p>※ <code>early</code> は <code>earlier</code> - <code>earliest</code> と変化します。</p>
+
+                 <h4>不規則変化</h4>
+                 <p>特定の単語は、不規則に変化します。これらは覚えるしかありません。</p>
+                 <table border="1">
+                    <thead>
+                        <tr><th>原 級</th><th>比較級</th><th>最上級</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>good (よい) <br> well (健康で／上手に)</td><td>better</td><td>best</td></tr>
+                        <tr><td>many (多数の) <br> much (多量の／とても)</td><td>more</td><td>most</td></tr>
+                        <tr><td><span data-tooltip="bad(悪い), ill(病気で)">bad / ill</span></td><td>worse</td><td>worst</td></tr>
+                        <tr><td><span data-tooltip="little(少量の/小さい)">little</span></td><td>less</td><td>least</td></tr>
+                    </tbody>
+                </table>
+                  <!-- Related pretest (Question 4 & 5) will be injected here by JS -->
+            </section>
+
+             <section id="drill-answers">
+                 <h2>ドリル解答・解説</h2>
+
+                 <h3>Get Ready ③ Drill 2 解答</h3>
+                 <button class="toggle-answer" data-target="drill2-answer-section">解答例を表示/非表示</button>
+                 <div class="answer" id="drill2-answer-section">
+                     <ol>
+                         <li>call – called – called – calling</li>
+                         <li>arrive – arrived – arrived – arriving</li>
+                         <li>carry – carried – carried – carrying</li>
+                         <li>stay – stayed – stayed – staying</li>
+                         <li>drop – dropped- dropped – dropping</li>
+                         <li>happen – happened – happened – happening</li>
+                     </ol>
+                     <p><strong>解説:</strong> 各動詞がどの活用ルールに該当するかを確認します。例えば、<code>arrive</code> は -e で終わるため -d を、<code>carry</code> は子音字+y なので y を i に変えて -ed を付けます。<code>drop</code> はアクセントのある短母音+子音字なので p を重ねます。</p>
+                 </div>
+
+                 <h3>Get Ready ③ Drill 3 解答</h3>
+                 <button class="toggle-answer" data-target="drill3-answer-section">解答例を表示/非表示</button>
+                 <div class="answer" id="drill3-answer-section">
+                     <ol>
+                         <li>put – put – put – putting (A-A-A)</li>
+                         <li>bring – brought – brought – bringing (A-B-B)</li>
+                         <li>find – found – found – finding (A-B-B)</li>
+                         <li>have – had – had – having (A-B-B)</li>
+                         <li>hear – heard – heard – hearing (A-B-B)</li>
+                         <li>leave – left – left – leaving (A-B-B)</li>
+                         <li>meet – met – met – meeting (A-B-B)</li>
+                         <li>say – said – said – saying (A-B-B)</li>
+                         <li>send – sent – sent – sending (A-B-B)</li>
+                         <li>sleep – slept – slept – sleeping (A-B-B)</li>
+                         <li>tell – told – told – telling (A-B-B)</li>
+                         <li>eat – ate – eaten – eating (A-B-C)</li>
+                         <li>fall – fell – fallen – falling (A-B-C)</li>
+                         <li>give – gave – given – giving (A-B-C)</li>
+                         <li>show – showed – shown – showing (A-B-C - 過去形は規則的だが過去分詞が不規則)</li>
+                         <li>speak – spoke – spoken – speaking (A-B-C)</li>
+                         <li>write – wrote – written – writing (A-B-C)</li>
+                    </ol>
+                    <p><strong>解説:</strong> 不規則動詞はパターンを意識しつつ、個々の形を覚えます。-ing形の子音重ねルール（例: put → putting）も確認が必要です。</p>
+                 </div>
+
+                 <h3>Get Ready ④ Drill 1 解答</h3>
+                 <button class="toggle-answer" data-target="drill4-1-answer-section">解答例を表示/非表示</button>
+                 <div class="answer" id="drill4-1-answer-section">
+                     <ol>
+                         <li>I bought her <code class="highlight">new</code> album. (形容詞 - 限定用法)</li>
+                         <li>It is a <code class="highlight">dangerous</code> place. (形容詞 - 限定用法)</li>
+                         <li>He is <code class="highlight">busy</code> now. (形容詞 - 叙述用法, 主語Heを説明)</li>
+                         <li>He became <code class="highlight">rich</code>. (形容詞 - 叙述用法, 主語Heを説明)</li>
+                         <li>His advice was very <code class="highlight">useful</code>. (形容詞 - 叙述用法, 主語His adviceを説明)</li>
+                         <li>Emily went shopping <code class="highlight">yesterday</code>. (副詞 - 動詞wentを修飾, 「いつ」)</li>
+                         <li>Please come <code class="highlight">here</code>. (副詞 - 動詞comeを修飾, 「どこへ」)</li>
+                         <li>She ate lunch <code class="highlight">quickly</code>. (副詞 - 動詞ateを修飾, 「どのように」)</li>
+                     </ol>
+                 </div>
+
+                 <h3>Get Ready ④ Drill 2 解答</h3>
+                 <button class="toggle-answer" data-target="drill4-2-answer-section">解答例を表示/非表示</button>
+                 <div class="answer" id="drill4-2-answer-section">
+                    <ol>
+                         <li>small – smaller – smallest (-er, -est)</li>
+                         <li>tall – taller – tallest (-er, -est)</li>
+                         <li>high – higher – highest (-er, -est)</li>
+                         <li>young – younger – youngest (-er, -est)</li>
+                         <li>old – older – oldest (-er, -est)</li>
+                         <li>hot – hotter – hottest (-er, -est, 子音重ねる)</li>
+                         <li>cold – colder – coldest (-er, -est)</li>
+                         <li>long – longer – longest (-er, -est)</li>
+                         <li>short – shorter – shortest (-er, -est)</li>
+                         <li>heavy – heavier – heaviest (-er, -est, yをiに)</li>
+                         <li>easy – easier – easiest (-er, -est, yをiに)</li>
+                         <li>difficult – more difficult – most difficult (more, most)</li>
+                         <li>hard – harder – hardest (-er, -est)</li>
+                         <li>good – better – best (不規則)</li>
+                         <li>strong – stronger – strongest (-er, -est)</li>
+                         <li>popular – more popular – most popular (more, most)</li>
+                         <li>famous – more famous – most famous (more, most)</li>
+                         <li>important – more important – most important (more, most)</li>
+                         <li>well – better – best (不規則)</li>
+                         <li>carefully – more carefully – most carefully (more, most)</li>
+                    </ol>
+                 </div>
+
+             </section>
+
+             <section id="review">
+                <h2>振り返り：理解度チェックと確認問題</h2>
+
+                <h3>理解度チェックリスト</h3>
+                <p>以下の項目について、理解できたか確認しましょう。クリックするとチェックが入ります。</p>
+                <ul class="checklist">
+                    <li>単語をイメージと結びつけて覚える重要性を理解した。</li>
+                    <li>間違いを恐れずに学習を進める心構えができた。</li>
+                    <li>規則動詞の過去形・過去分詞形の基本的な作り方を理解した。</li>
+                    <li>子音字を重ねるルール（短母音＋子音字）を理解した。</li>
+                    <li>フォニックスに基づく母音の長短読みのルールを理解した。</li>
+                    <li>不規則動詞にはいくつかのパターンがあることを知った（個別暗記が必要）。</li>
+                    <li>形容詞の限定用法と叙述用法の違いを説明できる。</li>
+                    <li>副詞が何を修飾するのか説明できる。</li>
+                    <li>形容詞・副詞の比較級・最上級の基本的な作り方を理解した。</li>
+                    <li>good/well, many/much の不規則変化を覚えた。</li>
+                </ul>
+
+                <h3>確認問題</h3>
+                <div class="review-questions">
+                    <p><strong>問題1:</strong> 動詞 "study" と "stop" の過去形と-ing形を書き、なぜ "stop" は子音字を重ねるのか説明してください。</p>
+                    <textarea rows="3" placeholder="解答を入力してください... 例: study - studied - studying, stop - stopped - stopping。理由は..."></textarea>
+                     <button class="toggle-answer" data-target="q1-answer-main">解答例を表示/非表示</button>
+                     <div class="answer" id="q1-answer-main">
+                        <p><strong>解答例:</strong></p>
+                        <ul>
+                            <li>study → studied, studying</li>
+                            <li>stop → stopped, stopping</li>
+                        </ul>
+                        <p><strong>理由:</strong> "study" は語尾が<母音字+y>なのでそのまま-ed, -ingを付ける。一方、"stop" は語尾が<アクセントのある短母音+1子音字> (o /ɒ/ + p) なので、短母音の発音を維持するために最後の子音字 p を重ねて -ed, -ing を付ける。</p>
+                    </div>
+                </div>
+
+                <div class="review-questions">
+                    <p><strong>問題2:</strong> 次の文の下線部の単語が形容詞か副詞かを判断し、何を修飾しているか説明してください。<br> a) She bought a <span style="text-decoration: underline;">beautiful</span> dress.<br> b) He runs very <span style="text-decoration: underline;">fast</span>.</p>
+                     <textarea rows="3" placeholder="解答を入力してください... 例: a) は○○詞で、△△を修飾。b) は..."></textarea>
+                     <button class="toggle-answer" data-target="q2-answer-main">解答例を表示/非表示</button>
+                     <div class="answer" id="q2-answer-main">
+                         <p><strong>解答例:</strong></p>
+                         <p>a) <code class="highlight">beautiful</code> は<strong>形容詞</strong>。名詞 "dress" を直接修飾している（限定用法）。</p>
+                         <p>b) <code class="highlight">fast</code> は<strong>副詞</strong>。動詞 "runs" を修飾し、「どのように」走るかを示している。（注: fast は形容詞としても使われるが、この文脈では副詞）</p>
+                     </div>
+                </div>
+
+                <div class="review-questions">
+                     <p><strong>問題3:</strong> "important" と "easy" の比較級と最上級を書き、なぜ作り方が違うのか説明してください。</p>
+                     <textarea rows="3" placeholder="解答を入力してください... 例: important - ..., easy - ...。理由は..."></textarea>
+                     <button class="toggle-answer" data-target="q3-answer-main">解答例を表示/非表示</button>
+                     <div class="answer" id="q3-answer-main">
+                         <p><strong>解答例:</strong></p>
+                         <ul>
+                             <li>important → more important → most important</li>
+                             <li>easy → easier → easiest</li>
+                         </ul>
+                         <p><strong>理由:</strong> "important" は3音節の語なので、規則変化の中でも <code>more</code>, <code>most</code> を前に付けるタイプ。一方、"easy" は短い2音節の語で、語尾が<子音字+y>なので、<code>y</code> を <code>i</code> に変えて <code>-er</code>, <code>-est</code> を付けるタイプ。</p>
+                     </div>
+                 </div>
+                  <!-- Related pretest will be injected here by JS -->
+            </section>
+
+             <section id="application">
+                <h2>応用：知識の活用と今後の学習</h2>
+
+                <h3>今回の知識の活用例</h3>
+                <ul>
+                    <li><strong>正確な文章作成:</strong> 動詞の活用を正しく使うことで、過去の出来事、進行中の動作、完了したことなどを正確に表現できるようになります。形容詞・副詞を適切に使うことで、より具体的で豊かな表現が可能になります。</li>
+                    <li><strong>読解力の向上:</strong> 文中の動詞の形から時制や態を読み取ったり、形容詞や副詞の修飾関係を理解したりすることで、英文の内容をより深く正確に理解できるようになります。</li>
+                    <li><strong>コミュニケーション:</strong> 比較級・最上級を使って物事を比べたり、自分の意見や感情をより細かく表現したりすることができます。</li>
+                    <li><strong>単語学習の効率化:</strong> フォニックスのルールを理解することで、未知の単語の発音を推測したり、スペルミスを減らしたりする助けになります。</li>
+                </ul>
+
+                <h3>今後の学習へのつながり</h3>
+                <ul>
+                    <li><strong>時制:</strong> 動詞の活用は、現在完了形、過去完了形、未来完了形など、より複雑な時制を学ぶ上での基礎となります。</li>
+                    <li><strong>受動態・不定詞・動名詞・分詞:</strong> これらの文法項目では、動詞の過去分詞形や-ing形が必須となります。</li>
+                    <li><strong>文型 (SVC, SVOC):</strong> 形容詞の叙述用法は、これらの文型を理解する上で重要です。</li>
+                    <li><strong>比較表現:</strong> 比較級・最上級を使った様々な比較構文（同等比較 as...as, 比較級を用いた慣用表現など）を学ぶ基礎となります。</li>
+                    <li><strong>語彙力増強:</strong> 単語学習の方法論を実践することで、より多くの語彙を効率的に習得できます。</li>
+                </ul>
+
+                <h3>学習を進める上での注意点</h3>
+                <ul>
+                    <li><strong>不規則動詞の暗記:</strong> 不規則動詞は避けて通れません。地道に繰り返し覚えていく必要があります。フラッシュカードやアプリなどを活用しましょう。</li>
+                    <li><strong>フォニックスルールの限界:</strong> フォニックスは有用ですが、例外も多く存在します。最終的には個々の単語の発音を辞書や音声で確認する習慣をつけましょう。</li>
+                    <li><strong>形容詞と副詞の混同:</strong> 形や意味が似ている形容詞と副詞（例: hard/hardly, late/lately）の使い分けに注意しましょう。文中でどちらの品詞が必要か、何を修飾しているかを常に意識することが大切です。</li>
+                    <li><strong>文脈での理解:</strong> 文法ルールを覚えるだけでなく、実際の英文の中でどのように使われているかを確認し、文脈の中で理解を深めることが重要です。</li>
+                </ul>
+
+                <h3>参考資料</h3>
+                 <ul>
+                    <li><strong>クイズレット (Quizlet):</strong> <a href="https://quizlet.com/" target="_blank" rel="noopener noreferrer">https://quizlet.com/</a> - フラッシュカード形式で単語や不規則動詞の活用を覚えるのに便利です。</li>
+                    <li><strong>Forvo:</strong> <a href="https://forvo.com/" target="_blank" rel="noopener noreferrer">https://forvo.com/</a> - 様々な言語の単語のネイティブスピーカーによる発音を聞けます。</li>
+                    <li><strong>オンライン英語辞書:</strong> Weblio, Cambridge Dictionary, Oxford Learner's Dictionaries などで意味、発音、活用形、例文を確認。</li>
+                    <li><strong>NHKゴガク:</strong> <a href="https://www2.nhk.or.jp/gogaku/" target="_blank" rel="noopener noreferrer">https://www2.nhk.or.jp/gogaku/</a> - 基礎から応用まで多様な学習コンテンツ。</li>
+                </ul>
+                 <!-- Related pretest will be injected here by JS -->
+            </section>
+
+        </main>
+
+        <footer>
+            <p>今回の授業記録は以上です。動詞の活用や形容詞・副詞のルールは英語の基礎となります。繰り返し復習し、着実に身につけていきましょう。</p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        // --- Global Variables & Config ---
+        const TOTAL_QUESTIONS = document.querySelectorAll('#preTestModalContent .test-question').length;
+
+        // --- Utility Functions ---
+        const calculateReadingTime = () => {
+            const content = document.querySelector('main');
+            if (!content) return 0;
+            const text = content.innerText || content.textContent;
+            const wordCount = text.split(/\s+/).filter(word => word.length > 0).length;
+            const wpm = 150;
+            const time = Math.ceil(wordCount / wpm);
+            return time;
+        };
+
+        const scrollToSection = (sectionId) => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const offset = 10; // Adjust for fixed header/progress bar if needed
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = section.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Temporary highlight
+                section.classList.add('highlight-temp');
+                setTimeout(() => {
+                    section.classList.remove('highlight-temp');
+                }, 1500); // Highlight duration
+            }
+        };
+
+        // --- Function to Display Test Results ---
+        const displayTestResults = (score, incorrectQuestionsInfo, targetElementId) => {
+            const resultsContainer = document.getElementById(targetElementId);
+            const scoreContainer = document.getElementById(targetElementId === 'testResults' ? 'testScore' : 'persistentScore');
+            const linksContainer = document.getElementById(targetElementId === 'testResults' ? 'reviewLinks' : 'persistentReviewLinks');
+
+             if (!resultsContainer || !scoreContainer || !linksContainer) {
+                 console.error("Result display elements not found for", targetElementId);
+                 return;
+             }
+
+            let scoreHTML = `あなたのスコア: ${score} / ${TOTAL_QUESTIONS}`;
+            let linksHTML = '';
+
+            if (incorrectQuestionsInfo.length > 0) {
+                linksHTML += '<p>復習が必要な項目:</p><ul>';
+                incorrectQuestionsInfo.forEach(qInfo => {
+                    const sectionHeadingElement = document.querySelector(`#${qInfo.sectionId} h2`);
+                    const sectionTitle = sectionHeadingElement ? sectionHeadingElement.textContent.trim() : `セクション ${qInfo.sectionId}`;
+                    linksHTML += `<li><a href="#${qInfo.sectionId}" data-section-id="${qInfo.sectionId}">${sectionTitle}</a> (問題 ${qInfo.name.substring(1)})</li>`;
+                });
+                linksHTML += '</ul>';
+            } else if (score === TOTAL_QUESTIONS) {
+                scoreHTML += '<p>素晴らしい！全問正解です。</p>';
+            }
+
+            scoreContainer.innerHTML = scoreHTML;
+            linksContainer.innerHTML = linksHTML;
+
+            resultsContainer.style.display = 'block';
+        };
+
+        const displaySkipMessage = () => {
+            const persistentResultsContainer = document.getElementById('persistentTestResults');
+            if (persistentResultsContainer) {
+                persistentResultsContainer.innerHTML = `<h3>事前理解度チェック結果</h3><p>テストはスキップされました。</p>`;
+                const scoreEl = document.getElementById('persistentScore');
+                const linksEl = document.getElementById('persistentReviewLinks');
+                if (scoreEl) scoreEl.innerHTML = '';
+                if (linksEl) linksEl.innerHTML = '';
+                persistentResultsContainer.style.display = 'block';
+            }
+        };
+
+         // Separate handler function for toggling answers
+         const toggleAnswerHandler = (event) => {
+             const button = event.target;
+             const targetId = button.getAttribute('data-target');
+             const answerElement = document.getElementById(targetId);
+             if (answerElement) {
+                 const isHidden = answerElement.style.display === 'none' || !answerElement.style.display;
+                 answerElement.style.display = isHidden ? 'block' : 'none';
+                 // Adjust button text based on context
+                 if (button.closest('.related-pretest')) {
+                     button.textContent = isHidden ? '解答・解説を隠す' : '解答・解説を表示';
+                 } else {
+                      button.textContent = isHidden ? '解答例を隠す' : '解答例を表示';
+                 }
+             }
+         };
+
+        // --- Function to Setup Toggle Buttons ---
+        // Selects ALL buttons with the class .toggle-answer now
+        const setupToggleButtons = (selector = 'button.toggle-answer') => {
+             const toggleButtons = document.querySelectorAll(selector);
+             toggleButtons.forEach(button => {
+                 const targetId = button.getAttribute('data-target');
+                 const answerElement = document.getElementById(targetId);
+
+                 // Set initial button text based on initial state
+                 if (answerElement) {
+                     const isHidden = answerElement.style.display === 'none' || !answerElement.style.display;
+                     if (button.closest('.related-pretest')) {
+                         button.textContent = isHidden ? '解答・解説を表示' : '解答・解説を隠す';
+                     } else {
+                         button.textContent = isHidden ? '解答例を表示' : '解答例を隠す';
+                     }
+                 }
+
+                 // Remove existing listener to prevent duplicates
+                 button.removeEventListener('click', toggleAnswerHandler);
+                 // Add the listener
+                 button.addEventListener('click', toggleAnswerHandler);
+             });
+         };
+
+
+        // --- Event Handlers ---
+        const handleTestSubmit = (event) => {
+            event.preventDefault();
+            const form = document.getElementById('preTestForm');
+            const formData = new FormData(form);
+            let score = 0;
+            const incorrectQuestionsInfo = [];
+
+            const questions = form.querySelectorAll('.test-question');
+            questions.forEach(questionDiv => {
+                const questionName = questionDiv.querySelector('input[type="radio"]').name;
+                const selectedRadio = questionDiv.querySelector(`input[name="${questionName}"]:checked`);
+                const userAnswer = selectedRadio ? selectedRadio.value : null;
+                const correctAnswerRadio = questionDiv.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                const correctAnswer = correctAnswerRadio ? correctAnswerRadio.value : null;
+                const sectionId = questionDiv.dataset.sectionId;
+
+                // Consider unanswered questions as incorrect
+                if (userAnswer !== correctAnswer) {
+                    incorrectQuestionsInfo.push({ name: questionName, sectionId: sectionId });
+                } else {
+                     score++;
+                 }
+            });
+
+            const modalResultsArea = document.getElementById('testResults');
+            if (modalResultsArea) {
+                displayTestResults(score, incorrectQuestionsInfo, 'testResults');
+                modalResultsArea.style.display = 'block';
+                const testButtons = document.getElementById('testButtons');
+                if (testButtons) testButtons.style.display = 'none';
+            }
+
+            displayTestResults(score, incorrectQuestionsInfo, 'persistentTestResults');
+
+            sessionStorage.setItem('preTestCompleted', 'true');
+            const resultData = {
+                score: score,
+                incorrect: incorrectQuestionsInfo // Save name and sectionId
+            };
+            sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+        };
+
+        const handleTestSkip = () => {
+            const modalOverlay = document.getElementById('preTestModalOverlay');
+            modalOverlay.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            displaySkipMessage();
+            sessionStorage.setItem('preTestCompleted', 'true');
+            sessionStorage.setItem('preTestResultData', JSON.stringify({ skipped: true }));
+        };
+
+        // --- Function to Inject Related Pretest Questions ---
+        const injectRelatedPretests = () => {
+            const testQuestions = document.querySelectorAll('#preTestModalContent .test-question');
+            testQuestions.forEach((questionDiv, index) => {
+                const questionNumber = index + 1;
+                const sectionId = questionDiv.dataset.sectionId;
+                const targetSection = document.getElementById(sectionId);
+
+                if (targetSection) {
+                    const questionText = questionDiv.querySelector('p').textContent;
+                    const correctAnswerRadio = questionDiv.querySelector('input[data-correct="true"]');
+                    // **修正箇所:** Correctly get the label text for the correct answer.
+                    let correctAnswerLabelText = '解答が見つかりません';
+                    if (correctAnswerRadio) {
+                        const correctAnswerLabelElement = correctAnswerRadio.closest('label');
+                        if (correctAnswerLabelElement) {
+                            // Clone the label to avoid modifying the original
+                            const clonedLabel = correctAnswerLabelElement.cloneNode(true);
+                            // Find and remove the input element within the clone
+                            const inputElement = clonedLabel.querySelector('input[type="radio"]');
+                            if (inputElement) {
+                                clonedLabel.removeChild(inputElement);
+                            }
+                            // Get the remaining text content
+                            correctAnswerLabelText = clonedLabel.textContent.trim();
+                        }
+                    }
+
+                    // Simple explanation based on question number (customize as needed)
+                    let explanation = '';
+                    switch (questionNumber) {
+                        case 1: explanation = '`plan` は<アクセントのある短母音+1子音字>で終わるため、子音 `p` を重ねて `planned` となります。'; break;
+                        case 2: explanation = '`come` は不規則動詞で、原形-過去形-過去分詞形が come-came-come (A-B-A型) と変化します。'; break;
+                        case 3: explanation = '`beautiful` は動詞 `is` の後に置かれ、主語 `flower` の状態を説明しているため、叙述用法です。'; break;
+                        case 4: explanation = '`good` は不規則変化する形容詞で、比較級は `better` です。'; break;
+                        case 5: explanation = '`-ly` で終わる副詞の多くは、`most` を前に付けて最上級を作ります（`early` など一部例外あり）。'; break;
+                        default: explanation = '基本的なルールを確認しましょう。';
+                    }
+
+                    const relatedTestDiv = document.createElement('div');
+                    relatedTestDiv.className = 'related-pretest';
+                    // Use a unique ID for each related test answer area
+                    const answerId = `related-pretest-q${questionNumber}-answer`;
+
+                    relatedTestDiv.innerHTML = `
+                        <h4>関連する事前チェック問題 (${questionNumber})</h4>
+                        <p class="question-text">${questionText}</p>
+                        <button class="toggle-answer" data-target="${answerId}">解答・解説を表示/非表示</button>
+                        <div class="answer" id="${answerId}">
+                            <p><strong>正解：</strong> ${correctAnswerLabelText}</p>
+                            <p><strong>解説：</strong> ${explanation}</p>
+                        </div>
+                    `;
+                    targetSection.appendChild(relatedTestDiv);
+                }
+            });
+            // After injecting, setup toggle buttons for the newly added elements
+            setupToggleButtons('.related-pretest .toggle-answer');
+        };
+
+
+         // --- Initialization and Event Listeners ---
+         document.addEventListener('DOMContentLoaded', () => {
+             // Progress Bar
+             const progressBar = document.getElementById('progressBar');
+             window.addEventListener('scroll', () => {
+                 const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                 const scrollCurrent = document.documentElement.scrollTop;
+                 if (scrollTotal > 0) {
+                     const scrollPercentage = (scrollCurrent / scrollTotal) * 100;
+                     progressBar.style.width = scrollPercentage + '%';
+                 } else {
+                      progressBar.style.width = '0%';
+                 }
+            });
+
+            // Reading Time
+            const readingTimeElement = document.getElementById('readingTime');
+            if (readingTimeElement) {
+                const time = calculateReadingTime();
+                readingTimeElement.textContent = `読了時間: 約 ${time}分`;
+            }
+
+             // Checklist Interaction
+             const checklists = document.querySelectorAll('.checklist');
+             checklists.forEach(list => {
+                 list.addEventListener('click', (event) => {
+                     if (event.target.tagName === 'LI') {
+                         event.target.classList.toggle('checked');
+                     }
+                 });
+             });
+
+             // Setup ALL Answer Toggle Buttons (Drills, Review, Related Pretest)
+             setupToggleButtons(); // Call without selector to target all '.toggle-answer'
+
+
+            // Scroll Top Button
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+             if (scrollTopBtn) {
+                window.addEventListener('scroll', () => {
+                    scrollTopBtn.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? 'block' : 'none';
+                });
+                scrollTopBtn.addEventListener('click', () => {
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+
+            // Pre-Test Modal Logic & Persistent Results
+            const modalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTest');
+            const modalResultsArea = document.getElementById('testResults');
+             const persistentResultsContainer = document.getElementById('persistentTestResults');
+
+             const testCompleted = sessionStorage.getItem('preTestCompleted') === 'true';
+             const savedResultData = JSON.parse(sessionStorage.getItem('preTestResultData') || 'null');
+
+             if (testCompleted && savedResultData) {
+                 if (savedResultData.skipped) {
+                    displaySkipMessage();
+                 } else {
+                    displayTestResults(savedResultData.score, savedResultData.incorrect, 'persistentTestResults');
+                 }
+            } else if (modalOverlay) {
+                modalOverlay.style.display = 'flex';
+                 document.body.classList.add('modal-open');
+
+                if (preTestForm) preTestForm.addEventListener('submit', handleTestSubmit);
+                if (skipTestBtn) skipTestBtn.addEventListener('click', handleTestSkip);
+
+                if (modalResultsArea) {
+                    modalResultsArea.addEventListener('click', (event) => {
+                        const link = event.target.closest('a[data-section-id]');
+                        if (link) {
+                            event.preventDefault();
+                            const sectionId = link.dataset.sectionId;
+                            modalOverlay.style.display = 'none';
+                            document.body.classList.remove('modal-open');
+                            setTimeout(() => scrollToSection(sectionId), 50);
+                        }
+                    });
+                }
+            }
+
+             // Event delegation for persistent results links
+             if (persistentResultsContainer) {
+                 persistentResultsContainer.addEventListener('click', (event) => {
+                     const link = event.target.closest('a[data-section-id]');
+                     if (link) {
+                         event.preventDefault();
+                         const sectionId = link.dataset.sectionId;
+                         scrollToSection(sectionId);
+                     }
+                 });
+             }
+
+             // Inject related pretest questions into sections
+             injectRelatedPretests();
+
+         });
+    </script>
+</body>
+</html>
