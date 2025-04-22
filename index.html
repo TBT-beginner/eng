@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授業記録</title>
+    <title>授業記録リスト＆カレンダー</title>
     <style>
+        /* --- 基本スタイルと変数 (変更なし) --- */
         :root {
             --primary-color: #007bff; --primary-hover-color: #0056b3; --secondary-color: #6c757d; --light-gray-bg: #f8f9fa; --white-bg: #fff; --text-color: #333; --border-color: #dee2e6; --tag-bg-color: #e2e3e5; --tag-text-color: #4f545c; --info-color: #0dcaf0; --info-hover-color: #0baccc; --warning-border: #ffc107; --warning-bg: #fff3cd; --warning-text: #856404; --warning-strong: #664d03; --danger-color: #dc3545; --danger-hover-color: #c82333; --success-color: #198754; --success-hover-color: #157347; --card-shadow: 0 4px 8px rgba(0,0,0,0.07); --card-hover-shadow: 0 8px 16px rgba(0,0,0,0.1); --border-radius: 8px;
         }
@@ -13,6 +15,46 @@
         h1 { color: var(--primary-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; font-size: 2rem; display: flex; justify-content: space-between; align-items: center; }
         p#description { margin-bottom: 20px; color: var(--secondary-color); font-size: 1.1rem; }
 
+        /* --- 表示モード切り替えボタン (アイコン用) --- */
+        #view-mode-toggle {
+            margin-bottom: 20px;
+            text-align: right; /* 右寄せに変更 */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        #view-mode-toggle button {
+            font-size: 1.5rem; /* アイコンサイズ調整 */
+            line-height: 1; /* ボタン高さ調整 */
+            padding: 8px 10px; /* パディング調整 */
+            width: 45px; /* 幅を固定して正方形に近づける */
+            height: 45px; /* 高さを固定 */
+            cursor: pointer;
+            border: 1px solid var(--border-color); /* 枠線 */
+            background-color: var(--white-bg); /* 背景白 */
+            color: var(--secondary-color); /* アイコン色 */
+            border-radius: var(--border-radius);
+            margin-left: 8px; /* ボタン間のスペース */
+            transition: all 0.3s ease;
+            display: inline-flex; /* アイコン中央揃え */
+            justify-content: center; /* アイコン中央揃え */
+            align-items: center; /* アイコン中央揃え */
+        }
+        #view-mode-toggle button:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+        }
+        #view-mode-toggle button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+        }
+
+        /* --- コンテナの表示/非表示 --- */
+        .view-container { display: none; }
+        .view-container.active { display: block; }
+
+        /* --- フィルター/ソート関連 (変更なし) --- */
         #controls-toggle-area { text-align: right; margin-bottom: 20px; }
         #toggle-controls-button { background-color: var(--white-bg); color: var(--secondary-color); border: 1px solid var(--secondary-color); padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s ease; }
         #toggle-controls-button:hover { background-color: var(--secondary-color); color: #fff; }
@@ -21,78 +63,26 @@
         .control-section label { display: block; font-weight: bold; margin-bottom: 10px; color: #495057; }
         #search-section { position: relative; }
         #search-box { width: 100%; padding: 12px 20px 12px 45px; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 1rem; box-sizing: border-box; }
-        #search-section::before {
-            content: '🔍'; position: absolute; left: 15px;
-            top: calc(50% + 17px);
-            transform: translateY(-50%); font-size: 1.2rem;
-            color: var(--secondary-color); pointer-events: none; z-index: 1;
-        }
+        #search-section::before { content: '🔍'; position: absolute; left: 15px; top: calc(50% + 17px); transform: translateY(-50%); font-size: 1.2rem; color: var(--secondary-color); pointer-events: none; z-index: 1; }
         #tag-filter-buttons button { background-color: var(--tag-bg-color); color: var(--tag-text-color); border: none; padding: 6px 12px; margin-right: 8px; margin-bottom: 8px; border-radius: 15px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease; }
         #tag-filter-buttons button:hover { background-color: #ced4da; }
         #tag-filter-buttons button:active { transform: scale(0.95); }
         #tag-filter-buttons button.active { background-color: var(--primary-color); color: #fff; }
         #tag-filter-buttons button.show-all.active { background-color: var(--secondary-color); }
-
-        /* --- 日付フィルター --- */
-        #date-filter-section .date-inputs {
-            display: flex;
-            align-items: center;
-            gap: 10px; /* 要素間のスペース */
-            flex-wrap: wrap; /* スマホ表示で折り返す */
-        }
-        #date-filter-section .date-inputs label {
-            margin-bottom: 0; /* labelの下マージンをリセット */
-            font-weight: normal; /* ラベルの太字を解除 */
-            font-size: 0.9em; /* ラベルのフォントサイズ調整 */
-            color: #495057; /* 既存のラベル色に合わせる */
-        }
-        /* 日付入力欄のスタイル調整 */
-        #date-filter-section input[type="date"] {
-            padding: 8px 10px; /* パディング調整 */
-            border: 1px solid var(--border-color);
-            border-radius: 4px; /* 角丸 */
-            font-size: 0.95rem; /* フォントサイズ調整 */
-            box-sizing: border-box; /* paddingを含めて幅計算 */
-            /* width: auto; */ /* 幅を自動調整させたい場合 */
-            max-width: 150px; /* 最大幅を設定（必要に応じて調整） */
-            line-height: 1.5; /* 他の入力欄と高さを合わせる */
-            color: var(--text-color); /* 文字色 */
-            background-color: var(--white-bg); /* 背景色 */
-        }
-        /* 日付クリアボタンのスタイル */
-        #date-clear-button {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 50%; /* 丸くする */
-            width: 28px; /* 幅 */
-            height: 28px; /* 高さ */
-            font-size: 1.2rem; /* バツ印のサイズ */
-            line-height: 1; /* 中央揃えのため */
-            padding: 0; /* パディングリセット */
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            display: flex; /* アイコン中央揃えのため */
-            justify-content: center; /* アイコン中央揃えのため */
-            align-items: center; /* アイコン中央揃えのため */
-            margin-left: 5px; /* 左側に少しスペース */
-        }
-        #date-clear-button:hover {
-            background-color: #5a6268; /* ホバー時の色を少し濃く */
-        }
-        #date-clear-button:active {
-            transform: scale(0.9); /* クリック時のエフェクト */
-        }
-
-
-        /* --- リストヘッダーとソートアイコン --- */
+        #date-filter-section .date-inputs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        #date-filter-section .date-inputs label { margin-bottom: 0; font-weight: normal; font-size: 0.9em; color: #495057; }
+        #date-filter-section input[type="date"] { padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; box-sizing: border-box; max-width: 150px; line-height: 1.5; color: var(--text-color); background-color: var(--white-bg); }
+        #date-clear-button { background-color: var(--secondary-color); color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 1.2rem; line-height: 1; padding: 0; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; display: flex; justify-content: center; align-items: center; margin-left: 5px; }
+        #date-clear-button:hover { background-color: #5a6268; }
+        #date-clear-button:active { transform: scale(0.9); }
         #list-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; }
         #sort-icon-button { background-color: transparent; border: none; color: var(--secondary-color); font-size: 0.9rem; cursor: pointer; padding: 5px 8px; border-radius: 4px; transition: background-color 0.2s ease, color 0.2s ease; display: flex; align-items: center; gap: 5px; }
         #sort-icon-button:hover { background-color: #e9ecef; }
         #sort-icon-button .sort-icon { font-weight: bold; font-size: 1.1em; line-height: 1; display: inline-block; width: 1em; text-align: center; }
 
-        /* --- カードリスト関連 --- */
-        #record-list-container {}
+
+        /* --- カードリスト関連 (変更なし) --- */
+        #list-view-container { margin-top: 20px; }
         .record-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
         .record-card { background-color: var(--white-bg); border-radius: var(--border-radius); box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease; opacity: 1; position: relative; }
         .record-card.hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
@@ -106,17 +96,55 @@
         .card-date { font-size: 0.9em; color: var(--secondary-color); margin-bottom: 15px; }
         .card-tags span { display: inline-block; background-color: var(--tag-bg-color); color: var(--tag-text-color); font-size: 0.8rem; font-weight: 500; padding: 4px 10px; border-radius: 12px; margin-right: 6px; margin-bottom: 6px; }
         .card-actions { position: absolute; top: 10px; right: 10px; display: none; z-index: 2; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 4px; }
-        .edit-mode .card-actions { display: flex; gap: 5px; }
+        .edit-mode .record-card .card-actions { display: flex; gap: 5px; }
         .card-actions button { background: none; border: none; cursor: pointer; padding: 3px; font-size: 1.1rem; line-height: 1; transition: transform 0.1s ease; }
         .card-actions button:hover { transform: scale(1.1); }
         .edit-card-btn { color: var(--primary-color); }
         .delete-card-btn { color: var(--danger-color); }
         #no-results { text-align: center; color: var(--secondary-color); padding: 40px 20px; display: none; grid-column: 1 / -1; font-style: italic; }
-        #admin-login-area { text-align: right; margin-top: 40px; }
-        #show-admin-panel-button { padding: 10px 20px; font-size: 0.9rem; color: var(--secondary-color); background-color: transparent; border: 1px solid var(--secondary-color); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
-        #show-admin-panel-button:hover { background-color: var(--secondary-color); color: #fff; }
 
-        /* --- 管理者メニュー用スタイル --- */
+
+        /* --- カレンダーコンテナ (変更なし) --- */
+        #calendar-view-container { max-width: 900px; margin: 20px auto 0 auto; }
+        #calendar-container { background-color: var(--white-bg); border-radius: var(--border-radius); box-shadow: var(--card-shadow); padding: 25px; margin-bottom: 30px; }
+        #calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        #calendar-title { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        #calendar-nav button { background-color: var(--primary-color); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s ease; margin-left: 5px; }
+        #calendar-nav button:hover { background-color: var(--primary-hover-color); }
+        #calendar-nav button:disabled { background-color: var(--secondary-color); cursor: not-allowed; }
+        #calendar-body { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        #calendar-body th, #calendar-body td { border: 1px solid var(--border-color); padding: 10px 5px; text-align: center; vertical-align: top; height: 80px; font-size: 0.9rem; position: relative; box-sizing: border-box; }
+        #calendar-body th { background-color: var(--light-gray-bg); font-weight: bold; color: var(--secondary-color); height: auto; padding: 8px 5px; }
+        #calendar-body th:first-child { color: var(--danger-color); }
+        #calendar-body th:last-child { color: var(--primary-color); }
+        .calendar-day { cursor: pointer; transition: background-color 0.2s ease; }
+        .calendar-day:hover { background-color: #eef; }
+        .calendar-day.today { background-color: #ffffe0; font-weight: bold; }
+        .calendar-day.other-month .date-number { color: #ccc; }
+        .date-number { display: block; margin-bottom: 5px; font-size: 0.85em; }
+        .event-dot { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background-color: var(--success-color); border-radius: 50%; pointer-events: none; }
+
+        /* --- 詳細表示モーダル (変更なし) --- */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.5); padding-top: 60px; }
+        .modal-content { background-color: var(--white-bg); margin: 5% auto; padding: 25px; border: 1px solid #888; width: 80%; max-width: 600px; border-radius: var(--border-radius); box-shadow: 0 5px 15px rgba(0,0,0,0.2); position: relative; }
+        .modal-close-button { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
+        .modal-close-button:hover, .modal-close-button:focus { color: black; text-decoration: none; }
+        .modal-header h2 { margin-top: 0; color: var(--primary-color); }
+        .modal-body { margin-top: 20px; max-height: 60vh; overflow-y: auto; }
+        .modal-record-item { border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 15px; margin-bottom: 15px; position: relative; background-color: var(--light-gray-bg); }
+        .modal-record-item h3 { margin: 0 0 8px 0; font-size: 1.15rem; }
+        .modal-record-item h3 a { text-decoration: none; color: var(--primary-color); }
+        .modal-record-item h3 a:hover { color: var(--primary-hover-color); }
+        .modal-record-item .card-tags span { display: inline-block; background-color: var(--tag-bg-color); color: var(--tag-text-color); font-size: 0.75rem; font-weight: 500; padding: 3px 8px; border-radius: 10px; margin-right: 5px; margin-bottom: 5px; }
+        .modal-record-item .card-actions { position: absolute; top: 10px; right: 10px; display: none; gap: 5px; background: rgba(255, 255, 255, 0.9); padding: 3px; border-radius: 4px; }
+        .edit-mode .modal-record-item .card-actions { display: flex; }
+        .modal-record-item .card-actions button { background: none; border: none; cursor: pointer; padding: 3px; font-size: 1rem; line-height: 1; transition: transform 0.1s ease; }
+        .modal-record-item .card-actions button:hover { transform: scale(1.1); }
+        .modal-record-item .edit-card-btn { color: var(--primary-color); }
+        .modal-record-item .delete-card-btn { color: var(--danger-color); }
+        .modal-no-events { color: var(--secondary-color); font-style: italic; }
+
+        /* --- 管理者メニュー用スタイル (変更なし) --- */
         #admin-panel { display: none; padding: 25px; margin-top: 20px; background-color: #e7f1ff; border: 1px solid var(--primary-color); border-radius: var(--border-radius); box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1); }
         #admin-panel h3 { margin-top: 0; margin-bottom: 20px; color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 8px; font-size: 1.4rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
         #admin-panel h4 { margin-top: 20px; margin-bottom: 10px; color: var(--secondary-color); font-size: 1.1rem; }
@@ -133,53 +161,55 @@
         #toggle-edit-mode-button { font-size: 0.9rem; padding: 5px 10px; margin-left: auto; background-color: var(--info-color); color: white; }
         #toggle-edit-mode-button:hover { background-color: var(--info-hover-color); }
         #toggle-edit-mode-button.active { background-color: var(--warning-strong); }
-        #close-admin-panel-button {
-            background-color: var(--tag-bg-color); border: 1px solid var(--text-color);
-            color: var(--text-color); font-size: 0.9rem; padding: 5px 10px; border-radius: 4px; cursor: pointer;
-            transition: all 0.2s ease; margin: 0; margin-left: 10px;
-        }
-        #close-admin-panel-button:hover {
-            background-color: var(--text-color); color: #fff; border-color: var(--text-color);
-        }
+        #close-admin-panel-button { background-color: var(--tag-bg-color); border: 1px solid var(--text-color); color: var(--text-color); font-size: 0.9rem; padding: 5px 10px; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; margin: 0; margin-left: 10px; }
+        #close-admin-panel-button:hover { background-color: var(--text-color); color: #fff; border-color: var(--text-color); }
+        #admin-login-area { text-align: right; margin-top: 40px; }
+        #show-admin-panel-button { padding: 10px 20px; font-size: 0.9rem; color: var(--secondary-color); background-color: transparent; border: 1px solid var(--secondary-color); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
+        #show-admin-panel-button:hover { background-color: var(--secondary-color); color: #fff; }
 
-        /* --- レスポンシブ --- */
+        /* --- レスポンシブ (変更なし) --- */
         @media (max-width: 768px) {
             .page-container { margin: 15px; padding: 15px; }
-            h1 { font-size: 1.8rem; flex-direction: column; align-items: flex-start; }
-            #controls-toggle-area { text-align: left; width: 100%; margin-top: 10px; }
+            h1 { font-size: 1.8rem; }
+            #view-mode-toggle button { font-size: 1.3rem; padding: 6px 8px; width: 40px; height: 40px; }
+            #calendar-view-container { margin-left: 0; margin-right: 0; max-width: 100%; }
+            #calendar-title { font-size: 1.3rem; }
+            #calendar-nav button { padding: 6px 10px; font-size: 0.8rem; }
+            #calendar-body th, #calendar-body td { height: 60px; padding: 5px 2px; font-size: 0.8rem; }
+            .date-number { font-size: 0.8em; }
+            .event-dot { width: 5px; height: 5px; bottom: 5px; }
             .record-list { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
             #list-header { justify-content: flex-end; }
+            .modal-content { width: 90%; margin: 10% auto; padding: 20px; }
         }
         @media (max-width: 576px) {
+            h1 { flex-direction: column; align-items: flex-start; }
+            #view-mode-toggle { text-align: center; border-bottom: none; padding-bottom: 0; }
+            #view-mode-toggle button { /*display: inline-block; width: auto; margin: 5px;*/ } /* スマホでは左右に並べる方がスペース効率良いかも */
+            #calendar-title { font-size: 1.1rem; margin-bottom: 10px; width: 100%; text-align: center; }
+            #calendar-header { flex-wrap: wrap; justify-content: center; }
+            #calendar-nav { width: 100%; display: flex; justify-content: space-between; margin-top: 10px; }
+            #calendar-body th, #calendar-body td { height: 50px; padding: 3px 1px; font-size: 0.75rem; }
+            .date-number { margin-bottom: 3px; }
+            .event-dot { width: 4px; height: 4px; bottom: 4px; }
             .record-list { grid-template-columns: 1fr; }
             .controls { padding: 15px; }
             #tag-filter-buttons button { margin-right: 5px; margin-bottom: 5px; padding: 5px 10px; }
-
-            /* スマホ表示時の日付フィルター調整 */
-            #date-filter-section .date-inputs {
-                gap: 8px; /* スマホでは少し詰める */
-            }
-            #date-filter-section input[type="date"] {
-                /* width: calc(50% - 25px); */ /* 2つの入力欄を横並びにする場合（調整が必要かも） */
-                width: 100%; /* または、各入力欄を1行にする */
-                max-width: none; /* 最大幅解除 */
-                margin-bottom: 8px; /* 下に少しスペース */
-            }
-            #date-filter-section .date-inputs label {
-                width: auto; /* ラベル幅自動 */
-            }
-            #date-clear-button {
-               /* margin-left: auto; */ /* クリアボタンを右端に配置する場合 */
-               margin-top: 5px; /* 上の要素とのスペース */
-            }
-
+            #date-filter-section .date-inputs { gap: 8px; }
+            #date-filter-section input[type="date"] { width: 100%; max-width: none; margin-bottom: 8px; }
+            #date-filter-section .date-inputs label { width: auto; }
+            #date-clear-button { margin-top: 5px; }
+            .modal-content { width: 95%; margin: 15% auto; padding: 15px; }
+            .modal-header h2 { font-size: 1.2rem; }
+            .modal-record-item { padding: 10px; }
+            .modal-record-item h3 { font-size: 1rem; }
+            .modal-record-item .card-tags span { font-size: 0.7rem; padding: 2px 6px; }
             #admin-panel h3 { font-size: 1.2rem; flex-wrap: wrap; }
-            #admin-panel button:not(#close-admin-panel-button) { width: calc(50% - 5px); margin-right: 10px; margin-bottom: 10px; }
+            #admin-panel button:not(#close-admin-panel-button) { width: calc(50% - 5px); margin-right: 10px; margin-bottom: 10px; font-size: 0.9rem; padding: 8px 10px; }
             #admin-panel button:nth-of-type(2n):not(#close-admin-panel-button) { margin-right: 0; }
             #clear-cards-button { width: 100%; margin-right: 0; }
-            #admin-login-area { text-align: center; }
             #toggle-edit-mode-button, #close-admin-panel-button { font-size: 0.8rem; padding: 4px 8px; margin-left: 5px; }
-            .card-actions { top: 5px; right: 5px; }
+            #admin-login-area { text-align: center; }
         }
     </style>
 </head>
@@ -187,54 +217,77 @@
 
 <div class="page-container">
 
-    <h1>授業記録一覧</h1>
+    <h1>授業記録</h1>
 
-    <div id="controls-toggle-area">
-        <button id="toggle-controls-button">フィルター/ソートを開く</button>
+    <!-- ▼▼▼ 表示モード切り替え (アイコンボタン) ▼▼▼ -->
+    <div id="view-mode-toggle">
+        <button id="show-list-view" title="リスト表示">☰</button>
+        <button id="show-calendar-view" title="カレンダー表示">📅</button>
     </div>
+    <!-- ▲▲▲ 表示モード切り替え ▲▲▲ -->
 
-    <div class="controls" id="controls-area">
-        <div class="control-section" id="search-section">
-            <label for="search-box">検索:</label>
-            <input type="search" id="search-box" placeholder="タイトルやタグで検索...">
-        </div>
-        <div class="control-section">
-            <label>タグで絞り込み:</label>
-            <div id="tag-filter-buttons">
-                <button class="show-all active" data-tag="all">すべて表示</button>
-                <!-- タグボタンは動的に追加される -->
+
+    <!-- ▼▼▼ カレンダー表示エリア ▼▼▼ -->
+    <div id="calendar-view-container" class="view-container">
+        <div id="calendar-container">
+            <div id="calendar-header">
+                <span id="calendar-title"></span>
+                <div id="calendar-nav">
+                    <button id="prev-month-button">前月</button>
+                    <button id="today-button">今月</button>
+                    <button id="next-month-button">次月</button>
+                </div>
             </div>
+            <table id="calendar-body">
+                <thead>
+                    <tr>
+                        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
-        <!-- ▼▼▼ 日付フィルターセクション ▼▼▼ -->
-        <div class="control-section" id="date-filter-section">
-            <label>日付で絞り込み:</label>
-            <div class="date-inputs">
-                <label for="date-start">開始日:</label>
-                <input type="date" id="date-start" aria-label="絞り込み開始日">
-                <label for="date-end">終了日:</label>
-                <input type="date" id="date-end" aria-label="絞り込み終了日">
-                <button id="date-clear-button" title="日付フィルターをクリア">×</button>
-            </div>
+    </div>
+    <!-- ▲▲▲ カレンダー表示エリア ▲▲▲ -->
+
+
+    <!-- ▼▼▼ リスト表示エリア (デフォルト表示) ▼▼▼ -->
+    <div id="list-view-container" class="view-container">
+        <!-- フィルター/ソート コントロール -->
+        <div id="controls-toggle-area">
+            <button id="toggle-controls-button">フィルター/ソートを開く</button>
         </div>
-        <!-- ▲▲▲ 日付フィルターセクション ▲▲▲ -->
+        <div class="controls" id="controls-area">
+            <div class="control-section" id="search-section"> <label for="search-box">検索:</label> <input type="search" id="search-box" placeholder="タイトルやタグで検索..."> </div>
+            <div class="control-section"> <label>タグで絞り込み:</label> <div id="tag-filter-buttons"> <button class="show-all active" data-tag="all">すべて表示</button> </div> </div>
+            <div class="control-section" id="date-filter-section"> <label>日付で絞り込み:</label> <div class="date-inputs"> <label for="date-start">開始日:</label> <input type="date" id="date-start"> <label for="date-end">終了日:</label> <input type="date" id="date-end"> <button id="date-clear-button" title="日付フィルターをクリア">×</button> </div> </div>
+        </div>
+        <div id="list-header"> <button id="sort-icon-button" title="日付で並び替え"> <span class="sort-icon">↓</span> 日付順 </button> </div>
+        <!-- カードリスト -->
+        <div id="record-list-container">
+             <ul class="record-list" id="record-list"></ul>
+             <p id="no-results">該当する記録はありません。</p>
+        </div>
     </div>
+    <!-- ▲▲▲ リスト表示エリア ▲▲▲ -->
 
-    <div id="list-header">
-        <button id="sort-icon-button" title="日付で並び替え">
-             <span class="sort-icon">↓</span> <!-- 初期は降順アイコン -->
-             日付順
-        </button>
+
+    <!-- ▼▼▼ イベント詳細表示モーダル (共通) ▼▼▼ -->
+    <div id="event-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" id="modal-close-btn">&times;</span>
+            <div class="modal-header"> <h2 id="modal-date-title"></h2> </div>
+            <div class="modal-body" id="modal-event-list"></div>
+        </div>
     </div>
+    <!-- ▲▲▲ イベント詳細表示モーダル ▲▲▲ -->
 
-    <div id="record-list-container">
-        <ul class="record-list" id="record-list"></ul>
-        <p id="no-results">該当する記録はありません。</p>
-    </div>
 
+    <!-- 管理者パネル (共通) -->
     <div id="admin-panel">
         <h3>
             管理者メニュー
-            <button id="toggle-edit-mode-button">編集</button>
+            <button id="toggle-edit-mode-button">編集モード OFF</button>
             <button id="close-admin-panel-button" title="閉じる">閉じる</button>
         </h3>
         <div id="card-editor">
@@ -260,526 +313,445 @@
         </div>
     </div>
 
+    <!-- 管理者ログインボタン (共通) -->
     <div id="admin-login-area">
         <button id="show-admin-panel-button">管理者ログイン</button>
     </div>
 
 </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 要素取得
-            const recordList = document.getElementById('record-list');
-            const searchBox = document.getElementById('search-box');
-            const toggleControlsButton = document.getElementById('toggle-controls-button');
-            const controlsArea = document.getElementById('controls-area');
-            const searchSection = document.getElementById('search-section');
-            const tagFilterButtonsContainer = document.getElementById('tag-filter-buttons');
-            const sortIconButton = document.getElementById('sort-icon-button');
-            const sortIcon = sortIconButton.querySelector('.sort-icon');
-            const noResultsMessage = document.getElementById('no-results');
-            // 日付フィルター要素取得
-            const dateStartInput = document.getElementById('date-start');
-            const dateEndInput = document.getElementById('date-end');
-            const dateClearButton = document.getElementById('date-clear-button');
-            // 管理者パネル要素
-            const adminPanel = document.getElementById('admin-panel');
-            const cardEditor = document.getElementById('card-editor');
-            const editorModeTitle = document.getElementById('editor-mode-title');
-            const cardIdInput = document.getElementById('editing-card-id');
-            const cardTitleInput = document.getElementById('card-title');
-            const cardUrlInput = document.getElementById('card-url');
-            const cardDateInput = document.getElementById('card-date');
-            const cardTagsInput = document.getElementById('card-tags');
-            const addCardButton = document.getElementById('add-card-button');
-            const updateCardButton = document.getElementById('update-card-button');
-            const cancelEditButton = document.getElementById('cancel-edit-button');
-            const clearCardsButton = document.getElementById('clear-cards-button');
-            const showAdminButton = document.getElementById('show-admin-panel-button');
-            const closeAdminButton = document.getElementById('close-admin-panel-button');
-            const toggleEditModeButton = document.getElementById('toggle-edit-mode-button');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 要素取得 ---
+        // 表示モード関連
+        const viewModeToggle = document.getElementById('view-mode-toggle');
+        const showCalendarViewButton = document.getElementById('show-calendar-view');
+        const showListViewButton = document.getElementById('show-list-view');
+        const calendarViewContainer = document.getElementById('calendar-view-container');
+        const listViewContainer = document.getElementById('list-view-container');
+        // カレンダー関連
+        const calendarContainer = document.getElementById('calendar-container');
+        const calendarTitle = document.getElementById('calendar-title');
+        const calendarBody = document.getElementById('calendar-body').querySelector('tbody');
+        const prevMonthButton = document.getElementById('prev-month-button');
+        const nextMonthButton = document.getElementById('next-month-button');
+        const todayButton = document.getElementById('today-button');
+        // リスト表示関連 (フィルター/ソート/リスト本体)
+        const controlsToggleArea = document.getElementById('controls-toggle-area');
+        const toggleControlsButton = document.getElementById('toggle-controls-button');
+        const controlsArea = document.getElementById('controls-area');
+        const searchBox = document.getElementById('search-box');
+        const tagFilterButtonsContainer = document.getElementById('tag-filter-buttons');
+        const dateStartInput = document.getElementById('date-start');
+        const dateEndInput = document.getElementById('date-end');
+        const dateClearButton = document.getElementById('date-clear-button');
+        const listHeader = document.getElementById('list-header');
+        const sortIconButton = document.getElementById('sort-icon-button');
+        const sortIcon = sortIconButton.querySelector('.sort-icon');
+        const recordList = document.getElementById('record-list');
+        const noResultsMessage = document.getElementById('no-results');
+        // モーダル関連
+        const eventDetailsModal = document.getElementById('event-details-modal');
+        const modalCloseButton = document.getElementById('modal-close-btn');
+        const modalDateTitle = document.getElementById('modal-date-title');
+        const modalEventList = document.getElementById('modal-event-list');
+        // 管理者パネル関連
+        const adminPanel = document.getElementById('admin-panel');
+        const cardEditor = document.getElementById('card-editor');
+        const editorModeTitle = document.getElementById('editor-mode-title');
+        const cardIdInput = document.getElementById('editing-card-id');
+        const cardTitleInput = document.getElementById('card-title');
+        const cardUrlInput = document.getElementById('card-url');
+        const cardDateInput = document.getElementById('card-date');
+        const cardTagsInput = document.getElementById('card-tags');
+        const addCardButton = document.getElementById('add-card-button');
+        const updateCardButton = document.getElementById('update-card-button');
+        const cancelEditButton = document.getElementById('cancel-edit-button');
+        const clearCardsButton = document.getElementById('clear-cards-button');
+        const showAdminButton = document.getElementById('show-admin-panel-button');
+        const closeAdminButton = document.getElementById('close-admin-panel-button');
+        const toggleEditModeButton = document.getElementById('toggle-edit-mode-button');
 
-            // 状態変数
-            let allCardsData = [];
-            let currentSort = 'date-desc';
-            let activeTags = new Set();
-            let searchTerm = '';
-            const storageKey = 'lessonRecordCardsEnhanced';
-            const adminPassword = "oracle";
-            let isAdminInitialized = false;
-            let isEditMode = false;
-            let editingCardId = null;
+        // --- 状態変数 ---
+        let allCardsData = [];
+        const storageKey = 'lessonRecordCardsEnhanced';
+        const adminPassword = "oracle";
+        let isAdminInitialized = false;
+        let isEditMode = false;
+        let editingCardId = null;
+        let currentYear, currentMonth;
+        const today = new Date();
+        let currentViewMode = 'list'; // ★★★ デフォルトを 'list' に変更 ★★★
+        let currentSort = 'date-desc';
+        let activeTags = new Set();
+        let searchTerm = '';
 
-            // 初期データ (HTMLに直接記述されていたもの)
-            const initialHtmlData = [
-                 { id: "init_0", title: "自己紹介", url: "010620250416.html", date: "2025-04-16", tags: ["#導入", "#自己紹介"], isInitial: true },
-                 { id: "init_1", title: "可算名詞と不可算名詞", url: "00可算不可算名詞.html", date: "2025-04-20", tags: ["#文法", "#名詞", "#上級"], isInitial: true },
-                 { id: "init_2", title: "文の種類", url: "01文の種類.html", date: "2025-04-22", tags: ["#文法", "#文構造"], isInitial: true },
-                 { id: "init_3", title: "暗唱体験", url: "010620250417.html", date: "2025-04-17", tags: ["#導入", "#暗唱"], isInitial: true },
-                 { id: "init_4", title: "語源入門", url: "vocabuild.html", date: "2025-04-17", tags: ["#語源", "#接頭辞", "#語根", "#接尾辞"], isInitial: true },
-                 { id: "init_5", title: "暗唱練習+品詞導入", url: "010620250418.html", date: "2025-04-18", tags: ["#暗唱", "#品詞", "#文法"], isInitial: true },
-                 { id: "init_6", title: "音読筆写+可算/不可算名詞", url: "010620250421.html", date: "2025-04-21", tags: ["#暗唱", "#名詞", "#文法"], isInitial: true }
-            ];
+        // --- 初期データ (変更なし) ---
+         const initialHtmlData = [
+              { id: "init_0", title: "自己紹介", url: "010620250416.html", date: "2025-04-16", tags: ["#導入", "#自己紹介"], isInitial: true },
+              { id: "init_1", title: "可算名詞と不可算名詞", url: "00可算不可算名詞.html", date: "2025-04-20", tags: ["#文法", "#名詞", "#上級"], isInitial: true },
+              { id: "init_2", title: "文の種類", url: "01文の種類.html", date: "2025-04-22", tags: ["#文法", "#文構造"], isInitial: true },
+              { id: "init_3", title: "暗唱体験", url: "010620250417.html", date: "2025-04-17", tags: ["#導入", "#暗唱"], isInitial: true },
+              { id: "init_4", title: "語源入門", url: "vocabuild.html", date: "2025-04-17", tags: ["#語源", "#接頭辞", "#語根", "#接尾辞"], isInitial: true },
+              { id: "init_5", title: "暗唱練習+品詞導入", url: "010620250418.html", date: "2025-04-18", tags: ["#暗唱", "#品詞", "#文法"], isInitial: true },
+              { id: "init_6", title: "音読筆写+可算/不可算名詞", url: "010620250421.html", date: "2025-04-21", tags: ["#暗唱", "#名詞", "#文法"], isInitial: true }
+         ];
 
-            // ヘルパー関数
-            const generateId = () => `card_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-            const getStoredCards = () => { const cardsJson = localStorage.getItem(storageKey); try { return cardsJson ? JSON.parse(cardsJson) : []; } catch (e) { console.error("Error parsing stored cards:", e); return []; } };
-            const storeAdminCards = () => { const adminCards = allCardsData.filter(card => !card.isInitial); localStorage.setItem(storageKey, JSON.stringify(adminCards)); };
 
-            // カード要素作成
-            const createCardElement = (cardData) => {
-                const li = document.createElement('li');
-                li.classList.add('record-card');
-                if (!cardData.isInitial) { li.classList.add('admin-added'); }
-                li.dataset.id = cardData.id;
-                li.dataset.title = cardData.title.toLowerCase();
-                li.dataset.tags = cardData.tags.map(t => t.toLowerCase()).join(' ');
-                li.dataset.date = cardData.date; // data属性に日付を追加
+        // --- ヘルパー関数 (変更なし) ---
+        const generateId = () => `card_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const getStoredCards = () => { const cardsJson = localStorage.getItem(storageKey); try { return cardsJson ? JSON.parse(cardsJson) : []; } catch (e) { console.error("Error parsing stored cards:", e); return []; } };
+        const storeAdminCards = () => { const adminCards = allCardsData.filter(card => !card.isInitial); localStorage.setItem(storageKey, JSON.stringify(adminCards)); };
+        const formatDateString = (date) => date.toISOString().split('T')[0];
+        const parseDateString = (dateString) => {
+            if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
+            const parts = dateString.split('-');
+            return new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+        };
 
-                const linkArea = document.createElement('div');
-                linkArea.classList.add('card-link-area');
+        // --- 表示モード切り替え関数 (変更なし) ---
+        const setViewMode = (mode) => {
+            currentViewMode = mode;
+            showCalendarViewButton.classList.toggle('active', mode === 'calendar');
+            showListViewButton.classList.toggle('active', mode === 'list');
+            calendarViewContainer.classList.toggle('active', mode === 'calendar');
+            listViewContainer.classList.toggle('active', mode === 'list');
+            const showListControls = mode === 'list';
+            controlsToggleArea.style.display = showListControls ? 'block' : 'none';
+             if (showListControls) {
+                 const controlsOpen = toggleControlsButton.textContent.includes('閉じる');
+                 controlsArea.style.display = controlsOpen ? 'block' : 'none';
+             } else {
+                 controlsArea.style.display = 'none';
+             }
+            listHeader.style.display = showListControls ? 'flex' : 'none';
+        };
 
-                const link = document.createElement('a');
-                link.href = cardData.url;
+        // --- リスト表示: カード要素作成 (変更なし) ---
+        const createCardElement = (cardData) => {
+             const li = document.createElement('li');
+             li.classList.add('record-card');
+             if (!cardData.isInitial) { li.classList.add('admin-added'); }
+             li.dataset.id = cardData.id;
+             li.dataset.title = cardData.title.toLowerCase();
+             li.dataset.tags = cardData.tags.map(t => t.toLowerCase()).join(' ');
+             li.dataset.date = cardData.date;
+             const linkArea = document.createElement('div');
+             linkArea.classList.add('card-link-area');
+             const link = document.createElement('a');
+             link.href = cardData.url;
+             const titleH3 = document.createElement('h3');
+             titleH3.textContent = cardData.title;
+             link.appendChild(titleH3);
+             const dateDiv = document.createElement('div');
+             dateDiv.classList.add('card-date');
+             dateDiv.textContent = cardData.date;
+             link.appendChild(dateDiv);
+             const tagsDiv = document.createElement('div');
+             tagsDiv.classList.add('card-tags');
+             cardData.tags.forEach(tag => {
+                 const tagSpan = document.createElement('span');
+                 tagSpan.textContent = tag;
+                 tagsDiv.appendChild(tagSpan);
+             });
+             link.appendChild(tagsDiv);
+             linkArea.appendChild(link);
+             li.appendChild(linkArea);
+             const actionsDiv = document.createElement('div');
+             actionsDiv.classList.add('card-actions');
+             const editBtn = document.createElement('button');
+             editBtn.innerHTML = '✏️'; editBtn.title = '編集'; editBtn.classList.add('edit-card-btn'); editBtn.dataset.id = cardData.id;
+             editBtn.addEventListener('click', (e) => { e.stopPropagation(); startEditing(cardData.id); });
+             const deleteBtn = document.createElement('button');
+             deleteBtn.innerHTML = '🗑️'; deleteBtn.title = '削除'; deleteBtn.classList.add('delete-card-btn'); deleteBtn.dataset.id = cardData.id;
+             deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteCard(cardData.id); });
+             actionsDiv.appendChild(editBtn);
+             actionsDiv.appendChild(deleteBtn);
+             li.appendChild(actionsDiv);
+             return li;
+        };
 
-                const titleH3 = document.createElement('h3');
-                titleH3.textContent = cardData.title;
-                link.appendChild(titleH3);
+        // --- リスト表示: タグ関連 (変更なし) ---
+        const getAllUniqueTags = () => { const tags = new Set(); allCardsData.forEach(card => { card.tags.forEach(tag => tags.add(tag)); }); return Array.from(tags).sort(); };
+        const renderTagButtons = () => {
+             const existingTagButtons = tagFilterButtonsContainer.querySelectorAll('button:not(.show-all)');
+             existingTagButtons.forEach(btn => btn.remove());
+             const uniqueTags = getAllUniqueTags();
+             uniqueTags.forEach(tag => {
+                 const button = document.createElement('button');
+                 button.textContent = tag;
+                 button.dataset.tag = tag;
+                 if (activeTags.has(tag)) { button.classList.add('active'); }
+                 button.addEventListener('click', () => handleTagClick(button));
+                 tagFilterButtonsContainer.appendChild(button);
+             });
+             const showAllButton = tagFilterButtonsContainer.querySelector('.show-all');
+             showAllButton.classList.toggle('active', activeTags.size === 0);
+        };
+        const handleTagClick = (clickedButton) => {
+             const clickedTag = clickedButton.dataset.tag;
+             const showAllButton = tagFilterButtonsContainer.querySelector('.show-all');
+             if (clickedTag === 'all') {
+                 activeTags.clear();
+                 renderTagButtons();
+             } else {
+                 showAllButton.classList.remove('active');
+                 if (activeTags.has(clickedTag)) activeTags.delete(clickedTag);
+                 else activeTags.add(clickedTag);
+                 clickedButton.classList.toggle('active');
+                 if (activeTags.size === 0) showAllButton.classList.add('active');
+             }
+             applyFiltersAndSort();
+        };
 
-                const dateDiv = document.createElement('div');
-                dateDiv.classList.add('card-date');
-                dateDiv.textContent = cardData.date; // 日付表示
-                link.appendChild(dateDiv);
+        // --- リスト表示: ソートアイコン更新 (変更なし) ---
+        const updateSortIcon = () => {
+             sortIcon.textContent = currentSort === 'date-desc' ? '↓' : '↑';
+             sortIconButton.title = `日付で並び替え (${currentSort === 'date-desc' ? '新しい順' : '古い順'})`;
+        };
 
-                const tagsDiv = document.createElement('div');
-                tagsDiv.classList.add('card-tags');
-                cardData.tags.forEach(tag => {
-                    const tagSpan = document.createElement('span');
-                    tagSpan.textContent = tag;
-                    tagsDiv.appendChild(tagSpan);
-                });
-                link.appendChild(tagsDiv);
-                linkArea.appendChild(link);
-                li.appendChild(linkArea);
+        // --- リスト表示: フィルターとソートの適用 & 描画 (変更なし) ---
+        const applyFiltersAndSort = () => {
+            const normalizedSearch = searchTerm.toLowerCase();
+            const startDateString = dateStartInput.value;
+            const endDateString = dateEndInput.value;
+            const startDate = startDateString ? parseDateString(startDateString) : null;
+            const endDate = endDateString ? parseDateString(endDateString) : null;
+            const endDateEndOfDay = endDate ? new Date(endDate.getTime() + 24 * 60 * 60 * 1000 - 1) : null;
+            let visibleCount = 0;
+            const fragment = document.createDocumentFragment();
+            const cardElements = recordList.querySelectorAll('.record-card');
+            const cardDataMap = new Map(allCardsData.map(card => [card.id, card]));
 
-                // 編集・削除ボタン (管理者モード用)
-                const actionsDiv = document.createElement('div');
-                actionsDiv.classList.add('card-actions');
-                const editBtn = document.createElement('button');
-                editBtn.innerHTML = '✏️';
-                editBtn.title = '編集';
-                editBtn.classList.add('edit-card-btn');
-                editBtn.dataset.id = cardData.id;
-                editBtn.addEventListener('click', (e) => { e.stopPropagation(); startEditing(cardData.id); });
-                const deleteBtn = document.createElement('button');
-                deleteBtn.innerHTML = '🗑️';
-                deleteBtn.title = '削除';
-                deleteBtn.classList.add('delete-card-btn');
-                deleteBtn.dataset.id = cardData.id;
-                deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteCard(cardData.id); });
-                actionsDiv.appendChild(editBtn);
-                actionsDiv.appendChild(deleteBtn);
-                li.appendChild(actionsDiv);
+            cardElements.forEach(cardElement => {
+                const cardId = cardElement.dataset.id;
+                const cardData = cardDataMap.get(cardId);
+                if (!cardData) { cardElement.classList.add('hidden'); return; }
+                const searchMatch = normalizedSearch === '' || cardData.title.toLowerCase().includes(normalizedSearch) || cardData.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));
+                const tagMatch = activeTags.size === 0 || cardData.tags.some(tag => activeTags.has(tag));
+                let dateMatch = true;
+                const cardDate = parseDateString(cardData.date);
+                if (cardDate && (startDate || endDateEndOfDay)) {
+                    const isAfterStart = !startDate || cardDate >= startDate;
+                    const isBeforeEnd = !endDateEndOfDay || cardDate <= endDateEndOfDay;
+                    dateMatch = isAfterStart && isBeforeEnd;
+                } else if (!cardDate && (startDate || endDateEndOfDay)) { dateMatch = false; }
+                if (searchMatch && tagMatch && dateMatch) { cardElement.classList.remove('hidden'); visibleCount++; }
+                else { cardElement.classList.add('hidden'); }
+            });
 
-                return li;
-            };
-
-            // タグ関連
-            const getAllUniqueTags = () => { const tags = new Set(); allCardsData.forEach(card => { card.tags.forEach(tag => tags.add(tag)); }); return Array.from(tags).sort(); };
-            const renderTagButtons = () => {
-                const existingTagButtons = tagFilterButtonsContainer.querySelectorAll('button:not(.show-all)');
-                existingTagButtons.forEach(btn => btn.remove());
-                const uniqueTags = getAllUniqueTags();
-                uniqueTags.forEach(tag => {
-                    const button = document.createElement('button');
-                    button.textContent = tag;
-                    button.dataset.tag = tag;
-                    if (activeTags.has(tag)) { button.classList.add('active'); }
-                    button.addEventListener('click', () => handleTagClick(button));
-                    tagFilterButtonsContainer.appendChild(button);
-                });
-                const showAllButton = tagFilterButtonsContainer.querySelector('.show-all');
-                showAllButton.classList.toggle('active', activeTags.size === 0);
-            };
-            const handleTagClick = (clickedButton) => {
-                const clickedTag = clickedButton.dataset.tag;
-                const showAllButton = tagFilterButtonsContainer.querySelector('.show-all');
-                if (clickedTag === 'all') {
-                    activeTags.clear();
-                    renderTagButtons(); // ボタンの状態を更新
-                } else {
-                    showAllButton.classList.remove('active');
-                    if (activeTags.has(clickedTag)) {
-                        activeTags.delete(clickedTag);
-                    } else {
-                        activeTags.add(clickedTag);
-                    }
-                    clickedButton.classList.toggle('active');
-                    if (activeTags.size === 0) {
-                        showAllButton.classList.add('active');
-                    }
-                }
-                applyFiltersAndSort(); // フィルター適用
-            };
-
-            // ソートアイコン更新
-            const updateSortIcon = () => {
-                sortIcon.textContent = currentSort === 'date-desc' ? '↓' : '↑';
-                sortIconButton.title = `日付で並び替え (${currentSort === 'date-desc' ? '新しい順' : '古い順'})`;
-            };
-
-            // フィルターとソートの適用
-            const applyFiltersAndSort = () => {
-                const normalizedSearch = searchTerm.toLowerCase();
-                const startDateString = dateStartInput.value; // 開始日入力値 (YYYY-MM-DD or "")
-                const endDateString = dateEndInput.value;   // 終了日入力値 (YYYY-MM-DD or "")
-
-                // Dateオブジェクトに変換 (入力がない場合はnull)
-                // タイムゾーンの問題を避けるため、UTCとして解釈し、日付のみで比較する
-                const startDate = startDateString ? new Date(startDateString + 'T00:00:00Z') : null;
-                // 終了日はその日の終わりまで含むように + 'T23:59:59.999Z'
-                const endDate = endDateString ? new Date(endDateString + 'T23:59:59.999Z') : null;
-
-                let visibleCount = 0;
-                const fragment = document.createDocumentFragment();
-
-                allCardsData.forEach(cardData => {
-                    const cardElement = cardData.element;
-                    if (!cardElement) return;
-
-                    // 検索フィルター
-                    const searchMatch = normalizedSearch === '' ||
-                        cardData.title.toLowerCase().includes(normalizedSearch) ||
-                        cardData.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));
-
-                    // タグフィルター
-                    const tagMatch = activeTags.size === 0 ||
-                        cardData.tags.some(tag => activeTags.has(tag));
-
-                    // ▼▼▼ 日付フィルター ▼▼▼
-                    let dateMatch = true; // デフォルトはtrue（フィルター指定なし）
-                    if (startDate || endDate) {
-                        // カードの日付をUTC Dateオブジェクトに変換（無効な日付の場合はNaNになる）
-                        const cardDate = new Date(cardData.date + 'T00:00:00Z');
-                        // isNaNチェックで無効な日付を弾く
-                        if (!isNaN(cardDate.getTime())) {
-                            const isAfterStart = !startDate || cardDate >= startDate;
-                            const isBeforeEnd = !endDate || cardDate <= endDate;
-                            dateMatch = isAfterStart && isBeforeEnd;
-                        } else {
-                            dateMatch = false; // カードの日付が無効なら非表示
-                            console.warn(`Invalid date format found for card ID ${cardData.id}: ${cardData.date}`);
-                        }
-                    }
-                    // ▲▲▲ 日付フィルター ▲▲▲
-
-                    // 全てのフィルター条件を結合
-                    if (searchMatch && tagMatch && dateMatch) { // ★ dateMatch を追加
-                        cardElement.classList.remove('hidden');
-                        visibleCount++;
-                    } else {
-                        cardElement.classList.add('hidden');
-                    }
-                });
-
-                // 表示されているカードをソート
-                const sortedVisibleCards = allCardsData
-                    .filter(card => !card.element.classList.contains('hidden')) // 非表示のものは除外
-                    .sort((a, b) => {
-                        const dateA = new Date(a.date); // ソート比較用のDateオブジェクト
-                        const dateB = new Date(b.date);
-                        // 無効な日付の場合のエラー回避と比較順序の固定
-                        if (isNaN(dateA.getTime()) && isNaN(dateB.getTime())) return 0;
-                        if (isNaN(dateA.getTime())) return 1; // 無効な日付は最後に
-                        if (isNaN(dateB.getTime())) return -1; // 無効な日付は最後に
-
-                        switch (currentSort) {
-                            case 'date-asc': return dateA - dateB; // 古い順
-                            case 'date-desc': default: return dateB - dateA; // 新しい順
-                        }
-                    });
-
-                // DOM更新
-                recordList.innerHTML = ''; // リストをクリア
-                sortedVisibleCards.forEach(card => fragment.appendChild(card.element));
-                recordList.appendChild(fragment); // ソートされた要素を追加
-
-                // 結果なしメッセージの表示/非表示
-                noResultsMessage.style.display = (visibleCount === 0) ? 'block' : 'none';
-            };
-
-            // カード編集開始
-            const startEditing = (cardId) => {
-                editingCardId = cardId;
-                const cardData = allCardsData.find(card => card.id === cardId);
-                if (!cardData) return;
-
-                cardIdInput.value = cardData.id;
-                cardTitleInput.value = cardData.title;
-                cardUrlInput.value = cardData.url;
-                cardDateInput.value = cardData.date;
-                cardTagsInput.value = cardData.tags.join(', ');
-
-                editorModeTitle.textContent = 'カードを編集';
-                addCardButton.style.display = 'none';
-                updateCardButton.style.display = 'inline-block';
-                cancelEditButton.style.display = 'inline-block';
-
-                // 編集中のカードをハイライト
-                document.querySelectorAll('.record-card.editing').forEach(el => el.classList.remove('editing'));
-                cardData.element.classList.add('editing');
-                // 編集フォームにスクロール
-                adminPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                cardTitleInput.focus(); // タイトル入力欄にフォーカス
-            };
-
-            // カード編集キャンセル
-            const cancelEditing = () => {
-                editingCardId = null;
-                cardIdInput.value = '';
-                cardEditor.reset(); // フォームリセット
-                editorModeTitle.textContent = '新しい授業記録カードを追加';
-                addCardButton.style.display = 'inline-block';
-                updateCardButton.style.display = 'none';
-                cancelEditButton.style.display = 'none';
-                // ハイライト解除
-                document.querySelectorAll('.record-card.editing').forEach(el => el.classList.remove('editing'));
-            };
-
-            // カード更新処理
-            const updateCard = () => {
-                if (!editingCardId) return;
-                const cardIndex = allCardsData.findIndex(card => card.id === editingCardId);
-                if (cardIndex === -1) return;
-
-                const title = cardTitleInput.value.trim();
-                const url = cardUrlInput.value.trim();
-                const date = cardDateInput.value;
-                const tagsRaw = cardTagsInput.value.trim();
-                const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : [];
-
-                if (title && url && date) {
-                    if (url.includes(' ') || url.includes('　')) {
-                        alert('URLにスペースを含めないでください。');
-                        return;
-                    }
-                    const updatedCardData = { ...allCardsData[cardIndex], title, url, date, tags };
-                    allCardsData[cardIndex] = updatedCardData;
-
-                    // 管理者追加カードの場合のみLocalStorage更新
-                    if (!updatedCardData.isInitial) {
-                        storeAdminCards();
-                    }
-
-                    // DOM要素更新
-                    const newElement = createCardElement(updatedCardData);
-                    updatedCardData.element.replaceWith(newElement); // 古い要素を新しい要素で置換
-                    updatedCardData.element = newElement; // データ内の要素参照も更新
-
-                    renderTagButtons(); // タグボタン再描画（タグが変更された可能性があるため）
-                    applyFiltersAndSort(); // リスト再描画
-                    cancelEditing(); // 編集モード終了
-                    alert('カードが更新されました！');
-                } else {
-                    alert('タイトル、URL、日付は必須です。');
-                }
-            };
-
-             // カード削除処理
-            const deleteCard = (cardId) => {
-                const cardIndex = allCardsData.findIndex(card => card.id === cardId);
-                if (cardIndex === -1) return;
-                const cardData = allCardsData[cardIndex];
-
-                if (confirm(`「${cardData.title}」を削除してもよろしいですか？`)) {
-                    cardData.element.remove(); // DOMから削除
-                    allCardsData.splice(cardIndex, 1); // データ配列から削除
-
-                    // 管理者追加カードの場合のみLocalStorage更新
-                    if (!cardData.isInitial) {
-                        storeAdminCards();
-                    }
-
-                    renderTagButtons(); // タグボタン再描画
-                    applyFiltersAndSort(); // リスト再描画
-
-                    // もし削除したカードが編集中だったら編集モードをキャンセル
-                    if (editingCardId === cardId) {
-                        cancelEditing();
-                    }
-                    alert('カードが削除されました。');
-                }
-            };
-
-            // 管理者機能初期化 (初回ログイン時のみ実行)
-            const initAdminFeatures = () => {
-                // 新規追加時のデフォルト日付を今日に
-                cardDateInput.valueAsDate = new Date();
-
-                // カード追加ボタン
-                addCardButton.addEventListener('click', () => {
-                    const title = cardTitleInput.value.trim();
-                    const url = cardUrlInput.value.trim();
-                    const date = cardDateInput.value;
-                    const tagsRaw = cardTagsInput.value.trim();
-                    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : [];
-
-                    if (title && url && date) {
-                        if (url.includes(' ') || url.includes('　')) {
-                           alert('URLにスペースを含めないでください。');
-                           return;
-                        }
-                        const newCardData = { id: generateId(), title, url, date, tags, isInitial: false }; // isInitial: false で管理者追加を示す
-                        newCardData.element = createCardElement(newCardData); // DOM要素を作成
-                        allCardsData.push(newCardData); // データ配列に追加
-                        storeAdminCards(); // LocalStorageに保存
-                        renderTagButtons(); // タグボタン更新
-                        applyFiltersAndSort(); // リスト表示更新
-                        cardEditor.reset(); // フォームリセット
-                        cardDateInput.valueAsDate = new Date(); // 日付を今日にリセット
-                        alert('カードが追加されました！');
-                    } else {
-                        alert('タイトル、URL、日付は必須です。');
-                    }
+            const sortedCards = allCardsData
+                .filter(cardData => {
+                    const cardElement = recordList.querySelector(`.record-card[data-id="${cardData.id}"]`);
+                    return cardElement && !cardElement.classList.contains('hidden');
+                })
+                .sort((a, b) => {
+                    const dateA = parseDateString(a.date); const dateB = parseDateString(b.date);
+                    if (!dateA && !dateB) return 0; if (!dateA) return 1; if (!dateB) return -1;
+                    return currentSort === 'date-asc' ? dateA - dateB : dateB - dateA;
                 });
 
-                // 全管理者カード削除ボタン
-                clearCardsButton.addEventListener('click', () => {
-                    const adminCardsExist = allCardsData.some(card => !card.isInitial);
-                    if (!adminCardsExist) {
-                        alert('管理者メニューから追加されたカードはありません。');
-                        return;
-                    }
-                    if (confirm('本当に追加したすべてのカードを削除しますか？\nこの操作は元に戻せません。')) {
-                        // DOMから削除
-                        allCardsData.filter(card => !card.isInitial).forEach(card => card.element?.remove());
-                        // データ配列から削除
-                        allCardsData = allCardsData.filter(card => card.isInitial);
-                        storeAdminCards(); // LocalStorageを更新 (空にする)
-                        renderTagButtons(); // タグボタン更新
-                        applyFiltersAndSort(); // リスト表示更新
-                        // もし編集中だったカードが削除対象なら編集モードキャンセル
-                        if (editingCardId && !allCardsData.find(c => c.id === editingCardId)) {
-                            cancelEditing();
-                        }
-                        alert('追加されたカードがすべて削除されました。');
-                    }
-                });
+            recordList.innerHTML = '';
+            sortedCards.forEach(cardData => {
+                const cardElement = allCardsData.find(c => c.id === cardData.id)?.element;
+                if (cardElement) fragment.appendChild(cardElement);
+            });
+            recordList.appendChild(fragment);
+            noResultsMessage.style.display = (visibleCount === 0 && allCardsData.length > 0) ? 'block' : 'none';
+            if (editingCardId) {
+                const editingCardElement = recordList.querySelector(`.record-card[data-id="${editingCardId}"]`);
+                if (editingCardElement) editingCardElement.classList.add('editing');
+            }
+        };
 
-                // 管理者パネル閉じるボタン
-                closeAdminButton.addEventListener('click', () => {
-                    adminPanel.style.display = 'none';
-                    // 編集モードも解除
-                    if (isEditMode) {
-                        isEditMode = false;
-                        document.body.classList.remove('edit-mode');
-                        toggleEditModeButton.classList.remove('active');
-                        // 編集中だったらキャンセル
-                        if (editingCardId) {
-                            cancelEditing();
-                        }
-                    }
-                });
+        // --- カレンダー生成関数 (変更なし) ---
+        const generateCalendar = (year, month) => {
+             currentYear = year; currentMonth = month; calendarTitle.textContent = `${year}年 ${month + 1}月`; calendarBody.innerHTML = '';
+             const firstDayOfMonth = new Date(Date.UTC(year, month, 1)); const lastDayOfMonth = new Date(Date.UTC(year, month + 1, 0));
+             const firstDayWeekday = firstDayOfMonth.getUTCDay(); const lastDateOfMonth = lastDayOfMonth.getUTCDate(); const lastDayOfPrevMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+             const eventsByDate = {};
+             allCardsData.forEach(card => {
+                 const cardDateObj = parseDateString(card.date);
+                 if (cardDateObj && cardDateObj.getUTCFullYear() === year && cardDateObj.getUTCMonth() === month) {
+                     const dateStr = formatDateString(cardDateObj); if (!eventsByDate[dateStr]) eventsByDate[dateStr] = []; eventsByDate[dateStr].push(card);
+                 }
+             });
+             let date = 1; let prevMonthDate = lastDayOfPrevMonth - firstDayWeekday + 1; let nextMonthDate = 1;
+             for (let i = 0; i < 6; i++) {
+                 const row = document.createElement('tr');
+                 for (let j = 0; j < 7; j++) {
+                     const cell = document.createElement('td'); cell.classList.add('calendar-day'); const dateNumberSpan = document.createElement('span'); dateNumberSpan.classList.add('date-number'); let cellDateStr = '';
+                     if (i === 0 && j < firstDayWeekday) {
+                         dateNumberSpan.textContent = prevMonthDate; cell.classList.add('other-month'); const prevMonth = month === 0 ? 11 : month - 1; const prevYear = month === 0 ? year - 1 : year; cellDateStr = `${prevYear}-${String(prevMonth + 1).padStart(2, '0')}-${String(prevMonthDate).padStart(2, '0')}`; prevMonthDate++;
+                     } else if (date <= lastDateOfMonth) {
+                         dateNumberSpan.textContent = date; const currentCellDate = new Date(Date.UTC(year, month, date)); cellDateStr = formatDateString(currentCellDate);
+                         if (year === today.getFullYear() && month === today.getMonth() && date === today.getDate()) cell.classList.add('today');
+                         if (eventsByDate[cellDateStr]) { const dot = document.createElement('div'); dot.classList.add('event-dot'); cell.appendChild(dot); } date++;
+                     } else {
+                         dateNumberSpan.textContent = nextMonthDate; cell.classList.add('other-month'); const nextMonth = month === 11 ? 0 : month + 1; const nextYear = month === 11 ? year + 1 : year; cellDateStr = `${nextYear}-${String(nextMonth + 1).padStart(2, '0')}-${String(nextMonthDate).padStart(2, '0')}`; nextMonthDate++;
+                     }
+                     cell.appendChild(dateNumberSpan); cell.dataset.date = cellDateStr; cell.addEventListener('click', () => showEventDetails(cellDateStr)); row.appendChild(cell);
+                 }
+                 calendarBody.appendChild(row);
+                 if (date > lastDateOfMonth && i >= 4) { if (nextMonthDate > 1 || calendarBody.querySelectorAll('tr').length < 6) {} else { break; } }
+             }
+        };
 
-                // 編集モード切り替えボタン
-                toggleEditModeButton.addEventListener('click', () => {
-                    isEditMode = !isEditMode;
-                    document.body.classList.toggle('edit-mode', isEditMode);
-                    toggleEditModeButton.classList.toggle('active', isEditMode);
-                    // 編集モード解除時に編集中だったらキャンセル
-                    if (!isEditMode && editingCardId) {
-                        cancelEditing();
-                    }
-                });
+        // --- イベント詳細表示関数 (変更なし) ---
+        const showEventDetails = (dateString) => {
+             modalDateTitle.textContent = dateString; modalEventList.innerHTML = '';
+             const events = allCardsData.filter(card => card.date === dateString);
+             if (events.length > 0) {
+                 events.sort((a, b) => a.title.localeCompare(b.title));
+                 events.forEach(cardData => {
+                     const itemDiv = document.createElement('div'); itemDiv.classList.add('modal-record-item'); itemDiv.dataset.id = cardData.id;
+                     const titleH3 = document.createElement('h3'); const link = document.createElement('a'); link.href = cardData.url; link.textContent = cardData.title; link.target = "_blank"; titleH3.appendChild(link); itemDiv.appendChild(titleH3);
+                     const tagsDiv = document.createElement('div'); tagsDiv.classList.add('card-tags'); cardData.tags.forEach(tag => { const tagSpan = document.createElement('span'); tagSpan.textContent = tag; tagsDiv.appendChild(tagSpan); }); itemDiv.appendChild(tagsDiv);
+                     const actionsDiv = document.createElement('div'); actionsDiv.classList.add('card-actions');
+                     const editBtn = document.createElement('button'); editBtn.innerHTML = '✏️'; editBtn.title = '編集'; editBtn.classList.add('edit-card-btn'); editBtn.dataset.id = cardData.id; editBtn.addEventListener('click', (e) => { e.stopPropagation(); startEditing(cardData.id); eventDetailsModal.style.display = 'none'; });
+                     const deleteBtn = document.createElement('button'); deleteBtn.innerHTML = '🗑️'; deleteBtn.title = '削除'; deleteBtn.classList.add('delete-card-btn'); deleteBtn.dataset.id = cardData.id; deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); deleteCard(cardData.id); const itemToRemove = modalEventList.querySelector(`.modal-record-item[data-id="${cardData.id}"]`); if (itemToRemove) itemToRemove.remove(); if (modalEventList.children.length === 0) modalEventList.innerHTML = '<p class="modal-no-events">この日の記録はありません。</p>'; });
+                     actionsDiv.appendChild(editBtn); actionsDiv.appendChild(deleteBtn); itemDiv.appendChild(actionsDiv);
+                     modalEventList.appendChild(itemDiv);
+                 });
+             } else { modalEventList.innerHTML = '<p class="modal-no-events">この日の記録はありません。</p>'; }
+             document.body.classList.toggle('edit-mode', isEditMode);
+             eventDetailsModal.style.display = 'block';
+        };
 
-                // 更新・キャンセルボタン (イベントリスナーは初回のみ設定)
-                updateCardButton.addEventListener('click', updateCard);
-                cancelEditButton.addEventListener('click', cancelEditing);
+        // --- カード編集開始 (変更なし) ---
+        const startEditing = (cardId) => {
+             editingCardId = cardId; const cardData = allCardsData.find(card => card.id === cardId); if (!cardData) return;
+             if (adminPanel.style.display === 'none' || adminPanel.style.display === '') { adminPanel.style.display = 'block'; if (!isAdminInitialized) initAdminFeatures(); }
+             cardIdInput.value = cardData.id; cardTitleInput.value = cardData.title; cardUrlInput.value = cardData.url; cardDateInput.value = cardData.date; cardTagsInput.value = cardData.tags.join(', ');
+             editorModeTitle.textContent = 'カードを編集'; addCardButton.style.display = 'none'; updateCardButton.style.display = 'inline-block'; cancelEditButton.style.display = 'inline-block';
+             document.querySelectorAll('.record-card.editing').forEach(el => el.classList.remove('editing'));
+             if (currentViewMode === 'list' && cardData.element) { cardData.element.classList.add('editing'); }
+             adminPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }); cardTitleInput.focus();
+        };
 
-                isAdminInitialized = true; // 初期化済みフラグ
-            };
+        // --- カード編集キャンセル (変更なし) ---
+        const cancelEditing = () => {
+             if (editingCardId) { const cardElement = recordList.querySelector(`.record-card[data-id="${editingCardId}"]`); if (cardElement) cardElement.classList.remove('editing'); }
+             editingCardId = null; cardIdInput.value = ''; cardTitleInput.value = ''; cardUrlInput.value = ''; cardDateInput.value = ''; cardTagsInput.value = '';
+             editorModeTitle.textContent = '新しい授業記録カードを追加'; addCardButton.style.display = 'inline-block'; updateCardButton.style.display = 'none'; cancelEditButton.style.display = 'none';
+        };
 
-            // アプリケーション初期化
-            const initializeApp = () => {
-                // データ読み込み (初期データ + LocalStorage)
-                const storedCards = getStoredCards();
-                // IDがないデータにIDを付与（過去データ互換性のため）
-                const ensureId = (card) => ({ ...card, id: card.id || generateId() });
-                allCardsData = [...initialHtmlData.map(ensureId), ...storedCards.map(ensureId)];
+        // --- カード更新処理 (変更なし) ---
+        const updateCard = () => {
+             if (!editingCardId) return; const cardIndex = allCardsData.findIndex(card => card.id === editingCardId); if (cardIndex === -1) return;
+             const title = cardTitleInput.value.trim(); const url = cardUrlInput.value.trim(); const date = cardDateInput.value; const tagsRaw = cardTagsInput.value.trim(); const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : [];
+             if (title && url && date) {
+                 if (url.includes(' ') || url.includes('　')) { alert('URLにスペースを含めないでください。'); return; } if (!parseDateString(date)) { alert('日付の形式が正しくありません (YYYY-MM-DD)'); return; }
+                 const oldCardData = allCardsData[cardIndex]; const updatedCardData = { ...oldCardData, title, url, date, tags }; allCardsData[cardIndex] = updatedCardData;
+                 if (!updatedCardData.isInitial) storeAdminCards();
+                 const newElement = createCardElement(updatedCardData);
+                 if (oldCardData.element) { oldCardData.element.replaceWith(newElement); updatedCardData.element = newElement; }
+                 else { updatedCardData.element = newElement; recordList.appendChild(newElement); }
+                 renderTagButtons(); applyFiltersAndSort(); generateCalendar(currentYear, currentMonth);
+                 cancelEditing(); alert('カードが更新されました！');
+             } else { alert('タイトル、URL、日付は必須です。'); }
+        };
 
-                // 初期カードリスト描画
-                recordList.innerHTML = ''; // 一旦クリア
-                allCardsData.forEach(cardData => {
-                    cardData.element = createCardElement(cardData); // 各カードのDOM要素を作成し、データに紐付ける
-                    recordList.appendChild(cardData.element);
-                });
+        // --- カード削除処理 (変更なし) ---
+        const deleteCard = (cardId) => {
+            const cardIndex = allCardsData.findIndex(card => card.id === cardId); if (cardIndex === -1) return; const cardData = allCardsData[cardIndex];
+            if (editingCardId === cardId) cancelEditing();
+            if (confirm(`「${cardData.title}」(${cardData.date}) を削除してもよろしいですか？`)) {
+                if (cardData.element) cardData.element.remove();
+                allCardsData.splice(cardIndex, 1);
+                if (!cardData.isInitial) storeAdminCards();
+                renderTagButtons(); applyFiltersAndSort(); generateCalendar(currentYear, currentMonth);
+                alert('カードが削除されました。');
+            }
+        };
 
-                // タグボタン描画
-                renderTagButtons();
-
-                // フィルター/ソート コントロール開閉ボタン
-                toggleControlsButton.addEventListener('click', () => {
-                    const isHidden = controlsArea.style.display === 'none' || controlsArea.style.display === '';
-                    controlsArea.style.display = isHidden ? 'block' : 'none';
-                    toggleControlsButton.textContent = isHidden ? 'フィルター/ソートを閉じる' : 'フィルター/ソートを開く';
-                    // 閉じる時に検索ワードをクリアする場合（任意）
-                    // if (!isHidden && searchTerm) {
-                    //     searchTerm = '';
-                    //     searchBox.value = '';
-                    //     applyFiltersAndSort();
-                    // }
-                });
-
-                // 検索ボックス
-                searchBox.addEventListener('input', (e) => {
-                    searchTerm = e.target.value;
-                    applyFiltersAndSort();
-                });
-
-                // ソートボタン
-                sortIconButton.addEventListener('click', () => {
-                    currentSort = currentSort === 'date-desc' ? 'date-asc' : 'date-desc';
-                    updateSortIcon(); // アイコン表示を更新
-                    applyFiltersAndSort(); // ソートして再表示
-                });
-
-                // 「すべて表示」タグボタン
-                tagFilterButtonsContainer.querySelector('.show-all').addEventListener('click', () => handleTagClick(tagFilterButtonsContainer.querySelector('.show-all')));
-
-                // ▼▼▼ 日付フィルターのイベントリスナーを追加 ▼▼▼
-                dateStartInput.addEventListener('change', applyFiltersAndSort);
-                dateEndInput.addEventListener('change', applyFiltersAndSort);
-                dateClearButton.addEventListener('click', () => {
-                    dateStartInput.value = ''; // 開始日をクリア
-                    dateEndInput.value = '';   // 終了日をクリア
-                    applyFiltersAndSort();     // フィルターを再適用
-                });
-                // ▲▲▲ 日付フィルターのイベントリスナーを追加 ▲▲▲
+        // --- 管理者機能初期化 (変更なし) ---
+        const initAdminFeatures = () => {
+             cardDateInput.valueAsDate = new Date();
+             addCardButton.addEventListener('click', () => {
+                 const title = cardTitleInput.value.trim(); const url = cardUrlInput.value.trim(); const date = cardDateInput.value; const tagsRaw = cardTagsInput.value.trim(); const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t).map(t => t.startsWith('#') ? t : '#' + t) : [];
+                 if (title && url && date) {
+                     if (url.includes(' ') || url.includes('　')) { alert('URLにスペースを含めないでください。'); return; } if (!parseDateString(date)) { alert('日付の形式が正しくありません (YYYY-MM-DD)'); return; }
+                     const newCardData = { id: generateId(), title, url, date, tags, isInitial: false }; newCardData.element = createCardElement(newCardData); allCardsData.push(newCardData); storeAdminCards();
+                     renderTagButtons(); recordList.appendChild(newCardData.element); applyFiltersAndSort(); generateCalendar(currentYear, currentMonth);
+                     cardTitleInput.value = ''; cardUrlInput.value = ''; cardTagsInput.value = ''; cardDateInput.valueAsDate = new Date(); alert('カードが追加されました！');
+                 } else { alert('タイトル、URL、日付は必須です。'); }
+             });
+             clearCardsButton.addEventListener('click', () => {
+                 const adminCardsExist = allCardsData.some(card => !card.isInitial); if (!adminCardsExist) { alert('管理者メニューから追加されたカードはありません。'); return; }
+                 if (confirm('本当に追加したすべてのカードを削除しますか？\nこの操作は元に戻せません。')) {
+                     if (editingCardId && !allCardsData.find(c => c.id === editingCardId)?.isInitial) cancelEditing();
+                     allCardsData = allCardsData.filter(card => { if (!card.isInitial) { card.element?.remove(); return false; } return true; }); storeAdminCards();
+                     renderTagButtons(); applyFiltersAndSort(); generateCalendar(currentYear, currentMonth); alert('追加されたカードがすべて削除されました。');
+                 }
+             });
+             closeAdminButton.addEventListener('click', () => {
+                 adminPanel.style.display = 'none'; if (isEditMode) { isEditMode = false; document.body.classList.remove('edit-mode'); toggleEditModeButton.textContent = '編集モード OFF'; toggleEditModeButton.classList.remove('active'); if (editingCardId) cancelEditing(); }
+             });
+             toggleEditModeButton.addEventListener('click', () => {
+                 isEditMode = !isEditMode; document.body.classList.toggle('edit-mode', isEditMode); toggleEditModeButton.classList.toggle('active', isEditMode); toggleEditModeButton.textContent = isEditMode ? '編集モード ON' : '編集モード OFF';
+                 if (!isEditMode && editingCardId) cancelEditing();
+                 if (eventDetailsModal.style.display === 'block') { const modalDate = modalDateTitle.textContent; showEventDetails(modalDate); }
+             });
+             updateCardButton.addEventListener('click', updateCard);
+             cancelEditButton.addEventListener('click', cancelEditing);
+             isAdminInitialized = true;
+        };
 
 
-                // 管理者ログインボタン
-                showAdminButton.addEventListener('click', () => {
-                    if (adminPanel.style.display === 'block') return; // すでに表示されている場合は何もしない
-                    const enteredPassword = prompt("管理者パスワードを入力してください:");
-                    if (enteredPassword === adminPassword) {
-                        adminPanel.style.display = 'block';
-                        // 初回のみ管理者機能関連のイベントリスナーを設定
-                        if (!isAdminInitialized) {
-                            initAdminFeatures();
-                        }
-                    } else if (enteredPassword !== null && enteredPassword !== "") { // キャンセルではなく、入力があった場合
-                        alert('パスワードが違います。');
-                    }
-                });
+        // --- アプリケーション初期化 ---
+        const initializeApp = () => {
+            const storedCards = getStoredCards();
+            const ensureId = (card) => ({ ...card, id: card.id || generateId() });
+            allCardsData = [...initialHtmlData.map(ensureId), ...storedCards.map(ensureId)];
+            allCardsData.forEach(cardData => { cardData.element = createCardElement(cardData); });
+            recordList.innerHTML = '';
+            allCardsData.forEach(cardData => recordList.appendChild(cardData.element));
 
-                updateSortIcon(); // 初期ソートアイコン設定
-                applyFiltersAndSort(); // 初期表示実行
-            };
+            // ★★★ 初期表示モードを 'list' に設定 ★★★
+            setViewMode('list');
 
-            // アプリケーション実行開始
-            initializeApp();
-        });
-    </script>
+            // 初期カレンダー表示（内部的には実行しておく）
+            const initialDate = new Date();
+            generateCalendar(initialDate.getFullYear(), initialDate.getMonth());
+
+            // 初期リスト表示
+            renderTagButtons();
+            updateSortIcon();
+            applyFiltersAndSort(); // 実際に表示されるので描画実行
+
+            // --- イベントリスナー設定 ---
+            showCalendarViewButton.addEventListener('click', () => setViewMode('calendar'));
+            showListViewButton.addEventListener('click', () => setViewMode('list'));
+            prevMonthButton.addEventListener('click', () => { const newMonth = currentMonth === 0 ? 11 : currentMonth - 1; const newYear = currentMonth === 0 ? currentYear - 1 : currentYear; generateCalendar(newYear, newMonth); });
+            nextMonthButton.addEventListener('click', () => { const newMonth = currentMonth === 11 ? 0 : currentMonth + 1; const newYear = currentMonth === 11 ? currentYear + 1 : currentYear; generateCalendar(newYear, newMonth); });
+            todayButton.addEventListener('click', () => { const todayDate = new Date(); generateCalendar(todayDate.getFullYear(), todayDate.getMonth()); });
+            modalCloseButton.addEventListener('click', () => { eventDetailsModal.style.display = 'none'; document.body.classList.remove('edit-mode'); });
+            window.addEventListener('click', (event) => { if (event.target === eventDetailsModal) { eventDetailsModal.style.display = 'none'; document.body.classList.remove('edit-mode'); } });
+            toggleControlsButton.addEventListener('click', () => {
+                const isHidden = controlsArea.style.display === 'none' || controlsArea.style.display === '';
+                controlsArea.style.display = isHidden ? 'block' : 'none';
+                toggleControlsButton.textContent = isHidden ? 'フィルター/ソートを閉じる' : 'フィルター/ソートを開く';
+            });
+            searchBox.addEventListener('input', (e) => { searchTerm = e.target.value; applyFiltersAndSort(); });
+            sortIconButton.addEventListener('click', () => { currentSort = currentSort === 'date-desc' ? 'date-asc' : 'date-desc'; updateSortIcon(); applyFiltersAndSort(); });
+            tagFilterButtonsContainer.querySelector('.show-all').addEventListener('click', () => handleTagClick(tagFilterButtonsContainer.querySelector('.show-all')));
+            dateStartInput.addEventListener('change', applyFiltersAndSort);
+            dateEndInput.addEventListener('change', applyFiltersAndSort);
+            dateClearButton.addEventListener('click', () => { dateStartInput.value = ''; dateEndInput.value = ''; applyFiltersAndSort(); });
+            showAdminButton.addEventListener('click', () => {
+                 if (adminPanel.style.display === 'block') return;
+                 const enteredPassword = prompt("管理者パスワードを入力してください:");
+                 if (enteredPassword === adminPassword) {
+                     adminPanel.style.display = 'block'; if (!isAdminInitialized) initAdminFeatures();
+                     toggleEditModeButton.textContent = isEditMode ? '編集モード ON' : '編集モード OFF'; toggleEditModeButton.classList.toggle('active', isEditMode);
+                 } else if (enteredPassword !== null && enteredPassword !== "") { alert('パスワードが違います。'); }
+            });
+        };
+
+        initializeApp();
+    });
+</script>
 
 </body>
 </html>
