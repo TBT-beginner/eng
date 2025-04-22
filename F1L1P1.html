@@ -3,49 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>英語長文読解練習 - 完成版v11 (モダンUI)</title>
+    <title>F1L1P1</title>
     <style>
         :root {
-            --primary-color: #5a95e5; /* Slightly softer blue */
-            --secondary-color: #f7b731; /* Slightly softer orange */
-            --background-color: #fdfdff; /* Almost white */
-            --text-color: #373a3c; /* Dark gray */
-            --border-color: #e8e8e8; /* Lighter border */
-            --vocab-color: #e74c3c; /* Slightly softer red */
-            --phrase-marker-color: #999;
-            --hint-color: #777;
-            --explanation-bg: #f5f7fa; /* Light blue-gray */
-            --sound-tips-bg: #fff9e6; /* Light yellow */
-            --tooltip-bg: #333;
-            --tooltip-text: #fff;
-            --svocm-marker-color: #888;
-            --sidebar-width: 260px;
-            --sidebar-bg: #f8f9fa; /* Slightly lighter sidebar */
-            --base-font-size: 16px;
-            --resizer-height: 10px; /* Increase grab area slightly */
-            --footer-height: 60px;
+            --primary-color: #4a90e2; --secondary-color: #f5a623; --background-color: #f8f9fa;
+            --text-color: #373a3c; --border-color: #e8e8e8; --vocab-color: #e74c3c;
+            --phrase-marker-color: #999; --hint-color: #777; --explanation-bg: #f5f7fa;
+            --sound-tips-bg: #fff9e6; --tooltip-bg: #333; --tooltip-text: #fff;
+            --svocm-marker-color: #888; --sidebar-width: 260px; --sidebar-bg: #f8f9fa;
+            --base-font-size: 16px; --resizer-height: 10px; --footer-height: 60px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { font-size: var(--base-font-size); }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.75; /* Slightly increased */
-            color: var(--text-color); background-color: var(--background-color);
+            line-height: 1.75; color: var(--text-color); background-color: var(--background-color);
             display: flex; height: 100vh; overflow: hidden;
             transition: padding-left 0.3s ease;
         }
-
-        /* --- Sidebar --- */
         #settings-sidebar {
             width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
             padding: 25px 20px; overflow-y: auto; transform: translateX(0);
-            transition: transform 0.3s ease; z-index: 1002; display: flex; flex-direction: column; gap: 25px; /* Increased gap */
+            transition: transform 0.3s ease; z-index: 1002; display: flex; flex-direction: column; gap: 25px;
         }
         .settings-group { border-bottom: 1px solid #ddd; padding-bottom: 20px; }
         .settings-group:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 0;}
         .settings-group h4 { font-size: 0.95em; margin-bottom: 15px; color: var(--primary-color); font-weight: 600; }
-        #settings-sidebar label { display: flex; align-items: center; /* Align checkbox and text */ margin-bottom: 12px; cursor: pointer; font-size: 0.9em; user-select: none; }
+        #settings-sidebar label { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; font-size: 0.9em; user-select: none; }
         #settings-sidebar input[type="checkbox"] { margin-right: 10px; transform: scale(1); accent-color: var(--primary-color); }
         .font-size-controls { display: flex; flex-direction: column; gap: 10px; }
         .font-size-controls > div { display: flex; align-items: center; gap: 8px; }
@@ -60,21 +45,17 @@
         .difficulty-switch button.active { background-color: var(--secondary-color); font-weight: bold; color: white; }
         #word-test-sidebar-trigger button { width: 100%; background-color: #28a745; padding: 10px 15px; font-size: 0.95em; border-radius: 5px;}
         #word-test-sidebar-trigger button:hover { background-color: #218838; }
-
-        /* --- Sidebar Toggle (Hamburger) --- */
         #sidebar-toggle {
-            position: fixed; top: 12px; left: 15px; z-index: 1003; background: rgba(255, 255, 255, 0.8); /* Slightly transparent */
+            position: fixed; top: 12px; left: 15px; z-index: 1003; background: rgba(255, 255, 255, 0.8);
             color: var(--primary-color); border: 1px solid var(--border-color); border-radius: 5px;
             padding: 7px 9px; cursor: pointer; display: none; font-size: 1.3em; line-height: 1; backdrop-filter: blur(2px);
         }
         #sidebar-toggle:hover { background-color: rgba(255, 255, 255, 1); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-        /* --- Main Content Area --- */
         #main-content {
             flex-grow: 1; height: 100vh; display: flex; flex-direction: column;
             padding-left: var(--sidebar-width); transition: padding-left 0.3s ease; overflow: hidden;
         }
-        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 15px; gap: 0; overflow: hidden; } /* Increased padding */
+        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 15px; gap: 0; overflow: hidden; }
         #text-area {
             background-color: white; border: 1px solid var(--border-color); border-bottom: none;
             border-radius: 6px 6px 0 0; display: flex; flex-direction: column; overflow: hidden;
@@ -85,30 +66,11 @@
              border-radius: 0 0 6px 6px; overflow: hidden; min-height: 100px;
              display: flex; flex-direction: column; flex-grow: 1; flex-basis: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
-        /* Text Content Wrapper - Increased Padding & Font Size Control */
         #text-content-wrapper { padding: 25px 30px; flex-grow: 1; overflow-y: auto; font-size: 1rem; }
         .tab-content-container { padding: 25px 30px; flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
-
-        /* --- Grab Bar (Resizer) --- */
-        #resizer {
-            height: var(--resizer-height); background-color: #e0e0e0; /* Lighter grab bar */ cursor: ns-resize;
-            flex-shrink: 0; position: relative; display: block; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);
-            transition: background-color 0.2s ease;
-        }
+        #resizer { height: var(--resizer-height); background-color: #e0e0e0; cursor: ns-resize; flex-shrink: 0; position: relative; display: block; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); transition: background-color 0.2s ease; }
         #resizer:hover { background-color: #ccc; }
-        #resizer::before { /* Simple dots */
-            content: "···";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5em;
-            line-height: 0;
-            color: #999;
-            letter-spacing: 2px;
-        }
-
-        /* --- Action Footer (Mobile only) --- */
+        #resizer::before { content: "···"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5em; line-height: 0; color: #999; letter-spacing: 2px; }
         #action-footer {
             position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-height);
             background-color: #ffffff; border-top: 1px solid var(--border-color);
@@ -118,9 +80,6 @@
         #action-footer button { padding: 10px 30px; font-size: 1em; font-weight: 500; border-radius: 6px; }
         #footer-submit-button { background-color: var(--secondary-color); }
         #footer-submit-button:hover:not(:disabled) { background-color: #e09d1f; }
-        /* Removed footer word test button style */
-
-        /* --- Responsive --- */
         @media (max-width: 991px) {
             #settings-sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
             body.sidebar-open #settings-sidebar { transform: translateX(0); }
@@ -134,15 +93,13 @@
             .question-item .submit-button { display: none; }
             .tab-content-container { padding-bottom: calc(var(--footer-height) + 20px); }
         }
-
-        /* --- Other Styles --- */
-        button { border-radius: 5px; } /* Default button rounding */
+        button { border-radius: 5px; }
         button:hover:not(:disabled) { opacity: 0.9; }
         button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
         #sound-tips-area { padding: 12px 20px; background-color: var(--sound-tips-bg); border-bottom: 1px solid var(--border-color); font-size: 0.9em; display: none; }
         #sound-tips-area strong { color: var(--primary-color); }
         body.show-sound-tips #sound-tips-area { display: block; }
-        #original-text p, #simplified-text p, #full-translation-text p, #phrase-translation-text p { margin-bottom: 1.4em; } /* Increased paragraph spacing */
+        #original-text p, #simplified-text p, #full-translation-text p, #phrase-translation-text p { margin-bottom: 1.4em; }
         #full-translation-text, #phrase-translation-text, #simplified-text, .phrase-marker { display: none; }
         body.show-full-translation #full-translation-text, body.show-phrase-translation #phrase-translation-text { display: block; margin-top: 2.5em; border-top: 1px dashed #ccc; padding-top: 1.8em; }
         body.show-phrases .phrase-marker { display: inline; color: var(--phrase-marker-color); font-weight: bold; margin: 0 0.2em; }
@@ -152,9 +109,9 @@
         body:not(.show-simplified) #simplified-text { display: none; }
         .vocab-word { position: relative; text-decoration: none; border-bottom: 1px dashed transparent; transition: border-color 0.2s ease; }
         body.show-vocab .vocab-word.is-predefined { text-decoration: underline wavy var(--vocab-color); text-underline-offset: 3px; text-decoration-thickness: 1px; cursor: help; }
-        .word { cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; padding: 1px 2px; border-radius: 3px; display: inline-block; /* Fix potential baseline issues */ }
-        .word:hover { background-color: #edf4fc; transform: translateY(-1px); } /* Subtle lift on hover */
-        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-3px); /* Add slight vertical offset */ background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 6px 12px; border-radius: 5px; font-size: 0.85em; white-space: nowrap; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .word { cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; padding: 1px 2px; border-radius: 3px; display: inline-block; }
+        .word:hover { background-color: #edf4fc; transform: translateY(-1px); }
+        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-3px); background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 6px 12px; border-radius: 5px; font-size: 0.85em; white-space: nowrap; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tooltip-bg) transparent transparent transparent; }
         body.show-vocab .vocab-word.is-predefined:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
         .svocm-marker { display: none; font-size: 0.75em; color: var(--svocm-marker-color); margin-left: 2px; font-weight: bold; vertical-align: super; user-select: none; }
@@ -171,15 +128,13 @@
         .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0); } }
         .question-item { margin-bottom: 30px; }
-        .question-text { font-weight: 600; /* Semi-bold */ margin-bottom: 15px; line-height: 1.5; font-size: 1.05em; }
+        .question-text { font-weight: 600; margin-bottom: 15px; line-height: 1.5; font-size: 1.05em; }
         .options label { display: block; margin-bottom: 12px; cursor: pointer; padding: 8px 0;}
         .options input[type="radio"] { margin-right: 10px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
         .hint-toggle { margin-top: 15px; margin-bottom: 10px; font-size: 0.9em; }
         .hint-toggle label { cursor: pointer; color: var(--hint-color); display: inline-flex; align-items: center; }
         .hint-toggle input[type="checkbox"] { margin-right: 8px; vertical-align: middle; }
         .hint-text { display: none; font-size: 0.9em; color: var(--hint-color); padding: 12px; background-color: #f8f9fa; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 18px; }
-        .submit-button { margin-top: 18px; background-color: var(--secondary-color); padding: 10px 20px; font-size: 0.95em; font-weight: 500; border-radius: 5px; }
-        .submit-button:hover:not(:disabled) { background-color: #e09d1f; }
         .explanation { display: none; margin-top: 25px; padding: 20px; background-color: var(--explanation-bg); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.95em; }
         .explanation h4 { margin-bottom: 15px; color: var(--primary-color); font-size: 1.1em; }
         .explanation p { margin-bottom: 12px; line-height: 1.7; }
@@ -207,13 +162,13 @@
         #word-test-result-area h4 { margin-bottom: 15px; }
         #word-test-result-area ul { list-style: none; padding-left: 0; }
         #word-test-result-area li { margin-bottom: 8px; font-size: 0.9em; line-height: 1.6; }
-        #word-test-result-area li strong { margin-right: 8px; display: inline-block; min-width: 100px;} /* Align words */
+        #word-test-result-area li strong { margin-right: 8px; display: inline-block; min-width: 100px;}
 
         @media (max-width: 768px) {
             body { height: auto; overflow: auto; }
             #word-menu button { padding: 8px 12px; font-size: 0.9em; }
             .word-test-content { width: 95%; margin: 8% auto; padding: 20px; }
-            .tab-button { padding: 12px 15px; font-size: 0.9em;} /* Adjust tab button padding */
+            .tab-button { padding: 12px 15px; font-size: 0.9em;}
         }
     </style>
 </head>
@@ -555,7 +510,7 @@
     const testFeedback = document.getElementById('test-feedback');
     const actionFooter = document.getElementById('action-footer');
     const footerSubmitButton = document.getElementById('footer-submit-button');
-    // footerWordTestButton is removed from DOM elements
+    // const footerWordTestButton = document.getElementById('footer-word-test-button'); // Removed
 
     function initialize() {
         setupWordClickListeners();
@@ -615,7 +570,7 @@
                  }
             });
         });
-        wordTestStartButtonSidebar.addEventListener('click', startWordTest); // Only sidebar button now
+        wordTestStartButtonSidebar.addEventListener('click', startWordTest);
         footerSubmitButton.addEventListener('click', handleFooterSubmit);
         closeTestModalButton.addEventListener('click', closeWordTest);
         prevWordButton.addEventListener('click', showPrevWordQuestion);
@@ -791,20 +746,21 @@
          const options = questionItem.querySelectorAll(`input[name="${questionId}"]`);
          const selectedOption = questionItem.querySelector(`input[name="${questionId}"]:checked`);
 
-         if (!selectedOption || button.disabled) return;
+         if (!selectedOption || button.disabled || !explanationDiv) return; // Add check for explanationDiv
 
          const userAnswer = selectedOption.value;
          const correctAnswer = correctAnswers[questionId];
          let resultMessage = '<h4>解説</h4>';
          resultMessage += (userAnswer === correctAnswer)
              ? '<p style="color: green; font-weight: bold;">正解！</p>'
-             : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer.toUpperCase()})</p>`;
+             : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer ? correctAnswer.toUpperCase() : 'N/A'})</p>`; // Check if correctAnswer exists
 
+         // Use stored HTML ensuring it's not null/undefined
          const originalExplanationHTML = explanationDiv.dataset.originalHtml || '';
          const cleanExplanationHTML = originalExplanationHTML.replace(/<h4>.*?<\/h4>/i, '').replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '').trim();
 
          explanationDiv.innerHTML = resultMessage + cleanExplanationHTML;
-         explanationDiv.style.display = 'block'; // Ensure display is block
+         explanationDiv.style.display = 'block';
 
          options.forEach(input => input.disabled = true);
          button.disabled = true;
@@ -815,10 +771,8 @@
 
     function initializeResizer() {
         let isResizing = false;
-        if (!resizer) return; // Exit if resizer doesn't exist
-
+        if (!resizer) return;
         resizer.addEventListener('mousedown', (e) => {
-            // Prevent resizing on small screens where it's hidden
             if (window.innerWidth <= 991) return;
             isResizing = true;
             dragStartY = e.clientY;
@@ -827,7 +781,7 @@
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
             document.body.style.userSelect = 'none';
-            document.body.style.cursor = 'ns-resize'; // Change cursor for whole body
+            document.body.style.cursor = 'ns-resize';
         });
 
         function handleMouseMove(e) {
@@ -850,7 +804,7 @@
                 document.removeEventListener('mousemove', handleMouseMove);
                 document.removeEventListener('mouseup', handleMouseUp);
                 document.body.style.userSelect = '';
-                document.body.style.cursor = ''; // Reset cursor
+                document.body.style.cursor = '';
             }
         }
     }
@@ -907,10 +861,16 @@
          let contentHTML = '<div class="test-question">';
          if (question.type === 'mcq') {
              let optionsHTML = '';
-             question.options.forEach((option) => {
-                 const isChecked = userTestAnswers[question.word] === option;
-                 optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
-             });
+             // Ensure options is an array before iterating
+             if (Array.isArray(question.options)) {
+                 question.options.forEach((option) => {
+                     const isChecked = userTestAnswers[question.word] === option;
+                     optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
+                 });
+             } else {
+                 console.error("Invalid options data for MCQ:", question);
+                 optionsHTML = "<p style='color:red'>選択肢エラー</p>";
+             }
              contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${question.word}">${optionsHTML}</div>`;
          } else if (question.type === 'link') {
              const infoText = predefinedLower.includes(question.word.toLowerCase()) ? "この単語の選択肢データがありません。" : "この単語は確認用です。";
@@ -923,9 +883,13 @@
          wordTestUI.innerHTML = contentHTML;
 
          if (question.type === 'mcq') {
-             wordTestUI.querySelectorAll(`input[name="word-${question.word}"]`).forEach(radio => {
-                 radio.addEventListener('change', (e) => { userTestAnswers[question.word] = e.target.value; });
-             });
+             // Ensure event listeners are added only if options exist
+             const optionsContainer = wordTestUI.querySelector(`.test-options[data-word="${question.word}"]`);
+             if (optionsContainer) {
+                optionsContainer.querySelectorAll(`input[name="word-${question.word}"]`).forEach(radio => {
+                     radio.addEventListener('change', (e) => { userTestAnswers[question.word] = e.target.value; });
+                 });
+             }
          }
          updateTestNavigation(index);
      }
@@ -997,7 +961,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', initialize);
-
 </script>
 
 </body>
