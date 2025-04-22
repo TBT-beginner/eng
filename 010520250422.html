@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 冠詞・人称代名詞・be動詞/一般動詞 (2025/4/22)</title>
+    <style>
+        /* --- 基本設定とCSS変数 --- */
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #28A745; /* 緑 */
+            --color-accent: #FD7E14;  /* オレンジ */
+            --color-link: #28A745;
+            --color-border: #DEE2E6;
+            --color-answer-bg: #F8F9FA;
+            --color-test-result-bg: #FFFBEB; /* 淡い黄色 */
+            --color-test-result-border: #FFEEBA;
+            --color-related-test-bg: #F1F8E9; /* 淡い緑 */
+            --color-related-test-border: #DCEDC8;
+            --font-family-base: 'Noto Sans JP', sans-serif, Meiryo, 'Hiragino Kaku Gothic ProN', sans-serif; /* 日本語フォント追加 */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: 1.8; /* 行間を少し広めに */
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            font-size: 16px; /* 基本の文字サイズ */
+        }
+
+        /* --- プログレスバー --- */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* --- コンテナ --- */
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 30px 40px;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- タイポグラフィ --- */
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.3rem; /* 少し大きく */
+            margin-bottom: 25px; /* 少し間隔をあける */
+            border-bottom: 3px solid var(--color-primary); /*線を太く*/
+            padding-bottom: 15px;
+            font-weight: 700; /* 太字 */
+        }
+
+        h2 {
+            color: var(--color-primary);
+            font-size: 1.8rem; /* 少し大きく */
+            margin-top: 45px; /* セクション間の間隔 */
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-border); /* 線を少し太く */
+            font-weight: 700; /* 太字 */
+        }
+
+        h3 {
+            font-size: 1.4rem; /* 少し大きく */
+            margin-top: 35px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            padding-left: 12px; /* 少しインデント */
+            border-left: 5px solid var(--color-primary); /* 左線を太く */
+            font-weight: 700; /* 太字 */
+        }
+
+        p {
+            margin-bottom: 1.2rem; /* 段落下のマージン調整 */
+            font-size: 1.05rem; /* 本文を少し大きく */
+        }
+
+        ul, ol {
+            margin-bottom: 1.2rem;
+            padding-left: 30px; /* インデント調整 */
+        }
+
+        li {
+            margin-bottom: 0.7rem; /* リスト項目の間隔 */
+            font-size: 1.05rem; /* 本文に合わせて調整 */
+        }
+
+        strong {
+            font-weight: 700; /* より強調 */
+             color: var(--color-accent); /* アクセントカラーで強調 */
+        }
+
+        .highlight {
+            background-color: #FFF3CD; /* 淡い黄色 */
+            padding: 0.3em 0.5em; /* パディング調整 */
+            border-radius: 4px; /* 角丸 */
+            font-weight: bold; /* 強調 */
+            color: #856404; /* 黄色に合う濃い色 */
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            font-weight: bold; /* リンクも少し強調 */
+            transition: color 0.2s ease, text-decoration 0.2s ease;
+        }
+        a:hover {
+            color: darken(var(--color-link), 15%); /* ホバー色調整 */
+            text-decoration: underline;
+        }
+
+        /* --- 各要素のスタイル --- */
+        #readingTime {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 30px; /* 少し間隔をあける */
+            display: block; /* ブロック要素に */
+            text-align: right;
+        }
+
+        .summary-box {
+            background-color: #E8F5E9; /* より淡い緑 */
+            border: 1px solid #C8E6C9;
+            border-left: 6px solid var(--color-primary); /* 左線を太く */
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 6px;
+        }
+        .summary-box h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 1.5rem; /* 見出しサイズ調整 */
+            color: var(--color-primary);
+            border-bottom: none;
+        }
+        .summary-box ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+            font-size: 1.05rem; /* リスト内容のフォントサイズ */
+        }
+         .summary-box li {
+             margin-bottom: 0.8rem;
+         }
+
+        #tableOfContents {
+            background-color: var(--bg-main);
+            border: 1px solid var(--color-border);
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 6px;
+        }
+        #tableOfContents h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 1.5rem;
+            border-bottom: none;
+            color: var(--color-primary);
+        }
+        #tableOfContents ol {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            padding-left: 30px; /* インデント調整 */
+            margin-bottom: 0;
+            font-size: 1.05rem; /* 目次項目のフォントサイズ */
+        }
+        #tableOfContents li {
+            margin-bottom: 12px; /* 目次項目の間隔 */
+            break-inside: avoid-column;
+        }
+        /* レスポンシブ対応: スマホでは1カラム */
+        @media (max-width: 600px) {
+            #tableOfContents ol {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+        }
+
+        #persistentTestResults, .related-pretest {
+            padding: 25px; /* パディング増やす */
+            margin-top: 35px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+        }
+        #persistentTestResults {
+            background-color: var(--color-test-result-bg);
+            border: 2px solid var(--color-test-result-border); /* ボーダー強調 */
+        }
+        #persistentTestResults h2 {
+             margin-top: 0;
+             margin-bottom: 18px;
+             font-size: 1.5rem;
+             border-bottom: none;
+             color: var(--color-primary);
+        }
+        #persistentTestResults ul {
+            padding-left: 25px; /* インデント調整 */
+            list-style: disc;
+            font-size: 1.05rem; /* フォントサイズ調整 */
+        }
+        #persistentTestResults li {
+            margin-bottom: 8px; /* 間隔調整 */
+        }
+        #persistentTestResults p {
+            font-size: 1.1rem; /* スコア表示を少し大きく */
+        }
+
+        .related-pretest {
+            background-color: var(--color-related-test-bg);
+            border: 2px solid var(--color-related-test-border); /* ボーダー強調 */
+        }
+        .related-pretest h3 {
+            margin-top: 0;
+            font-size: 1.2rem; /* 見出し調整 */
+            border-left: none;
+            padding-left: 0;
+            margin-bottom: 15px; /* 見出し下マージン */
+        }
+
+
+        section {
+            margin-bottom: 45px; /* セクション間マージン */
+        }
+
+        .code-block {
+            background-color: #333; /* ダーク背景 */
+            color: #f0f0f0; /* 明るい文字色 */
+            border: 1px solid #555;
+            padding: 20px; /* パディング増やす */
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace; /* 等幅フォント指定 */
+            overflow-x: auto;
+            margin-bottom: 1.2rem;
+            font-size: 1rem; /* コードの文字サイズ調整 */
+            white-space: pre-wrap; /* 折り返し */
+            word-wrap: break-word; /* 単語の途中でも折り返す */
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e0e0e0; /* 背景色変更 */
+            color: #333; /* 文字色変更 */
+            padding: 0.3em 0.5em;
+            border-radius: 4px;
+            font-size: 0.95em; /* サイズ調整 */
+        }
+
+        blockquote {
+            border-left: 5px solid var(--color-border);
+            padding-left: 20px; /* インデント増やす */
+            margin: 25px 0; /* マージン増やす */
+            color: var(--text-secondary);
+            font-style: italic;
+            background-color: #f9f9f9; /* 背景色追加 */
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 0 5px 5px 0; /* 右側を角丸に */
+        }
+        blockquote p {
+            margin-bottom: 0; /* 引用内の段落マージン削除 */
+        }
+
+        .supplementary-box {
+            background-color: #E3F2FD; /* より淡い青 */
+            border: 1px solid #BBDEFB;
+            border-left: 6px solid #1E88E5; /* 少し濃い青 */
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 6px;
+        }
+        .supplementary-box h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1565C0; /* さらに濃い青 */
+            font-size: 1.2rem; /* 見出しサイズ調整 */
+        }
+        .supplementary-box p, .supplementary-box ul {
+            font-size: 1rem; /* 補足内容のフォントサイズ調整 */
+        }
+
+        /* ドリル解答・レビューセクション */
+        .drill-item, .review-question-item {
+            margin-bottom: 25px; /* 間隔調整 */
+            border-bottom: 1px dashed var(--color-border);
+            padding-bottom: 25px;
+        }
+        .drill-item:last-child, .review-question-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .drill-item h3 { /* ドリル番号を見やすく */
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            border-left: none;
+            padding-left: 0;
+        }
+
+        .toggle-answer {
+            background-color: var(--color-accent); /* ボタン色変更 */
+            color: white;
+            border: none;
+            padding: 10px 18px; /* ボタンサイズ調整 */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem; /* 文字サイズ調整 */
+            margin-top: 12px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-weight: bold;
+        }
+        .toggle-answer:hover {
+            background-color: darken(var(--color-accent), 10%);
+            transform: translateY(-1px); /* わずかに浮き上がる効果 */
+        }
+        .answer {
+            background-color: var(--color-answer-bg);
+            border: 1px solid var(--color-border);
+            padding: 20px; /* パディング増やす */
+            margin-top: 18px;
+            border-radius: 6px;
+            display: none; /* 初期状態は非表示 */
+            font-size: 1.05rem; /* 解答の文字サイズ */
+        }
+        .answer p:last-child {
+            margin-bottom: 0;
+        }
+        .answer strong { /* 解答内の強調 */
+            color: var(--color-primary);
+        }
+
+        /* チェックリスト */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            position: relative;
+            padding-left: 35px; /* アイコンスペース確保 */
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: color 0.2s ease, opacity 0.2s ease; /* opacity追加 */
+            font-size: 1.1rem; /* 少し大きく */
+        }
+        .checklist li::before {
+            content: '□'; /* チェックボックスの表現変更 */
+            position: absolute;
+            left: 0;
+            top: 1px; /* 位置微調整 */
+            font-size: 1.4em; /* アイコンサイズ調整 */
+            color: var(--color-primary);
+            transition: content 0.2s ease;
+            font-weight: bold; /* アイコン太字 */
+        }
+        .checklist li.checked::before {
+            content: '☑'; /* チェック状態の表現変更 */
+            color: var(--color-accent); /* チェック時の色変更 */
+        }
+        .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            opacity: 0.7; /* 少し薄く */
+        }
+
+        /* 確認問題の解答欄 */
+        .review-questions textarea {
+            width: 100%;
+            min-height: 100px; /* 少し高く */
+            padding: 12px; /* パディング調整 */
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            font-family: var(--font-family-base);
+            font-size: 1.05rem; /* フォントサイズ */
+            margin-top: 8px;
+            resize: vertical;
+            background-color: #fdfdfd; /* 少し背景色 */
+        }
+        .review-questions textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2); /* フォーカス時のスタイル */
+        }
+
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 25px;
+            border-top: 1px solid var(--color-border);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        /* --- トップへ戻るボタン --- */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px; /* 位置調整 */
+            right: 25px;
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px; /* サイズ調整 */
+            height: 55px;
+            font-size: 28px; /* アイコンサイズ調整 */
+            cursor: pointer;
+            display: none; /* 初期非表示 */
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* 影追加 */
+            transition: opacity 0.3s ease, background-color 0.2s ease;
+        }
+        #scrollTopBtn:hover {
+            background-color: darken(var(--color-accent), 10%);
+        }
+
+        /* --- 事前テストモーダル --- */
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* 背景を少し濃く */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            overflow-y: auto; /* モーダル自体が長い場合にスクロール */
+        }
+
+        #preTestModal {
+            background-color: var(--bg-content);
+            padding: 35px 45px; /* パディング調整 */
+            border-radius: 10px; /* 角丸調整 */
+            max-width: 90%;
+            width: 750px; /* 幅調整 */
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* 影を強く */
+        }
+
+        #preTestModal h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--color-primary);
+            font-size: 1.8rem; /* 見出し調整 */
+            text-align: center;
+        }
+         #preTestModal > p { /* モーダルの導入文 */
+             text-align: center;
+             margin-bottom: 30px;
+             font-size: 1.1rem;
+         }
+
+        .test-question {
+            margin-bottom: 30px; /* 問題間の間隔 */
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .test-question:last-of-type {
+            border-bottom: none;
+            margin-bottom: 35px;
+        }
+
+        .test-question p { /* 問題文 */
+            font-weight: bold;
+            margin-bottom: 15px; /* 問題文と選択肢の間隔 */
+            font-size: 1.1rem; /* 問題文のサイズ */
+            line-height: 1.6; /* 問題文の行間 */
+        }
+
+        .test-options label {
+            display: block;
+            margin-bottom: 10px; /* 選択肢の間隔 */
+            cursor: pointer;
+            padding: 10px 15px; /* 選択肢のパディング */
+            border-radius: 5px;
+            border: 1px solid var(--color-border); /* 枠線追加 */
+            transition: background-color 0.2s, border-color 0.2s;
+            font-size: 1.05rem; /* 選択肢のフォントサイズ */
+        }
+        .test-options label:hover {
+             background-color: #f5f5f5; /* ホバー背景色 */
+             border-color: #ccc;
+        }
+         .test-options input[type="radio"]:checked + span { /* 選択中のテキスト */
+             font-weight: bold;
+             color: var(--color-primary);
+         }
+        .test-options input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.1); /* ラジオボタン少し大きく */
+        }
+
+        .test-actions {
+            display: flex;
+            justify-content: space-around; /* ボタン配置調整 */
+            margin-top: 35px;
+        }
+
+        #submitTest, #skipTest {
+            padding: 14px 30px; /* ボタンサイズ調整 */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem; /* ボタン文字サイズ */
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-weight: bold;
+            min-width: 150px; /* 最低幅 */
+        }
+
+        #submitTest {
+            background-color: var(--color-accent);
+            color: white;
+        }
+        #submitTest:hover {
+            background-color: darken(var(--color-accent), 10%);
+            transform: translateY(-1px);
+        }
+
+        #skipTest {
+            background-color: var(--text-secondary);
+            color: white;
+        }
+        #skipTest:hover {
+            background-color: darken(var(--text-secondary), 10%);
+            transform: translateY(-1px);
+        }
+
+        #testResults {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: var(--color-test-result-bg);
+            border: 2px solid var(--color-test-result-border); /* 枠線強調 */
+            border-radius: 6px;
+        }
+        #testResults h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: var(--color-primary);
+            border-left: none;
+            padding-left: 0;
+            font-size: 1.5rem; /* 見出し調整 */
+            text-align: center;
+        }
+        #testResults p { /* スコア表示 */
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        #testResults ul {
+            padding-left: 25px;
+            list-style: disc;
+        }
+        #testResults li {
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        /* --- ツールチップ --- */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--color-accent); /* 下線をドットに */
+            text-decoration-thickness: 1.5px; /*線の太さ少し強調*/
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 110%; /* 少し上に */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(51, 51, 51, 0.95); /* 少し透過 */
+            color: #fff;
+            padding: 8px 12px; /* パディング調整 */
+            border-radius: 5px;
+            font-size: 0.9em;
+            white-space: normal; /* 折り返し許可 */
+            width: max-content; /* 内容に合わせる */
+            max-width: 200px; /* 最大幅 */
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            margin-bottom: 8px; /* ツールチップとテキストの間隔 */
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* 影追加 */
+            font-weight: normal; /* 通常の太さ */
+            line-height: 1.4; /* 行間調整 */
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- ハイライト用クラス --- */
+        .highlight-temp {
+            background-color: #FFF9C4 !important; /* より柔らかい黄色 */
+            transition: background-color 1s ease-out; /* ゆっくり解除 */
+            box-shadow: 0 0 10px #FFF9C4; /* 光る効果 */
+        }
+
+        /* --- レスポンシブ対応 --- */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px auto;
+                padding: 20px;
+            }
+            h1 { font-size: 1.9rem; }
+            h2 { font-size: 1.6rem; }
+            h3 { font-size: 1.3rem; }
+            body { font-size: 15px; }
+            #preTestModal {
+                padding: 25px;
+                width: 95%;
+            }
+             #scrollTopBtn {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+         @media (max-width: 480px) {
+             body { line-height: 1.7; } /* スマホでは少し詰める */
+             h1 { font-size: 1.7rem; }
+             h2 { font-size: 1.4rem; }
+             h3 { font-size: 1.2rem; }
+             .container {
+                 padding: 15px;
+             }
+             #tableOfContents ol {
+                 columns: 1;
+                 -webkit-columns: 1;
+                 -moz-columns: 1;
+             }
+             .test-actions {
+                 flex-direction: column;
+             }
+             #submitTest, #skipTest {
+                 width: 100%;
+                 margin-bottom: 10px;
+                 padding: 12px 20px;
+                 font-size: 1rem;
+             }
+             #skipTest {
+                 margin-bottom: 0;
+             }
+             .code-block { padding: 15px; font-size: 0.9rem; }
+             #preTestModal { padding: 20px; }
+             [data-tooltip]::after { max-width: 150px; }
+         }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <div id="preTestModalOverlay" style="display: none;">
+        <div id="preTestModal">
+            <h2>事前理解度チェック</h2>
+            <p>授業内容の理解を深めるために、簡単なテストを行います。<br>気軽に挑戦してみてください。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="section-articles">
+                    <p>1. 次の文の下線部に入れるのに最も適切な冠詞を選びなさい。<br>Take ____ umbrella.</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q1" value="a"><span> a</span></label>
+                        <label><input type="radio" name="q1" value="an" data-correct="true"><span> an</span></label>
+                        <label><input type="radio" name="q1" value="the"><span> the</span></label>
+                        <label><input type="radio" name="q1" value="x"><span> × (不要)</span></label>
+                    </div>
+                </div>
+                <div class="test-question" data-section-id="section-pronouns">
+                    <p>2. 次の文の下線部に入れるのに最も適切な語を選びなさい。<br>I saw ____ at the party.</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q2" value="he"><span> he</span></label>
+                        <label><input type="radio" name="q2" value="him" data-correct="true"><span> him</span></label>
+                        <label><input type="radio" name="q2" value="his"><span> his</span></label>
+                    </div>
+                </div>
+                <div class="test-question" data-section-id="section-be-general">
+                     <p>3. 次の文の()内に入れるのに最も適切な語を選びなさい。<br>Does Mike (____) to school?</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q3" value="walk" data-correct="true"><span> walk</span></label>
+                        <label><input type="radio" name="q3" value="walks"><span> walks</span></label>
+                    </div>
+                </div>
+
+                <div class="test-actions">
+                    <button type="submit" id="submitTest">採点する</button>
+                    <button type="button" id="skipTest">テストをスキップ</button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3>テスト結果</h3>
+                <p>スコア: <span id="testScore">-</span>/<span id="testTotal">3</span> 点</p>
+                <div id="reviewLinks"></div>
+                 <button type="button" id="closeModalBtn" class="toggle-answer" style="margin-top: 20px; background-color: var(--color-accent);">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>授業記録: 冠詞・人称代名詞・be動詞/一般動詞 (2025/4/22)</h1>
+        <p id="readingTime">読了時間の目安: 約 9 分</p>
+
+        <div class="summary-box">
+            <h2>本日の学習内容</h2>
+            <ul>
+                <li>冠詞 (a/an/the/無冠詞) の使い分けの基本ルール</li>
+                <li>人称代名詞の格変化 (主格・所有格・目的格・所有代名詞)</li>
+                <li>be動詞と一般動詞の基本的な違いと活用 (現在形・過去形・疑問文・否定文)</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h2>目次</h2>
+            <ol>
+                <li><a href="#section-articles">冠詞 (Articles) の使い方</a></li>
+                <li><a href="#section-pronouns">人称代名詞 (Personal Pronouns) の変化</a></li>
+                <li><a href="#section-be-general">be動詞と一般動詞の基本</a></li>
+                <li><a href="#drill-answers">ドリル解答・解説</a></li>
+                <li><a href="#review">学習内容の振り返り</a></li>
+                <li><a href="#application">応用と今後の学習</a></li>
+            </ol>
+        </nav>
+
+        <div id="persistentTestResults" style="display: none;">
+            <h2>事前理解度チェック結果</h2>
+            <p>スコア: <span id="persistentScore">-</span>/<span id="persistentTotal">3</span> 点</p>
+            <div id="persistentReviewLinks"></div>
+            <p id="persistentSkipMessage" style="display: none;">事前理解度チェックはスキップされました。</p>
+        </div>
+
+
+        <section id="section-articles">
+            <h2>1. 冠詞 (Articles) の使い方</h2>
+            <p>冠詞は、<strong data-tooltip="人、物、場所などの名前を表す言葉 (例: dog, apple, school)">名詞</strong> の前につけて、その名詞が特定されているか（「その」～）、特定されていないか（「ある」～）を示す目印のようなものです。<code>a</code>、<code>an</code>、<code>the</code> の3種類と、何もつけない「無冠詞」があります。</p>
+
+            <h3>a / an の使い分け</h3>
+            <p><code>a</code> と <code>an</code> は、<strong>「数えられる名詞」が「1つ」</strong>あり、<strong>「特定されていない（初めて話題に出る、どれでもよい）」</strong>場合に使います。「1つの～」という意味です。</p>
+            <p>どちらを使うかは、<strong data-tooltip="つづりではなく、発音で判断します。hで始まっていても母音扱いのhour (an hour) や、uで始まっていても子音扱いのuniversity (a university) などに注意。">直後の単語の最初の「音」</strong>で決まります。</p>
+            <ul>
+                <li><strong data-tooltip="日本語の「あいうえお」に近い音です。">母音</strong>の音で始まる場合 → <code>an</code> を使います。(例: <code class="highlight">an</code> apple, <code class="highlight">an</code> interesting book, <code class="highlight">an</code> hour)</li>
+                <li><strong data-tooltip="母音以外の音です。">子音</strong>の音で始まる場合 → <code>a</code> を使います。(例: <code class="highlight">a</code> dog, <code class="highlight">a</code> big apple, <code class="highlight">a</code> university)</li>
+            </ul>
+            <p>例文: Take <strong class="highlight">an</strong> umbrella. (特定の傘ではなく、どれか1本の傘を持っていきなさい。)</p>
+            <p>例文: I have <strong class="highlight">a</strong> dog and <strong class="highlight">a</strong> cat. (犬と猫を飼っています。 ※初めて話に出すので、聞き手はどの犬・猫か特定できません)</p>
+
+            <h3>the の使い分け</h3>
+            <p><code>the</code> は、<strong>話し手と聞き手の間で「どの名詞のことか共通認識がある（特定できる）」</strong>場合に使います。「その～」という意味合いです。数えられる名詞（単数・複数）、数えられない名詞のどちらにも使えます。</p>
+            <p>主に以下のような場合に使われます。</p>
+            <ul>
+                <li><strong>前に一度話題に出た名詞</strong><br>例: I have a dog. <strong class="highlight">The</strong> dog is cute. (さっき話した「その」犬はかわいいです。)</li>
+                <li><strong>文脈や状況から特定できる名詞</strong><br>例: Please open <strong class="highlight">the</strong> door. (その場にある「その」ドアを開けてください。)</li>
+                <li><strong><strong data-tooltip="太陽、月、地球、空など、通常1つしか考えられないものです。">世の中に一つしかないと考えられるもの</strong></strong><br>例: <strong class="highlight">the</strong> moon, <strong class="highlight">the</strong> sun, <strong class="highlight">the</strong> earth, <strong class="highlight">the</strong> sky</li>
+                <li><strong>最上級や序数詞（～番目）が付く名詞</strong><br>例: <strong class="highlight">the</strong> tallest student (最も背の高い生徒), <strong class="highlight">the</strong> first day (最初の日)</li>
+                 <li><strong>楽器名</strong>（演奏する場合）<br>例: play <strong class="highlight">the</strong> piano (ピアノを弾く)</li>
+            </ul>
+            <p>例文: <strong class="highlight">The</strong> dog sleeps under my bed. (前に述べた「その」犬は私のベッドの下で寝ます。)</p>
+            <p>例文: <strong class="highlight">The</strong> moon is smaller than <strong class="highlight">the</strong> earth. (月も地球も唯一のものなので the をつけます。)</p>
+             <div class="supplementary-box">
+                <h4>The の発音について</h4>
+                <p><code>the</code> の発音は、直後の単語の最初の音によって変化します。</p>
+                <ul>
+                    <li>子音の前: /ðə/ (ザ のような音) 例: the moon /ðə múːn/</li>
+                    <li>母音の前: /ði/ (ジ のような音) 例: the earth /ði ə́ːrθ/, the apple /ði ǽpl/</li>
+                </ul>
+            </div>
+
+            <h3>冠詞が付かない場合 (無冠詞 / Zero Article)</h3>
+            <p>冠詞 (a, an, the) を全くつけない場合もあります。</p>
+            <ul>
+                <li><strong><strong data-tooltip="水(water)、情報(information)、宿題(homework)、お金(money)など、具体的な形がなく、1つ2つと数えにくい名詞です。">数えられない名詞</strong>を一般的な意味で使う場合</strong><br>例: He has useful <strong class="highlight">information</strong>. (彼は役立つ情報を持っています。) ※もし「<strong>その</strong>情報」と特定するなら the information となります。<br>例: I don't have <strong class="highlight">homework</strong> today. (今日は宿題がありません。)</li>
+                <li><strong><strong data-tooltip="dogs (犬たち), apples (りんごたち) など、数えられる名詞が複数ある場合です。">数えられる名詞の複数形</strong>を一般的な意味で使う場合</strong><br>例: I like <strong class="highlight">dogs</strong>. (私は犬が好きです。 ※特定の犬ではなく、犬全般)</li>
+                <li><strong>食事の名前 (breakfast, lunch, dinner)、スポーツ名 (tennis, soccer)、言語名 (Japanese, English)、教科名 (math, science) など</strong><br>例: We have <strong class="highlight">breakfast</strong> at seven. / He plays <strong class="highlight">soccer</strong>.</li>
+                <li><strong>人の名前 (Tom)、ほとんどの地名 (Japan, Tokyo) などの固有名詞</strong><br>※ただし、国名では the United States, the Philippines のように the が付くものもあります。</li>
+                <li><strong>特定の慣用表現</strong><br>例: go to <strong class="highlight">school</strong> (学校へ行く), go to <strong class="highlight">bed</strong> (寝る), by <strong class="highlight">car</strong> (車で), at <strong class="highlight">home</strong> (家で)</li>
+            </ul>
+
+             <div class="related-pretest">
+                <h3>関連する事前テスト問題</h3>
+                <p>1. 次の文の下線部に入れるのに最も適切な冠詞を選びなさい。<br>Take ____ umbrella.</p>
+                <button class="toggle-answer" data-target="related-answer-section-articles-q1">解答・解説を表示</button>
+                <div class="answer" id="related-answer-section-articles-q1">
+                    <p><strong>正解:</strong> an</p>
+                    <p><strong>解説:</strong> "umbrella" は数えられる名詞（1本、2本と数えられます）で、単数形です。最初の音は /ʌ/ (ア) で母音なので、<code>an</code> を使います。「どの傘か特定されていない、一般的な傘を1つ」持っていくように指示しています。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-pronouns">
+            <h2>2. 人称代名詞 (Personal Pronouns) の変化</h2>
+            <p>人称代名詞は、「私」「あなた」「彼」「彼女」のように、人や物を指す名詞の代わりをする言葉です。文の中での役割（「～は」「～の」「～を/に」など）によって形が変わる（格変化する）のが特徴です。</p>
+
+            <h3>人称代名詞の格変化</h3>
+            <p>文中の役割によって人称代名詞がどのように変化するか、下の表で確認しましょう。</p>
+            <table class="pronoun-table" style="width:100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.95rem;">
+                <thead>
+                    <tr style="background-color: var(--bg-main);">
+                        <th style="border: 1px solid var(--color-border); padding: 8px;">人称/数</th>
+                        <th style="border: 1px solid var(--color-border); padding: 8px;">主格<br>(～は/が)</th>
+                        <th style="border: 1px solid var(--color-border); padding: 8px;">所有格<br>(～の)</th>
+                        <th style="border: 1px solid var(--color-border); padding: 8px;">目的格<br>(～を/に)</th>
+                        <th style="border: 1px solid var(--color-border); padding: 8px;">所有代名詞<br>(～のもの)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">1人称単数</td><td style="border: 1px solid var(--color-border); padding: 8px;">I</td><td style="border: 1px solid var(--color-border); padding: 8px;">my</td><td style="border: 1px solid var(--color-border); padding: 8px;">me</td><td style="border: 1px solid var(--color-border); padding: 8px;">mine</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">2人称単数</td><td style="border: 1px solid var(--color-border); padding: 8px;">you</td><td style="border: 1px solid var(--color-border); padding: 8px;">your</td><td style="border: 1px solid var(--color-border); padding: 8px;">you</td><td style="border: 1px solid var(--color-border); padding: 8px;">yours</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">3人称単数(男性)</td><td style="border: 1px solid var(--color-border); padding: 8px;">he</td><td style="border: 1px solid var(--color-border); padding: 8px;">his</td><td style="border: 1px solid var(--color-border); padding: 8px;">him</td><td style="border: 1px solid var(--color-border); padding: 8px;">his</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">3人称単数(女性)</td><td style="border: 1px solid var(--color-border); padding: 8px;">she</td><td style="border: 1px solid var(--color-border); padding: 8px;">her</td><td style="border: 1px solid var(--color-border); padding: 8px;">her</td><td style="border: 1px solid var(--color-border); padding: 8px;">hers</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">3人称単数(物事)</td><td style="border: 1px solid var(--color-border); padding: 8px;">it</td><td style="border: 1px solid var(--color-border); padding: 8px;">its</td><td style="border: 1px solid var(--color-border); padding: 8px;">it</td><td style="border: 1px solid var(--color-border); padding: 8px;">- (なし)</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">1人称複数</td><td style="border: 1px solid var(--color-border); padding: 8px;">we</td><td style="border: 1px solid var(--color-border); padding: 8px;">our</td><td style="border: 1px solid var(--color-border); padding: 8px;">us</td><td style="border: 1px solid var(--color-border); padding: 8px;">ours</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">2人称複数</td><td style="border: 1px solid var(--color-border); padding: 8px;">you</td><td style="border: 1px solid var(--color-border); padding: 8px;">your</td><td style="border: 1px solid var(--color-border); padding: 8px;">you</td><td style="border: 1px solid var(--color-border); padding: 8px;">yours</td></tr>
+                    <tr><td style="border: 1px solid var(--color-border); padding: 8px;">3人称複数</td><td style="border: 1px solid var(--color-border); padding: 8px;">they</td><td style="border: 1px solid var(--color-border); padding: 8px;">their</td><td style="border: 1px solid var(--color-border); padding: 8px;">them</td><td style="border: 1px solid var(--color-border); padding: 8px;">theirs</td></tr>
+                </tbody>
+            </table>
+
+            <h3>各格の使い方（例文で確認）</h3>
+            <ul>
+                <li><strong>主格 (Subjective Case):</strong> 文の<strong data-tooltip="文の中で動作を行う人や物のことです。「～は」「～が」にあたります。">主語</strong>として使う形です。<br>例文: <strong class="highlight">I</strong> visited <strong class="highlight">my</strong> grandmother yesterday. (<strong class="highlight">私 は</strong> <strong>私の</strong> 祖母を訪ねました。)</li>
+                <li><strong>所有格 (Possessive Case):</strong> 名詞の前に置き、「～の」という所有関係を表します。必ず後に名詞が続きます。<br>例文: We went to watch <strong class="highlight">their</strong> soccer game. (私たちは <strong class="highlight">彼らの</strong> サッカーの試合を見に行きました。)</li>
+                <li><strong>目的格 (Objective Case):</strong> 動詞（～する）や前置詞（～で、～へ、～と）の<strong data-tooltip="動作や関係の対象となる人や物のことです。「～を」「～に」にあたります。">目的語</strong>として使う形です。<br>例文: I saw <strong class="highlight">him</strong> at the party. (私はパーティーで <strong class="highlight">彼 を</strong> 見かけました。)<br>例文: Tom showed <strong class="highlight">us</strong> the picture. (トムは <strong class="highlight">私たち に</strong> その写真を見せてくれました。)</li>
+                <li><strong>所有代名詞 (Possessive Pronoun):</strong> 「～のもの」という意味で、<code data-tooltip="例: my book → mine, your pen → yours">&lt;所有格&gt; + &lt;名詞&gt;</code> をひとまとめにした形です。これだけで名詞の働きをします。<br>例文: “Is this yours?” “No, it’s <strong class="highlight">hers</strong>.” (「これは<strong class="highlight">あなたのもの</strong>ですか」「いいえ、<strong class="highlight">彼女のもの</strong>です」)</li>
+            </ul>
+            <div class="related-pretest">
+                 <h3>関連する事前テスト問題</h3>
+                 <p>2. 次の文の下線部に入れるのに最も適切な語を選びなさい。<br>I saw ____ at the party.</p>
+                 <button class="toggle-answer" data-target="related-answer-section-pronouns-q2">解答・解説を表示</button>
+                 <div class="answer" id="related-answer-section-pronouns-q2">
+                     <p><strong>正解:</strong> him</p>
+                     <p><strong>解説:</strong> この文では、動詞 <code>saw</code> (見た) の「何を/誰を」見たのか、つまり<strong data-tooltip="動作の対象となる語です。">目的語</strong>が必要です。男性を指す代名詞の目的格は <code>him</code> です。<code>he</code> は主格（〜は）、<code>his</code> は所有格（〜の）または所有代名詞（〜のもの）なので、ここでは適切ではありません。</p>
+                 </div>
+             </div>
+        </section>
+
+        <section id="section-be-general">
+            <h2>3. be動詞と一般動詞の基本</h2>
+            <p>英語の動詞は、その働きから大きく <strong>be動詞</strong> と <strong>一般動詞</strong> の2つのグループに分けられます。この区別は非常に重要です。</p>
+
+            <h3>A. be動詞とは？</h3>
+            <p>be動詞は、主に<strong>「～です」（状態や性質）</strong>や<strong>「(～に)います/あります」（存在や場所）</strong>を表す動詞です。主語（誰が/何が）や時制（現在/過去）によって、<code>am</code>, <code>is</code>, <code>are</code>, <code>was</code>, <code>were</code> のいずれかの形に変化します。</p>
+            <ul>
+                <li><strong>現在形 (～です, ～いる/ある):</strong>
+                    <ul>
+                        <li>主語が <code>I</code> → <code>am</code></li>
+                        <li>主語が <code>you</code>, <code>we</code>, <code>they</code>, 複数名詞 → <code>are</code></li>
+                        <li>主語が <code>he</code>, <code>she</code>, <code>it</code>, 単数名詞 → <code>is</code></li>
+                    </ul>
+                </li>
+                <li><strong>過去形 (～でした, ～いた/あった):</strong>
+                    <ul>
+                        <li>主語が <code>I</code>, <code>he</code>, <code>she</code>, <code>it</code>, 単数名詞 → <code>was</code></li>
+                        <li>主語が <code>you</code>, <code>we</code>, <code>they</code>, 複数名詞 → <code>were</code></li>
+                    </ul>
+                </li>
+            </ul>
+            <p>例文:</p>
+            <div class="code-block">
+I <strong>am</strong> a student. / You <strong>are</strong> kind. / He <strong>is</strong> from Okinawa. / It <strong>is</strong> popular.<br>
+The bus <strong>is</strong> late. / We <strong>are</strong> happy. / They <strong>are</strong> tourists.<br>
+I <strong>was</strong> at home. / People <strong>were</strong> surprised. / It <strong>was</strong> exciting.<br>
+The mountains <strong>were</strong> beautiful. / Emily <strong>was</strong> a student. / We <strong>were</strong> happy.
+            </div>
+             <p><strong>疑問文（～ですか？/～でしたか？）：</strong> <strong class="highlight">be動詞を主語の前に</strong>移動させます。<br>
+             <strong>否定文（～ではない/～ではなかった）：</strong> <strong class="highlight">be動詞の直後に <code>not</code> を</strong>置きます。(短縮形: isn't, aren't, wasn't, weren't)</p>
+             <div class="code-block">
+<strong>Are</strong> you a student? / He <strong>is not (isn't)</strong> from Okinawa.<br>
+<strong>Were</strong> they tourists? / I <strong>was not (wasn't)</strong> at home.
+            </div>
+
+            <h3>B. 一般動詞とは？</h3>
+            <p>一般動詞は、be動詞以外の<strong>すべての動詞</strong>です。<code>play</code> (～する), <code>eat</code> (食べる), <code>study</code> (勉強する), <code>like</code> (好む) など、<strong>具体的な動作や状態</strong>を表します。一般動詞も主語や時制によって形が変わります。</p>
+            <ul>
+                <li><strong>原形 (Dictionary Form):</strong> 辞書に載っている基本の形です。</li>
+                <li><strong>現在形:</strong>
+                    <ul>
+                        <li>主語が <code>I</code>, <code>you</code>, <code>we</code>, <code>they</code>, 複数名詞の場合: → <strong>原形と同じ</strong>です。(例: I <strong>play</strong> tennis.)</li>
+                        <li>主語が <strong data-tooltip="he, she, it や、Tom, the cat のように、「私」と「あなた」以外の単数の人や物のことです。">３人称単数</strong>の場合 (現在形の肯定文のみ): → 動詞の語尾に <strong class="highlight"><code>-s</code> または <code>-es</code> を付けます</strong>。これを「三単現のs」と呼び、英語の重要なルールです。(例: He <strong>plays</strong> tennis. / She <strong>watches</strong> TV. / Tom <strong>goes</strong> to school.)
+                        <br>※ -s/-es の付け方にはルールがあります (例: study → studies, go → goes)。教科書p.140などで確認しましょう。
+                        </li>
+                    </ul>
+                </li>
+                 <li><strong>過去形 (～した):</strong>
+                    <ul>
+                         <li><strong>規則動詞:</strong> 語尾に <strong><code>-ed</code> を付けます</strong>。(例: play → play<strong>ed</strong>, study → studi<strong>ed</strong>, look → look<strong>ed</strong>)</li>
+                         <li><strong>不規則動詞:</strong> 独自の変化をします。これは覚える必要があります。(例: go → <strong>went</strong>, eat → <strong>ate</strong>, see → <strong>saw</strong>)</li>
+                    </ul>
+                 </li>
+            </ul>
+            <p>例文:</p>
+            <div class="code-block">
+I <strong>live</strong> in Tokyo. / We <strong>eat</strong> lunch. / They <strong>look</strong> happy.<br>
+She <strong>loves</strong> ice cream. (← 三単現のs)<br>
+Tom <strong>goes</strong> to school every day. (← 三単現のes)<br>
+Emily <strong>studied</strong> hard yesterday. (← 過去形 -ed)
+            </div>
+
+            <h4>一般動詞の疑問文・否定文の作り方</h4>
+            <p>一般動詞の疑問文や否定文を作るには、<strong>助動詞の <code>do</code> / <code>does</code> (現在形) や <code>did</code> (過去形)</strong> が必要です。そして、<strong>非常に重要なルール</strong>として、これらの助動詞を使った後は、<strong>動詞は必ず元の形（原形）に戻します</strong>。</p>
+            <ul>
+                <li><strong>疑問文 (～しますか？/～しましたか？):</strong> <code>Do / Does / Did</code> + 主語 + <strong class="highlight">動詞の原形</strong> ...?</li>
+                <li><strong>否定文 (～しません/～しませんでした):</strong> 主語 + <code>don't / doesn't / didn't</code> + <strong class="highlight">動詞の原形</strong> ...<br>(don't = do not, doesn't = does not, didn't = did not)</li>
+            </ul>
+             <p>助動詞の使い分け:</p>
+             <ul>
+                 <li>現在形で、主語が <code>I</code>, <code>you</code>, <code>we</code>, <code>they</code>, 複数名詞 → <code>Do</code> / <code>don't</code></li>
+                 <li>現在形で、主語が３人称単数 (<code>he</code>, <code>she</code>, <code>it</code>, 単数名詞) → <strong class="highlight"><code>Does</code></strong> / <strong class="highlight"><code>doesn't</code></strong></li>
+                 <li>過去形 (主語に関係なく) → <strong class="highlight"><code>Did</code></strong> / <strong class="highlight"><code>didn't</code></strong></li>
+             </ul>
+            <p>例文（動詞が原形に戻っている点に注目してください）:</p>
+            <div class="code-block">
+【疑問文】
+<strong>Do</strong> you <strong>drink</strong> coffee? (コーヒーを飲みますか？)<br>
+<strong>Does</strong> the store <strong>open</strong> at ten? (その店は10時に開店しますか？)<br>
+<strong>Did</strong> you <strong>enjoy</strong> ice skating yesterday? (昨日アイススケートを楽しみましたか？)<br>
+Does Mike <strong>walk</strong> to school? (マイクは学校へ歩いて行きますか？)
+
+【否定文】
+I <strong>don’t cook</strong> very often. (私はあまり料理をしません。)<br>
+My brother <strong>doesn’t read</strong> newspapers. (私の兄[弟]は新聞を読みません。)<br>
+She <strong>didn’t see</strong> him last Sunday. (彼女は先週日曜、彼に会いませんでした。)<br>
+The engine doesn’t <strong>start</strong> quickly. (そのエンジンはすぐにはかかりません。)<br>
+She didn’t <strong>know</strong> his name then. (彼女はその時、彼の名前を知りませんでした。)
+            </div>
+
+            <div class="supplementary-box">
+                <h4>動詞としての <code>do</code> に注意</h4>
+                <p><code>do</code> は、疑問文や否定文を作る助動詞として使われるだけでなく、「～をする」という意味を持つ一般動詞としても使われます。そのため、文中に <code>do</code> が2回登場することもあります。</p>
+                <p>例: I <strong>do</strong> my homework. (私は宿題を<strong>します</strong>。 ← この <code>do</code> は一般動詞)</p>
+                <p>例: <strong>Do</strong> you <strong>do</strong> your homework? (あなたは宿題を<strong>しますか？</strong> ← 最初の <code>Do</code> は助動詞、2番目の <code>do</code> は一般動詞の原形)</p>
+            </div>
+             <div class="related-pretest">
+                 <h3>関連する事前テスト問題</h3>
+                 <p>3. 次の文の()内に入れるのに最も適切な語を選びなさい。<br>Does Mike (____) to school?</p>
+                 <button class="toggle-answer" data-target="related-answer-section-be-general-q3">解答・解説を表示</button>
+                 <div class="answer" id="related-answer-section-be-general-q3">
+                     <p><strong>正解:</strong> walk</p>
+                     <p><strong>解説:</strong> これは一般動詞 <code>walk</code> (歩く) の疑問文です。主語が <code>Mike</code> (３人称単数) なので、疑問文を作るために助動詞 <code>Does</code> が使われています。助動詞 <code>Do</code> / <code>Does</code> / <code>Did</code> を使った疑問文や否定文では、その後の動詞は必ず<strong>元の形（原形）</strong>に戻すというルールがあります。したがって、三単現のsが付いた <code>walks</code> ではなく、原形の <code>walk</code> を選びます。</p>
+                 </div>
+             </div>
+        </section>
+
+        <section id="drill-answers">
+            <h2>4. ドリル解答・解説</h2>
+            <p>ワークブックのドリルの解答と解説です。</p>
+
+             <div class="drill-item">
+                 <h3>教材2 冠詞</h3>
+                 <ol>
+                     <li>Take <strong>an</strong> umbrella.</li>
+                     <li>I have <strong>a</strong> dog and a cat. <strong>The</strong> dog sleeps under my bed.</li>
+                     <li>He has <strong>×</strong> useful information.</li>
+                     <li>I don’t have <strong>×</strong> homework today.</li>
+                     <li><strong>The</strong> moon is smaller than <strong>the</strong> earth.</li>
+                 </ol>
+                 <button class="toggle-answer" data-target="drill-2-answer">解説を表示</button>
+                 <div class="answer" id="drill-2-answer">
+                     <p><strong>【解説】</strong></p>
+                     <p>1. <code>umbrella</code> は母音 /ʌ/ で始まる数えられる名詞の単数形。不特定の1つを示すので <code>an</code>。</p>
+                     <p>2. 最初の文では、聞き手にとって初めて聞く犬と猫なので不特定の <code>a</code>。2文目では、前に述べた特定の「その犬」を指すので <code>The</code>。</p>
+                     <p>3. <code>information</code> (情報) は数えられない名詞。一般的な意味で使われているため冠詞は不要 (<code>×</code>)。</p>
+                     <p>4. <code>homework</code> (宿題) も数えられない名詞。一般的な意味なので冠詞は不要 (<code>×</code>)。</p>
+                     <p>5. <code>moon</code> (月) も <code>earth</code> (地球) も、通常は1つしか存在しないと考えられるため <code>The</code> を付ける。</p>
+                 </div>
+             </div>
+
+             <div class="drill-item">
+                 <h3>教材3 人称代名詞</h3>
+                 <ol>
+                     <li><strong>I</strong> visited <strong>my</strong> grandmother yesterday.</li>
+                     <li>I saw <strong>him</strong> at the party.</li>
+                     <li>Tom showed <strong>us</strong> the picture.</li>
+                     <li>We went to watch <strong>their</strong> soccer game.</li>
+                     <li>“Is this yours?” “No, it’s <strong>hers</strong>.”</li>
+                 </ol>
+                 <button class="toggle-answer" data-target="drill-3-answer">解説を表示</button>
+                 <div class="answer" id="drill-3-answer">
+                      <p><strong>【解説】</strong>文の中での役割に応じた正しい格を選びます。</p>
+                      <p>1. 文の主語「私は」なので主格 <code>I</code>。「私の」祖母なので所有格 <code>my</code>。</p>
+                      <p>2. 動詞 <code>saw</code> (見た) の目的語「彼を」なので目的格 <code>him</code>。</p>
+                      <p>3. 動詞 <code>showed</code> (見せた) の間接目的語「私たちに」なので目的格 <code>us</code>。</p>
+                      <p>4. 名詞 <code>soccer game</code> の前で「彼らの」という所有を示すので所有格 <code>their</code>。</p>
+                      <p>5. 「彼女のもの」という意味を表す所有代名詞 <code>hers</code>。</p>
+                 </div>
+             </div>
+
+             <div class="drill-item">
+                 <h3>Drill 1 be動詞現在形</h3>
+                 <ol>
+                     <li>I <strong>am</strong> good at tennis.</li>
+                     <li>You <strong>are</strong> kind to children.</li>
+                     <li>He <strong>is</strong> from Okinawa.</li>
+                     <li>It <strong>is</strong> a popular doll.</li>
+                     <li>The bus <strong>is</strong> often late.</li>
+                     <li>They <strong>are</strong> tourists from China.</li>
+                 </ol>
+                  <button class="toggle-answer" data-target="drill-d1-answer">解説を表示</button>
+                 <div class="answer" id="drill-d1-answer">
+                     <p><strong>【解説】</strong>主語の人称と数に合わせて、適切なbe動詞の現在形 (am/is/are) を選びます。</p>
+                     <p>1. 主語が I なので <code>am</code>。</p>
+                     <p>2. 主語が You なので <code>are</code>。</p>
+                     <p>3. 主語が He (３人称単数) なので <code>is</code>。</p>
+                     <p>4. 主語が It (３人称単数) なので <code>is</code>。</p>
+                     <p>5. 主語が The bus (３人称単数) なので <code>is</code>。</p>
+                     <p>6. 主語が They (３人称複数) なので <code>are</code>。</p>
+                  </div>
+             </div>
+
+             <div class="drill-item">
+                 <h3>Drill 2 be動詞過去形</h3>
+                 <ol>
+                     <li>I <strong>was</strong> at home at that time.</li>
+                     <li>People <strong>were</strong> surprised at the news.</li>
+                     <li>It <strong>was</strong> an exciting game.</li>
+                     <li>The mountains <strong>were</strong> beautiful.</li>
+                     <li>Emily <strong>was</strong> an exchange student from Canada.</li>
+                     <li>We <strong>were</strong> happy to see you.</li>
+                 </ol>
+                 <button class="toggle-answer" data-target="drill-d2-answer">解説を表示</button>
+                 <div class="answer" id="drill-d2-answer">
+                     <p><strong>【解説】</strong>主語の人称と数に合わせて、適切なbe動詞の過去形 (was/were) を選びます。</p>
+                     <p>1. 主語が I なので <code>was</code>。</p>
+                     <p>2. 主語が People (複数名詞、３人称複数扱い) なので <code>were</code>。</p>
+                     <p>3. 主語が It (３人称単数) なので <code>was</code>。</p>
+                     <p>4. 主語が The mountains (複数名詞) なので <code>were</code>。</p>
+                     <p>5. 主語が Emily (固有名詞、３人称単数扱い) なので <code>was</code>。</p>
+                     <p>6. 主語が We (１人称複数) なので <code>were</code>。</p>
+                 </div>
+             </div>
+
+              <div class="drill-item">
+                 <h3>Drill 3 一般動詞</h3>
+                 <ol>
+                     <li>I <strong>live</strong> in Tokyo.</li>
+                     <li>We <strong>have [eat]</strong> lunch together.</li>
+                     <li>They <strong>look [seem]</strong> happy.</li>
+                     <li>She <strong>loves</strong> ice cream.</li>
+                     <li>Tom <strong>goes</strong> to school every day.</li>
+                     <li>Emily <strong>studied</strong> hard yesterday.</li>
+                 </ol>
+                  <button class="toggle-answer" data-target="drill-d3-answer">解説を表示</button>
+                 <div class="answer" id="drill-d3-answer">
+                     <p><strong>【解説】</strong>日本語の意味に合う一般動詞を選び、主語と時制に合わせて形を変化させます。</p>
+                     <p>1. 「住んでいる」→ <code>live</code>。主語 I, 現在形なので原形のまま。</p>
+                     <p>2. 「食べる」→ <code>have</code> または <code>eat</code>。主語 We, 現在形なので原形のまま。</p>
+                     <p>3. 「～に見える」→ <code>look</code> または <code>seem</code>。主語 They, 現在形なので原形のまま。</p>
+                     <p>4. 「大好きだ」→ <code>love</code>。主語 She (３人称単数), 現在形なので <code>-s</code> を付けて <strong>loves</strong>。</p>
+                     <p>5. 「行く」→ <code>go</code>。主語 Tom (３人称単数), 現在形なので <code>-es</code> を付けて <strong>goes</strong>。</p>
+                     <p>6. 「勉強した」→ <code>study</code> の過去形。<code>yesterday</code> があるので過去。規則変化で <strong>studied</strong>。</p>
+                  </div>
+             </div>
+
+             <div class="drill-item">
+                  <h3>Drill 4 一般動詞の疑問文・否定文</h3>
+                 <ol>
+                     <li><strong>Do</strong> you drink coffee?</li>
+                     <li><strong>Does</strong> the store open at ten?</li>
+                     <li><strong>Do</strong> they always come to the meeting?</li>
+                     <li><strong>Did</strong> you enjoy ice skating yesterday?</li>
+                     <li>Does Mike <strong>walk</strong> to school?</li>
+                     <li>I <strong>don’t</strong> cook very often.</li>
+                     <li>My brother <strong>doesn’t</strong> read newspapers.</li>
+                     <li>She <strong>didn’t</strong> see him last Sunday.</li>
+                     <li>The engine doesn’t <strong>start</strong> quickly.</li>
+                     <li>She didn’t <strong>know</strong> his name then.</li>
+                 </ol>
+                 <button class="toggle-answer" data-target="drill-d4-answer">解説を表示</button>
+                 <div class="answer" id="drill-d4-answer">
+                     <p><strong>【解説】</strong>一般動詞の疑問文・否定文では、助動詞 Do/Does/Did を用い、動詞は原形に戻すのが原則です。</p>
+                     <p>1. 主語 You, 現在形の疑問文 → <code>Do</code>。</p>
+                     <p>2. 主語 the store (３人称単数), 現在形の疑問文 → <code>Does</code>。</p>
+                     <p>3. 主語 they, 現在形の疑問文 → <code>Do</code>。</p>
+                     <p>4. <code>yesterday</code> があるので過去形の疑問文 → <code>Did</code>。</p>
+                     <p>5. 助動詞 <code>Does</code> があるので、動詞は原形の <code>walk</code>。</p>
+                     <p>6. 主語 I, 現在形の否定文 → <code>don't</code>。</p>
+                     <p>7. 主語 My brother (３人称単数), 現在形の否定文 → <code>doesn't</code>。</p>
+                     <p>8. <code>last Sunday</code> があるので過去形の否定文 → <code>didn't</code>。</p>
+                     <p>9. 助動詞 <code>doesn't</code> があるので、動詞は原形の <code>start</code>。</p>
+                     <p>10. 助動詞 <code>didn't</code> があるので、動詞は原形の <code>know</code>。</p>
+                 </div>
+             </div>
+
+        </section>
+
+        <section id="review">
+            <h2>5. 学習内容の振り返り</h2>
+
+            <h3>理解度チェックリスト</h3>
+            <p>以下の項目について、理解できたか確認してみましょう。自信があればクリックしてチェックを入れてください。</p>
+            <ul class="checklist">
+                <li>冠詞 (a/an/the/無冠詞) の基本的な使い分けルールを説明できる。</li>
+                <li>名詞が数えられるか、数えられないかを考えて冠詞を選べる。</li>
+                <li>人称代名詞の主格・所有格・目的格・所有代名詞の形と使い方を区別できる。</li>
+                <li>be動詞の現在形 (am/is/are) と過去形 (was/were) を主語に応じて正しく使い分けられる。</li>
+                <li>一般動詞の現在形（特に三人称単数現在の-s/-es）と規則動詞の過去形（-ed）の形を作れる。</li>
+                <li>be動詞を使った疑問文・否定文の作り方を理解している。</li>
+                <li>一般動詞の疑問文・否定文で助動詞Do/Does/Didを使い、動詞を原形に戻すルールを理解し、適用できる。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <div class="review-question-item">
+                <p><strong>問1:</strong> 次の日本文を英語に直しなさい。「私は昨日、面白い本を読みました。」</p>
+                <textarea placeholder="解答を入力してください"></textarea>
+                <button class="toggle-answer" data-target="review-q1-answer">解答例を表示</button>
+                <div class="answer" id="review-q1-answer">
+                    <p><strong>解答例:</strong> I read an interesting book yesterday.</p>
+                    <p><strong>ポイント解説:</strong> 「読みました」は過去なので、read の過去形 <code>read</code> (発音 /red/) を使います。<code>interesting</code> は母音 /ɪ/ で始まる形容詞で、数えられる名詞 <code>book</code> の単数形を修飾するため、<code>an interesting book</code> となります。<code>yesterday</code> は通常、文末に置かれます。</p>
+                </div>
+            </div>
+            <div class="review-question-item">
+                <p><strong>問2:</strong> 次の文を疑問文に直しなさい。「She plays the piano well.」</p>
+                 <textarea placeholder="解答を入力してください"></textarea>
+                <button class="toggle-answer" data-target="review-q2-answer">解答例を表示</button>
+                <div class="answer" id="review-q2-answer">
+                    <p><strong>解答例:</strong> Does she play the piano well?</p>
+                    <p><strong>ポイント解説:</strong> 元の文の動詞は <code>plays</code> (一般動詞、三単現のs付き) です。主語が <code>She</code> (３人称単数) の現在形の疑問文なので、文頭に助動詞 <code>Does</code> を置き、動詞は原形の <code>play</code> に戻します。</p>
+                </div>
+            </div>
+            <div class="review-question-item">
+                <p><strong>問3:</strong> 次の対話文の空所に入る最も適切な代名詞を答えなさい。<br>A: Is this pen yours?<br>B: No, it isn't ____. It's his.</p>
+                <textarea placeholder="解答を入力してください"></textarea>
+                <button class="toggle-answer" data-target="review-q3-answer">解答例を表示</button>
+                <div class="answer" id="review-q3-answer">
+                     <p><strong>解答例:</strong> mine</p>
+                     <p><strong>ポイント解説:</strong> 空所には「私のもの」という意味が入ります。これは所有代名詞で表すので、<code>mine</code> が適切です。<code>my</code> は所有格「私の」なので、後に名詞が必要です (例: my pen)。</p>
+                 </div>
+            </div>
+        </section>
+
+        <section id="application">
+            <h2>6. 応用と今後の学習</h2>
+
+            <h3>今回の知識の活用場面</h3>
+            <ul>
+                <li><strong>より正確な英語表現:</strong> 冠詞、代名詞、動詞の形を正確に使うことで、誤解の少ない、より自然な英語の文を作成できます。自己紹介や簡単な描写など、基本的な表現力が向上します。</li>
+                <li><strong>英文読解力の向上:</strong> 文の構造を理解する上で、代名詞の格や動詞の時制は基本的な手がかりとなります。これらを正確に把握することで、文章の意味をより深く理解できるようになります。</li>
+                <li><strong>英会話の基礎固め:</strong> be動詞と一般動詞の使い分けや、疑問文・否定文の正確な作り方は、英語でのコミュニケーションの基礎となります。質問したり、否定したりする基本的なやり取りが可能になります。</li>
+            </ul>
+
+            <h3>今後の学習へのつながり</h3>
+            <ul>
+                <li><strong>様々な時制:</strong> 今回学習した現在形・過去形を基礎として、現在進行形 (今～している)、過去進行形 (～していた)、未来形 (～するつもりだ)、現在完了形 (～したことがある、ずっと～している) など、より複雑な時制表現を学んでいきます。動詞の活用知識が不可欠です。</li>
+                <li><strong>助動詞の学習:</strong> <code>Do/Does/Did</code> と同様に、<code>can</code> (できる), <code>will</code> (～だろう), <code>may</code> (～かもしれない), <code>must</code> (～しなければならない) などの助動詞を学びます。これらも動詞の原形と一緒に使うことが多いです。</li>
+                <li><strong>文型 (Sentence Patterns):</strong> 英語の文の基本的な組み立てパターン（文型）を学ぶ際、動詞の種類（be動詞か一般動詞か）が文型を決定する重要な要素となります。</li>
+                <li><strong>冠詞の応用:</strong> 冠詞のルールはさらに細かくなります。特定の固有名詞に the がつく場合、抽象名詞の扱い、慣用的な無冠詞の表現など、様々な応用例を学習します。</li>
+            </ul>
+
+            <h3>学習を進める上での注意点</h3>
+            <ul>
+                <li><strong>三人称単数現在の -s/-es を確実に:</strong> 主語が「私」と「あなた」以外の単数で、現在のことを述べる肯定文の場合、一般動詞に -s/-es を付けることを習慣づけましょう。これは間違いやすいポイントです。</li>
+                <li><strong>Do/Does/Did の後は動詞の原形:</strong> 一般動詞の疑問文・否定文で助動詞を使ったら、動詞を元の形に戻すことを常に意識しましょう。</li>
+                <li><strong>名詞の「数」と「特定」を意識:</strong> 名詞を使う際には、それが数えられるか数えられないか、単数か複数か、そして特定されているかいないかを考える癖をつけると、冠詞の選択ミスが減ります。</li>
+                <li><strong>代名詞の格変化を使いこなす:</strong> 文中での役割（主語・所有・目的語など）に応じて、正しい形の代名詞を使う練習をしましょう。</li>
+            </ul>
+
+             <h3>参考文献・関連資料</h3>
+             <ul>
+                 <li><a href="https://eow.alc.co.jp/" target="_blank" rel="noopener noreferrer">英辞郎 on the WEB</a> - 単語の意味、発音、用例を調べる際に非常に役立ちます。</li>
+                 <li><a href="https://eigojo.com/grammar" target="_blank" rel="noopener noreferrer">英語 ಗ್ರಾಮர் | 英語学習ボックス</a> - 中学レベルの英文法が項目別に解説されています。</li>
+                  <li>学校で使用している教科書やワークブックの該当ページも、復習に最適です。</li>
+                 <li><a href="https://www.duolingo.com/" target="_blank" rel="noopener noreferrer">Duolingo</a> - ゲーム感覚で英語の基礎を楽しく復習できます。</li>
+             </ul>
+        </section>
+
+        <footer>
+            <p>本日の授業は以上です。基本事項をしっかり復習し、今後の英語学習に活かしてください。</p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const checklistItems = document.querySelectorAll('.checklist li');
+            // toggleAnswerBtns は動的に追加される可能性があるので、setupToggleButtons で取得
+            const readingTimeEl = document.getElementById('readingTime');
+
+            // --- プログレスバー ---
+            function updateProgressBar() {
+                const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollCurrent = window.pageYOffset || document.documentElement.scrollTop; // For compatibility
+                const scrollPercent = scrollTotal > 0 ? (scrollCurrent / scrollTotal) * 100 : 0; // Avoid division by zero
+                progressBar.style.width = `${scrollPercent}%`;
+            }
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar(); // 初期表示
+
+            // --- トップへ戻るボタン ---
+            function toggleScrollTopBtn() {
+                 const scrollThreshold = 300; // ボタン表示を開始するスクロール量
+                 if (window.pageYOffset > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+                    if (scrollTopBtn.style.display !== 'block') { // 表示状態でなければ表示
+                         scrollTopBtn.style.display = 'block';
+                         scrollTopBtn.style.opacity = '1'; // 表示時にフェードイン（CSS Transitionと併用）
+                     }
+                 } else {
+                     if (scrollTopBtn.style.display !== 'none') { // 非表示状態でなければ非表示
+                         scrollTopBtn.style.opacity = '0'; // フェードアウト
+                         // トランジション終了後に display: none にする場合（オプション）
+                         setTimeout(() => {
+                             if (window.pageYOffset <= scrollThreshold || document.documentElement.scrollTop <= scrollThreshold) {
+                                 scrollTopBtn.style.display = 'none';
+                             }
+                         }, 300); // CSSのtransition時間と合わせる
+                     }
+                 }
+            }
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            window.addEventListener('scroll', toggleScrollTopBtn);
+            toggleScrollTopBtn(); // 初期表示
+
+            // --- チェックリスト ---
+            checklistItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('checked');
+                });
+                 // Enterキーでもトグルできるように
+                 item.setAttribute('tabindex', '0'); // フォーカス可能にする
+                 item.addEventListener('keydown', (e) => {
+                     if (e.key === 'Enter' || e.key === ' ') {
+                         e.preventDefault(); // デフォルト動作（スペースでのスクロールなど）を防ぐ
+                         item.click(); // クリックイベントを発火
+                     }
+                 });
+            });
+
+             // --- 解答トグル ---
+             function setupToggleButtons() {
+                 const currentToggleButtons = document.querySelectorAll('.toggle-answer');
+                 currentToggleButtons.forEach(button => {
+                     if (!button.hasAttribute('data-listener-added')) {
+                         button.addEventListener('click', (e) => {
+                             const targetId = e.target.dataset.target;
+                             const targetElement = document.getElementById(targetId);
+                             if (targetElement) {
+                                 const isVisible = targetElement.style.display === 'block';
+                                 targetElement.style.display = isVisible ? 'none' : 'block';
+                                 // ボタンテキストの調整
+                                 const currentText = e.target.textContent;
+                                 if (isVisible) {
+                                     if (currentText.includes('隠す')) {
+                                         e.target.textContent = currentText.replace('を隠す', 'を表示');
+                                     } else if (currentText.includes('理由を隠す')) {
+                                          e.target.textContent = currentText.replace('理由を隠す', '理由を見る');
+                                     } else { // デフォルト表示テキストへ
+                                         e.target.textContent = '解答・解説を表示';
+                                     }
+                                 } else {
+                                     if (currentText.includes('表示')) {
+                                         e.target.textContent = currentText.replace('を表示', 'を隠す');
+                                     } else if (currentText.includes('理由を見る')) {
+                                         e.target.textContent = currentText.replace('理由を見る', '理由を隠す');
+                                      } else if (currentText.includes('見る')) { // 「こたえの例を見る」など
+                                           e.target.textContent = currentText.replace('見る', 'を隠す');
+                                      } else { // デフォルト非表示テキストへ
+                                         e.target.textContent = '解答・解説を隠す';
+                                     }
+                                 }
+                             }
+                         });
+                         button.setAttribute('data-listener-added', 'true');
+                     }
+                 });
+             }
+             setupToggleButtons(); // 初期設定
+
+
+            // --- 読了時間計算 ---
+            function calculateReadingTime() {
+                try {
+                    const content = document.querySelector('.container').innerText; // innerTextでテキストのみ取得
+                    const textLength = content.replace(/\s+/g, '').length; // 空白を除去した文字数
+                    const charsPerMinute = 800; // 中学生の平均読書速度に近い値（調整可能）
+                    const time = Math.ceil(textLength / charsPerMinute);
+                     if (readingTimeEl) { // 要素が存在するか確認
+                        readingTimeEl.textContent = `読了時間の目安: 約 ${time} 分`;
+                    }
+                } catch (error) {
+                    console.error("読了時間の計算中にエラーが発生しました:", error);
+                    if (readingTimeEl) {
+                         readingTimeEl.textContent = "読了時間の目安: 計算エラー";
+                    }
+                }
+            }
+            calculateReadingTime();
+
+            // --- 事前テスト関連 ---
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const testResultsContainer = document.getElementById('testResults');
+            const testScoreEl = document.getElementById('testScore');
+            const testTotalEl = document.getElementById('testTotal'); // Total表示用 (Modal)
+            const testReviewLinksEl = document.getElementById('reviewLinks');
+            const skipTestBtn = document.getElementById('skipTest');
+            const persistentResultsEl = document.getElementById('persistentTestResults');
+            const persistentScoreEl = document.getElementById('persistentScore');
+            const persistentTotalEl = document.getElementById('persistentTotal'); // Total表示用 (Persistent)
+            const persistentReviewLinksEl = document.getElementById('persistentReviewLinks');
+            const persistentSkipMessageEl = document.getElementById('persistentSkipMessage');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const questions = Array.from(document.querySelectorAll('.test-question'));
+            const totalQuestions = questions.length;
+
+            // Total数を表示
+             if(testTotalEl) testTotalEl.textContent = totalQuestions;
+             if(persistentTotalEl) persistentTotalEl.textContent = totalQuestions;
+
+
+            // セクションIDとタイトルのマッピング（修正：番号や括弧を除去）
+            const sectionTitles = {};
+             document.querySelectorAll('section[id]').forEach(section => {
+                 const h2 = section.querySelector('h2');
+                 if (h2) {
+                     // 例: "1. 冠詞 (Articles) の使い方" -> "冠詞の使い方"
+                     const rawTitle = h2.textContent.trim();
+                     const cleanedTitle = rawTitle.replace(/^\d+\.\s*/, '').replace(/\s*\([\w\s-]+\)/, '').trim();
+                     sectionTitles[section.id] = cleanedTitle || rawTitle;
+                 }
+            });
+
+             // セクションへのスムーズスクロールとハイライト
+             function scrollToSection(sectionId) {
+                 const targetSection = document.getElementById(sectionId);
+                 if (targetSection) {
+                     const headerOffset = 0;
+                     const elementPosition = targetSection.getBoundingClientRect().top;
+                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                     window.scrollTo({
+                          top: offsetPosition,
+                          behavior: "smooth"
+                     });
+
+                     // ハイライト処理
+                     targetSection.style.transition = 'background-color 0.2s ease-in';
+                     targetSection.style.backgroundColor = 'var(--color-test-result-bg)';
+
+                     setTimeout(() => {
+                          targetSection.style.transition = 'background-color 1.0s ease-out';
+                          targetSection.style.backgroundColor = '';
+                     }, 500);
+                 }
+             }
+
+            // ページ読み込み時の処理
+            const testCompleted = sessionStorage.getItem('preTestCompleted');
+            if (testCompleted === 'true') {
+                const resultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+                if (resultData) { // 保存されたデータがあるか確認
+                   displayPersistentResults(resultData);
+                } else {
+                    // データがない場合は、テスト未完了としてモーダル表示（または別の処理）
+                     if (preTestModalOverlay) {
+                        preTestModalOverlay.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                     }
+                }
+            } else if (preTestModalOverlay) {
+                preTestModalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // テスト採点処理
+             if (preTestForm) {
+                preTestForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    let score = 0;
+                    const incorrectAnswers = [];
+                    const formData = new FormData(preTestForm);
+
+                    questions.forEach((question, index) => {
+                        const questionName = `q${index + 1}`;
+                        const selectedAnswer = formData.get(questionName);
+                        const correctAnswerEl = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                        const sectionId = question.dataset.sectionId;
+                        const questionTextEl = question.querySelector('p');
+                        // 問題文からHTMLタグを除去し、改行で分割して最初の行を取得
+                        const questionText = questionTextEl ? questionTextEl.innerText.split('\n')[0].trim() : `問題 ${index + 1}`;
+
+
+                        if (correctAnswerEl && selectedAnswer === correctAnswerEl.value) {
+                            score++;
+                        } else if (sectionId && sectionTitles[sectionId]) {
+                            incorrectAnswers.push({
+                                name: sectionTitles[sectionId],
+                                sectionId: sectionId,
+                                questionText: questionText // クリーンなテキストを保存
+                            });
+                        } else {
+                             // 正解要素やセクションIDがない場合のエラーハンドリング（オプション）
+                             console.warn(`問題 ${index + 1} の採点情報が不完全です。`);
+                        }
+                    });
+
+                    const resultData = { score: score, incorrect: incorrectAnswers, skipped: false, total: totalQuestions };
+                    displayModalResults(resultData);
+                    displayPersistentResults(resultData);
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+
+                    preTestForm.style.display = 'none';
+                    if(testResultsContainer) testResultsContainer.style.display = 'block';
+                });
+            }
+
+            // テストスキップ処理
+             if (skipTestBtn) {
+                skipTestBtn.addEventListener('click', () => {
+                    closeModal();
+                    const resultData = { score: null, incorrect: [], skipped: true, total: totalQuestions };
+                    displayPersistentResults(resultData);
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                });
+            }
+
+            // モーダル閉じるボタン
+            if (closeModalBtn) {
+                 closeModalBtn.addEventListener('click', closeModal);
+            }
+
+
+            // モーダル内の結果表示
+            function displayModalResults(resultData) {
+                 if (!testScoreEl || !testReviewLinksEl) return;
+
+                testScoreEl.textContent = resultData.score;
+                testReviewLinksEl.innerHTML = '';
+
+                if (resultData.score === resultData.total) {
+                    testReviewLinksEl.innerHTML = '<p>全問正解です！素晴らしいスタートですね。</p>';
+                } else if (resultData.incorrect.length > 0) {
+                    let html = '<p>不正解だった問題に関連する項目です。復習しましょう。</p><ul>';
+                     resultData.incorrect.forEach(item => {
+                         html += `<li>「${item.questionText}」 → <a href="#${item.sectionId}" data-section-id="${item.sectionId}">${item.name}</a></li>`;
+                     });
+                     html += '</ul>';
+                     testReviewLinksEl.innerHTML = html;
+
+                     // モーダル内のリンクにイベントリスナーを追加
+                     testReviewLinksEl.querySelectorAll('a[data-section-id]').forEach(link => {
+                         link.addEventListener('click', (e) => {
+                             e.preventDefault();
+                             const sectionId = e.target.dataset.sectionId;
+                             closeModal();
+                             scrollToSection(sectionId);
+                         });
+                     });
+                } else if (resultData.score !== null) { // スコアがある（スキップでない）場合
+                     testReviewLinksEl.innerHTML = '<p>よく頑張りました。</p>';
+                }
+            }
+
+            // メインコンテンツの結果表示エリア表示
+             function displayPersistentResults(resultData) {
+                 if (!persistentResultsEl || !persistentScoreEl || !persistentTotalEl || !persistentReviewLinksEl || !persistentSkipMessageEl) return;
+
+                 persistentResultsEl.style.display = 'block';
+                 persistentReviewLinksEl.innerHTML = '';
+                 persistentSkipMessageEl.style.display = 'none';
+                 const scoreParagraph = persistentScoreEl.closest('p'); // スコア表示の段落を取得
+
+                 if (resultData.skipped) {
+                     if(scoreParagraph) scoreParagraph.style.display = 'none';
+                     persistentSkipMessageEl.style.display = 'block';
+                     persistentReviewLinksEl.innerHTML = '<p>まずは授業内容を確認しましょう。</p>';
+                 } else {
+                     if(scoreParagraph) scoreParagraph.style.display = 'block';
+                     persistentScoreEl.textContent = resultData.score;
+                     persistentTotalEl.textContent = resultData.total;
+
+                     if (resultData.score === resultData.total) {
+                         persistentReviewLinksEl.innerHTML = '<p>事前チェックは全問正解でした！</p>';
+                     } else if (resultData.incorrect.length > 0) {
+                         let html = '<p>事前チェックで間違えた問題の関連項目です。復習に役立ててください。</p><ul>';
+                         resultData.incorrect.forEach(item => {
+                             html += `<li>「${item.questionText}」 → <a href="#${item.sectionId}" data-section-id="${item.sectionId}">${item.name}</a> の復習</li>`;
+                          });
+                          html += '</ul>';
+                          persistentReviewLinksEl.innerHTML = html;
+                     } else {
+                         persistentReviewLinksEl.innerHTML = '<p>事前チェックの結果です。</p>'; // Fallback
+                     }
+                 }
+             }
+
+
+             // メインコンテンツ内の復習リンクに対するイベント委任
+             if (persistentResultsEl) {
+                persistentResultsEl.addEventListener('click', (e) => {
+                    if (e.target.matches('a[data-section-id]')) {
+                        e.preventDefault();
+                        const sectionId = e.target.dataset.sectionId;
+                        scrollToSection(sectionId);
+                    }
+                });
+             }
+
+
+            // モーダルを閉じる関数
+            function closeModal() {
+                if (preTestModalOverlay) {
+                    preTestModalOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            // --- 関連事前テスト問題の挿入 ---
+            function injectRelatedPretests() {
+                 questions.forEach((question, index) => {
+                     const sectionId = question.dataset.sectionId;
+                     const targetSection = document.getElementById(sectionId);
+                     if (!targetSection) {
+                          console.warn(`関連テスト問題: セクション #${sectionId} が見つかりません。(問題 ${index + 1})`);
+                          return;
+                     }
+
+                     const relatedPretestContainer = targetSection.querySelector('.related-pretest');
+                     if (!relatedPretestContainer) {
+                         console.warn(`関連テスト問題: セクション #${sectionId} 内に .related-pretest コンテナが見つかりません。(問題 ${index + 1})`);
+                         return;
+                     }
+
+                     const questionTextEl = question.querySelector('p');
+                     // 問題文のHTMLを取得し、不要な改行や空白をトリム
+                     const questionText = questionTextEl ? questionTextEl.innerHTML.replace(/<br\s*\/?>/gi, ' ').trim() : `問題 ${index + 1}`;
+                     const correctAnswerEl = question.querySelector('input[data-correct="true"]');
+                     const correctAnswerValue = correctAnswerEl ? correctAnswerEl.value : 'N/A';
+                     let correctAnswerText = 'N/A';
+
+                     if (correctAnswerEl) {
+                         const label = correctAnswerEl.closest('label');
+                         const span = label ? label.querySelector('span') : null;
+                         if (span) {
+                             correctAnswerText = span.textContent.trim();
+                         } else if (label) {
+                             // spanがない場合、label全体のテキストから取得試行
+                             correctAnswerText = Array.from(label.childNodes)
+                                 .filter(node => node.nodeType === Node.TEXT_NODE)
+                                 .map(node => node.textContent.trim())
+                                 .join('');
+                         }
+                     }
+
+                    // 簡単な解説を生成
+                    let explanation = '';
+                    const qNum = index + 1;
+                    if (qNum === 1 && sectionId === 'section-articles') {
+                         explanation = '"umbrella" は数えられる名詞の単数形で、最初の音が母音 /ʌ/ なので "an" を使います。「どの傘か特定されていない、一般的な傘を1つ」持っていくように指示しています。';
+                     } else if (qNum === 2 && sectionId === 'section-pronouns') {
+                         explanation = '動詞 "saw" (見る) の目的語（見た対象）なので、目的格を使います。男性を指す代名詞の目的格は "him" です。"he" は主格（〜は）、"his" は所有格（〜の）または所有代名詞（〜のもの）です。';
+                     } else if (qNum === 3 && sectionId === 'section-be-general') {
+                         explanation = '一般動詞の疑問文では、助動詞 Do / Does / Did を使った場合、その後の動詞は必ず原形（元の形）になります。主語が "Mike" (３人称単数) なので助動詞は Does が使われていますが、動詞は原形の "walk" を選びます。"walks" は肯定文で使う形です。';
+                    } else {
+                        explanation = `正解は <strong>${correctAnswerText}</strong> です。本文の説明を確認しましょう。`;
+                    }
+
+                     const uniqueId = `related-answer-${sectionId}-${qNum}`;
+
+                     relatedPretestContainer.innerHTML = `
+                         <h3>関連する事前テスト問題</h3>
+                         <p>${questionText}</p>
+                         <button class="toggle-answer" data-target="${uniqueId}">解答・解説を表示</button>
+                         <div class="answer" id="${uniqueId}">
+                             <p><strong>正解:</strong> ${correctAnswerText}</p>
+                             <p><strong>解説:</strong> ${explanation}</p>
+                         </div>
+                     `;
+                 });
+                 // 関連テスト挿入後にトグルボタンのリスナーを再設定
+                 setupToggleButtons();
+             }
+
+             // DOM構築が完全に終わってから実行するための保険
+             if (document.readyState === 'loading') {
+                 document.addEventListener('DOMContentLoaded', injectRelatedPretests);
+             } else {
+                 injectRelatedPretests();
+             }
+
+        });
+    </script>
+</body>
+</html>
