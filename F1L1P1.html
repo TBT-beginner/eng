@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英語長文読解練習 - 完成版v7 (修正)</title>
+    <title>英語長文読解練習 - 完成版v9 (最終レイアウト)</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -22,38 +22,24 @@
             --sidebar-width: 260px;
             --sidebar-bg: #f1f1f1;
             --base-font-size: 1rem;
+            --resizer-height: 8px;
+            --footer-height: 60px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            font-size: var(--base-font-size);
+            line-height: 1.7; color: var(--text-color); background-color: var(--background-color);
+            display: flex; height: 100vh; overflow: hidden; font-size: var(--base-font-size);
             transition: padding-left 0.3s ease;
         }
         #settings-sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding: 20px 15px;
-            overflow-y: auto;
-            transform: translateX(0);
-            transition: transform 0.3s ease;
-            z-index: 1002;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
+            padding: 20px 15px; overflow-y: auto; transform: translateX(0);
+            transition: transform 0.3s ease; z-index: 1002; display: flex; flex-direction: column; gap: 15px; /* Adjusted gap */
         }
         .settings-group { border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .settings-group:last-child { border-bottom: none; padding-bottom: 0; }
+        .settings-group:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 0;} /* Remove border/padding for last group */
         .settings-group h4 { font-size: 1em; margin-bottom: 12px; color: var(--primary-color); }
         #settings-sidebar label { display: block; margin-bottom: 10px; cursor: pointer; font-size: 0.9em; user-select: none; }
         #settings-sidebar input[type="checkbox"] { margin-right: 8px; vertical-align: middle;}
@@ -63,24 +49,66 @@
         .font-size-controls input[type="range"] { width: 100px; height: 5px; cursor: pointer; accent-color: var(--primary-color); vertical-align: middle; flex-grow: 1;}
         .font-size-controls button { padding: 3px 6px; font-size: 0.9em; min-width: 25px; line-height: 1; }
         #font-size-value { font-size: 0.8em; min-width: 35px; text-align: right; color: #555; }
-        .difficulty-switch button { padding: 6px 12px; font-size: 0.85em; margin-right: 5px; }
+        .difficulty-switch { display: flex; gap: 5px;} /* Align difficulty buttons */
+        .difficulty-switch button { padding: 6px 12px; font-size: 0.85em; margin-right: 0; flex: 1; } /* Make buttons equal width */
         .difficulty-switch button.active { background-color: var(--secondary-color); font-weight: bold; }
-        #sidebar-toggle { position: fixed; top: 10px; left: 15px; z-index: 1003; background: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 8px 10px; cursor: pointer; display: none; font-size: 1.2em; line-height: 1; }
+        #word-test-sidebar-trigger button { /* Style for sidebar test button */
+            width: 100%;
+            background-color: #28a745;
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+        #word-test-sidebar-trigger button:hover { background-color: #218838; }
+
+        #sidebar-toggle {
+            position: fixed; top: 10px; left: 15px; z-index: 1003; background: var(--primary-color);
+            color: white; border: none; border-radius: 4px; padding: 8px 10px; cursor: pointer;
+            display: none; font-size: 1.2em; line-height: 1;
+        }
         #sidebar-toggle:hover { background-color: #357abd; }
-        #main-content { flex-grow: 1; height: 100vh; display: flex; flex-direction: column; padding-left: var(--sidebar-width); transition: padding-left 0.3s ease; overflow: hidden; }
-        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 10px; gap: 10px; overflow: hidden; }
-        #text-area { flex: 2; background-color: white; border: 1px solid var(--border-color); border-radius: 5px; display: flex; flex-direction: column; overflow: hidden; }
-        #question-area { flex: 1; background-color: white; border: 1px solid var(--border-color); border-radius: 5px; overflow: hidden; resize: vertical; min-height: 180px; max-height: 60vh; display: flex; flex-direction: column; }
-        #text-content-wrapper { padding: 20px; flex-grow: 1; overflow-y: auto; font-size: 1rem; /* Base size for text content */ }
-        .tab-content-container { padding: 20px; flex-grow: 1; overflow-y: auto; }
+        #main-content {
+            flex-grow: 1; height: 100vh; display: flex; flex-direction: column;
+            padding-left: var(--sidebar-width); transition: padding-left 0.3s ease; overflow: hidden;
+        }
+        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 10px; gap: 0; overflow: hidden; }
+        #text-area {
+            background-color: white; border: 1px solid var(--border-color); border-bottom: none;
+            border-radius: 5px 5px 0 0; display: flex; flex-direction: column; overflow: hidden;
+            flex-grow: 2; flex-basis: 0;
+        }
+        #question-area {
+             background-color: white; border: 1px solid var(--border-color); border-top: none;
+             border-radius: 0 0 5px 5px; overflow: hidden; min-height: 100px;
+             display: flex; flex-direction: column; flex-grow: 1; flex-basis: 0;
+        }
+        #text-content-wrapper { padding: 20px; flex-grow: 1; overflow-y: auto; font-size: 1rem; }
+        .tab-content-container { padding: 20px; flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
+        #resizer { height: var(--resizer-height); background-color: var(--border-color); cursor: ns-resize; flex-shrink: 0; position: relative; display: block; }
+        #resizer::before { content: ""; position: absolute; top: calc(50% - 1px); left: 40%; right: 40%; height: 2px; background-color: #aaa; border-radius: 1px; }
+        #action-footer {
+            position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-height);
+            background-color: #ffffff; border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05); display: none; align-items: center;
+            justify-content: space-around; padding: 0 15px; z-index: 1001;
+        }
+        #action-footer button { padding: 10px 15px; font-size: 0.95em; }
+        #footer-submit-button { background-color: var(--secondary-color); }
+        #footer-word-test-button { background-color: #28a745; }
         @media (max-width: 991px) {
             #settings-sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
             body.sidebar-open #settings-sidebar { transform: translateX(0); }
             #main-content { padding-left: 0; }
             #sidebar-toggle { display: block; }
             body.sidebar-open::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1001; display: block; }
+            #resizer { display: none; }
+            #text-area { flex-grow: 0; flex-basis: auto; height: 60vh; border-radius: 5px; border-bottom: 1px solid var(--border-color); margin-bottom: 5px;}
+            #question-area { flex-grow: 1; flex-basis: auto; height: auto; border-radius: 5px; border-top: 1px solid var(--border-color); }
+            #action-footer { display: flex; }
+            .question-item .submit-button { display: none; }
+            /* #word-test-trigger-section removed from HTML */
+            .tab-content-container { padding-bottom: calc(var(--footer-height) + 20px); }
         }
-        button:hover:not(:disabled) { background-color: #357abd; } /* Added :not(:disabled) */
+        button:hover:not(:disabled) { background-color: #357abd; }
         button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
         #sound-tips-area { padding: 10px 15px; background-color: var(--sound-tips-bg); border-bottom: 1px solid var(--border-color); font-size: 0.9em; display: none; }
         #sound-tips-area strong { color: var(--primary-color); }
@@ -121,17 +149,12 @@
         .hint-toggle label { cursor: pointer; color: var(--hint-color); }
         .hint-toggle input[type="checkbox"] { margin-right: 5px; vertical-align: middle; }
         .hint-text { display: none; font-size: 0.9em; color: var(--hint-color); padding: 10px; background-color: #f8f9fa; border: 1px dashed var(--border-color); border-radius: 4px; margin-bottom: 15px; }
-        .submit-button { margin-top: 15px; background-color: var(--secondary-color); }
-        .submit-button:hover:not(:disabled) { background-color: #e59400; }
         .explanation { display: none; margin-top: 20px; padding: 15px; background-color: var(--explanation-bg); border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95em; }
         .explanation h4 { margin-bottom: 12px; color: var(--primary-color); }
         .explanation p { margin-bottom: 10px; }
         .explanation ul { list-style: none; padding-left: 0; margin-top: 10px; margin-bottom: 10px; }
         .explanation li { margin-bottom: 8px; padding-left: 1.2em; position: relative; }
          .explanation li::before { content: "•"; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; }
-        #word-test-trigger-section { text-align: center; padding: 15px; border-top: 1px solid var(--border-color); flex-shrink: 0; }
-        #word-test-start-button { background-color: #28a745; }
-        #word-test-start-button:hover { background-color: #218838; }
         #word-test-modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); padding-top: 60px; }
         .word-test-content { background-color: #fefefe; margin: 5% auto; padding: 25px 30px; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 8px; position: relative; text-align: left; }
         .close-test-button { color: #aaa; position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; }
@@ -153,10 +176,9 @@
         #word-test-result-area ul { list-style: none; padding-left: 0; }
         #word-test-result-area li { margin-bottom: 5px; font-size: 0.9em; }
         #word-test-result-area li strong { margin-right: 5px;}
+
         @media (max-width: 768px) {
             body { height: auto; overflow: auto; }
-            #text-content-wrapper { max-height: 65vh; padding: 15px;}
-            .tab-content-container { max-height: 60vh; padding: 15px;}
             #word-menu button { padding: 8px 12px; font-size: 0.9em; }
             .word-test-content { width: 95%; margin: 8% auto; padding: 20px; }
         }
@@ -164,17 +186,17 @@
 </head>
 <body>
 
-<button id="sidebar-toggle" title="設定を開閉">&#9776;</button>
+<button id="sidebar-toggle" title="設定を開閉">☰</button>
 
 <div id="settings-sidebar">
     <div class="settings-group">
         <h4>表示設定</h4>
-        <label title="本文の全文訳を表示/非表示"><input type="checkbox" id="toggle-full-translation"> 全文訳</label>
-        <label title="本文のフレーズ訳を表示/非表示"><input type="checkbox" id="toggle-phrase-translation"> フレーズ訳</label>
-        <label title="新出語彙の下線/意味表示を切り替え"><input type="checkbox" id="toggle-vocab"> 語彙ヒント</label>
-        <label title="フレーズ区切りマークを表示/非表示"><input type="checkbox" id="toggle-phrases"> フレーズ区切り</label>
-        <label title="SOUND TIPSを表示/非表示"><input type="checkbox" id="toggle-sound-tips"> SOUND TIPS</label>
-        <label title="SVOCM表示を切り替え"><input type="checkbox" id="toggle-svocm"> SVOCM</label>
+        <label><input type="checkbox" id="toggle-full-translation"> 全文訳</label>
+        <label><input type="checkbox" id="toggle-phrase-translation"> フレーズ訳</label>
+        <label><input type="checkbox" id="toggle-vocab"> 語彙ヒント</label>
+        <label><input type="checkbox" id="toggle-phrases"> フレーズ区切り</label>
+        <label><input type="checkbox" id="toggle-sound-tips"> SOUND TIPS</label>
+        <label><input type="checkbox" id="toggle-svocm"> SVOCM</label>
     </div>
     <div class="settings-group">
         <h4>フォントサイズ</h4>
@@ -194,6 +216,10 @@
             <button id="btn-original" class="active" title="オリジナルの英文を表示">オリジナル</button>
             <button id="btn-simplified" title="難易度を下げた英文を表示">易化</button>
         </div>
+    </div>
+    <div class="settings-group" id="word-test-sidebar-trigger">
+        <h4>単語テスト</h4>
+        <button id="word-test-start-button">単語テストを開始</button>
     </div>
 </div>
 
@@ -266,6 +292,8 @@
             </div>
         </div>
 
+        <div id="resizer"></div>
+
         <div id="question-area">
              <div class="tab-container">
                  <button class="tab-button active" data-tab="q1">Q1</button>
@@ -312,10 +340,15 @@
                      <div class="explanation" data-original-html='<p><strong>正解: D. Some of the positive words of encouragement</strong></p><p>指示代名詞 "They" が何を指すかを見つけるには、その直前の文脈を確認します。 "They often help me." の直前の文は「I will tell you about some of the positive words of encouragement. (皆さんに前向きな励ましの言葉についていくつかお話ししましょう。)」です。したがって、"They" は「いくつかの前向きな励ましの言葉 (some of the positive words of encouragement)」を指しています。これらの言葉が彼を助けてくれる、と文が続いています。</p><ul><li>A, B, C: 文脈上、これらの選択肢は "They" が指すものとして適切ではありません。</li></ul>'></div>
                 </div>
             </div>
-            <div id="word-test-trigger-section">
-                 <button id="word-test-start-button">単語テストを開始</button>
-            </div>
+            <!-- word-test-trigger-section removed -->
         </div>
+    </div>
+</div>
+
+<div id="action-footer">
+    <button id="footer-word-test-button">単語テスト</button>
+    <div id="footer-submit-placeholder">
+        <button id="footer-submit-button" disabled>提出</button>
     </div>
 </div>
 
@@ -327,7 +360,7 @@
 
 <div id="word-test-modal">
     <div class="word-test-content">
-        <span class="close-test-button" id="close-test-modal" title="閉じる">&times;</span>
+        <span class="close-test-button" id="close-test-modal" title="閉じる">×</span>
         <h3>単語テスト</h3>
         <div id="word-test-ui">
             <p class="loading-message">テストを読み込み中...</p>
@@ -346,11 +379,9 @@
     </div>
 </div>
 
-
 <script>
-    // --- グローバル変数 ---
     const userWordList = new Set();
-    const wordMeanings = { // キーは小文字
+    const wordMeanings = {
         'professional': { mean: '専門職の、プロの', pos: 'adj/n', incorrect: ['アマチュアの', '趣味の', '初心者の'] },
         'sportscaster': { mean: 'スポーツ解説者', pos: 'n', incorrect: ['選手', '観客', '監督'] },
         'image': { mean: '印象、イメージ', pos: 'n', incorrect: ['現実', '写真', '鏡'] },
@@ -362,78 +393,78 @@
         'positive': { mean: '肯定的な、前向きな', pos: 'adj', incorrect: ['否定的な', '悲観的な', '暗い'] },
         'encouragement': { mean: '励まし、奨励', pos: 'n', incorrect: ['落胆', '批判', '警告'] },
         'encourage': { mean: '励ます、勇気づける', pos: 'v', incorrect: ['がっかりさせる', '邪魔する', '非難する'] },
-        'hello': { mean: 'こんにちは', pos: 'interj', incorrect: ['さようなら', 'ありがとう', 'すみません']},
-        'everyone': { mean: '皆さん', pos: 'pron', incorrect: ['誰か', '彼', '彼女']},
-        'i': { mean: '私', pos: 'pron', incorrect: ['あなた', '彼ら', 'それ']},
-        'am': { mean: '～である (be動詞)', pos: 'v', incorrect: ['持っている', 'する', '行く']},
-        'was': { mean: '～であった (be動詞)', pos: 'v', incorrect: ['～だろう', '～する', '～できる']},
-        'tennis': { mean: 'テニス', pos: 'n', incorrect: ['サッカー', '野球', 'バスケ']},
-        'player': { mean: '選手', pos: 'n', incorrect: ['審判', 'コーチ', 'ファン']},
-        'about': { mean: '約～、～について', pos: 'prep/adv', incorrect: ['正確に', '～なしで', '～の間に']},
-        'ago': { mean: '～前に', pos: 'adv', incorrect: ['～後に', '現在', '未来に']},
-        'now': { mean: '今、現在', pos: 'adv', incorrect: ['過去', '未来', '時々']},
-        'tell': { mean: '伝える、話す', pos: 'v', incorrect: ['聞く', '黙る', '隠す']},
-        'great': { mean: '素晴らしい、偉大な', pos: 'adj', incorrect: ['普通の', 'つまらない', '小さな']},
-        'world': { mean: '世界', pos: 'n', incorrect: ['国', '都市', '宇宙']},
-        'sports': { mean: 'スポーツ', pos: 'n', incorrect: ['勉強', '仕事', '芸術']},
-        'by the way': { mean: 'ところで', pos: 'idiom', incorrect: ['しかし', 'だから', '例えば']},
-        'what': { mean: '何', pos: 'pron/det', incorrect: ['誰', 'どこ', 'いつ']},
-        'is': { mean: '～である (be動詞)', pos: 'v', incorrect: ['持っている', 'する', '行く']},
-        'my': { mean: '私の', pos: 'det', incorrect: ['あなたの', '彼の', '彼女の']},
-        'you': { mean: 'あなた', pos: 'pron', incorrect: ['私', '彼ら', 'それ']},
-        'may': { mean: '～かもしれない、～してもよい', pos: 'aux', incorrect: ['～しなければならない', '～すべきだ', '～できない']},
-        'think': { mean: '考える、思う', pos: 'v', incorrect: ['見る', '聞く', '感じる']},
-        'such': { mean: 'そのような', pos: 'det/pron', incorrect: ['この', 'あの', '全ての']},
-        'words': { mean: '言葉', pos: 'n', incorrect: ['数字', '絵', '音']},
-        'as': { mean: '～として、～のような', pos: 'prep/adv/conj', incorrect: ['しかし', 'そして', 'または']},
-        'or': { mean: 'または、あるいは', pos: 'conj', incorrect: ['そして', 'しかし', 'だから']},
-        'but': { mean: 'しかし', pos: 'conj', incorrect: ['そして', 'だから', 'または']},
-        'not': { mean: '～でない', pos: 'adv', incorrect: ['常に', 'はい', '多分']},
-        'that': { mean: 'その、あの', pos: 'det/pron/adv', incorrect: ['この', 'これらの', 'あれらの']},
-        'kind': { mean: '種類、親切な', pos: 'n/adj', incorrect: ['色', '形', '厳しい']},
-        'person': { mean: '人', pos: 'n', incorrect: ['動物', '物', '場所']},
-        'so': { mean: 'だから、それで', pos: 'adv/conj', incorrect: ['しかし', 'なぜなら', 'もし']},
-        'always': { mean: 'いつも、常に', pos: 'adv', incorrect: ['決して～ない', '時々', 'まれに']},
-        'try': { mean: '試す、努める', pos: 'v', incorrect: ['諦める', '避ける', '忘れる']},
-        'to': { mean: '(不定詞)～すること、～へ', pos: 'prep/part', incorrect: ['～から', '～なしで', '～の上に']},
-        'myself': { mean: '私自身', pos: 'pron', incorrect: ['あなた自身', '彼自身', '私たち自身']},
-        'with': { mean: '～と一緒に、～で', pos: 'prep', incorrect: ['～なしで', '～の上に', '～の下に']},
-        'in': { mean: '～の中に', pos: 'prep', incorrect: ['～の外に', '～の上に', '～の下に']},
-        'this': { mean: 'これ、この', pos: 'det/pron', incorrect: ['それ', 'あれ', 'あれら']},
-        'way': { mean: '方法、道', pos: 'n', incorrect: ['終わり', '始まり', '問題']},
-        'hope': { mean: '望む、希望する', pos: 'v/n', incorrect: ['恐れる', '疑う', '後悔する']},
-        'can': { mean: '～できる', pos: 'aux', incorrect: ['～できない', '～しなければならない', '～かもしれない']},
-        'become': { mean: '～になる', pos: 'v', incorrect: ['～のままでいる', '始める', '終わる']},
-        'stronger': { mean: 'より強い', pos: 'adj (comp)', incorrect: ['より弱い', '同じ強さの', '最も強い']},
-        'the': { mean: 'その', pos: 'det', incorrect: ['不定冠詞', '指示代名詞', '所有格']},
-        'me': { mean: '私を、私に', pos: 'pron', incorrect: ['あなたを', '彼を', '私']},
-        'very': { mean: 'とても', pos: 'adv', incorrect: ['少し', 'まあまあ', '全く～ない']},
-        'much': { mean: 'たくさん', pos: 'adv/det', incorrect: ['少し', 'いくつか', 'なし']},
-        'will': { mean: '～だろう、～するつもりだ', pos: 'aux', incorrect: ['～すべきだ', '～できる', '～かもしれない']},
-        'some': { mean: 'いくつかの、いくらかの', pos: 'det/pron', incorrect: ['全ての', 'なし', '各々の']},
-        'of': { mean: '～の', pos: 'prep', incorrect: ['～へ', '～から', '～と']},
-        'often': { mean: 'しばしば、よく', pos: 'adv', incorrect: ['決して～ない', 'まれに', 'いつも']},
-        'help': { mean: '助ける、手伝う', pos: 'v/n', incorrect: ['邪魔する', '無視する', '傷つける']},
-        'might': { mean: '～かもしれない', pos: 'aux', incorrect: ['～しなければならない', '～すべきだ', '～できない']},
-        'too': { mean: '～もまた', pos: 'adv', incorrect: ['～だけ', 'しかし', 'だから']},
-        'they': { mean: 'それら、彼ら', pos: 'pron', incorrect: ['これら', '彼女ら', '私たち']},
-        'i\'m': { mean: '私は～です', pos: 'contr.', incorrect: ['あなたは～です', '彼は～です', '彼らは～です']},
-        'played': { mean: 'プレーした', pos: 'v', incorrect: ['プレーする', 'プレーしている', 'プレーするだろう']},
-        'job': { mean: '仕事', pos: 'n', incorrect: ['趣味', '休暇', '学校']},
-        'talk': { mean: '話す', pos: 'v', incorrect: ['聞く', '書く', '読む']},
-        'are': { mean: '～である (be動詞)', pos: 'v', incorrect: ['～だった', '～する', '～できる']},
-        'maybe': { mean: '多分、もしかすると', pos: 'adv', incorrect: ['絶対に', '決して～ない', 'いつも']},
-        'full': { mean: 'いっぱいの', pos: 'adj', incorrect: ['空の', '少しの', '不足した']},
-        'energy': { mean: 'エネルギー、活力', pos: 'n', incorrect: ['疲労', '無気力', '静けさ']},
-        'loudly': { mean: '大声で', pos: 'adv', incorrect: ['静かに', '小さく', '速く']},
-        'like': { mean: '～のような', pos: 'prep/adj/v', incorrect: ['～と異なる', '～なしで', '～の代わりに']},
-        'bad': { mean: '悪い', pos: 'adj', incorrect: ['良い', '素晴らしい', '普通の']},
-        'use': { mean: '使う', pos: 'v', incorrect: ['捨てる', '保管する', '探す']},
-        'good': { mean: '良い', pos: 'adj', incorrect: ['悪い', '普通の', 'ひどい']},
-        'want': { mean: '欲しい、～したい', pos: 'v', incorrect: ['必要ない', '嫌う', '避ける']},
-        'be': { mean: '～である、～になる', pos: 'v', incorrect: ['する', '持つ', '行く']},
-        'these': { mean: 'これらの', pos: 'det/pron', incorrect: ['あれらの', 'この', 'その']},
-        'lot': { mean: 'たくさん', pos: 'n/adv', incorrect: ['少し', 'ゼロ', 'いくつか']},
+        'hello': { mean: 'こんにちは', pos: 'interj'},
+        'everyone': { mean: '皆さん', pos: 'pron'},
+        'i': { mean: '私', pos: 'pron'},
+        'am': { mean: '～である (be動詞)', pos: 'v'},
+        'was': { mean: '～であった (be動詞)', pos: 'v'},
+        'tennis': { mean: 'テニス', pos: 'n'},
+        'player': { mean: '選手', pos: 'n'},
+        'about': { mean: '約～、～について', pos: 'prep/adv'},
+        'ago': { mean: '～前に', pos: 'adv'},
+        'now': { mean: '今、現在', pos: 'adv'},
+        'tell': { mean: '伝える、話す', pos: 'v'},
+        'great': { mean: '素晴らしい、偉大な', pos: 'adj'},
+        'world': { mean: '世界', pos: 'n'},
+        'sports': { mean: 'スポーツ', pos: 'n'},
+        'by the way': { mean: 'ところで', pos: 'idiom'},
+        'what': { mean: '何', pos: 'pron/det'},
+        'is': { mean: '～である (be動詞)', pos: 'v'},
+        'my': { mean: '私の', pos: 'det'},
+        'you': { mean: 'あなた', pos: 'pron'},
+        'may': { mean: '～かもしれない、～してもよい', pos: 'aux'},
+        'think': { mean: '考える、思う', pos: 'v'},
+        'such': { mean: 'そのような', pos: 'det/pron'},
+        'words': { mean: '言葉', pos: 'n'},
+        'as': { mean: '～として、～のような', pos: 'prep/adv/conj'},
+        'or': { mean: 'または、あるいは', pos: 'conj'},
+        'but': { mean: 'しかし', pos: 'conj'},
+        'not': { mean: '～でない', pos: 'adv'},
+        'that': { mean: 'その、あの', pos: 'det/pron/adv'},
+        'kind': { mean: '種類、親切な', pos: 'n/adj'},
+        'person': { mean: '人', pos: 'n'},
+        'so': { mean: 'だから、それで', pos: 'adv/conj'},
+        'always': { mean: 'いつも、常に', pos: 'adv'},
+        'try': { mean: '試す、努める', pos: 'v'},
+        'to': { mean: '(不定詞)～すること、～へ', pos: 'prep/part'},
+        'myself': { mean: '私自身', pos: 'pron'},
+        'with': { mean: '～と一緒に、～で', pos: 'prep'},
+        'in': { mean: '～の中に', pos: 'prep'},
+        'this': { mean: 'これ、この', pos: 'det/pron'},
+        'way': { mean: '方法、道', pos: 'n'},
+        'hope': { mean: '望む、希望する', pos: 'v/n'},
+        'can': { mean: '～できる', pos: 'aux'},
+        'become': { mean: '～になる', pos: 'v'},
+        'stronger': { mean: 'より強い', pos: 'adj (comp)'},
+        'the': { mean: 'その', pos: 'det'},
+        'me': { mean: '私を、私に', pos: 'pron'},
+        'very': { mean: 'とても', pos: 'adv'},
+        'much': { mean: 'たくさん', pos: 'adv/det'},
+        'will': { mean: '～だろう、～するつもりだ', pos: 'aux'},
+        'some': { mean: 'いくつかの、いくらかの', pos: 'det/pron'},
+        'of': { mean: '～の', pos: 'prep'},
+        'often': { mean: 'しばしば、よく', pos: 'adv'},
+        'help': { mean: '助ける、手伝う', pos: 'v/n'},
+        'might': { mean: '～かもしれない', pos: 'aux'},
+        'too': { mean: '～もまた', pos: 'adv'},
+        'they': { mean: 'それら、彼ら', pos: 'pron'},
+        'i\'m': { mean: '私は～です', pos: 'contr.'},
+        'played': { mean: 'プレーした', pos: 'v'},
+        'job': { mean: '仕事', pos: 'n'},
+        'talk': { mean: '話す', pos: 'v'},
+        'are': { mean: '～である (be動詞)', pos: 'v'},
+        'maybe': { mean: '多分、もしかすると', pos: 'adv'},
+        'full': { mean: 'いっぱいの', pos: 'adj'},
+        'energy': { mean: 'エネルギー、活力', pos: 'n'},
+        'loudly': { mean: '大声で', pos: 'adv'},
+        'like': { mean: '～のような', pos: 'prep/adj/v'},
+        'bad': { mean: '悪い', pos: 'adj'},
+        'use': { mean: '使う', pos: 'v'},
+        'good': { mean: '良い', pos: 'adj'},
+        'want': { mean: '欲しい、～したい', pos: 'v'},
+        'be': { mean: '～である、～になる', pos: 'v'},
+        'these': { mean: 'これらの', pos: 'det/pron'},
+        'lot': { mean: 'たくさん', pos: 'n/adv'},
     };
     const predefinedVocabKeys = [
         'professional', 'sportscaster', 'image', 'passion', 'spirit',
@@ -442,15 +473,21 @@
     const predefinedLower = predefinedVocabKeys.map(k => k.toLowerCase());
     const correctAnswers = { q1: 'b', q2: 'b', q3: 'c', q4: 'd' };
     let currentWord = null;
-    let currentFontScale = 1.0;
+    let currentTextScale = 1.0;
     let wordTestQuestions = [];
     let currentTestQuestionIndex = 0;
     let userTestAnswers = {};
+    let dragStartY = 0;
+    let initialTextFlex = 0;
+    let initialQuestionFlex = 0;
 
     const body = document.body;
     const sidebar = document.getElementById('settings-sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const mainContent = document.getElementById('main-content');
+    const textArea = document.getElementById('text-area');
+    const questionArea = document.getElementById('question-area');
+    const resizer = document.getElementById('resizer');
     const textContentWrapper = document.getElementById('text-content-wrapper');
     const toggleFullTranslation = document.getElementById('toggle-full-translation');
     const togglePhraseTranslation = document.getElementById('toggle-phrase-translation');
@@ -462,8 +499,8 @@
     const fontIncreaseBtn = document.getElementById('font-increase');
     const fontSizeSlider = document.getElementById('font-size-slider');
     const fontSizeValue = document.getElementById('font-size-value');
-    const btnOriginal = document.getElementById('btn-original');
-    const btnSimplified = document.getElementById('btn-simplified');
+    const btnOriginal = sidebar.querySelector('#btn-original');
+    const btnSimplified = sidebar.querySelector('#btn-simplified');
     const wordMenu = document.getElementById('word-menu');
     const dictButton = document.getElementById('dict-button');
     const etyButton = document.getElementById('ety-button');
@@ -473,7 +510,7 @@
     const tabContents = document.querySelectorAll('.tab-content');
     const hintToggles = document.querySelectorAll('.toggle-hint');
     const submitButtons = document.querySelectorAll('.submit-button');
-    const wordTestStartButton = document.getElementById('word-test-start-button');
+    const wordTestStartButtonSidebar = document.getElementById('word-test-start-button'); // Sidebar button
     const wordTestModal = document.getElementById('word-test-modal');
     const closeTestModalButton = document.getElementById('close-test-modal');
     const wordTestUI = document.getElementById('word-test-ui');
@@ -484,11 +521,14 @@
     const wordTestResultArea = document.getElementById('word-test-result-area');
     const testScore = document.getElementById('test-score');
     const testFeedback = document.getElementById('test-feedback');
+    const actionFooter = document.getElementById('action-footer');
+    const footerSubmitButton = document.getElementById('footer-submit-button');
+    const footerWordTestButton = document.getElementById('footer-word-test-button');
 
     function initialize() {
         setupWordClickListeners();
         setupVocabTooltipsAndMarkers();
-
+        initializeResizer();
         sidebarToggle.addEventListener('click', toggleSidebar);
         toggleFullTranslation.addEventListener('change', () => body.classList.toggle('show-full-translation'));
         togglePhraseTranslation.addEventListener('change', () => body.classList.toggle('show-phrase-translation'));
@@ -502,11 +542,9 @@
         btnOriginal.addEventListener('click', () => setDifficulty(false));
         btnSimplified.addEventListener('click', () => setDifficulty(true));
         setDefaultFontSize();
-
         dictButton.addEventListener('click', searchDictionary);
         etyButton.addEventListener('click', searchEtymology);
         addListButton.addEventListener('click', addWordToList);
-
         document.addEventListener('click', (event) => {
              if (wordMenu.style.display === 'block' && !wordMenu.contains(event.target) && !event.target.closest('.word')) {
                  wordMenu.style.display = 'none';
@@ -516,23 +554,24 @@
              }
          });
          wordMenu.addEventListener('click', (e) => e.stopPropagation());
-
         tabContainer.addEventListener('click', handleTabClick);
         const initialActiveTab = tabContainer.querySelector('.tab-button.active');
         if (initialActiveTab) {
             const initialTabId = initialActiveTab.dataset.tab;
             const initialContent = document.getElementById(initialTabId);
-            if (initialContent) initialContent.classList.add('active');
+            if (initialContent) {
+                initialContent.classList.add('active');
+                updateFooterSubmitButton(initialTabId);
+            }
         }
         submitButtons.forEach(button => {
              button.addEventListener('click', handleSubmit);
              const explanationDiv = button.nextElementSibling;
-             if (explanationDiv && explanationDiv.classList.contains('explanation') && !explanationDiv.dataset.originalHtml) {
-                explanationDiv.dataset.originalHtml = explanationDiv.innerHTML;
-                explanationDiv.innerHTML = ''; // Clear initial content only once
-                explanationDiv.style.display = 'none';
-             } else if (explanationDiv && explanationDiv.classList.contains('explanation')) {
-                 explanationDiv.innerHTML = ''; // Clear potentially modified content
+             if (explanationDiv && explanationDiv.classList.contains('explanation')) {
+                 if (!explanationDiv.dataset.originalHtml) {
+                    explanationDiv.dataset.originalHtml = explanationDiv.innerHTML;
+                 }
+                 explanationDiv.innerHTML = '';
                  explanationDiv.style.display = 'none';
              }
         });
@@ -544,8 +583,9 @@
                  }
             });
         });
-
-        wordTestStartButton.addEventListener('click', startWordTest);
+        wordTestStartButtonSidebar.addEventListener('click', startWordTest); // Listen on sidebar button
+        footerWordTestButton.addEventListener('click', startWordTest); // Listen on footer button
+        footerSubmitButton.addEventListener('click', handleFooterSubmit);
         closeTestModalButton.addEventListener('click', closeWordTest);
         prevWordButton.addEventListener('click', showPrevWordQuestion);
         nextWordButton.addEventListener('click', showNextWordQuestion);
@@ -556,166 +596,162 @@
     function toggleSidebar() { body.classList.toggle('sidebar-open'); }
 
     function setupWordClickListeners() {
-         // Use event delegation on the wrapper for potentially dynamic content
-         textContentWrapper.removeEventListener('click', handleWordClickDelegate); // Remove previous if any
-         textContentWrapper.addEventListener('click', handleWordClickDelegate);
-     }
-
-     // Delegate handler for word clicks
-     function handleWordClickDelegate(event) {
-         const targetElement = event.target.closest('.word');
-         if (targetElement) {
-             handleWordClick(targetElement); // Call original handler with the element
-         }
-     }
+        textContentWrapper.removeEventListener('click', handleWordClick);
+        textContentWrapper.addEventListener('click', handleWordClick);
+    }
 
     function setupVocabTooltipsAndMarkers() {
         textContentWrapper.querySelectorAll('.word').forEach(wordSpan => {
             const clone = wordSpan.cloneNode(true);
             clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
             const wordText = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
-
+            const isPredefined = predefinedLower.includes(wordText);
             const vocabSpan = wordSpan.querySelector('.vocab-word') || wordSpan;
+            vocabSpan.classList.remove('is-predefined');
+            const existingTooltip = vocabSpan.querySelector('.tooltip');
+            if (existingTooltip) existingTooltip.remove();
+            vocabSpan.style.position = '';
 
-            if (predefinedLower.includes(wordText)) {
+            if (isPredefined) {
                 vocabSpan.classList.add('is-predefined');
                  if (!vocabSpan.classList.contains('vocab-word')) {
                      vocabSpan.classList.add('vocab-word');
                  }
                 const meaningData = wordMeanings[wordText];
                 if (meaningData && meaningData.mean) {
-                    let tooltip = vocabSpan.querySelector('.tooltip');
-                    if (!tooltip) {
-                        tooltip = document.createElement('span');
-                        tooltip.className = 'tooltip';
-                        // Prepend to handle nested spans correctly
-                         if (vocabSpan.firstChild) {
-                             vocabSpan.insertBefore(tooltip, vocabSpan.firstChild);
-                         } else {
-                             vocabSpan.appendChild(tooltip);
-                         }
-                    }
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'tooltip';
                     tooltip.textContent = meaningData.mean + (meaningData.pos ? ` (${meaningData.pos})` : '');
+                    vocabSpan.appendChild(tooltip);
+                    if (window.getComputedStyle(vocabSpan).position === 'static') {
+                        vocabSpan.style.position = 'relative';
+                    }
                 }
-                if (window.getComputedStyle(vocabSpan).position === 'static') {
-                    vocabSpan.style.position = 'relative';
-                }
-            } else {
-                vocabSpan.classList.remove('is-predefined');
-                const existingTooltip = vocabSpan.querySelector('.tooltip');
-                if (existingTooltip) existingTooltip.remove();
             }
         });
     }
 
-    // Font Size Controls (Targeting text content wrapper)
     function applyFontSize(scale) {
         const newScale = Math.max(0.8, Math.min(scale, 1.5));
-        currentFontScale = newScale;
-        // Apply font size directly to the text content wrapper
+        currentTextScale = newScale;
         textContentWrapper.style.fontSize = `calc(1rem * ${newScale})`;
-        // Sync slider and display value
         fontSizeSlider.value = newScale;
         fontSizeValue.textContent = `${Math.round(newScale * 100)}%`;
-        // Update button states
         fontDecreaseBtn.disabled = newScale <= 0.8;
         fontIncreaseBtn.disabled = newScale >= 1.5;
     }
     function handleFontSizeSlider(event) { applyFontSize(parseFloat(event.target.value)); }
-    function handleFontSizeButtonIncrease() { applyFontSize(currentFontScale + 0.1); }
-    function handleFontSizeButtonDecrease() { applyFontSize(currentFontScale - 0.1); }
+    function handleFontSizeButtonIncrease() { applyFontSize(currentTextScale + 0.1); }
+    function handleFontSizeButtonDecrease() { applyFontSize(currentTextScale - 0.1); }
     function setDefaultFontSize() {
         let initialScale = 1.0;
-        if (window.matchMedia('(min-width: 992px)').matches) {
-            initialScale = 1.05;
-        }
+        if (window.matchMedia('(min-width: 992px)').matches) { initialScale = 1.05; }
         applyFontSize(initialScale);
     }
 
-    // Set Difficulty
     function setDifficulty(simplified) {
         body.classList.toggle('show-simplified', simplified);
         sidebar.querySelector('#btn-original').classList.toggle('active', !simplified);
         sidebar.querySelector('#btn-simplified').classList.toggle('active', simplified);
-        // Re-run setups after content change
-        setupWordClickListeners(); // Ensures listeners are on correct elements
-        setupVocabTooltipsAndMarkers();
+        setTimeout(() => {
+            setupWordClickListeners();
+            setupVocabTooltipsAndMarkers();
+        }, 0);
     }
 
-    // Handle Word Click (Left Click)
-    function handleWordClick(targetElement) { // Accepts the clicked element directly
-        //event.stopPropagation(); // Stop propagation is handled by listener setup
-        // const targetElement = event.target.closest('.word'); // Already done by delegate
+    function handleWordClick(event) {
+        const targetElement = event.target.closest('.word');
         if (!targetElement) return;
-
+        event.stopPropagation();
         const clone = targetElement.cloneNode(true);
         clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
         currentWord = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
-
         if (!currentWord) return;
-
         const rect = targetElement.getBoundingClientRect();
-        showWordMenuAtPosition(window.scrollX + rect.left, window.scrollY + rect.bottom + 5, targetElement); // Pass target element
+        showWordMenuAtPosition(rect.left + window.scrollX, rect.bottom + window.scrollY + 5, targetElement);
     }
 
-    // Show Word Menu at specified coordinates
-    function showWordMenuAtPosition(x, y, targetElement) { // Added targetElement
+    function showWordMenuAtPosition(x, y, targetElement) {
         wordMenu.style.display = 'none';
-
         let left = x;
         let top = y;
-
         wordMenu.style.left = `${left}px`;
         wordMenu.style.top = `${top}px`;
         wordMenu.style.visibility = 'hidden';
         wordMenu.style.display = 'block';
-
         const menuWidth = wordMenu.offsetWidth;
         const menuHeight = wordMenu.offsetHeight;
-        const viewportWidth = window.innerWidth + window.scrollX;
-        const viewportHeight = window.innerHeight + window.scrollY;
-
-        if (left + menuWidth > viewportWidth) left = viewportWidth - menuWidth - 10;
-        // Try positioning above if it goes off bottom
-        if (top + menuHeight > viewportHeight) {
-             const elementHeight = targetElement ? targetElement.offsetHeight : 20; // Get element height
-             top = y - menuHeight - elementHeight - 5; // Position above
-         }
-         // Ensure menu doesn't go off top
-         if (top < window.scrollY) {
-             top = window.scrollY + 5;
-         }
-
-
+        const docWidth = document.documentElement.scrollWidth;
+        const docHeight = document.documentElement.scrollHeight;
+        if (left + menuWidth > docWidth) left = docWidth - menuWidth - 10;
+        if (left < window.scrollX) left = window.scrollX + 10;
+        if (top + menuHeight > docHeight) {
+            if (targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                top = window.scrollY + rect.top - menuHeight - 5;
+            } else {
+                top = docHeight - menuHeight - 10;
+            }
+        }
+        if (top < window.scrollY) top = window.scrollY + 10;
         wordMenu.style.left = `${left}px`;
         wordMenu.style.top = `${top}px`;
         wordMenu.style.visibility = 'visible';
     }
 
+    function searchDictionary() {
+        if (!currentWord) return;
+        window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(currentWord)}`, '_blank');
+        wordMenu.style.display = 'none';
+    }
+    function searchEtymology() {
+        if (!currentWord) return;
+        window.open(`https://www.etymonline.com/search?q=${encodeURIComponent(currentWord)}`, '_blank');
+        wordMenu.style.display = 'none';
+    }
+    function addWordToList() {
+        if (!currentWord) return;
+        userWordList.add(currentWord);
+        alert(`「${currentWord}」を単語テストリストに追加しました。`);
+        wordMenu.style.display = 'none';
+    }
 
-    // Word Menu Actions
-    function searchDictionary() { if (!currentWord) return; window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(currentWord)}`, '_blank'); wordMenu.style.display = 'none'; }
-    function searchEtymology() { if (!currentWord) return; window.open(`https://www.etymonline.com/search?q=${encodeURIComponent(currentWord)}`, '_blank'); wordMenu.style.display = 'none'; }
-    function addWordToList() { if (!currentWord) return; userWordList.add(currentWord); alert(`「${currentWord}」を単語テストリストに追加しました。`); wordMenu.style.display = 'none'; }
-
-    // Tab Switching
     function handleTabClick(event) {
         const clickedButton = event.target.closest('.tab-button');
         if (!clickedButton || clickedButton.classList.contains('active')) return;
-
         const targetTabId = clickedButton.dataset.tab;
         const targetContent = document.getElementById(targetTabId);
         if (!targetContent) return;
-
-        tabContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        tabContainer.parentNode.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active')); // Correctly target contents within the parent
-
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
         clickedButton.classList.add('active');
         targetContent.classList.add('active');
+        updateFooterSubmitButton(targetTabId);
     }
 
-    // Submit Comprehension Answer
-    function handleSubmit(event) {
+    function updateFooterSubmitButton(activeTabId) {
+        const activeTabContent = document.getElementById(activeTabId);
+        if (!activeTabContent) { footerSubmitButton.disabled = true; return; }
+        const originalSubmitButton = activeTabContent.querySelector('.submit-button');
+        if (originalSubmitButton) {
+            footerSubmitButton.disabled = originalSubmitButton.disabled;
+            footerSubmitButton.dataset.questionId = originalSubmitButton.dataset.questionId;
+        } else {
+            footerSubmitButton.disabled = true;
+        }
+    }
+    function handleFooterSubmit() {
+        const questionId = footerSubmitButton.dataset.questionId;
+        if (!questionId || footerSubmitButton.disabled) return;
+        const questionItem = document.getElementById(questionId);
+        if (!questionItem) return;
+        const originalSubmitButton = questionItem.querySelector(`.submit-button[data-question-id="${questionId}"]`);
+        if (originalSubmitButton) {
+            originalSubmitButton.click();
+        }
+    }
+
+     function handleSubmit(event) {
          const button = event.target;
          const questionId = button.dataset.questionId;
          const questionItem = document.getElementById(questionId);
@@ -733,29 +769,66 @@
              : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer.toUpperCase()})</p>`;
 
          const originalExplanationHTML = explanationDiv.dataset.originalHtml || '';
-         const cleanExplanationHTML = originalExplanationHTML
-             .replace(/<h4>.*?<\/h4>/i, '')
-             .replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '')
-             .trim();
+         const cleanExplanationHTML = originalExplanationHTML.replace(/<h4>.*?<\/h4>/i, '').replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '').trim();
 
          explanationDiv.innerHTML = resultMessage + cleanExplanationHTML;
-         explanationDiv.style.display = 'block'; // Make sure it's displayed
+         explanationDiv.style.display = 'block'; // Make sure explanation is visible
 
          options.forEach(input => input.disabled = true);
          button.disabled = true;
+         if (footerSubmitButton.dataset.questionId === questionId) {
+             footerSubmitButton.disabled = true;
+         }
      }
 
-    // --- Word Test Functions ---
-    function startWordTest() {
-        const validPredefinedKeys = predefinedVocabKeys.filter(key => wordMeanings[key.toLowerCase()]);
-        const wordsToTest = Array.from(new Set([...validPredefinedKeys, ...userWordList]));
+    function initializeResizer() {
+        let isResizing = false;
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            dragStartY = e.clientY;
+            initialTextFlex = parseFloat(getComputedStyle(textArea).flexGrow);
+            initialQuestionFlex = parseFloat(getComputedStyle(questionArea).flexGrow);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            document.body.style.userSelect = 'none';
+        });
 
+        function handleMouseMove(e) {
+            if (!isResizing) return;
+            const deltaY = e.clientY - dragStartY;
+            const containerHeight = textArea.parentElement.clientHeight;
+            const totalFlex = initialTextFlex + initialQuestionFlex;
+            const sensitivity = totalFlex / (containerHeight * 0.8);
+            let newTextFlex = initialTextFlex + deltaY * sensitivity;
+            let newQuestionFlex = initialQuestionFlex - deltaY * sensitivity;
+            const minFlex = 0.3;
+            if (newTextFlex < minFlex) { newTextFlex = minFlex; newQuestionFlex = totalFlex - minFlex; }
+            if (newQuestionFlex < minFlex) { newQuestionFlex = minFlex; newTextFlex = totalFlex - minFlex; }
+            textArea.style.flexGrow = newTextFlex;
+            questionArea.style.flexGrow = newQuestionFlex;
+        }
+        function handleMouseUp() {
+            if (isResizing) {
+                isResizing = false;
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+                document.body.style.userSelect = '';
+            }
+        }
+    }
+
+    function startWordTest() {
+        const wordsToTest = Array.from(new Set([...predefinedVocabKeys, ...userWordList]));
         if (wordsToTest.length === 0) {
             alert('テストする単語がリストにありません。本文の単語をクリックして追加してください。'); return;
         }
         wordsToTest.sort(() => Math.random() - 0.5);
 
         wordTestQuestions = wordsToTest.map(word => createTestQuestion(word));
+        if (!Array.isArray(wordTestQuestions) || wordTestQuestions.length === 0) {
+            alert('テスト問題の生成に失敗しました。');
+            return;
+        }
         currentTestQuestionIndex = 0;
         userTestAnswers = {};
         wordTestResultArea.style.display = 'none';
@@ -768,28 +841,23 @@
         wordTestUI.innerHTML = '<p class="loading-message">テストを読み込み中...</p>';
         wordTestModal.style.display = 'block';
 
-        setTimeout(() => {
-            if (wordTestQuestions.length > 0) {
-                displayWordQuestion(currentTestQuestionIndex);
-            } else {
-                 wordTestUI.innerHTML = '<p>テストデータの作成に失敗しました。</p>'; // Error handling
-            }
-        }, 50);
+        setTimeout(() => { displayWordQuestion(currentTestQuestionIndex); }, 50);
     }
 
+    // CORRECTED: Create MCQ only for predefined words WITH non-empty incorrect options array
     function createTestQuestion(word) {
         const lowerWord = word.toLowerCase();
         const isPredefined = predefinedLower.includes(lowerWord);
         const meaningData = wordMeanings[lowerWord];
 
-        // Check if predefined AND has necessary data for MCQ
+        // Check if predefined, has meaning data, has 'incorrect' key, and 'incorrect' is a non-empty array
         if (isPredefined && meaningData && Array.isArray(meaningData.incorrect) && meaningData.incorrect.length > 0) {
             const options = [...meaningData.incorrect];
             options.push(meaningData.mean);
             options.sort(() => Math.random() - 0.5);
             return { type: 'mcq', word: word, options: options, correct: meaningData.mean };
         } else {
-            // Link type for user words OR predefined words missing MCQ data
+            // Link type for user-added words OR predefined words missing option data
             return { type: 'link', word: word, correct: meaningData ? meaningData.mean : '(意味未登録)' };
         }
     }
@@ -797,31 +865,29 @@
     function displayWordQuestion(index) {
          if (index < 0 || index >= wordTestQuestions.length) return;
          const question = wordTestQuestions[index];
-         if (!question) { // Added check for undefined question
-             wordTestUI.innerHTML = '<p>問題データの読み込みエラー。</p>';
+         if (!question) {
+             console.error("Invalid question data at index:", index);
+             wordTestUI.innerHTML = '<p class="loading-message" style="color:red;">問題データの読み込みエラー</p>';
              return;
          }
-
          let contentHTML = '<div class="test-question">';
 
          if (question.type === 'mcq') {
              let optionsHTML = '';
-             // Ensure options exist and is an array
-             if (Array.isArray(question.options)) {
-                 question.options.forEach((option) => {
-                     const isChecked = userTestAnswers[question.word] === option;
-                     optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
-                 });
-             } else {
-                 optionsHTML = '<p>選択肢エラー</p>'; // Handle error case
-             }
-             contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${escapeHtml(question.word)}">${optionsHTML}</div>`; // Escape data-word too
+             question.options.forEach((option) => {
+                 const isChecked = userTestAnswers[question.word] === option;
+                 optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
+             });
+             contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${question.word}">${optionsHTML}</div>`;
          } else if (question.type === 'link') {
              const infoText = predefinedLower.includes(question.word.toLowerCase())
                  ? "この単語の選択肢データがありません。"
                  : "この単語は確認用です。";
              contentHTML += `<div class="test-word">${escapeHtml(question.word)}</div><p>${infoText}</p><a href="https://ejje.weblio.jp/content/${encodeURIComponent(question.word)}" target="_blank" class="weblio-link-button">Weblioで意味を確認</a>`;
              if (!userTestAnswers[question.word]) userTestAnswers[question.word] = 'link_checked';
+         } else {
+             console.error("Unknown question type:", question.type, "for word:", question.word);
+             contentHTML += `<p style="color:red;">不明な問題タイプ: ${escapeHtml(question.word)}</p>`;
          }
          contentHTML += '</div>';
          wordTestUI.innerHTML = contentHTML;
@@ -834,19 +900,19 @@
          updateTestNavigation(index);
      }
 
-
     function updateTestNavigation(index) {
-         currentTestQuestionIndex = index;
-         const totalQuestions = wordTestQuestions.length;
-         prevWordButton.disabled = (index === 0);
-         nextWordButton.disabled = (index === totalQuestions - 1);
-         nextWordButton.style.display = (index === totalQuestions - 1) ? 'none' : 'inline-block';
-         submitTestButton.style.display = (index === totalQuestions - 1) ? 'inline-block' : 'none';
-         wordCounter.textContent = `${index + 1} / ${totalQuestions}`;
+        currentTestQuestionIndex = index;
+        const totalQuestions = wordTestQuestions.length;
+        prevWordButton.disabled = (index === 0);
+        nextWordButton.disabled = (index === totalQuestions - 1);
+        nextWordButton.style.display = (index === totalQuestions - 1) ? 'none' : 'inline-block';
+        submitTestButton.style.display = (index === totalQuestions - 1) ? 'inline-block' : 'none';
+        wordCounter.textContent = `${index + 1} / ${totalQuestions}`;
      }
     function showPrevWordQuestion() { if (currentTestQuestionIndex > 0) displayWordQuestion(currentTestQuestionIndex - 1); }
     function showNextWordQuestion() {
          const currentQ = wordTestQuestions[currentTestQuestionIndex];
+         // Only check MCQ for answer before proceeding
          if (currentQ && currentQ.type === 'mcq' && !userTestAnswers[currentQ.word]) {
              alert('この問題の解答を選択してください。');
              return;
@@ -855,58 +921,56 @@
      }
     function closeWordTest() { wordTestModal.style.display = 'none'; }
     function submitWordTest() {
-         const unansweredMcq = wordTestQuestions.find(q => q.type === 'mcq' && !userTestAnswers[q.word]);
-         if (unansweredMcq) {
-             alert(`問題「${unansweredMcq.word}」が未解答です。`);
-             const unansweredIndex = wordTestQuestions.findIndex(q => q.word === unansweredMcq.word);
-             if (unansweredIndex !== -1) displayWordQuestion(unansweredIndex);
-             return;
-         }
+        const unansweredMcq = wordTestQuestions.find(q => q.type === 'mcq' && !userTestAnswers[q.word]);
+        if (unansweredMcq) {
+            alert(`問題「${unansweredMcq.word}」が未解答です。`);
+            const unansweredIndex = wordTestQuestions.findIndex(q => q.word === unansweredMcq.word);
+            if (unansweredIndex !== -1) displayWordQuestion(unansweredIndex);
+            return;
+        }
 
-         let score = 0;
-         let totalMcqQuestions = 0;
-         testFeedback.innerHTML = '';
+        let score = 0;
+        let totalMcqQuestions = 0;
+        testFeedback.innerHTML = '';
 
-         wordTestQuestions.forEach(q => {
-            if (!q) return; // Skip if question data is invalid
-             if (q.type === 'mcq') {
-                 totalMcqQuestions++;
-                 const userAnswer = userTestAnswers[q.word];
-                 const isCorrect = userAnswer === q.correct;
-                 if (isCorrect) score++;
+        wordTestQuestions.forEach(q => {
+             if (!q) return; // Skip if question data is invalid
+            if (q.type === 'mcq') {
+                totalMcqQuestions++;
+                const userAnswer = userTestAnswers[q.word];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) score++;
+                const feedbackItem = document.createElement('li');
+                feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}, あなたの解答: ${escapeHtml(userAnswer || '(未解答)')})`}`;
+                testFeedback.appendChild(feedbackItem);
+            } else if (q.type === 'link') {
                  const feedbackItem = document.createElement('li');
-                 feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}, あなたの解答: ${escapeHtml(userAnswer || '(未解答)')})`}`;
+                 feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> <span style="color:#666;">辞書確認</span> (意味: ${escapeHtml(q.correct)})`;
                  testFeedback.appendChild(feedbackItem);
-             } else if (q.type === 'link') {
-                  const feedbackItem = document.createElement('li');
-                  feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> <span style="color:#666;">辞書確認</span> (意味: ${escapeHtml(q.correct)})`;
-                  testFeedback.appendChild(feedbackItem);
-             }
+            }
+        });
+
+        if (totalMcqQuestions > 0) {
+            testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (選択式)`;
+        } else {
+            testScore.textContent = `結果: 選択式の問題はありませんでした。`;
+        }
+        wordTestResultArea.style.display = 'block';
+
+         prevWordButton.disabled = true;
+         nextWordButton.disabled = true;
+         submitTestButton.disabled = true;
+         wordTestUI.querySelectorAll('input[type="radio"], .weblio-link-button').forEach(el => {
+            if(el.tagName === 'INPUT') el.disabled = true;
+            if(el.classList.contains('weblio-link-button')) { el.style.pointerEvents = 'none'; el.style.opacity = '0.6'; }
          });
-
-         if (totalMcqQuestions > 0) {
-             testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (選択式)`;
-         } else {
-             testScore.textContent = `結果: 選択式の問題はありませんでした。`;
-         }
-         wordTestResultArea.style.display = 'block';
-
-          prevWordButton.disabled = true;
-          nextWordButton.disabled = true;
-          submitTestButton.disabled = true;
-          wordTestUI.querySelectorAll('input[type="radio"], .weblio-link-button').forEach(el => {
-             if(el.tagName === 'INPUT') el.disabled = true;
-             if(el.classList.contains('weblio-link-button')) { el.style.pointerEvents = 'none'; el.style.opacity = '0.6'; }
-          });
-     }
-
-    // --- Utility ---
-    function escapeHtml(unsafe) {
-        if (typeof unsafe !== 'string') return '';
-        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // --- Initialize ---
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+    }
+
     document.addEventListener('DOMContentLoaded', initialize);
 
 </script>
