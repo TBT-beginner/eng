@@ -2,6 +2,1009 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>英語長文読解練習 F1L1P1</title>
+    <style>
+        :root {
+            --primary-color: #5a95e5; /* Slightly softer blue */
+            --secondary-color: #f7b731; /* Slightly softer orange */
+            --background-color: #fdfdff; /* Almost white */
+            --text-color: #373a3c; /* Dark gray */
+            --border-color: #e8e8e8; /* Lighter border */
+            --vocab-color: #e74c3c; /* Slightly softer red */
+            --phrase-marker-color: #999;
+            --hint-color: #777;
+            --explanation-bg: #f5f7fa; /* Light blue-gray */
+            --sound-tips-bg: #fff9e6; /* Light yellow */
+            --tooltip-bg: #333;
+            --tooltip-text: #fff;
+            --svocm-marker-color: #888;
+            --sidebar-width: 260px;
+            --sidebar-bg: #f8f9fa; /* Slightly lighter sidebar */
+            --base-font-size: 16px;
+            --resizer-height: 10px; /* Increase grab area slightly */
+            --footer-height: 60px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: var(--base-font-size); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.75; /* Slightly increased */
+            color: var(--text-color); background-color: var(--background-color);
+            display: flex; height: 100vh; overflow: hidden;
+            transition: padding-left 0.3s ease;
+        }
+
+        /* --- Sidebar --- */
+        #settings-sidebar {
+            width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
+            padding: 25px 20px; overflow-y: auto; transform: translateX(0);
+            transition: transform 0.3s ease; z-index: 1002; display: flex; flex-direction: column; gap: 25px; /* Increased gap */
+        }
+        .settings-group { border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+        .settings-group:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 0;}
+        .settings-group h4 { font-size: 0.95em; margin-bottom: 15px; color: var(--primary-color); font-weight: 600; }
+        #settings-sidebar label { display: flex; align-items: center; /* Align checkbox and text */ margin-bottom: 12px; cursor: pointer; font-size: 0.9em; user-select: none; }
+        #settings-sidebar input[type="checkbox"] { margin-right: 10px; transform: scale(1); accent-color: var(--primary-color); }
+        .font-size-controls { display: flex; flex-direction: column; gap: 10px; }
+        .font-size-controls > div { display: flex; align-items: center; gap: 8px; }
+        .font-size-controls label { font-size: 0.9em; margin-right: 5px; margin-bottom: 0;}
+        .font-size-controls input[type="range"] { width: 90px; height: 4px; cursor: pointer; accent-color: var(--primary-color); vertical-align: middle; flex-grow: 1;}
+        .font-size-controls button { padding: 4px 7px; font-size: 0.85em; min-width: 28px; line-height: 1; border-radius: 3px; background-color: #e0e0e0; color: #555; }
+        .font-size-controls button:hover:not(:disabled) { background-color: #d0d0d0; }
+        .font-size-controls button:disabled { background-color: #eee; color: #bbb; }
+        #font-size-value { font-size: 0.85em; min-width: 35px; text-align: right; color: #555; font-weight: 500; }
+        .difficulty-switch { display: flex; gap: 8px;}
+        .difficulty-switch button { padding: 7px 10px; font-size: 0.85em; margin-right: 0; flex: 1; border-radius: 5px; }
+        .difficulty-switch button.active { background-color: var(--secondary-color); font-weight: bold; color: white; }
+        #word-test-sidebar-trigger button { width: 100%; background-color: #28a745; padding: 10px 15px; font-size: 0.95em; border-radius: 5px;}
+        #word-test-sidebar-trigger button:hover { background-color: #218838; }
+
+        /* --- Sidebar Toggle (Hamburger) --- */
+        #sidebar-toggle {
+            position: fixed; top: 12px; left: 15px; z-index: 1003; background: rgba(255, 255, 255, 0.8); /* Slightly transparent */
+            color: var(--primary-color); border: 1px solid var(--border-color); border-radius: 5px;
+            padding: 7px 9px; cursor: pointer; display: none; font-size: 1.3em; line-height: 1; backdrop-filter: blur(2px);
+        }
+        #sidebar-toggle:hover { background-color: rgba(255, 255, 255, 1); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* --- Main Content Area --- */
+        #main-content {
+            flex-grow: 1; height: 100vh; display: flex; flex-direction: column;
+            padding-left: var(--sidebar-width); transition: padding-left 0.3s ease; overflow: hidden;
+        }
+        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 15px; gap: 0; overflow: hidden; } /* Increased padding */
+        #text-area {
+            background-color: white; border: 1px solid var(--border-color); border-bottom: none;
+            border-radius: 6px 6px 0 0; display: flex; flex-direction: column; overflow: hidden;
+            flex-grow: 2; flex-basis: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        #question-area {
+             background-color: white; border: 1px solid var(--border-color); border-top: none;
+             border-radius: 0 0 6px 6px; overflow: hidden; min-height: 100px;
+             display: flex; flex-direction: column; flex-grow: 1; flex-basis: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        /* Text Content Wrapper - Increased Padding & Font Size Control */
+        #text-content-wrapper { padding: 25px 30px; flex-grow: 1; overflow-y: auto; font-size: 1rem; }
+        .tab-content-container { padding: 25px 30px; flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
+
+        /* --- Grab Bar (Resizer) --- */
+        #resizer {
+            height: var(--resizer-height); background-color: #e0e0e0; /* Lighter grab bar */ cursor: ns-resize;
+            flex-shrink: 0; position: relative; display: block; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+        #resizer:hover { background-color: #ccc; }
+        #resizer::before { /* Simple dots */
+            content: "···";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            line-height: 0;
+            color: #999;
+            letter-spacing: 2px;
+        }
+
+        /* --- Action Footer (Mobile only) --- */
+        #action-footer {
+            position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-height);
+            background-color: #ffffff; border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.08); display: none; align-items: center;
+            justify-content: center; padding: 0 15px; z-index: 1001;
+        }
+        #action-footer button { padding: 10px 30px; font-size: 1em; font-weight: 500; border-radius: 6px; }
+        #footer-submit-button { background-color: var(--secondary-color); }
+        #footer-submit-button:hover:not(:disabled) { background-color: #e09d1f; }
+        /* Removed footer word test button style */
+
+        /* --- Responsive --- */
+        @media (max-width: 991px) {
+            #settings-sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+            body.sidebar-open #settings-sidebar { transform: translateX(0); }
+            #main-content { padding-left: 0; }
+            #sidebar-toggle { display: block; }
+            body.sidebar-open::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1001; display: block; }
+            #resizer { display: none; }
+            #text-area { flex-grow: 0; flex-basis: auto; height: 60vh; border-radius: 6px; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;}
+            #question-area { flex-grow: 1; flex-basis: auto; height: auto; border-radius: 6px; border-top: 1px solid var(--border-color); }
+            #action-footer { display: flex; }
+            .question-item .submit-button { display: none; }
+            .tab-content-container { padding-bottom: calc(var(--footer-height) + 20px); }
+        }
+
+        /* --- Other Styles --- */
+        button { border-radius: 5px; } /* Default button rounding */
+        button:hover:not(:disabled) { opacity: 0.9; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+        #sound-tips-area { padding: 12px 20px; background-color: var(--sound-tips-bg); border-bottom: 1px solid var(--border-color); font-size: 0.9em; display: none; }
+        #sound-tips-area strong { color: var(--primary-color); }
+        body.show-sound-tips #sound-tips-area { display: block; }
+        #original-text p, #simplified-text p, #full-translation-text p, #phrase-translation-text p { margin-bottom: 1.4em; } /* Increased paragraph spacing */
+        #full-translation-text, #phrase-translation-text, #simplified-text, .phrase-marker { display: none; }
+        body.show-full-translation #full-translation-text, body.show-phrase-translation #phrase-translation-text { display: block; margin-top: 2.5em; border-top: 1px dashed #ccc; padding-top: 1.8em; }
+        body.show-phrases .phrase-marker { display: inline; color: var(--phrase-marker-color); font-weight: bold; margin: 0 0.2em; }
+        body.show-simplified #original-text { display: none; }
+        body.show-simplified #simplified-text { display: block; }
+        body:not(.show-simplified) #original-text { display: block; }
+        body:not(.show-simplified) #simplified-text { display: none; }
+        .vocab-word { position: relative; text-decoration: none; border-bottom: 1px dashed transparent; transition: border-color 0.2s ease; }
+        body.show-vocab .vocab-word.is-predefined { text-decoration: underline wavy var(--vocab-color); text-underline-offset: 3px; text-decoration-thickness: 1px; cursor: help; }
+        .word { cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; padding: 1px 2px; border-radius: 3px; display: inline-block; /* Fix potential baseline issues */ }
+        .word:hover { background-color: #edf4fc; transform: translateY(-1px); } /* Subtle lift on hover */
+        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-3px); /* Add slight vertical offset */ background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 6px 12px; border-radius: 5px; font-size: 0.85em; white-space: nowrap; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tooltip-bg) transparent transparent transparent; }
+        body.show-vocab .vocab-word.is-predefined:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .svocm-marker { display: none; font-size: 0.75em; color: var(--svocm-marker-color); margin-left: 2px; font-weight: bold; vertical-align: super; user-select: none; }
+        body.show-svocm .svocm-marker { display: inline; }
+        #word-menu { position: absolute; display: none; background-color: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 6px; z-index: 1000; }
+        #word-menu button { display: block; width: 100%; text-align: left; padding: 9px 14px; margin-bottom: 4px; background-color: transparent; color: var(--text-color); font-size: 0.9em; border: none; border-radius: 4px; }
+        #word-menu button:last-child { margin-bottom: 0; }
+        #word-menu button:hover { background-color: #f0f0f0; }
+        .tab-container { display: flex; border-bottom: 1px solid var(--border-color); background-color: #f8f9fa; overflow-x: auto; padding: 0 15px; flex-shrink: 0; }
+        .tab-button { padding: 14px 22px; cursor: pointer; border: none; background-color: transparent; border-bottom: 3px solid transparent; transition: all 0.3s ease; font-size: 0.95em; color: #666; white-space: nowrap; position: relative; bottom: -1px; font-weight: 500; }
+        .tab-button.active { border-bottom-color: var(--primary-color); color: var(--primary-color); font-weight: 600; }
+        .tab-button:hover { color: var(--primary-color); background-color: #eee; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0); } }
+        .question-item { margin-bottom: 30px; }
+        .question-text { font-weight: 600; /* Semi-bold */ margin-bottom: 15px; line-height: 1.5; font-size: 1.05em; }
+        .options label { display: block; margin-bottom: 12px; cursor: pointer; padding: 8px 0;}
+        .options input[type="radio"] { margin-right: 10px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
+        .hint-toggle { margin-top: 15px; margin-bottom: 10px; font-size: 0.9em; }
+        .hint-toggle label { cursor: pointer; color: var(--hint-color); display: inline-flex; align-items: center; }
+        .hint-toggle input[type="checkbox"] { margin-right: 8px; vertical-align: middle; }
+        .hint-text { display: none; font-size: 0.9em; color: var(--hint-color); padding: 12px; background-color: #f8f9fa; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 18px; }
+        .submit-button { margin-top: 18px; background-color: var(--secondary-color); padding: 10px 20px; font-size: 0.95em; font-weight: 500; border-radius: 5px; }
+        .submit-button:hover:not(:disabled) { background-color: #e09d1f; }
+        .explanation { display: none; margin-top: 25px; padding: 20px; background-color: var(--explanation-bg); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.95em; }
+        .explanation h4 { margin-bottom: 15px; color: var(--primary-color); font-size: 1.1em; }
+        .explanation p { margin-bottom: 12px; line-height: 1.7; }
+        .explanation ul { list-style: none; padding-left: 5px; margin-top: 12px; margin-bottom: 12px; }
+        .explanation li { margin-bottom: 10px; padding-left: 1.4em; position: relative; line-height: 1.7; }
+        .explanation li::before { content: "•"; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; font-size: 1.1em; top: 1px;}
+        #word-test-modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.55); padding-top: 60px; backdrop-filter: blur(3px); }
+        .word-test-content { background-color: #fefefe; margin: 5% auto; padding: 30px 35px; border: none; width: 90%; max-width: 600px; border-radius: 8px; position: relative; text-align: left; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+        .close-test-button { color: #aaa; position: absolute; top: 12px; right: 18px; font-size: 32px; font-weight: bold; cursor: pointer; line-height: 1; }
+        .close-test-button:hover, .close-test-button:focus { color: black; text-decoration: none; }
+        #word-test-ui { font-size: 1em; min-height: 100px; }
+        #word-test-ui p.loading-message { color: #888; font-style: italic; text-align: center; width: 100%; margin-top: 20px; font-size: 0.95em; }
+        #word-test-ui .test-question { width: 100%; margin-bottom: 25px; }
+        #word-test-ui .test-word { font-weight: 600; font-size: 1.4em; margin-bottom: 18px; color: var(--primary-color); }
+        #word-test-ui .test-options label { display: block; margin-bottom: 12px; cursor: pointer; padding: 12px 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #eee; transition: background-color 0.2s ease, border-color 0.2s ease; }
+        #word-test-ui .test-options label:hover { background-color: #eef; border-color: #cce; }
+        #word-test-ui .test-options input[type="radio"] { margin-right: 12px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
+        #word-test-ui .weblio-link-button { display: inline-block; padding: 9px 18px; background-color: var(--secondary-color); color: white !important; text-decoration: none !important; border-radius: 5px; margin-top: 10px; font-size: 0.9em; transition: background-color 0.2s ease; font-weight: 500; }
+        #word-test-ui .weblio-link-button:hover { background-color: #e09d1f; color: white !important; }
+        #word-test-ui .weblio-link-button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+        #word-test-navigation { margin-top: 25px; display: flex; justify-content: space-between; align-items: center;}
+        #word-test-navigation span { font-size: 0.9em; color: #666; }
+        #word-test-navigation button { border-radius: 5px; padding: 9px 18px; font-size: 0.9em; }
+        #word-test-result-area { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-color); display: none; }
+        #word-test-result-area h4 { margin-bottom: 15px; }
+        #word-test-result-area ul { list-style: none; padding-left: 0; }
+        #word-test-result-area li { margin-bottom: 8px; font-size: 0.9em; line-height: 1.6; }
+        #word-test-result-area li strong { margin-right: 8px; display: inline-block; min-width: 100px;} /* Align words */
+
+        @media (max-width: 768px) {
+            body { height: auto; overflow: auto; }
+            #word-menu button { padding: 8px 12px; font-size: 0.9em; }
+            .word-test-content { width: 95%; margin: 8% auto; padding: 20px; }
+            .tab-button { padding: 12px 15px; font-size: 0.9em;} /* Adjust tab button padding */
+        }
+    </style>
+</head>
+<body>
+
+<button id="sidebar-toggle" title="設定を開閉">☰</button>
+
+<div id="settings-sidebar">
+    <div class="settings-group">
+        <h4>表示設定</h4>
+        <label><input type="checkbox" id="toggle-full-translation"> 全文訳</label>
+        <label><input type="checkbox" id="toggle-phrase-translation"> フレーズ訳</label>
+        <label><input type="checkbox" id="toggle-vocab"> 語彙ヒント</label>
+        <label><input type="checkbox" id="toggle-phrases"> フレーズ区切り</label>
+        <label><input type="checkbox" id="toggle-sound-tips"> SOUND TIPS</label>
+        <label><input type="checkbox" id="toggle-svocm"> SVOCM</label>
+    </div>
+    <div class="settings-group">
+        <h4>フォントサイズ</h4>
+        <div class="font-size-controls">
+             <label for="font-size-slider">本文:</label>
+            <div>
+                <button id="font-decrease" title="文字を小さく">-</button>
+                <input type="range" id="font-size-slider" min="0.8" max="1.5" step="0.1" value="1" title="フォントサイズ調整">
+                <button id="font-increase" title="文字を大きく">+</button>
+                <span id="font-size-value">100%</span>
+            </div>
+        </div>
+    </div>
+    <div class="settings-group">
+        <h4>難易度</h4>
+        <div class="difficulty-switch">
+            <button id="btn-original" class="active" title="オリジナルの英文を表示">オリジナル</button>
+            <button id="btn-simplified" title="難易度を下げた英文を表示">易化</button>
+        </div>
+    </div>
+    <div class="settings-group" id="word-test-sidebar-trigger">
+        <h4>単語テスト</h4>
+        <button id="word-test-start-button">単語テストを開始</button>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="container">
+        <div id="text-area">
+             <div id="sound-tips-area">
+                  <strong>SOUND TIPS:</strong><br>
+                  単語が子音で終わり，次の語が母音で始まるときは，2つの単語の音をつなげて，ひとかたまりで発音します。単語の切れ目で区切らないように注意して発音しましょう。<br>
+                  例: what is, But I, words of, words encourage, some of
+             </div>
+            <div id="text-content-wrapper">
+                <div id="original-text">
+                    <p>
+                        <span class="word vocab-word">Hello</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">everyone</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">Matsuoka</span> <span class="word">Shuzo</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">was</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">professional</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">tennis</span> <span class="word vocab-word">player</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">twenty</span> <span class="word">years</span> <span class="word vocab-word">ago</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">Now</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">sportscaster</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="phrase-marker">/</span> <span class="word">and</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">everyone</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">the</span> <span class="word vocab-word">great</span> <span class="word vocab-word">world</span> <span class="word">of</span> <span class="word vocab-word">sports</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                     </p>
+                     <p>
+                        <span class="word vocab-word">By the way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">what</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">is</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">my</span> <span class="word vocab-word">image</span><span class="svocm-marker svocm-s-marker">(S)</span>?<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">You</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">may</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">of</span> <span class="word vocab-word">such</span> <span class="word vocab-word">words</span> <span class="word vocab-word">as</span> <span class="word">“</span><span class="word vocab-word">passion</span><span class="word">,”</span> <span class="word">“</span><span class="word vocab-word">spirit</span><span class="word">,”</span> <span class="word vocab-word">or</span> <span class="word">“</span><span class="word vocab-word">cheer</span><span class="word">.”</span><span class="svocm-marker svocm-m-marker">(M)</span><span class="phrase-marker">//</span>
+                        <span class="word vocab-word">But</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">not</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">that</span> <span class="word vocab-word">kind</span> <span class="word">of</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">negative</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">So</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">always</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">try</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">to</span> <span class="word vocab-word">support</span> <span class="word vocab-word">myself</span> <span class="word vocab-word">with</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-o-marker">(O)</span><span class="svocm-marker svocm-inf-marker">(InfP as Object)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">In</span> <span class="word vocab-word">this</span> <span class="word vocab-word">way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word">[that]</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">can</span> <span class="word vocab-word">become</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">stronger</span><span class="svocm-marker svocm-c-marker">(C')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">The</span> <span class="word vocab-word">words</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">encourage</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word vocab-word">very</span> <span class="word vocab-word">much</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                     </p>
+                     <p>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">will</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word vocab-word">some</span> <span class="word">of</span> <span class="word">the</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">They</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">often</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">that</span> <span class="word vocab-word">they</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">might</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(O')</span>, <span class="word vocab-word">too</span><span class="svocm-marker svocm-m-marker">(M')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
+                     </p>
+                </div>
+                <div id="simplified-text">
+                     <h4>簡易版テキスト</h4>
+                    <p>
+                        <span class="word vocab-word">Hello</span>. <span class="word vocab-word">I'm</span> <span class="word">Matsuoka</span> <span class="word">Shuzo</span>.
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">played</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">tennis</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word">for</span> <span class="word">a</span> <span class="word vocab-word">job</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">about</span> <span class="word">20</span> <span class="word">years</span> <span class="word vocab-word">ago</span><span class="svocm-marker svocm-m-marker">(M)</span>.
+                        <span class="word vocab-word">Now</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">talk</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">about</span> <span class="word vocab-word">sports</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word">on</span> <span class="word">TV</span><span class="svocm-marker svocm-m-marker">(M)</span>.
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="word">[that]</span> <span class="word vocab-word">sports</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">are</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">great</span><span class="svocm-marker svocm-c-marker">(C')</span><span class="svocm-marker svocm-o-marker">(DO)</span>.
+                    </p>
+                     <p>
+                        <span class="word vocab-word">What</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word">do</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">about</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-m-marker">(M)</span>?
+                        <span class="word vocab-word">Maybe</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">[that]</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">full</span> <span class="word">of</span> <span class="word vocab-word">energy</span><span class="svocm-marker svocm-c-marker">(C')</span> <span class="word vocab-word">or</span> <span class="word">[I]</span> <span class="word vocab-word">cheer</span><span class="svocm-marker svocm-v-marker">(V'')</span> <span class="word vocab-word">loudly</span><span class="svocm-marker svocm-m-marker">(M'')</span><span class="svocm-marker svocm-o-marker">(O)</span>.
+                        <span class="word vocab-word">But</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I'm</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">not</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">like</span> <span class="word vocab-word">that</span><span class="svocm-marker svocm-c-marker">(C)</span>.
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">often</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">in</span> <span class="word">a</span> <span class="word vocab-word">bad</span> <span class="word vocab-word">way</span><span class="svocm-marker svocm-m-marker">(M)</span> (<span class="word vocab-word">negative</span>).
+                        <span class="word vocab-word">So</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">use</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">good</span> (<span class="word vocab-word">positive</span>) <span class="word vocab-word">words</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word vocab-word">to</span> <span class="word vocab-word">help</span> (<span class="word vocab-word">support</span>) <span class="word vocab-word">myself</span><span class="svocm-marker svocm-m-marker">(M)</span>.
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">want</span> <span class="word vocab-word">to</span> <span class="word vocab-word">be</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">stronger</span><span class="svocm-marker svocm-c-marker">(C)</span>.
+                        <span class="word vocab-word">These</span> <span class="word vocab-word">words</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> (<span class="word vocab-word">encourage</span>) <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word">a</span> <span class="word vocab-word">lot</span><span class="svocm-marker svocm-m-marker">(M)</span>.
+                     </p>
+                     <p>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">will</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="word vocab-word">about</span> <span class="word vocab-word">some</span> <span class="word">good</span> <span class="word vocab-word">words</span><span class="svocm-marker svocm-m-marker">(M)</span>.
+                        <span class="word vocab-word">They</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span>.
+                        <span class="word vocab-word">Maybe</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">they</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">can</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(O)</span>.
+                     </p>
+                </div>
+                <div id="full-translation-text">
+                    <h4>全文訳</h4>
+                     <p>こんにちは，皆さん。私は松岡修造です。私は20年ほど前はプロのテニス選手でした。現在，私はスポーツキャスターで，皆さんにスポーツ界の素晴らしさについて伝えています。</p>
+                     <p>ところで，私はどんなイメージでしょうか。「情熱」「気迫」あるいは「声援」などの言葉を思い浮かべるかもしれませんね。しかし，私はそのような人間ではありません。私は消極的な人間なのです。だから，私は常に前向きな励ましの言葉で自分を支えるよう努めています。このようにして，私は自分がより強くなることができればと思っています。その言葉は私をとても励ましてくれます。</p>
+                     <p>皆さんに前向きな励ましの言葉についていくつかお話ししましょう。それらの言葉はよく私を助けてくれます。それらが皆さんにもお役に立てばと思います。</p>
+                </div>
+                <div id="phrase-translation-text">
+                    <h4>フレーズ訳例</h4>
+                    <p>こんにちは，皆さん ／ 私は松岡修造です ／ 私はプロのテニス選手でした ／ 約20年前 ／ 現在，私はスポーツキャスターです ／ そして皆さんに伝えています ／ スポーツの素晴らしい世界について ／<br>
+                    ところで ／ 私のイメージはどんなのでしょうか ／ あなたはそのような言葉を思い浮かべるかもしれません ／ 「情熱」「気迫」あるいは「声援」のような ／ しかし，私はそのような人間ではありません ／ 私は消極的な人間です ／ だから，私は常に自分を支えるよう努めています ／ 前向きな励ましの言葉で ／ このようにして ／ 私は願っています ／ 私がより強くなることができることを ／ その言葉は私をとても励ましてくれます ／<br>
+                    私が皆さんにお話ししましょう ／ いくつかの前向きな言葉について ／ 励ましの ／ それらはよく私を助けてくれます ／ 私は願っています ／ それらが皆さんにも役に立つかもしれないことを ／</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="resizer"></div>
+
+        <div id="question-area">
+             <div class="tab-container">
+                 <button class="tab-button active" data-tab="q1">Q1</button>
+                 <button class="tab-button" data-tab="q2">Q2</button>
+                 <button class="tab-button" data-tab="q3">Q3</button>
+                 <button class="tab-button" data-tab="q4">Q4</button>
+             </div>
+             <div class="tab-content-container">
+                <div id="q1" class="tab-content active question-item">
+                     <p class="question-text">Q1: What does Matsuoka tell everyone about?</p>
+                     <div class="options">
+                         <label><input type="radio" name="q1" value="a"> His tennis career</label>
+                         <label><input type="radio" name="q1" value="b"> The great world of sports</label>
+                         <label><input type="radio" name="q1" value="c"> His negative personality</label>
+                         <label><input type="radio" name="q1" value="d"> Positive words</label>
+                     </div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">松岡さんは皆さんになにについて伝えていますか。</p>
+                     <button class="submit-button" data-question-id="q1">提出</button>
+                     <div class="explanation" data-original-html='<p><strong>正解: B. The great world of sports</strong></p><p>本文の1文目に「Now I am a sportscaster and tell everyone about the great world of sports. (現在，私はスポーツキャスターで，皆さんにスポーツ界の素晴らしさについて伝えています。)」と明確に書かれています。</p><ul><li>A: テニス選手だったとは述べていますが、主に伝えている内容ではありません。</li><li>C: 自分がネガティブだとは言っていますが、それが皆に伝えている主題ではありません。</li><li>D: ポジティブな言葉についても話しますが、それは自分を支える方法として紹介されており、スポーツ界の素晴らしさを伝えるという彼の現在の役割が主題です。</li></ul>'></div>
+                 </div>
+                 <div id="q2" class="tab-content question-item">
+                     <p class="question-text">Q2: Is Matsuoka positive or negative?</p>
+                     <div class="options"><label><input type="radio" name="q2" value="a"> Positive</label><label><input type="radio" name="q2" value="b"> Negative</label><label><input type="radio" name="q2" value="c"> Both positive and negative</label><label><input type="radio" name="q2" value="d"> Neither positive nor negative</label></div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">松岡さんはポジティブですか、それともネガティブですか。</p>
+                     <button class="submit-button" data-question-id="q2">提出</button>
+                     <div class="explanation" data-original-html='<p><strong>正解: B. Negative</strong></p><p>本文の2パラグラフ目に「But I am not that kind of person. I am a negative person. (しかし，私はそのような人間ではありません。私は消極的な人間なのです。)」と、自身がネガティブ(negative)であると明確に述べています。</p><ul><li>A: ポジティブな言葉で自身を支えようとはしていますが、自身の性格はネガティブだと述べています。</li><li>C, D: 本文では明確に「negative」と自己評価しています。</li></ul>'></div>
+                </div>
+                 <div id="q3" class="tab-content question-item">
+                     <p class="question-text">Q3: How does Matsuoka support himself?</p>
+                     <div class="options"><label><input type="radio" name="q3" value="a"> By playing tennis</label><label><input type="radio" name="q3" value="b"> By thinking about his passion</label><label><input type="radio" name="q3" value="c"> With positive words of encouragement</label><label><input type="radio" name="q3" value="d"> By watching sports</label></div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">松岡さんはどのように自分自身を支えていますか。</p>
+                     <button class="submit-button" data-question-id="q3">提出</button>
+                     <div class="explanation" data-original-html='<p><strong>正解: C. With positive words of encouragement</strong></p><p>本文の2パラグラフ目に「So, I always try to support myself with positive words of encouragement. (だから，私は常に前向きな励ましの言葉で自分を支えるよう努めています。)」と書かれています。これにより、彼がどのように自身を支えているかがわかります。</p><ul><li>A: 以前テニスをしていましたが、現在自分を支える方法としては述べられていません。</li><li>B: 情熱(passion)は彼に対するイメージかもしれませんが、彼が自分を支える方法ではありません。</li><li>D: スポーツキャスターですが、スポーツ観戦で自分を支えているとは書かれていません。</li></ul>'></div>
+                 </div>
+                 <div id="q4" class="tab-content question-item">
+                     <p class="question-text">Q4: What is the “They” on line 13 of Part 1?</p>
+                     <div class="options"><label><input type="radio" name="q4" value="a"> Matsuoka Shuzo and his friends</label><label><input type="radio" name="q4" value="b"> Sportscasters</label><label><input type="radio" name="q4" value="c"> Negative thoughts</label><label><input type="radio" name="q4" value="d"> Some of the positive words of encouragement</label></div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">パート1の13行目にある "They" は何を指しますか？ (本文中の行番号は目安です)</p>
+                     <button class="submit-button" data-question-id="q4">提出</button>
+                     <div class="explanation" data-original-html='<p><strong>正解: D. Some of the positive words of encouragement</strong></p><p>指示代名詞 "They" が何を指すかを見つけるには、その直前の文脈を確認します。 "They often help me." の直前の文は「I will tell you about some of the positive words of encouragement. (皆さんに前向きな励ましの言葉についていくつかお話ししましょう。)」です。したがって、"They" は「いくつかの前向きな励ましの言葉 (some of the positive words of encouragement)」を指しています。これらの言葉が彼を助けてくれる、と文が続いています。</p><ul><li>A, B, C: 文脈上、これらの選択肢は "They" が指すものとして適切ではありません。</li></ul>'></div>
+                </div>
+            </div>
+            <!-- Removed original word test trigger section -->
+        </div>
+    </div>
+</div>
+
+<div id="action-footer">
+    <div id="footer-submit-placeholder">
+        <button id="footer-submit-button" disabled>提出</button>
+    </div>
+</div>
+
+<div id="word-menu">
+    <button id="dict-button">辞書検索 (Weblio)</button>
+    <button id="ety-button">語源検索 (Etymonline)</button>
+    <button id="add-list-button">単語テストリストに登録</button>
+</div>
+
+<div id="word-test-modal">
+    <div class="word-test-content">
+        <span class="close-test-button" id="close-test-modal" title="閉じる">×</span>
+        <h3>単語テスト</h3>
+        <div id="word-test-ui">
+            <p class="loading-message">テストを読み込み中...</p>
+        </div>
+        <div id="word-test-navigation">
+            <button id="prev-word-button" disabled>前の単語</button>
+            <span id="word-counter">0 / 0</span>
+            <button id="next-word-button">次の単語</button>
+            <button id="submit-test-button" style="display: none;">採点する</button>
+        </div>
+         <div id="word-test-result-area">
+             <h4>テスト結果</h4>
+             <p id="test-score"></p>
+             <ul id="test-feedback"></ul>
+         </div>
+    </div>
+</div>
+
+<script>
+    const userWordList = new Set();
+    const wordMeanings = {
+        'professional': { mean: '専門職の、プロの', pos: 'adj/n', incorrect: ['アマチュアの', '趣味の', '初心者の'] },
+        'sportscaster': { mean: 'スポーツ解説者', pos: 'n', incorrect: ['選手', '観客', '監督'] },
+        'image': { mean: '印象、イメージ', pos: 'n', incorrect: ['現実', '写真', '鏡'] },
+        'passion': { mean: '情熱', pos: 'n', incorrect: ['冷静', '無関心', '退屈'] },
+        'spirit': { mean: '精神、気迫', pos: 'n', incorrect: ['肉体', '物質', '影'] },
+        'cheer': { mean: '声援、喝采', pos: 'n/v', incorrect: ['沈黙', 'ため息', '不満'] },
+        'negative': { mean: '否定的な、消極的な', pos: 'adj', incorrect: ['肯定的な', '楽観的な', '明るい'] },
+        'support': { mean: '支える、支援する', pos: 'v/n', incorrect: ['妨害する', '反対する', '無視する'] },
+        'positive': { mean: '肯定的な、前向きな', pos: 'adj', incorrect: ['否定的な', '悲観的な', '暗い'] },
+        'encouragement': { mean: '励まし、奨励', pos: 'n', incorrect: ['落胆', '批判', '警告'] },
+        'encourage': { mean: '励ます、勇気づける', pos: 'v', incorrect: ['がっかりさせる', '邪魔する', '非難する'] },
+        'hello': { mean: 'こんにちは', pos: 'interj'},
+        'everyone': { mean: '皆さん', pos: 'pron'},
+        'i': { mean: '私', pos: 'pron'},
+        'am': { mean: '～である (be動詞)', pos: 'v'},
+        'was': { mean: '～であった (be動詞)', pos: 'v'},
+        'tennis': { mean: 'テニス', pos: 'n'},
+        'player': { mean: '選手', pos: 'n'},
+        'about': { mean: '約～、～について', pos: 'prep/adv'},
+        'ago': { mean: '～前に', pos: 'adv'},
+        'now': { mean: '今、現在', pos: 'adv'},
+        'tell': { mean: '伝える、話す', pos: 'v'},
+        'great': { mean: '素晴らしい、偉大な', pos: 'adj'},
+        'world': { mean: '世界', pos: 'n'},
+        'sports': { mean: 'スポーツ', pos: 'n'},
+        'by the way': { mean: 'ところで', pos: 'idiom'},
+        'what': { mean: '何', pos: 'pron/det'},
+        'is': { mean: '～である (be動詞)', pos: 'v'},
+        'my': { mean: '私の', pos: 'det'},
+        'you': { mean: 'あなた', pos: 'pron'},
+        'may': { mean: '～かもしれない、～してもよい', pos: 'aux'},
+        'think': { mean: '考える、思う', pos: 'v'},
+        'such': { mean: 'そのような', pos: 'det/pron'},
+        'words': { mean: '言葉', pos: 'n'},
+        'as': { mean: '～として、～のような', pos: 'prep/adv/conj'},
+        'or': { mean: 'または、あるいは', pos: 'conj'},
+        'but': { mean: 'しかし', pos: 'conj'},
+        'not': { mean: '～でない', pos: 'adv'},
+        'that': { mean: 'その、あの', pos: 'det/pron/adv'},
+        'kind': { mean: '種類、親切な', pos: 'n/adj'},
+        'person': { mean: '人', pos: 'n'},
+        'so': { mean: 'だから、それで', pos: 'adv/conj'},
+        'always': { mean: 'いつも、常に', pos: 'adv'},
+        'try': { mean: '試す、努める', pos: 'v'},
+        'to': { mean: '(不定詞)～すること、～へ', pos: 'prep/part'},
+        'myself': { mean: '私自身', pos: 'pron'},
+        'with': { mean: '～と一緒に、～で', pos: 'prep'},
+        'in': { mean: '～の中に', pos: 'prep'},
+        'this': { mean: 'これ、この', pos: 'det/pron'},
+        'way': { mean: '方法、道', pos: 'n'},
+        'hope': { mean: '望む、希望する', pos: 'v/n'},
+        'can': { mean: '～できる', pos: 'aux'},
+        'become': { mean: '～になる', pos: 'v'},
+        'stronger': { mean: 'より強い', pos: 'adj (comp)'},
+        'the': { mean: 'その', pos: 'det'},
+        'me': { mean: '私を、私に', pos: 'pron'},
+        'very': { mean: 'とても', pos: 'adv'},
+        'much': { mean: 'たくさん', pos: 'adv/det'},
+        'will': { mean: '～だろう、～するつもりだ', pos: 'aux'},
+        'some': { mean: 'いくつかの、いくらかの', pos: 'det/pron'},
+        'of': { mean: '～の', pos: 'prep'},
+        'often': { mean: 'しばしば、よく', pos: 'adv'},
+        'help': { mean: '助ける、手伝う', pos: 'v/n'},
+        'might': { mean: '～かもしれない', pos: 'aux'},
+        'too': { mean: '～もまた', pos: 'adv'},
+        'they': { mean: 'それら、彼ら', pos: 'pron'},
+        'i\'m': { mean: '私は～です', pos: 'contr.'},
+        'played': { mean: 'プレーした', pos: 'v'},
+        'job': { mean: '仕事', pos: 'n'},
+        'talk': { mean: '話す', pos: 'v'},
+        'are': { mean: '～である (be動詞)', pos: 'v'},
+        'maybe': { mean: '多分、もしかすると', pos: 'adv'},
+        'full': { mean: 'いっぱいの', pos: 'adj'},
+        'energy': { mean: 'エネルギー、活力', pos: 'n'},
+        'loudly': { mean: '大声で', pos: 'adv'},
+        'like': { mean: '～のような', pos: 'prep/adj/v'},
+        'bad': { mean: '悪い', pos: 'adj'},
+        'use': { mean: '使う', pos: 'v'},
+        'good': { mean: '良い', pos: 'adj'},
+        'want': { mean: '欲しい、～したい', pos: 'v'},
+        'be': { mean: '～である、～になる', pos: 'v'},
+        'these': { mean: 'これらの', pos: 'det/pron'},
+        'lot': { mean: 'たくさん', pos: 'n/adv'},
+    };
+    const predefinedVocabKeys = [
+        'professional', 'sportscaster', 'image', 'passion', 'spirit',
+        'cheer', 'negative', 'support', 'positive', 'encouragement', 'encourage'
+    ];
+    const predefinedLower = predefinedVocabKeys.map(k => k.toLowerCase());
+    const correctAnswers = { q1: 'b', q2: 'b', q3: 'c', q4: 'd' };
+    let currentWord = null;
+    let currentTextScale = 1.0;
+    let wordTestQuestions = [];
+    let currentTestQuestionIndex = 0;
+    let userTestAnswers = {};
+    let dragStartY = 0;
+    let initialTextFlex = 0;
+    let initialQuestionFlex = 0;
+
+    const body = document.body;
+    const sidebar = document.getElementById('settings-sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const mainContent = document.getElementById('main-content');
+    const textArea = document.getElementById('text-area');
+    const questionArea = document.getElementById('question-area');
+    const resizer = document.getElementById('resizer');
+    const textContentWrapper = document.getElementById('text-content-wrapper');
+    const toggleFullTranslation = document.getElementById('toggle-full-translation');
+    const togglePhraseTranslation = document.getElementById('toggle-phrase-translation');
+    const toggleVocab = document.getElementById('toggle-vocab');
+    const togglePhrases = document.getElementById('toggle-phrases');
+    const toggleSoundTips = document.getElementById('toggle-sound-tips');
+    const toggleSvocm = document.getElementById('toggle-svocm');
+    const fontDecreaseBtn = document.getElementById('font-decrease');
+    const fontIncreaseBtn = document.getElementById('font-increase');
+    const fontSizeSlider = document.getElementById('font-size-slider');
+    const fontSizeValue = document.getElementById('font-size-value');
+    const btnOriginal = sidebar.querySelector('#btn-original');
+    const btnSimplified = sidebar.querySelector('#btn-simplified');
+    const wordMenu = document.getElementById('word-menu');
+    const dictButton = document.getElementById('dict-button');
+    const etyButton = document.getElementById('ety-button');
+    const addListButton = document.getElementById('add-list-button');
+    const tabContainer = document.querySelector('.tab-container');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const hintToggles = document.querySelectorAll('.toggle-hint');
+    const submitButtons = document.querySelectorAll('.submit-button');
+    const wordTestStartButtonSidebar = document.getElementById('word-test-start-button');
+    const wordTestModal = document.getElementById('word-test-modal');
+    const closeTestModalButton = document.getElementById('close-test-modal');
+    const wordTestUI = document.getElementById('word-test-ui');
+    const prevWordButton = document.getElementById('prev-word-button');
+    const nextWordButton = document.getElementById('next-word-button');
+    const submitTestButton = document.getElementById('submit-test-button');
+    const wordCounter = document.getElementById('word-counter');
+    const wordTestResultArea = document.getElementById('word-test-result-area');
+    const testScore = document.getElementById('test-score');
+    const testFeedback = document.getElementById('test-feedback');
+    const actionFooter = document.getElementById('action-footer');
+    const footerSubmitButton = document.getElementById('footer-submit-button');
+    // footerWordTestButton is removed from DOM elements
+
+    function initialize() {
+        setupWordClickListeners();
+        setupVocabTooltipsAndMarkers();
+        initializeResizer();
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        toggleFullTranslation.addEventListener('change', () => body.classList.toggle('show-full-translation'));
+        togglePhraseTranslation.addEventListener('change', () => body.classList.toggle('show-phrase-translation'));
+        toggleVocab.addEventListener('change', () => body.classList.toggle('show-vocab'));
+        togglePhrases.addEventListener('change', () => body.classList.toggle('show-phrases'));
+        toggleSoundTips.addEventListener('change', () => body.classList.toggle('show-sound-tips'));
+        toggleSvocm.addEventListener('change', () => body.classList.toggle('show-svocm'));
+        fontSizeSlider.addEventListener('input', handleFontSizeSlider);
+        fontIncreaseBtn.addEventListener('click', handleFontSizeButtonIncrease);
+        fontDecreaseBtn.addEventListener('click', handleFontSizeButtonDecrease);
+        btnOriginal.addEventListener('click', () => setDifficulty(false));
+        btnSimplified.addEventListener('click', () => setDifficulty(true));
+        setDefaultFontSize();
+        dictButton.addEventListener('click', searchDictionary);
+        etyButton.addEventListener('click', searchEtymology);
+        addListButton.addEventListener('click', addWordToList);
+        document.addEventListener('click', (event) => {
+             if (wordMenu.style.display === 'block' && !wordMenu.contains(event.target) && !event.target.closest('.word')) {
+                 wordMenu.style.display = 'none';
+             }
+             if (body.classList.contains('sidebar-open') && window.innerWidth <= 991 && !sidebar.contains(event.target) && event.target !== sidebarToggle) {
+                toggleSidebar();
+             }
+         });
+         wordMenu.addEventListener('click', (e) => e.stopPropagation());
+        tabContainer.addEventListener('click', handleTabClick);
+        const initialActiveTab = tabContainer.querySelector('.tab-button.active');
+        if (initialActiveTab) {
+            const initialTabId = initialActiveTab.dataset.tab;
+            const initialContent = document.getElementById(initialTabId);
+            if (initialContent) {
+                initialContent.classList.add('active');
+                updateFooterSubmitButton(initialTabId);
+            }
+        }
+        submitButtons.forEach(button => {
+             button.addEventListener('click', handleSubmit);
+             const explanationDiv = button.nextElementSibling;
+             if (explanationDiv && explanationDiv.classList.contains('explanation')) {
+                 if (!explanationDiv.dataset.originalHtml) {
+                    explanationDiv.dataset.originalHtml = explanationDiv.innerHTML;
+                 }
+                 explanationDiv.innerHTML = '';
+                 explanationDiv.style.display = 'none';
+             }
+        });
+        hintToggles.forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                const hintText = event.target.closest('.hint-toggle').nextElementSibling;
+                 if (hintText && hintText.classList.contains('hint-text')) {
+                     hintText.style.display = event.target.checked ? 'block' : 'none';
+                 }
+            });
+        });
+        wordTestStartButtonSidebar.addEventListener('click', startWordTest); // Only sidebar button now
+        footerSubmitButton.addEventListener('click', handleFooterSubmit);
+        closeTestModalButton.addEventListener('click', closeWordTest);
+        prevWordButton.addEventListener('click', showPrevWordQuestion);
+        nextWordButton.addEventListener('click', showNextWordQuestion);
+        submitTestButton.addEventListener('click', submitWordTest);
+        window.onclick = (event) => { if (event.target == wordTestModal) closeWordTest(); };
+    }
+
+    function toggleSidebar() { body.classList.toggle('sidebar-open'); }
+
+    function setupWordClickListeners() {
+        textContentWrapper.removeEventListener('click', handleWordClick);
+        textContentWrapper.addEventListener('click', handleWordClick);
+    }
+
+    function setupVocabTooltipsAndMarkers() {
+        textContentWrapper.querySelectorAll('.word').forEach(wordSpan => {
+            const clone = wordSpan.cloneNode(true);
+            clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
+            const wordText = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
+            const isPredefined = predefinedLower.includes(wordText);
+            const vocabSpan = wordSpan.querySelector('.vocab-word') || wordSpan;
+
+            vocabSpan.classList.remove('is-predefined');
+            const existingTooltip = vocabSpan.querySelector('.tooltip');
+            if (existingTooltip) existingTooltip.remove();
+            if (vocabSpan.style.position === 'relative') vocabSpan.style.position = '';
+
+            if (isPredefined) {
+                vocabSpan.classList.add('is-predefined');
+                 if (!vocabSpan.classList.contains('vocab-word')) {
+                     vocabSpan.classList.add('vocab-word');
+                 }
+                const meaningData = wordMeanings[wordText];
+                if (meaningData && meaningData.mean) {
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = meaningData.mean + (meaningData.pos ? ` (${meaningData.pos})` : '');
+                    vocabSpan.appendChild(tooltip);
+                    if (window.getComputedStyle(vocabSpan).position === 'static') {
+                        vocabSpan.style.position = 'relative';
+                    }
+                }
+            }
+        });
+    }
+
+    function applyFontSize(scale) {
+        const newScale = Math.max(0.8, Math.min(scale, 1.5));
+        currentTextScale = newScale;
+        textContentWrapper.style.fontSize = `calc(1rem * ${newScale})`;
+        fontSizeSlider.value = newScale;
+        fontSizeValue.textContent = `${Math.round(newScale * 100)}%`;
+        fontDecreaseBtn.disabled = newScale <= 0.8;
+        fontIncreaseBtn.disabled = newScale >= 1.5;
+    }
+    function handleFontSizeSlider(event) { applyFontSize(parseFloat(event.target.value)); }
+    function handleFontSizeButtonIncrease() { applyFontSize(currentTextScale + 0.1); }
+    function handleFontSizeButtonDecrease() { applyFontSize(currentTextScale - 0.1); }
+    function setDefaultFontSize() {
+        let initialScale = 1.0;
+        if (window.matchMedia('(min-width: 992px)').matches) { initialScale = 1.05; }
+        applyFontSize(initialScale);
+    }
+
+    function setDifficulty(simplified) {
+        body.classList.toggle('show-simplified', simplified);
+        sidebar.querySelector('#btn-original').classList.toggle('active', !simplified);
+        sidebar.querySelector('#btn-simplified').classList.toggle('active', simplified);
+        setTimeout(() => {
+            setupWordClickListeners();
+            setupVocabTooltipsAndMarkers();
+        }, 0);
+    }
+
+    function handleWordClick(event) {
+        const targetElement = event.target.closest('.word');
+        if (!targetElement) return;
+        event.stopPropagation();
+        const clone = targetElement.cloneNode(true);
+        clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
+        currentWord = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
+        if (!currentWord) return;
+        const rect = targetElement.getBoundingClientRect();
+        showWordMenuAtPosition(rect.left + window.scrollX, rect.bottom + window.scrollY + 5, targetElement);
+    }
+
+    function showWordMenuAtPosition(x, y, targetElement) {
+        wordMenu.style.display = 'none';
+        let left = x;
+        let top = y;
+        wordMenu.style.left = `${left}px`;
+        wordMenu.style.top = `${top}px`;
+        wordMenu.style.visibility = 'hidden';
+        wordMenu.style.display = 'block';
+        const menuWidth = wordMenu.offsetWidth;
+        const menuHeight = wordMenu.offsetHeight;
+        const docWidth = document.documentElement.scrollWidth;
+        const docHeight = document.documentElement.scrollHeight;
+        if (left + menuWidth > docWidth) left = docWidth - menuWidth - 10;
+        if (left < window.scrollX) left = window.scrollX + 10;
+        if (top + menuHeight > docHeight) {
+            if (targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                top = window.scrollY + rect.top - menuHeight - 5;
+            } else {
+                top = docHeight - menuHeight - 10;
+            }
+        }
+        if (top < window.scrollY) top = window.scrollY + 10;
+        wordMenu.style.left = `${left}px`;
+        wordMenu.style.top = `${top}px`;
+        wordMenu.style.visibility = 'visible';
+    }
+
+    function searchDictionary() {
+        if (!currentWord) return;
+        window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(currentWord)}`, '_blank');
+        wordMenu.style.display = 'none';
+    }
+    function searchEtymology() {
+        if (!currentWord) return;
+        window.open(`https://www.etymonline.com/search?q=${encodeURIComponent(currentWord)}`, '_blank');
+        wordMenu.style.display = 'none';
+    }
+    function addWordToList() {
+        if (!currentWord) return;
+        userWordList.add(currentWord);
+        alert(`「${currentWord}」を単語テストリストに追加しました。`);
+        wordMenu.style.display = 'none';
+    }
+
+    function handleTabClick(event) {
+        const clickedButton = event.target.closest('.tab-button');
+        if (!clickedButton || clickedButton.classList.contains('active')) return;
+        const targetTabId = clickedButton.dataset.tab;
+        const targetContent = document.getElementById(targetTabId);
+        if (!targetContent) return;
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+        clickedButton.classList.add('active');
+        targetContent.classList.add('active');
+        updateFooterSubmitButton(targetTabId);
+    }
+
+    function updateFooterSubmitButton(activeTabId) {
+        const activeTabContent = document.getElementById(activeTabId);
+        if (!activeTabContent) { footerSubmitButton.disabled = true; return; }
+        const originalSubmitButton = activeTabContent.querySelector('.submit-button');
+        if (originalSubmitButton) {
+            footerSubmitButton.disabled = originalSubmitButton.disabled;
+            footerSubmitButton.dataset.questionId = originalSubmitButton.dataset.questionId;
+        } else {
+            footerSubmitButton.disabled = true;
+        }
+    }
+    function handleFooterSubmit() {
+        const questionId = footerSubmitButton.dataset.questionId;
+        if (!questionId || footerSubmitButton.disabled) return;
+        const questionItem = document.getElementById(questionId);
+        if (!questionItem) return;
+        const originalSubmitButton = questionItem.querySelector(`.submit-button[data-question-id="${questionId}"]`);
+        if (originalSubmitButton) {
+            originalSubmitButton.click();
+        }
+    }
+
+     function handleSubmit(event) {
+         const button = event.target;
+         const questionId = button.dataset.questionId;
+         const questionItem = document.getElementById(questionId);
+         const explanationDiv = questionItem.querySelector('.explanation');
+         const options = questionItem.querySelectorAll(`input[name="${questionId}"]`);
+         const selectedOption = questionItem.querySelector(`input[name="${questionId}"]:checked`);
+
+         if (!selectedOption || button.disabled) return;
+
+         const userAnswer = selectedOption.value;
+         const correctAnswer = correctAnswers[questionId];
+         let resultMessage = '<h4>解説</h4>';
+         resultMessage += (userAnswer === correctAnswer)
+             ? '<p style="color: green; font-weight: bold;">正解！</p>'
+             : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer.toUpperCase()})</p>`;
+
+         const originalExplanationHTML = explanationDiv.dataset.originalHtml || '';
+         const cleanExplanationHTML = originalExplanationHTML.replace(/<h4>.*?<\/h4>/i, '').replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '').trim();
+
+         explanationDiv.innerHTML = resultMessage + cleanExplanationHTML;
+         explanationDiv.style.display = 'block'; // Ensure display is block
+
+         options.forEach(input => input.disabled = true);
+         button.disabled = true;
+         if (footerSubmitButton.dataset.questionId === questionId) {
+             footerSubmitButton.disabled = true;
+         }
+     }
+
+    function initializeResizer() {
+        let isResizing = false;
+        if (!resizer) return; // Exit if resizer doesn't exist
+
+        resizer.addEventListener('mousedown', (e) => {
+            // Prevent resizing on small screens where it's hidden
+            if (window.innerWidth <= 991) return;
+            isResizing = true;
+            dragStartY = e.clientY;
+            initialTextFlex = parseFloat(getComputedStyle(textArea).flexGrow);
+            initialQuestionFlex = parseFloat(getComputedStyle(questionArea).flexGrow);
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            document.body.style.userSelect = 'none';
+            document.body.style.cursor = 'ns-resize'; // Change cursor for whole body
+        });
+
+        function handleMouseMove(e) {
+            if (!isResizing) return;
+            const deltaY = e.clientY - dragStartY;
+            const containerHeight = textArea.parentElement.clientHeight;
+            const totalFlex = initialTextFlex + initialQuestionFlex;
+            const sensitivity = totalFlex / (containerHeight * 0.8);
+            let newTextFlex = initialTextFlex + deltaY * sensitivity;
+            let newQuestionFlex = initialQuestionFlex - deltaY * sensitivity;
+            const minFlex = 0.2;
+            if (newTextFlex < minFlex) { newTextFlex = minFlex; newQuestionFlex = totalFlex - minFlex; }
+            if (newQuestionFlex < minFlex) { newQuestionFlex = minFlex; newTextFlex = totalFlex - minFlex; }
+            textArea.style.flexGrow = newTextFlex;
+            questionArea.style.flexGrow = newQuestionFlex;
+        }
+        function handleMouseUp() {
+            if (isResizing) {
+                isResizing = false;
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+                document.body.style.userSelect = '';
+                document.body.style.cursor = ''; // Reset cursor
+            }
+        }
+    }
+
+    function startWordTest() {
+        const wordsToTest = Array.from(new Set([...predefinedVocabKeys, ...userWordList]));
+        if (wordsToTest.length === 0) {
+            alert('テストする単語がリストにありません。本文の単語をクリックして追加してください。'); return;
+        }
+        wordsToTest.sort(() => Math.random() - 0.5);
+
+        wordTestQuestions = wordsToTest.map(word => createTestQuestion(word)).filter(q => q !== null);
+        if (wordTestQuestions.length === 0) {
+             alert('テスト対象の問題を生成できませんでした。');
+             return;
+        }
+        currentTestQuestionIndex = 0;
+        userTestAnswers = {};
+        wordTestResultArea.style.display = 'none';
+        testFeedback.innerHTML = ''; testScore.textContent = '';
+        submitTestButton.style.display = 'none';
+        prevWordButton.disabled = true;
+        nextWordButton.disabled = wordTestQuestions.length <= 1;
+        submitTestButton.disabled = false;
+
+        wordTestUI.innerHTML = '<p class="loading-message">テストを読み込み中...</p>';
+        wordTestModal.style.display = 'block';
+
+        setTimeout(() => { displayWordQuestion(currentTestQuestionIndex); }, 50);
+    }
+
+    function createTestQuestion(word) {
+        const lowerWord = word.toLowerCase();
+        const isPredefined = predefinedLower.includes(lowerWord);
+        const meaningData = wordMeanings[lowerWord];
+
+        if (isPredefined && meaningData && Array.isArray(meaningData.incorrect) && meaningData.incorrect.length > 0) {
+            const options = [...meaningData.incorrect];
+            options.push(meaningData.mean);
+            options.sort(() => Math.random() - 0.5);
+            return { type: 'mcq', word: word, options: options, correct: meaningData.mean };
+        } else {
+            return { type: 'link', word: word, correct: meaningData ? meaningData.mean : '(意味未登録)' };
+        }
+    }
+
+    function displayWordQuestion(index) {
+         if (index < 0 || index >= wordTestQuestions.length) return;
+         const question = wordTestQuestions[index];
+         if (!question) {
+             wordTestUI.innerHTML = '<p class="loading-message" style="color:red;">問題データの読み込みエラー</p>';
+             return;
+         }
+         let contentHTML = '<div class="test-question">';
+         if (question.type === 'mcq') {
+             let optionsHTML = '';
+             question.options.forEach((option) => {
+                 const isChecked = userTestAnswers[question.word] === option;
+                 optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
+             });
+             contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${question.word}">${optionsHTML}</div>`;
+         } else if (question.type === 'link') {
+             const infoText = predefinedLower.includes(question.word.toLowerCase()) ? "この単語の選択肢データがありません。" : "この単語は確認用です。";
+             contentHTML += `<div class="test-word">${escapeHtml(question.word)}</div><p>${infoText}</p><a href="https://ejje.weblio.jp/content/${encodeURIComponent(question.word)}" target="_blank" class="weblio-link-button">Weblioで意味を確認</a>`;
+             if (!userTestAnswers[question.word]) userTestAnswers[question.word] = 'link_checked';
+         } else {
+             contentHTML += `<p style="color:red;">不明な問題タイプ: ${escapeHtml(question.word)}</p>`;
+         }
+         contentHTML += '</div>';
+         wordTestUI.innerHTML = contentHTML;
+
+         if (question.type === 'mcq') {
+             wordTestUI.querySelectorAll(`input[name="word-${question.word}"]`).forEach(radio => {
+                 radio.addEventListener('change', (e) => { userTestAnswers[question.word] = e.target.value; });
+             });
+         }
+         updateTestNavigation(index);
+     }
+
+    function updateTestNavigation(index) {
+        currentTestQuestionIndex = index;
+        const totalQuestions = wordTestQuestions.length;
+        prevWordButton.disabled = (index === 0);
+        nextWordButton.disabled = (index === totalQuestions - 1);
+        nextWordButton.style.display = (index === totalQuestions - 1) ? 'none' : 'inline-block';
+        submitTestButton.style.display = (index === totalQuestions - 1) ? 'inline-block' : 'none';
+        wordCounter.textContent = `${index + 1} / ${totalQuestions}`;
+     }
+    function showPrevWordQuestion() { if (currentTestQuestionIndex > 0) displayWordQuestion(currentTestQuestionIndex - 1); }
+    function showNextWordQuestion() {
+         const currentQ = wordTestQuestions[currentTestQuestionIndex];
+         if (currentQ && currentQ.type === 'mcq' && !userTestAnswers[currentQ.word]) {
+             alert('この問題の解答を選択してください。');
+             return;
+         }
+         if (currentTestQuestionIndex < wordTestQuestions.length - 1) displayWordQuestion(currentTestQuestionIndex + 1);
+     }
+    function closeWordTest() { wordTestModal.style.display = 'none'; }
+    function submitWordTest() {
+        const unansweredMcq = wordTestQuestions.find(q => q && q.type === 'mcq' && !userTestAnswers[q.word]);
+        if (unansweredMcq) {
+            alert(`問題「${unansweredMcq.word}」が未解答です。`);
+            const unansweredIndex = wordTestQuestions.findIndex(q => q && q.word === unansweredMcq.word);
+            if (unansweredIndex !== -1) displayWordQuestion(unansweredIndex);
+            return;
+        }
+        let score = 0;
+        let totalMcqQuestions = 0;
+        testFeedback.innerHTML = '';
+        wordTestQuestions.forEach(q => {
+             if (!q) return;
+            if (q.type === 'mcq') {
+                totalMcqQuestions++;
+                const userAnswer = userTestAnswers[q.word];
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) score++;
+                const feedbackItem = document.createElement('li');
+                feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}, あなたの解答: ${escapeHtml(userAnswer || '(未解答)')})`}`;
+                testFeedback.appendChild(feedbackItem);
+            } else if (q.type === 'link') {
+                 const feedbackItem = document.createElement('li');
+                 feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> <span style="color:#666;">辞書確認</span> (意味: ${escapeHtml(q.correct)})`;
+                 testFeedback.appendChild(feedbackItem);
+            }
+        });
+        if (totalMcqQuestions > 0) {
+            testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (選択式)`;
+        } else {
+            testScore.textContent = `結果: 選択式の問題はありませんでした。`;
+        }
+        wordTestResultArea.style.display = 'block';
+         prevWordButton.disabled = true;
+         nextWordButton.disabled = true;
+         submitTestButton.disabled = true;
+         wordTestUI.querySelectorAll('input[type="radio"], .weblio-link-button').forEach(el => {
+            if(el.tagName === 'INPUT') el.disabled = true;
+            if(el.classList.contains('weblio-link-button')) { el.style.pointerEvents = 'none'; el.style.opacity = '0.6'; }
+         });
+    }
+
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return '';
+        return unsafe.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+    }
+
+    document.addEventListener('DOMContentLoaded', initialize);
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>英語長文読解練習 - 完成版v9 (最終レイアウト)</title>
     <style>
