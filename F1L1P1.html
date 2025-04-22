@@ -993,7 +993,7 @@
 
     function escapeHtml(unsafe) {
         if (typeof unsafe !== 'string') return '';
-        return unsafe.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """).replace(/'/g, "'");
+        return unsafe.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, "").replace(/'/g, "'");
     }
 
     document.addEventListener('DOMContentLoaded', initialize);
