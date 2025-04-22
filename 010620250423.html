@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -110,7 +111,8 @@
 
         a:hover {
             text-decoration: underline;
-            color: darken(var(--color-link), 10%);
+            /* Slightly darker link color on hover */
+             color: color-mix(in srgb, var(--color-link) 85%, black);
         }
 
         ul, ol {
@@ -147,15 +149,16 @@
             overflow-x: auto;
             margin-bottom: 1.2em;
             font-size: 0.9em;
-            white-space: pre;
+            white-space: pre-wrap; /* Allow wrapping in code blocks */
+            word-break: break-all; /* Break long words if needed */
         }
+
 
         blockquote {
             border-left: 4px solid var(--color-border);
             padding-left: 1em;
             margin: 1.5em 0;
-            color: var(--text-secondary);
-            font-style: italic;
+            color: var(--text-main); /* Slightly darker than secondary for readability */
         }
         blockquote p { margin-bottom: 0.5em; } /* Adjust margin for blockquote paragraphs */
 
@@ -170,6 +173,7 @@
             border: 1px solid var(--color-border);
             padding: 0.8em 1em;
             text-align: left;
+            vertical-align: top; /* Align content to top */
         }
 
         th {
@@ -278,6 +282,11 @@
              color: var(--text-main);
         }
         .related-pretest .question-text { margin-bottom: 1em; }
+        /* Hide empty related-pretest divs */
+        .related-pretest:empty {
+            display: none;
+        }
+
 
         .supplementary-box {
             background-color: #e7f5ff;
@@ -323,7 +332,7 @@
         }
 
         /* Drill Answers, Review Questions, Related Answers */
-        .toggle-answer, .toggle-translation {
+        .toggle-answer, .toggle-translation, .toggle-view { /* Added .toggle-view */
             display: inline-block;
             background-color: var(--color-accent);
             color: white;
@@ -336,7 +345,7 @@
             margin-bottom: 0.5em;
             transition: background-color 0.2s;
         }
-        .toggle-answer:hover, .toggle-translation:hover {
+        .toggle-answer:hover, .toggle-translation:hover, .toggle-view:hover { /* Added .toggle-view */
             background-color: color-mix(in srgb, var(--color-accent) 85%, black);
         }
         .toggle-translation {
@@ -346,13 +355,23 @@
         .toggle-translation:hover {
             background-color: color-mix(in srgb, var(--color-primary) 85%, black);
         }
+        /* Story specific toggle button styling */
+        .story-controls { margin-bottom: 1em; }
+        .story-controls .toggle-view { margin-right: 1em; }
+        .story-controls .toggle-view[data-view="translations"] {
+            background-color: var(--color-primary);
+        }
+        .story-controls .toggle-view[data-view="translations"]:hover {
+             background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+        }
+
 
         .answer, .drill-translation {
             padding: 1em;
             margin-top: 0.5em;
             border-radius: 4px;
             border: 1px solid var(--color-border);
-            /* display: none; /* Initially hidden by JS or inline style */
+            /* display: none; はJSで制御 */
         }
         .answer {
             background-color: var(--bg-answer);
@@ -558,6 +577,35 @@
             100% { background-color: transparent; }
         }
 
+        /* Sentence Pattern Story Styles */
+        .sentence-element {
+            font-size: 0.85em;
+            color: var(--color-primary); /* Make elements stand out a bit */
+            margin-left: 0.3em;
+            font-style: italic;
+            display: none; /* Initially hidden */
+            font-weight: normal; /* Avoid inheriting highlight bold */
+        }
+        .sentence-translation {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-top: 0.3em;
+            background-color: var(--bg-translation);
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+            display: none; /* Initially hidden */
+            /* display: block; Will be toggled by JS */
+            font-style: normal;
+        }
+        /* Show elements/translations when parent has the class */
+        #story-blockquote.show-elements .sentence-element {
+            display: inline;
+        }
+        #story-blockquote.show-translations .sentence-translation {
+            display: block; /* Display on its own line when shown */
+        }
+
+
         /* Responsive Design */
         @media (max-width: 900px) {
             .container {
@@ -589,6 +637,7 @@
              #preTestModal button { width: 100%; }
             #scrollTopBtn { width: 40px; height: 40px; font-size: 20px; }
             .toggle-translation { margin-left: 0; margin-top: 0.5em; display: block; width: fit-content;} /* Adjust translation button on small screens */
+             .story-controls .toggle-view { margin-right: 0.5em; margin-bottom: 0.5em;} /* Adjust story controls on small screens */
         }
 
     </style>
@@ -954,18 +1003,17 @@
                 <p>品詞は「単語の種類」、文の要素は「文の中での役割」です。例えば、名詞は主語(S)、目的語(O)、補語(C)になることができます。動詞は述語動詞(V)になります。</p>
             </div>
              <div class="related-pretest" data-for-section="section-sentence-elements">
-                <!-- JSで関連問題挿入 -->
+                <!-- JSで関連問題挿入: このセクションに対応する問題がない場合、このdivは空のまま -->
             </div>
         </section>
 
         <section id="section-sentence-patterns">
-             <h2>文型判別の練習（講義）</h2>
+             <h2>文型判別の練習</h2> 
              <p>英語の文は、動詞の後ろにどのような要素が続くかによって、いくつかの基本的な型（文型）に分類できます。ここでは主要な5つの文型を紹介します。これを理解すると、英文の構造把握や読解が容易になります。</p>
 
-             {/* 各文型の説明は変更なし */}
              <h3>第1文型: S + V (+ M)</h3>
              <p>「SがVする」という意味を表します。動詞 (V) の後に目的語 (O) や補語 (C) は不要です。場所や時を表す修飾語 (M) が付くことが多いです。</p>
-             <p class="code-block"><u>Kate</u> <u>runs</u> <u>very fast</u>. (ケイトはとても速く走る)<br>  S     V       M</p>
+             <p class="code-block"><u>Kate</u> <u>runs</u> <u>very fast</u>.<br>  S     V       M<br>(ケイトはとても速く走る)</p>
              <ul>
                  <li><strong>Point:</strong> Vには<strong data-tooltip="目的語(O)を必要としない動詞。例: run, live, sleep, go">自動詞</strong>が使われます。</li>
                  <li>文の骨格はSとVだけで構成されます。</li>
@@ -974,7 +1022,7 @@
 
              <h3>第2文型: S + V + C</h3>
              <p>「SはCである」または「SはCになる」という意味を表します。主語 (S) と補語 (C) の間に <strong>S = C</strong> の関係が成り立ちます。</p>
-             <p class="code-block"><u>Next Monday</u> <u>is</u> <u>a holiday</u>. (次の月曜日は休日だ)<br>      S         V       C (名詞)<br><br><u>Kate</u> <u>became</u> <u>famous</u>. (ケイトは有名になった)<br> S       V        C (形容詞)</p>
+             <p class="code-block"><u>Next Monday</u> <u>is</u> <u>a holiday</u>.<br>      S         V       C (名詞)<br>(次の月曜日は休日だ)<br><br><u>Kate</u> <u>became</u> <u>famous</u>.<br> S       V        C (形容詞)<br>(ケイトは有名になった)</p>
              <ul>
                  <li><strong>Point:</strong> <code>be</code>動詞 (is, am, are, was, were) や <code>become</code> が代表的な動詞です。他にも <code>look</code>, <code>seem</code>, <code>feel</code>, <code>get</code> などがあります。</li>
                  <li>C (補語) には名詞または形容詞が来ます。</li>
@@ -982,7 +1030,7 @@
 
              <h3>第3文型: S + V + O (+ M)</h3>
              <p>「SがOを(に)Vする」という意味を表します。動詞 (V) の後に目的語 (O) が1つだけ来ます。</p>
-             <p class="code-block"><u>My little brother</u> <u>watches</u> <u>television</u> <u>every morning</u>. (私の弟は毎朝テレビを見る)<br>         S              V          O            M</p>
+             <p class="code-block"><u>My little brother</u> <u>watches</u> <u>television</u> <u>every morning</u>.<br>         S              V          O            M<br>(私の弟は毎朝テレビを見る)</p>
              <ul>
                  <li><strong>Point:</strong> Vには<strong data-tooltip="目的語(O)を必要とする動詞。多くの動詞がこれにあたる。例: watch, eat, have, visit">他動詞</strong>が使われます。</li>
                  <li>O (目的語) には名詞 (または代名詞の目的格) が来ます。</li>
@@ -991,7 +1039,7 @@
 
              <h3>第4文型: S + V + O1 + O2</h3>
              <p>「SがO1 (人) に O2 (もの) をVする」という意味を表します。目的語が2つ続きます。</p>
-             <p class="code-block"><u>My uncle</u> <u>gave</u> <u>me</u> <u>this watch</u>. (叔父は私にこの腕時計をくれた)<br>    S        V    O1   O2</p>
+             <p class="code-block"><u>My uncle</u> <u>gave</u> <u>me</u> <u>this watch</u>.<br>    S        V    O1   O2<br>(叔父は私にこの腕時計をくれた)</p>
              <ul>
                  <li><strong>Point:</strong> <code>give</code>, <code>show</code>, <code>tell</code>, <code>buy</code>, <code>teach</code> など、授与を表す動詞が多く使われます。</li>
                  <li>O1 (間接目的語) には主に「人」、O2 (直接目的語) には主に「もの」が来ます。</li>
@@ -1001,48 +1049,52 @@
 
              <h3>第5文型: S + V + O + C</h3>
               <p>「SがOをCとVする」「SがOをCの状態にVする」という意味を表します。目的語 (O) と補語 (C) の間に <strong>O = C</strong> の関係が成り立ちます。</p>
-             <p class="code-block"><u>People</u> <u>call</u> <u>him</u> <u>Ted</u>. (人々は彼をテッドと呼ぶ)<br>   S      V    O    C (名詞)<br> O (him) = C (Ted)<br><br><u>Don’t leave</u> <u>the door</u> <u>open</u>. (ドアを開けっ放しにしないで)<br> (S: You) V         O       C (形容詞)<br> O (the door) = C (open)<br><br><u>I</u> <u>found</u> <u>the book</u> <u>interesting</u>. (私はその本が面白いとわかった)<br> S   V       O           C (形容詞)<br> O (the book) = C (interesting)</p>
+             <p class="code-block"><u>People</u> <u>call</u> <u>him</u> <u>Ted</u>.<br>   S      V    O    C (名詞)<br>(人々は彼をテッドと呼ぶ) O (him) = C (Ted)<br><br><u>Don’t leave</u> <u>the door</u> <u>open</u>.<br> (S: You) V         O       C (形容詞)<br>(ドアを開けっ放しにしないで) O (the door) = C (open)<br><br><u>I</u> <u>found</u> <u>the book</u> <u>interesting</u>.<br> S   V       O           C (形容詞)<br>(私はその本が面白いとわかった) O (the book) = C (interesting)</p>
              <ul>
                  <li><strong>Point:</strong> <code>call</code>, <code>name</code>, <code>make</code>, <code>keep</code>, <code>leave</code>, <code>find</code>, <code>think</code> などの動詞が使われます。</li>
                  <li>C (補語) には名詞または形容詞が来ます。</li>
                  <li>O = C の関係が重要です。第4文型 (O1 ≠ O2) との見分け方になります。</li>
              </ul>
 
-             <h3>文型判別の練習ストーリー（拡張版）</h3>
-             <p>以下の少し長めのストーリーで、各文がどの文型にあたるか考えてみましょう。</p>
-             <blockquote>
-                 <p>[1] <span class="highlight">A black cat (S) sleeps (V)</span> peacefully (M) on the sunny windowsill (M).</p>
-                 <p>[2] <span class="highlight">Suddenly (M), it (S) opens (V) its green eyes (O)</span>.</p>
-                 <p>[3] <span class="highlight">The cat (S) is (V) hungry (C)</span>.</p>
-                 <p>[4] <span class="highlight">It (S) jumps (V)</span> down (M) from the windowsill (M).</p>
-                 <p>[5] <span class="highlight">A little girl (S) enters (V) the room (O)</span> quietly (M).</p>
-                 <p>[6] <span class="highlight">She (S) calls (V) the cat (O) Kuro (C)</span>.</p>
-                 <p>[7] <span class="highlight">Kuro (S) looks (V) happy (C)</span>.</p>
-                 <p>[8] <span class="highlight">The girl (S) gives (V) Kuro (O1) some food (O2)</span>.</p>
-                 <p>[9] <span class="highlight">Kuro (S) eats (V) the food (O)</span> quickly (M).</p>
-                 <p>[10] <span class="highlight">Eating (S) makes (V) Kuro (O) energetic (C)</span>.</p>
-                 <p>[11] <span class="highlight">The girl (S) smiles (V)</span>.</p>
-                 <p>[12] <span class="highlight">She (S) considers (V) Kuro (O) her best friend (C)</span>.</p>
-                 <p>[13] <span class="highlight">Her mother (S) bought (V) her (O1) a new toy mouse (O2)</span> yesterday (M).</p>
-                 <p>[14] <span class="highlight">The toy mouse (S) seems (V) interesting (C)</span> to Kuro (M).</p>
+             <h3>文型判別の練習ストーリー</h3> 
+             <p>以下の少し長めのストーリーで、各文がどの文型にあたるか考えてみましょう。「文型要素を表示」ボタンでS V O C Mのヒントを、「日本語訳を表示」ボタンで各文の訳を確認できます。</p>
+              <div class="story-controls">
+                  <button class="toggle-view" data-target="#story-blockquote" data-view="elements">文型要素を表示</button>
+                  <button class="toggle-view" data-target="#story-blockquote" data-view="translations">日本語訳を表示</button>
+              </div>
+             <blockquote id="story-blockquote"> 
+                 <p>[1] A black cat<span class="sentence-element"> (S)</span> sleeps<span class="sentence-element"> (V)</span> peacefully<span class="sentence-element"> (M)</span> on the sunny windowsill<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（黒猫が日当たりの良い窓辺で穏やかに眠っている。）</span></p>
+                 <p>[2] Suddenly<span class="sentence-element"> (M)</span>, it<span class="sentence-element"> (S)</span> opens<span class="sentence-element"> (V)</span> its green eyes<span class="sentence-element"> (O)</span>.<span class="sentence-translation">（突然、それは緑色の目を開ける。）</span></p>
+                 <p>[3] The cat<span class="sentence-element"> (S)</span> is<span class="sentence-element"> (V)</span> hungry<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（その猫はお腹が空いている。）</span></p>
+                 <p>[4] It<span class="sentence-element"> (S)</span> jumps<span class="sentence-element"> (V)</span> down<span class="sentence-element"> (M)</span> from the windowsill<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（それは窓辺から飛び降りる。）</span></p>
+                 <p>[5] A little girl<span class="sentence-element"> (S)</span> enters<span class="sentence-element"> (V)</span> the room<span class="sentence-element"> (O)</span> quietly<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（小さな女の子が静かに部屋に入ってくる。）</span></p>
+                 <p>[6] She<span class="sentence-element"> (S)</span> calls<span class="sentence-element"> (V)</span> the cat<span class="sentence-element"> (O)</span> Kuro<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（彼女はその猫をクロと呼ぶ。）</span></p>
+                 <p>[7] Kuro<span class="sentence-element"> (S)</span> looks<span class="sentence-element"> (V)</span> happy<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（クロは嬉しそうだ。）</span></p>
+                 <p>[8] The girl<span class="sentence-element"> (S)</span> gives<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O1)</span> some food<span class="sentence-element"> (O2)</span>.<span class="sentence-translation">（女の子はクロに食べ物をあげる。）</span></p>
+                 <p>[9] Kuro<span class="sentence-element"> (S)</span> eats<span class="sentence-element"> (V)</span> the food<span class="sentence-element"> (O)</span> quickly<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（クロはその食べ物を素早く食べる。）</span></p>
+                 <p>[10] Eating<span class="sentence-element"> (S)</span> makes<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O)</span> energetic<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（食べることはクロを元気にする。）</span></p>
+                 <p>[11] The girl<span class="sentence-element"> (S)</span> smiles<span class="sentence-element"> (V)</span>.<span class="sentence-translation">（女の子は微笑む。）</span></p>
+                 <p>[12] She<span class="sentence-element"> (S)</span> considers<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O)</span> her best friend<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（彼女はクロを一番の友達だと考えている。）</span></p>
+                 <p>[13] Her mother<span class="sentence-element"> (S)</span> bought<span class="sentence-element"> (V)</span> her<span class="sentence-element"> (O1)</span> a new toy mouse<span class="sentence-element"> (O2)</span> yesterday<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（彼女の母親は昨日、彼女に新しいおもちゃのネズミを買ってあげた。）</span></p>
+                 <p>[14] The toy mouse<span class="sentence-element"> (S)</span> seems<span class="sentence-element"> (V)</span> interesting<span class="sentence-element"> (C)</span> to Kuro<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（そのおもちゃのネズミはクロにとって面白そうだ。）</span></p>
              </blockquote>
              <button class="toggle-answer" data-target="#story-answers-expanded">ストーリーの文型解答例を見る</button>
              <div class="answer" id="story-answers-expanded" style="display: none;">
                  <ol>
-                     <li>[1] A black cat (S) sleeps (V) → <strong>第1文型 (SV)</strong></li>
-                     <li>[2] it (S) opens (V) its green eyes (O) → <strong>第3文型 (SVO)</strong></li>
-                     <li>[3] The cat (S) is (V) hungry (C) → <strong>第2文型 (SVC)</strong> (S=C)</li>
-                     <li>[4] It (S) jumps (V) → <strong>第1文型 (SV)</strong></li>
-                     <li>[5] A little girl (S) enters (V) the room (O) → <strong>第3文型 (SVO)</strong></li>
-                     <li>[6] She (S) calls (V) the cat (O) Kuro (C) → <strong>第5文型 (SVOC)</strong> (O=C)</li>
-                     <li>[7] Kuro (S) looks (V) happy (C) → <strong>第2文型 (SVC)</strong> (S=C)</li>
-                     <li>[8] The girl (S) gives (V) Kuro (O1) some food (O2) → <strong>第4文型 (SVOO)</strong> (O1≠O2)</li>
-                     <li>[9] Kuro (S) eats (V) the food (O) → <strong>第3文型 (SVO)</strong></li>
-                     <li>[10] Eating (S) makes (V) Kuro (O) energetic (C) → <strong>第5文型 (SVOC)</strong> (O=C)</li>
-                     <li>[11] The girl (S) smiles (V) → <strong>第1文型 (SV)</strong></li>
-                     <li>[12] She (S) considers (V) Kuro (O) her best friend (C) → <strong>第5文型 (SVOC)</strong> (O=C)</li>
-                     <li>[13] Her mother (S) bought (V) her (O1) a new toy mouse (O2) → <strong>第4文型 (SVOO)</strong> (O1≠O2)</li>
-                     <li>[14] The toy mouse (S) seems (V) interesting (C) → <strong>第2文型 (SVC)</strong> (S=C)</li>
+                     <li>[1] 第1文型 (SV)</li>
+                     <li>[2] 第3文型 (SVO)</li>
+                     <li>[3] 第2文型 (SVC)</li>
+                     <li>[4] 第1文型 (SV)</li>
+                     <li>[5] 第3文型 (SVO)</li>
+                     <li>[6] 第5文型 (SVOC)</li>
+                     <li>[7] 第2文型 (SVC)</li>
+                     <li>[8] 第4文型 (SVOO)</li>
+                     <li>[9] 第3文型 (SVO)</li>
+                     <li>[10] 第5文型 (SVOC)</li>
+                     <li>[11] 第1文型 (SV)</li>
+                     <li>[12] 第5文型 (SVOC)</li>
+                     <li>[13] 第4文型 (SVOO)</li>
+                     <li>[14] 第2文型 (SVC)</li>
                  </ol>
              </div>
              <div class="related-pretest" data-for-section="section-sentence-patterns">
@@ -1222,6 +1274,15 @@
             </ul>
         </section>
 
+        <section id="homework">
+             <h2>宿題</h2>
+             <ul>
+                 <li><strong>ワークブック:</strong> Get Ready ②「一般動詞とbe動詞」の演習問題 (pp. 6-7)</li>
+                 <li><strong>プリント:</strong> 文型判別練習問題プリント (配布済み)</li>
+                 <li><strong>復習:</strong> 今日の授業記録ページ、特に理解度チェックリストで自信がなかった項目を再確認すること。</li>
+             </ul>
+         </section>
+
         <footer>
             <p>これで本日の授業記録は終了です。しっかり復習しておきましょう。</p>
             <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイトトップへ</a></p>
@@ -1249,21 +1310,20 @@
             const persistentTestResultsContainer = document.getElementById('persistentTestResults');
             const persistentScoreElement = document.getElementById('persistentScore');
             const persistentReviewLinksElement = document.getElementById('persistentReviewLinks');
-            const modalCloseBtn = testResultsContainer.querySelector('.close-modal-btn');
+            const modalCloseBtn = testResultsContainer ? testResultsContainer.querySelector('.close-modal-btn') : null;
 
             // --- Function Definitions ---
 
-            // 1. Progress Bar Update
             const updateProgressBar = () => {
+                if (!progressBar) return;
                 const scrollY = window.scrollY;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                 // Avoid division by zero if docHeight is 0 (e.g., content shorter than viewport)
                  const scrollPercent = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
                  progressBar.style.width = `${scrollPercent}%`;
             };
 
-            // 2. Scroll Top Button Toggle
             const toggleScrollTopButton = () => {
+                if (!scrollTopBtn) return;
                 if (window.scrollY > 300) {
                     scrollTopBtn.style.display = 'block';
                 } else {
@@ -1271,19 +1331,16 @@
                 }
             };
 
-             // 3. Scroll to Section with Highlight
              const scrollToSection = (sectionId) => {
-                 // Ensure sectionId starts with '#' for querySelector, remove it for getElementById
                  const elementId = sectionId.startsWith('#') ? sectionId.substring(1) : sectionId;
                  const targetElement = document.getElementById(elementId);
                  if (targetElement) {
                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                     // Apply highlight class only if it's not already highlighted
                      if (!targetElement.classList.contains('highlight-temp')) {
                         targetElement.classList.add('highlight-temp');
                         setTimeout(() => {
                             targetElement.classList.remove('highlight-temp');
-                        }, 1500); // Duration of the highlight animation
+                        }, 1500);
                     }
                  } else {
                      console.warn(`Element with ID "${elementId}" not found for scrolling.`);
@@ -1291,17 +1348,16 @@
              };
 
 
-            // 4. Generic Toggle Handler (for Answers and Translations)
+            // Generic Toggle Handler (for Answers and Drill Translations)
             function handleToggleClick(button, targetSelector, textShow, textHide, relatedTextShow = null, relatedTextHide = null, drillTextShow = null, drillTextHide = null) {
                 const targetId = button.dataset.target;
                 let targetElement = null;
 
                 if (targetId) {
-                    // Remove '#' before getting element by ID
                     const elementId = targetId.startsWith('#') ? targetId.substring(1) : targetId;
                     targetElement = document.getElementById(elementId);
                 } else {
-                    // Fallback for elements without data-target (less common now)
+                    // Fallback for elements without data-target
                     const potentialTarget = button.nextElementSibling;
                     if (potentialTarget && potentialTarget.matches(targetSelector)) {
                         targetElement = potentialTarget;
@@ -1312,7 +1368,6 @@
                     const isVisible = targetElement.style.display === 'block';
                     targetElement.style.display = isVisible ? 'none' : 'block';
 
-                    // Determine button text based on context and visibility
                     let currentTextShow = textShow;
                     let currentTextHide = textHide;
                     if (button.closest('.related-pretest') && relatedTextShow && button.classList.contains('toggle-answer')) {
@@ -1321,8 +1376,8 @@
                     } else if (button.closest('#drill-answers') && drillTextShow && button.classList.contains('toggle-answer')) {
                         currentTextShow = drillTextShow;
                         currentTextHide = drillTextHide;
-                    } // Translation buttons use the primary textShow/textHide
-
+                    }
+                    // For drill translations, use the primary textShow/textHide
                     button.textContent = isVisible ? currentTextShow : currentTextHide;
                 } else {
                     console.error('Toggle target not found for button:', button, 'with targetId:', targetId);
@@ -1330,81 +1385,101 @@
             }
 
 
-            // 5. Pre-Test Logic Functions
+            // Pre-Test Logic Functions
             const showModal = () => {
+                if (!preTestModalOverlay) return;
                 preTestModalOverlay.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             };
 
             const closeModal = () => {
+                 if (!preTestModalOverlay) return;
                 preTestModalOverlay.style.display = 'none';
                 document.body.style.overflow = 'auto';
             };
 
             const displayResults = (resultData) => {
-                 persistentTestResultsContainer.style.display = 'block';
-                 // Ensure score/links areas exist before setting text/HTML
-                 if (!persistentScoreElement || !persistentReviewLinksElement || !testScoreElement || !reviewLinksElement || !testResultsContainer) {
-                     console.error("One or more result display elements not found.");
-                     return;
+                 // Ensure result display elements exist
+                 if (!persistentTestResultsContainer || !persistentScoreElement || !persistentReviewLinksElement) {
+                     console.warn("Persistent result display elements not found.");
+                 }
+                 if (testResultsContainer && (!testScoreElement || !reviewLinksElement)){
+                    console.warn("Modal result display elements not found.")
                  }
 
-                if (resultData.skipped) {
-                    const skipMessage = '事前理解度チェックはスキップされました。';
-                    persistentScoreElement.textContent = skipMessage;
-                    persistentReviewLinksElement.innerHTML = '<p>各セクションを読み進めてください。</p>';
-                    testScoreElement.textContent = skipMessage; // Show in modal too
-                    reviewLinksElement.innerHTML = ''; // Clear links in modal
-                    testResultsContainer.style.display = 'block';
-                    if (submitTestBtn) submitTestBtn.style.display = 'none';
-                    if (skipTestBtn) skipTestBtn.style.display = 'none';
-
-                } else {
-                    const scoreText = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
-                    persistentScoreElement.textContent = scoreText;
-                    testScoreElement.textContent = scoreText; // Show in modal too
-
-                    let reviewHTML = '';
-                    if (resultData.incorrectAnswers && resultData.incorrectAnswers.length > 0) {
-                        reviewHTML = '<p>復習が推奨される項目:</p><ul>';
-                        resultData.incorrectAnswers.forEach(item => {
-                             // Ensure sectionId is prefixed with # for href, but not for data-section-id
-                             const hrefId = item.sectionId.startsWith('#') ? item.sectionId : `#${item.sectionId}`;
-                             const dataId = item.sectionId.startsWith('#') ? item.sectionId.substring(1) : item.sectionId;
-                             // Use textContent to prevent potential XSS if section names came from user input (safer)
-                             const sectionName = item.name ? document.createTextNode(item.name).textContent : `セクション ${item.sectionId}`;
-                             reviewHTML += `<li><a href="${hrefId}" data-section-id="${dataId}">${sectionName}</a></li>`;
-                         });
-                        reviewHTML += '</ul>';
+                 // Display in Persistent Area
+                 if (persistentTestResultsContainer){
+                    persistentTestResultsContainer.style.display = 'block';
+                    if (resultData.skipped) {
+                        if(persistentScoreElement) persistentScoreElement.textContent = '事前理解度チェックはスキップされました。';
+                        if(persistentReviewLinksElement) persistentReviewLinksElement.innerHTML = '<p>各セクションを読み進めてください。</p>';
                     } else {
-                        reviewHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        if(persistentScoreElement) persistentScoreElement.textContent = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
+                        let reviewHTML = '';
+                        if (resultData.incorrectAnswers && resultData.incorrectAnswers.length > 0) {
+                            reviewHTML = '<p>復習が推奨される項目:</p><ul>';
+                            resultData.incorrectAnswers.forEach(item => {
+                                const hrefId = item.sectionId.startsWith('#') ? item.sectionId : `#${item.sectionId}`;
+                                const dataId = item.sectionId.startsWith('#') ? item.sectionId.substring(1) : item.sectionId;
+                                const sectionName = item.name ? document.createTextNode(item.name).textContent : `セクション ${item.sectionId}`;
+                                reviewHTML += `<li><a href="${hrefId}" data-section-id="${dataId}">${sectionName}</a></li>`;
+                            });
+                            reviewHTML += '</ul>';
+                        } else {
+                            reviewHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        }
+                        if(persistentReviewLinksElement) persistentReviewLinksElement.innerHTML = reviewHTML;
                     }
-                    persistentReviewLinksElement.innerHTML = reviewHTML;
-                    reviewLinksElement.innerHTML = reviewHTML; // Show in modal too
+                 }
+
+                 // Display in Modal Area (if modal exists and is open)
+                 if (preTestModalOverlay && preTestModalOverlay.style.display === 'flex' && testResultsContainer) {
+                    if (resultData.skipped) {
+                         if(testScoreElement) testScoreElement.textContent = '事前理解度チェックはスキップされました。';
+                         if(reviewLinksElement) reviewLinksElement.innerHTML = '';
+                    } else {
+                        if(testScoreElement) testScoreElement.textContent = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
+                        let reviewHTML = '';
+                        if (resultData.incorrectAnswers && resultData.incorrectAnswers.length > 0) {
+                             reviewHTML = '<p>復習が推奨される項目:</p><ul>';
+                             resultData.incorrectAnswers.forEach(item => {
+                                const hrefId = item.sectionId.startsWith('#') ? item.sectionId : `#${item.sectionId}`;
+                                const dataId = item.sectionId.startsWith('#') ? item.sectionId.substring(1) : item.sectionId;
+                                const sectionName = item.name ? document.createTextNode(item.name).textContent : `セクション ${item.sectionId}`;
+                                reviewHTML += `<li><a href="${hrefId}" data-section-id="${dataId}">${sectionName}</a></li>`;
+                            });
+                            reviewHTML += '</ul>';
+                        } else {
+                             reviewHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        }
+                        if(reviewLinksElement) reviewLinksElement.innerHTML = reviewHTML;
+                    }
                     testResultsContainer.style.display = 'block';
                     if (submitTestBtn) submitTestBtn.style.display = 'none';
                     if (skipTestBtn) skipTestBtn.style.display = 'none';
+                    if (modalCloseBtn) modalCloseBtn.style.display = 'block';
                 }
-                 // Ensure the close button is visible in the modal results view
-                 if (modalCloseBtn) modalCloseBtn.style.display = 'block';
             };
 
 
-            // 6. Inject Related Pre-tests
+            // Inject Related Pre-tests
             const injectRelatedPretests = () => {
-                const testQuestions = document.querySelectorAll('#preTestModal .test-question');
+                if (!preTestModalOverlay) return;
+                const testQuestions = preTestModalOverlay.querySelectorAll('.test-question');
                 testQuestions.forEach((questionDiv, index) => {
                     const sectionId = questionDiv.dataset.sectionId;
                     const targetSection = document.getElementById(sectionId);
-                    // Find the specific related-pretest div intended for this section
                     const relatedTestArea = targetSection ? targetSection.querySelector(`.related-pretest[data-for-section="${sectionId}"]`) : null;
 
                     if (relatedTestArea) {
-                         const questionText = questionDiv.querySelector('p').innerHTML; // Use innerHTML to keep strong tag
+                         // Clear placeholder only once
+                         if (relatedTestArea.textContent.includes("JSで関連問題挿入")) {
+                            relatedTestArea.innerHTML = '';
+                         }
+
+                         const questionText = questionDiv.querySelector('p').innerHTML;
                          const correctAnswerInput = questionDiv.querySelector('input[data-correct="true"]');
-                         // Safely get label text content
                          const correctAnswerLabel = correctAnswerInput?.closest('label')?.textContent?.trim() || 'N/A';
-                         // Simple explanation generation (can be improved)
                          let explanation = `この問題は「${targetSection?.querySelector('h2')?.textContent || '関連セクション'}」の内容に関連しています。`;
                          if (sectionId === 'section-nouns') explanation += ` 不可算名詞は通常、数えられず、a/anや複数形(-s)を伴いません。waterはその代表例です。`;
                          else if (sectionId === 'section-articles') explanation += ` informationは不可算名詞なので、通常冠詞は付きません。usefulのuは発音上子音/j/ですが、それ以前の問題です。`;
@@ -1412,11 +1487,10 @@
                          else if (sectionId === 'section-sentence-patterns' && questionDiv.querySelector('input[name="q4"]')) explanation += ` 第2文型(SVC)は主語の状態や性質を説明し、S=Cの関係が成り立ちます。`;
                          else if (sectionId === 'section-sentence-patterns' && questionDiv.querySelector('input[name="q5"]')) explanation += ` 第5文型(SVOC)は目的語(O)の状態や名称を補語(C)が説明し、O=Cの関係が成り立ちます。him = Ted です。`;
 
-                         // Ensure unique ID for each related answer div
+
                          const relatedAnswerId = `related-answer-${sectionId}-${index}`;
-                         // Append the new related question HTML
-                         // Use a temporary element to avoid potential issues with innerHTML+=
                          const tempDiv = document.createElement('div');
+                         tempDiv.classList.add('related-pretest-item'); // Add a wrapper class
                          tempDiv.innerHTML = `
                             <h4>関連する事前テスト問題 (問${index + 1})</h4>
                             <div class="question-text">${questionText}</div>
@@ -1426,109 +1500,126 @@
                                 <p><strong>簡単な解説:</strong> ${explanation}</p>
                             </div>
                         `;
-                         // Append the content of the tempDiv to the relatedTestArea
-                         while (tempDiv.firstChild) {
-                            relatedTestArea.appendChild(tempDiv.firstChild);
-                         }
-                         // Clear the placeholder text if it exists
-                         if (relatedTestArea.textContent.includes("JSで関連問題挿入")) {
-                             relatedTestArea.innerHTML = ''; // Clear placeholder only if inserting first item
-                             relatedTestArea.appendChild(tempDiv); // Append the actual content
-                         }
+                         relatedTestArea.appendChild(tempDiv);
 
                     } else if (targetSection) {
-                         console.warn(`Could not find .related-pretest[data-for-section="${sectionId}"] in section ${sectionId}`);
+                         // console.warn(`Could not find .related-pretest[data-for-section="${sectionId}"] in section ${sectionId}`);
+                    }
+                });
+                // Remove any remaining placeholders if they are empty after injection attempt
+                document.querySelectorAll('.related-pretest').forEach(area => {
+                    if (area.innerHTML.trim() === '' || area.textContent.includes("JSで関連問題挿入")) {
+                        area.style.display = 'none'; // Hide empty areas
                     }
                 });
             };
 
 
-             // 7. Calculate Reading Time
              const calculateReadingTime = () => {
+                 if (!container || !readingTimeElement) return;
                  const text = container.textContent || container.innerText || "";
                  const wordMatchRegExp = /[a-zA-Z0-9_\u0392-\u03c9]+|[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]+/g;
                  const words = text.matchAll(wordMatchRegExp);
                  const wordCount = [...words].length;
-                 const wordsPerMinute = 200; // Average reading speed for English content
+                 const wordsPerMinute = 200;
                  const readingTime = Math.ceil(wordCount / wordsPerMinute);
-                 if(readingTimeElement) {
-                    readingTimeElement.textContent = `読了時間目安: 約 ${readingTime} 分`;
-                 }
+                 readingTimeElement.textContent = `読了時間目安: 約 ${readingTime} 分`;
              };
 
-            // 8. Generate Table of Contents
             const generateTOC = () => {
+                 if (!tocList || !container) return;
                 const headings = container.querySelectorAll('h2');
-                if (!tocList) return; // Exit if TOC list element doesn't exist
-                tocList.innerHTML = ''; // Clear existing list
+                tocList.innerHTML = '';
 
-                // Add link to Persistent Test Results first if it exists
+                 // Add persistent test results link if the element exists
                  if (persistentTestResultsContainer) {
                      const testResultId = persistentTestResultsContainer.id;
                      const listItem = document.createElement('li');
                      const link = document.createElement('a');
                      link.href = `#${testResultId}`;
-                     link.textContent = '事前テスト結果';
+                     link.textContent = '事前テスト結果'; // Or get from h4 if needed
                      listItem.appendChild(link);
                      tocList.appendChild(listItem);
                  }
 
+
                 headings.forEach((heading) => {
                     const section = heading.closest('section');
                     const sectionId = section?.id;
-                    // Only add sections with IDs and content to TOC
                     if (sectionId && heading.textContent.trim() !== '') {
-                        const listItem = document.createElement('li');
-                        const link = document.createElement('a');
-                        link.href = `#${sectionId}`;
-                        // Use textContent for safety and simplicity
-                        link.textContent = heading.textContent.trim();
-                        listItem.appendChild(link);
-                        tocList.appendChild(listItem);
+                        // Add link for Homework section as well if it exists
+                        if (sectionId === 'homework' || sectionId.startsWith('section-')) {
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = `#${sectionId}`;
+                            link.textContent = heading.textContent.trim();
+                            listItem.appendChild(link);
+                            tocList.appendChild(listItem);
+                        }
                     }
                  });
             };
 
             // --- Event Listeners ---
 
-            // Global click listener for toggles (using Event Delegation)
             document.body.addEventListener('click', (event) => {
                 const target = event.target;
-                // Handle answer toggles
+
+                // Handle Answer Toggles (Drills, Review, Related)
                 if (target.classList.contains('toggle-answer')) {
                     handleToggleClick(target, '.answer',
-                        '解答例を見る', '解答例を閉じる', // Default texts
-                        '関連問題の解答・解説を見る', '関連問題の解答・解説を閉じる', // Related test texts
-                        '解説を見る', '解説を閉じる' // Drill explanation texts
+                        '解答例を見る', '解答例を閉じる',
+                        '関連問題の解答・解説を見る', '関連問題の解答・解説を閉じる',
+                        '解説を見る', '解説を閉じる'
                     );
                 }
-                // Handle translation toggles
+                // Handle Drill Translation Toggles
                 else if (target.classList.contains('toggle-translation')) {
                     handleToggleClick(target, '.drill-translation',
-                        '日本語訳を見る', '日本語訳を閉じる' // Translation texts
+                        '日本語訳を見る', '日本語訳を閉じる'
                     );
                 }
-                 // Handle checklist items
+                // Handle Story View Toggles (Elements/Translations) - ★修正★
+                else if (target.classList.contains('toggle-view')) {
+                    const button = target;
+                    const targetSelector = button.dataset.target; // e.g., "#story-blockquote"
+                    const viewType = button.dataset.view; // 'elements' or 'translations'
+                    const targetElement = document.querySelector(targetSelector); // 親要素を取得
+
+                    if (targetElement && viewType) {
+                        const targetClass = `show-${viewType}`; // トグルするクラス名 (e.g., show-elements)
+                        const isActive = targetElement.classList.toggle(targetClass); // クラスをトグルし、アクティブ状態を取得
+
+                        // ボタンのテキストを更新
+                        if (viewType === 'elements') {
+                            button.textContent = isActive ? '文型要素を隠す' : '文型要素を表示';
+                        } else if (viewType === 'translations') {
+                            button.textContent = isActive ? '日本語訳を隠す' : '日本語訳を表示';
+                        }
+                    } else {
+                         console.error('Toggle view target or view type not found for button:', button);
+                    }
+                }
+                 // Handle Checklist Items
                  else if (target.matches('.checklist li')) {
                      target.classList.toggle('checked');
                  }
-                 // Handle scroll top button
-                 else if (target.id === 'scrollTopBtn') {
+                 // Handle Scroll Top Button
+                 else if (target === scrollTopBtn) {
                      window.scrollTo({ top: 0, behavior: 'smooth' });
                  }
-                 // Handle modal close button
-                 else if (target.matches('#testResults .close-modal-btn')) {
+                 // Handle Modal Close Button
+                 else if (modalCloseBtn && target === modalCloseBtn) {
                      closeModal();
                  }
-                 // Handle links inside modal results area
+                 // Handle Links inside Modal Results Area
                  else if (target.matches('#reviewLinks a[data-section-id]')) {
                      event.preventDefault();
                      const sectionId = target.dataset.sectionId;
                      closeModal();
-                     // Use timeout to ensure modal is closed before scrolling
                      setTimeout(() => scrollToSection(sectionId), 50);
                  }
-                 // Handle links inside persistent results area
+                 // Handle Links inside Persistent Results Area
                  else if (target.matches('#persistentTestResults a[data-section-id]')) {
                      event.preventDefault();
                      scrollToSection(target.dataset.sectionId);
@@ -1554,9 +1645,8 @@
 
                         if (selectedAnswer === correctAnswerValue) {
                             score++;
-                        } else if (correctAnswerInput) { // Only add if there was a correct answer defined
+                        } else if (correctAnswerInput) {
                             const sectionId = question.dataset.sectionId;
-                            // Find the h2 text corresponding to the sectionId
                             const sectionTitleElement = document.getElementById(sectionId)?.querySelector('h2');
                             const sectionName = sectionTitleElement ? sectionTitleElement.textContent.trim() : `関連セクション ${index + 1}`;
                             incorrectAnswers.push({ name: sectionName, sectionId: sectionId });
@@ -1573,7 +1663,6 @@
                     sessionStorage.setItem('preTestCompleted', 'true');
                     sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
                     displayResults(resultData);
-                    // Don't close modal automatically
                 });
             }
 
@@ -1583,8 +1672,7 @@
                      const resultData = { skipped: true };
                      sessionStorage.setItem('preTestCompleted', 'true');
                      sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
-                     displayResults(resultData); // Show skip message in persistent area and modal
-                     // Don't close modal automatically
+                     displayResults(resultData);
                  });
              }
 
@@ -1596,20 +1684,23 @@
 
 
             // --- Initial Setup Calls ---
-            generateTOC(); // Generate TOC first to ensure sections are indexed
+            generateTOC();
+            calculateReadingTime();
+            updateProgressBar();
+            toggleScrollTopButton();
+
+            // Check session storage for pre-test results
             const preTestCompleted = sessionStorage.getItem('preTestCompleted');
             const preTestResultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
 
-            if (preTestCompleted === 'true' && preTestResultData) {
-                displayResults(preTestResultData); // Display stored results if test was completed/skipped
-            } else if (preTestCompleted !== 'true') {
-                 if (preTestModalOverlay) showModal(); // Show modal only if not completed
-            }
+             if (preTestCompleted === 'true' && preTestResultData) {
+                 displayResults(preTestResultData); // Display stored results
+             } else if (preTestCompleted !== 'true' && preTestModalOverlay) {
+                 showModal(); // Show modal only if not completed
+             }
 
-            injectRelatedPretests(); // Inject related tests after potential results display
-            calculateReadingTime();
-            updateProgressBar(); // Initial progress bar state
-            toggleScrollTopButton(); // Initial scroll button state
+             // Inject related pre-tests (needs modal HTML even if not shown)
+             injectRelatedPretests();
 
         });
     </script>
