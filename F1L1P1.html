@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>F1L1P1</title>
+    <!-- jQuery (audioPlayer4mp3.js のために必須) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 元の音声再生JS -->
+    <script type="text/javascript" src="https://textbook.zoshindo.co.jp/fx1/js/audioPlayer4mp3.js"></script>
+
     <style>
+        /* --- 元のCSS --- */
         :root {
             --primary-color: #4a90e2; --secondary-color: #f5a623; --background-color: #f8f9fa;
             --text-color: #373a3c; --border-color: #e8e8e8; --vocab-color: #e74c3c;
@@ -36,14 +42,14 @@
         .font-size-controls > div { display: flex; align-items: center; gap: 8px; }
         .font-size-controls label { font-size: 0.9em; margin-right: 5px; margin-bottom: 0;}
         .font-size-controls input[type="range"] { width: 90px; height: 4px; cursor: pointer; accent-color: var(--primary-color); vertical-align: middle; flex-grow: 1;}
-        .font-size-controls button { padding: 4px 7px; font-size: 0.85em; min-width: 28px; line-height: 1; border-radius: 3px; background-color: #e0e0e0; color: #555; }
+        .font-size-controls button { padding: 4px 7px; font-size: 0.85em; min-width: 28px; line-height: 1; border-radius: 3px; background-color: #e0e0e0; color: #555; border: none; cursor: pointer;}
         .font-size-controls button:hover:not(:disabled) { background-color: #d0d0d0; }
-        .font-size-controls button:disabled { background-color: #eee; color: #bbb; }
+        .font-size-controls button:disabled { background-color: #eee; color: #bbb; cursor: not-allowed;}
         #font-size-value { font-size: 0.85em; min-width: 35px; text-align: right; color: #555; font-weight: 500; }
         .difficulty-switch { display: flex; gap: 8px;}
-        .difficulty-switch button { padding: 7px 10px; font-size: 0.85em; margin-right: 0; flex: 1; border-radius: 5px; }
+        .difficulty-switch button { padding: 7px 10px; font-size: 0.85em; margin-right: 0; flex: 1; border-radius: 5px; background-color: #e0e0e0; color: #555; border: none; cursor: pointer; }
         .difficulty-switch button.active { background-color: var(--secondary-color); font-weight: bold; color: white; }
-        #word-test-sidebar-trigger button { width: 100%; background-color: #28a745; padding: 10px 15px; font-size: 0.95em; border-radius: 5px;}
+        #word-test-sidebar-trigger button { width: 100%; background-color: #28a745; color: white; padding: 10px 15px; font-size: 0.95em; border-radius: 5px; border: none; cursor: pointer;}
         #word-test-sidebar-trigger button:hover { background-color: #218838; }
         #sidebar-toggle {
             position: fixed; top: 12px; left: 15px; z-index: 1003; background: rgba(255, 255, 255, 0.8);
@@ -77,8 +83,8 @@
             box-shadow: 0 -2px 8px rgba(0,0,0,0.08); display: none; align-items: center;
             justify-content: center; padding: 0 15px; z-index: 1001;
         }
-        #action-footer button { padding: 10px 30px; font-size: 1em; font-weight: 500; border-radius: 6px; }
-        #footer-submit-button { background-color: var(--secondary-color); }
+        #action-footer button { padding: 10px 30px; font-size: 1em; font-weight: 500; border-radius: 6px; border: none; cursor: pointer;}
+        #footer-submit-button { background-color: var(--secondary-color); color: white;}
         #footer-submit-button:hover:not(:disabled) { background-color: #e09d1f; }
         @media (max-width: 991px) {
             #settings-sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
@@ -117,7 +123,7 @@
         .svocm-marker { display: none; font-size: 0.75em; color: var(--svocm-marker-color); margin-left: 2px; font-weight: bold; vertical-align: super; user-select: none; }
         body.show-svocm .svocm-marker { display: inline; }
         #word-menu { position: absolute; display: none; background-color: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 6px; z-index: 1000; }
-        #word-menu button { display: block; width: 100%; text-align: left; padding: 9px 14px; margin-bottom: 4px; background-color: transparent; color: var(--text-color); font-size: 0.9em; border: none; border-radius: 4px; }
+        #word-menu button { display: block; width: 100%; text-align: left; padding: 9px 14px; margin-bottom: 4px; background-color: transparent; color: var(--text-color); font-size: 0.9em; border: none; border-radius: 4px; cursor: pointer;}
         #word-menu button:last-child { margin-bottom: 0; }
         #word-menu button:hover { background-color: #f0f0f0; }
         .tab-container { display: flex; border-bottom: 1px solid var(--border-color); background-color: #f8f9fa; overflow-x: auto; padding: 0 15px; flex-shrink: 0; }
@@ -152,12 +158,14 @@
         #word-test-ui .test-options label { display: block; margin-bottom: 12px; cursor: pointer; padding: 12px 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #eee; transition: background-color 0.2s ease, border-color 0.2s ease; }
         #word-test-ui .test-options label:hover { background-color: #eef; border-color: #cce; }
         #word-test-ui .test-options input[type="radio"] { margin-right: 12px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
-        #word-test-ui .weblio-link-button { display: inline-block; padding: 9px 18px; background-color: var(--secondary-color); color: white !important; text-decoration: none !important; border-radius: 5px; margin-top: 10px; font-size: 0.9em; transition: background-color 0.2s ease; font-weight: 500; }
+        #word-test-ui .weblio-link-button { display: inline-block; padding: 9px 18px; background-color: var(--secondary-color); color: white !important; text-decoration: none !important; border-radius: 5px; margin-top: 10px; font-size: 0.9em; transition: background-color 0.2s ease; font-weight: 500; border: none; cursor: pointer;}
         #word-test-ui .weblio-link-button:hover { background-color: #e09d1f; color: white !important; }
         #word-test-ui .weblio-link-button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
         #word-test-navigation { margin-top: 25px; display: flex; justify-content: space-between; align-items: center;}
         #word-test-navigation span { font-size: 0.9em; color: #666; }
-        #word-test-navigation button { border-radius: 5px; padding: 9px 18px; font-size: 0.9em; }
+        #word-test-navigation button { border-radius: 5px; padding: 9px 18px; font-size: 0.9em; border: none; cursor: pointer; background-color: #e0e0e0; color: #555; }
+        #word-test-navigation button:hover:not(:disabled) { background-color: #d0d0d0; }
+        #word-test-navigation button:disabled { background-color: #eee; color: #bbb; cursor: not-allowed; }
         #word-test-result-area { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-color); display: none; }
         #word-test-result-area h4 { margin-bottom: 15px; }
         #word-test-result-area ul { list-style: none; padding-left: 0; }
@@ -169,6 +177,40 @@
             #word-menu button { padding: 8px 12px; font-size: 0.9em; }
             .word-test-content { width: 95%; margin: 8% auto; padding: 20px; }
             .tab-button { padding: 12px 15px; font-size: 0.9em;}
+        }
+        /* --- ここまで元のCSS --- */
+
+        /* 音声コントロール用ボタンのスタイル調整 */
+        #audio-controls button {
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #audio-controls button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+        #audio-controls button:disabled {
+            background-color: #eee;
+            color: #bbb;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #audio-controls input[type="range"], #audio-controls input[type="number"] {
+           accent-color: var(--primary-color);
+        }
+        #audio-controls label {
+            margin-left: 15px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        #audio-controls span#speedValue {
+             font-size: 0.9em;
+             color: #555;
+             min-width: 35px;
+             display: inline-block;
+             text-align: right;
         }
     </style>
 </head>
@@ -214,6 +256,18 @@
 <div id="main-content">
     <div class="container">
         <div id="text-area">
+             <!-- ★★★ 音声コントロール要素を追加 ★★★ -->
+             <div id="audio-controls" style="padding: 10px 20px; border-bottom: 1px solid var(--border-color); background-color: #f0f0f0; flex-shrink: 0;">
+                 <button id="audioPlayIntervalBtn" style="padding: 5px 10px; margin-right: 5px;">▶ 文ごと再生</button>
+                 <button id="audioStopIntervalBtn" style="padding: 5px 10px;">■ 停止</button>
+                 <label for="speedControl">速度:</label>
+                 <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1.0" style="vertical-align: middle;">
+                 <span id="speedValue">1.0x</span>
+                 <label for="intervalControl">文間(秒):</label>
+                 <input type="number" id="intervalControl" min="0" max="5" step="0.1" value="0.5" style="width: 50px; vertical-align: middle;">
+             </div>
+             <!-- ★★★ ここまで音声コントロール ★★★ -->
+
              <div id="sound-tips-area">
                   <strong>SOUND TIPS:</strong><br>
                   単語が子音で終わり，次の語が母音で始まるときは，2つの単語の音をつなげて，ひとかたまりで発音します。単語の切れ目で区切らないように注意して発音しましょう。<br>
@@ -222,24 +276,13 @@
             <div id="text-content-wrapper">
                 <div id="original-text">
                     <p>
-                        <span class="word vocab-word">Hello</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">everyone</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">Matsuoka</span> <span class="word">Shuzo</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">was</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">professional</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">tennis</span> <span class="word vocab-word">player</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">twenty</span> <span class="word">years</span> <span class="word vocab-word">ago</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">Now</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">sportscaster</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="phrase-marker">/</span> <span class="word">and</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">everyone</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">the</span> <span class="word vocab-word">great</span> <span class="word vocab-word">world</span> <span class="word">of</span> <span class="word vocab-word">sports</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">Hello</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">everyone</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">Matsuoka</span> <span class="word">Shuzo</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">was</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">professional</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">tennis</span> <span class="word vocab-word">player</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">twenty</span> <span class="word">years</span> <span class="word vocab-word">ago</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">Now</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">sportscaster</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="phrase-marker">/</span> <span class="word">and</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">everyone</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word">the</span> <span class="word vocab-word">great</span> <span class="word vocab-word">world</span> <span class="word">of</span> <span class="word vocab-word">sports</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
                      </p>
                      <p>
-                        <span class="word vocab-word">By the way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">what</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">is</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">my</span> <span class="word vocab-word">image</span><span class="svocm-marker svocm-s-marker">(S)</span>?<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">You</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">may</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">of</span> <span class="word vocab-word">such</span> <span class="word vocab-word">words</span> <span class="word vocab-word">as</span> <span class="word">“</span><span class="word vocab-word">passion</span><span class="word">,”</span> <span class="word">“</span><span class="word vocab-word">spirit</span><span class="word">,”</span> <span class="word vocab-word">or</span> <span class="word">“</span><span class="word vocab-word">cheer</span><span class="word">.”</span><span class="svocm-marker svocm-m-marker">(M)</span><span class="phrase-marker">//</span>
-                        <span class="word vocab-word">But</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">not</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">that</span> <span class="word vocab-word">kind</span> <span class="word">of</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">negative</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">So</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">always</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">try</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">to</span> <span class="word vocab-word">support</span> <span class="word vocab-word">myself</span> <span class="word vocab-word">with</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-o-marker">(O)</span><span class="svocm-marker svocm-inf-marker">(InfP as Object)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">In</span> <span class="word vocab-word">this</span> <span class="word vocab-word">way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word">[that]</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">can</span> <span class="word vocab-word">become</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">stronger</span><span class="svocm-marker svocm-c-marker">(C')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">The</span> <span class="word vocab-word">words</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">encourage</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word vocab-word">very</span> <span class="word vocab-word">much</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">By the way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">what</span><span class="svocm-marker svocm-c-marker">(C)</span> <span class="word vocab-word">is</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">my</span> <span class="word vocab-word">image</span><span class="svocm-marker svocm-s-marker">(S)</span>?<span class="phrase-marker">//</span> <span class="word vocab-word">You</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">may</span> <span class="word vocab-word">think</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">of</span> <span class="word vocab-word">such</span> <span class="word vocab-word">words</span> <span class="word vocab-word">as</span> <span class="word">“</span><span class="word vocab-word">passion</span><span class="word">,”</span> <span class="word">“</span><span class="word vocab-word">spirit</span><span class="word">,”</span> <span class="word vocab-word">or</span> <span class="word">“</span><span class="word vocab-word">cheer</span><span class="word">.”</span><span class="svocm-marker svocm-m-marker">(M)</span><span class="phrase-marker">//</span> <span class="word vocab-word">But</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">not</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">that</span> <span class="word vocab-word">kind</span> <span class="word">of</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">am</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word">a</span> <span class="word vocab-word">negative</span> <span class="word vocab-word">person</span><span class="svocm-marker svocm-c-marker">(C)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">So</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">always</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">try</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">to</span> <span class="word vocab-word">support</span> <span class="word vocab-word">myself</span> <span class="word vocab-word">with</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-o-marker">(O)</span><span class="svocm-marker svocm-inf-marker">(InfP as Object)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">In</span> <span class="word vocab-word">this</span> <span class="word vocab-word">way</span><span class="svocm-marker svocm-m-marker">(M)</span>, <span class="phrase-marker">/</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word">[that]</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">can</span> <span class="word vocab-word">become</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">stronger</span><span class="svocm-marker svocm-c-marker">(C')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">The</span> <span class="word vocab-word">words</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">encourage</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span> <span class="word vocab-word">very</span> <span class="word vocab-word">much</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
                      </p>
                      <p>
-                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">will</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word vocab-word">some</span> <span class="word">of</span> <span class="word">the</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">They</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">often</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
-                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">that</span> <span class="word vocab-word">they</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">might</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(O')</span>, <span class="word vocab-word">too</span><span class="svocm-marker svocm-m-marker">(M')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
+                        <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">will</span> <span class="word vocab-word">tell</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(IO)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">about</span> <span class="word vocab-word">some</span> <span class="word">of</span> <span class="word">the</span> <span class="word vocab-word">positive</span> <span class="word vocab-word">words</span> <span class="word">of</span> <span class="word vocab-word">encouragement</span><span class="svocm-marker svocm-m-marker">(M)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">They</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">often</span><span class="svocm-marker svocm-m-marker">(M)</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="word vocab-word">me</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span> <span class="word vocab-word">I</span><span class="svocm-marker svocm-s-marker">(S)</span> <span class="word vocab-word">hope</span><span class="svocm-marker svocm-v-marker">(V)</span> <span class="phrase-marker">/</span> <span class="word vocab-word">that</span> <span class="word vocab-word">they</span><span class="svocm-marker svocm-s-marker">(S')</span> <span class="word vocab-word">might</span> <span class="word vocab-word">help</span><span class="svocm-marker svocm-v-marker">(V')</span> <span class="word vocab-word">you</span><span class="svocm-marker svocm-o-marker">(O')</span>, <span class="word vocab-word">too</span><span class="svocm-marker svocm-m-marker">(M')</span><span class="svocm-marker svocm-o-marker">(O)</span>.<span class="phrase-marker">//</span>
                      </p>
                 </div>
                 <div id="simplified-text">
@@ -328,7 +371,6 @@
                      <div class="explanation" data-original-html='<p><strong>正解: D. Some of the positive words of encouragement</strong></p><p>指示代名詞 "They" が何を指すかを見つけるには、その直前の文脈を確認します。 "They often help me." の直前の文は「I will tell you about some of the positive words of encouragement. (皆さんに前向きな励ましの言葉についていくつかお話ししましょう。)」です。したがって、"They" は「いくつかの前向きな励ましの言葉 (some of the positive words of encouragement)」を指しています。これらの言葉が彼を助けてくれる、と文が続いています。</p><ul><li>A, B, C: 文脈上、これらの選択肢は "They" が指すものとして適切ではありません。</li></ul>'></div>
                 </div>
             </div>
-            <!-- Removed original word test trigger section -->
         </div>
     </div>
 </div>
@@ -366,7 +408,263 @@
     </div>
 </div>
 
+<!-- ★★★ ここから音声再生用スクリプト ★★★ -->
 <script>
+    /*
+    * ローカルファイルでこのHTMLを開くと、ブラウザのセキュリティ(CORS)により
+    * 外部JS(audioPlayer4mp3.js)や音声ファイル(https://...)が読み込めない場合があります。
+    * ローカルWebサーバー (例: VS Code Live Server) を使ってアクセスしてください。
+    */
+
+    // --- audioPlayer4mp3.js のメソッドを上書き（モンキーパッチ） ---
+    $(document).ready(function() {
+        if (typeof AudioPlayer !== 'undefined') {
+
+            console.log("AudioPlayer オブジェクトを上書き（モンキーパッチ）します...");
+
+            // 保持用のオブジェクト（なければ作成）
+            AudioPlayer._originals = AudioPlayer._originals || {};
+
+            // 1. パス生成ロジックを修正した playInterval
+            AudioPlayer._originals.playInterval = AudioPlayer.playInterval;
+            AudioPlayer.playInterval = function(interval, length, currentText, func) {
+                console.log(`Patched playInterval called: interval=${interval}, length=${length}, currentText=${currentText}`);
+
+                AudioPlayer.isIntervalPlay = true; // 再生中フラグON
+                var isFirstS = (AudioPlayer.intervalItems.length === 0); // 初回かどうか
+
+                if (isFirstS) {
+                    // 初回のみオーディオオブジェクトを生成・読み込み
+                    var basePath = AudioPlayer.sourceDir ? AudioPlayer.sourceDir + "/" : "";
+                    console.log("Audio files base path:", basePath);
+                    AudioPlayer.intervalItems = []; // 配列を初期化
+                    for (var i = 0; i < length; i++) {
+                        var audio = new Audio("");
+                        audio.src = basePath + currentText + "_" + (i + 1) + ".mp3";
+                        console.log("Loading audio:", audio.src);
+
+                        // エラーハンドリングを追加
+                        audio.addEventListener('error', function(e) {
+                            console.error(`音声ファイル ${this.src} の読み込みエラー:`, e);
+                            if (typeof AudioPlayer.clearInterval === 'function') {
+                                AudioPlayer.clearInterval();
+                            }
+                            alert(`音声ファイルの一部 (${this.src.split('/').pop()}) が読み込めませんでした。\nURLが正しいか、ネットワーク接続を確認してください。`);
+                            $('#audioPlayIntervalBtn').prop('disabled', false);
+                        });
+                        audio.load();
+                        AudioPlayer.intervalItems.push(audio);
+                    }
+                }
+
+                // 再生対象のインデックス（countは次に再生する番号を示す）
+                var currentPlayIndex = AudioPlayer.intervalProp.count;
+
+                // 再生する Audio オブジェクトを取得
+                AudioPlayer.player = AudioPlayer.intervalItems[currentPlayIndex];
+
+                if (!AudioPlayer.player) {
+                    // 再生すべきオブジェクトがない場合は終了処理
+                    if (currentPlayIndex >= length) {
+                         console.log("All intervals finished.");
+                    } else {
+                         console.error("次のAudioオブジェクトが見つかりません。Index:", currentPlayIndex, "Total length:", length);
+                    }
+                    if(typeof AudioPlayer.clearInterval === 'function') AudioPlayer.clearInterval();
+                    if(func) func();
+                    return;
+                }
+
+                // 状態を更新 (次に再生するindexを保持)
+                AudioPlayer.intervalProp.interval = interval;
+                AudioPlayer.intervalProp.length = length; // lengthは総数
+                AudioPlayer.intervalProp.currentText = currentText;
+                // AudioPlayer.intervalProp.count は再生後にインクリメントする
+
+                var intervalTime = (currentPlayIndex === 0 && isFirstS) ? 100 : interval * 1000; // 初回再生は少し早めに
+
+                // 再生終了時のイベントハンドラ設定 (多重登録防止)
+                $(AudioPlayer.player).off("ended.interval").on("ended.interval", function() {
+                    console.log(`Audio ended: ${this.src.split('/').pop()}`);
+                    // 次のインターバル再生を呼び出す (現在の playInterval 関数を再帰的に呼び出す)
+                    // count は play 成功後にインクリメントされているはず
+                    AudioPlayer.playInterval(interval, length, currentText, func);
+                });
+
+                // タイムアウトで再生開始
+                clearTimeout(AudioPlayer.timerId);
+                AudioPlayer.timerId = setTimeout(function() {
+
+                    if (!AudioPlayer.isIntervalPlay || !AudioPlayer.player || AudioPlayer.intervalProp.count >= length) {
+                        // タイマー発火時に状態が無効なら何もしない
+                        console.warn("Timeout fired, but state is invalid or finished.");
+                        return;
+                    }
+
+                    // 再生前に速度を設定
+                    AudioPlayer.player.playbackRate = AudioPlayer.currentSpeed;
+
+                     // 再生開始
+                     AudioPlayer.player.play().then(() => {
+                         console.log(`Playing: ${AudioPlayer.player.src.split('/').pop()} (Count: ${AudioPlayer.intervalProp.count + 1})`);
+                         AudioPlayer.intervalProp.count++; // ★ 再生成功後にカウントアップ
+                     }).catch((error) => {
+                         console.error(`再生エラー: ${AudioPlayer.player.src.split('/').pop()}`, error);
+                         if(typeof AudioPlayer.clearInterval === 'function') AudioPlayer.clearInterval();
+                         alert(`音声ファイル (${AudioPlayer.player.src.split('/').pop()}) の再生に失敗しました。`);
+                     });
+
+                }, intervalTime);
+            };
+
+            // 2. カラオケ機能を無効化
+            AudioPlayer._originals.karaokeInterval = AudioPlayer.karaokeInterval;
+            AudioPlayer.karaokeInterval = function(restart) { AudioPlayer.karaokeIntervalFinish = true; };
+            AudioPlayer._originals.karaokeSingle = AudioPlayer.karaokeSingle;
+            AudioPlayer.karaokeSingle = function() { /* no operation */ };
+
+            // 3. エラーを起こす clearInterval を上書き
+            AudioPlayer._originals.clearInterval = AudioPlayer.clearInterval;
+            AudioPlayer.clearInterval = function() {
+                console.log("Patched clearInterval called");
+                try {
+                    clearTimeout(AudioPlayer.timerId);
+                    AudioPlayer.timerId = null; // タイマーIDもクリア
+
+                    // 存在するタイマーをクリア
+                    if (AudioPlayer.karaoke) { clearInterval(AudioPlayer.karaoke); AudioPlayer.karaoke = null; }
+                    if (AudioPlayer.loadInterval) { clearInterval(AudioPlayer.loadInterval); AudioPlayer.loadInterval = null; }
+
+                    // 再生中のプレイヤーがあれば停止・リセット
+                    if (AudioPlayer.player) {
+                         if (typeof AudioPlayer.player.pause === 'function' && !AudioPlayer.player.paused) {
+                             AudioPlayer.player.pause();
+                         }
+                         // イベントリスナーを確実に削除
+                         $(AudioPlayer.player).off("ended.interval");
+                         // srcを空にしてリソース解放を促す (任意)
+                         // AudioPlayer.player.src = "";
+                         AudioPlayer.player = null; // player参照を削除
+                    }
+
+                    // 内部状態のリセット
+                    AudioPlayer.intervalProp = { interval: 0, length: 0, currentText: "", count: 0 };
+                    AudioPlayer.intervalItems = []; // ★ オーディオオブジェクトの配列をクリア
+                    AudioPlayer.currentTime = 0;
+                    AudioPlayer.karaokeIntervalFinish = true;
+                    AudioPlayer.isIntervalPlay = false; // ★ インターバル再生中フラグをリセット
+                    AudioPlayer.curDialog = 0;
+
+                    // Dialog等への依存参照を削除
+                    console.log("Skipping Dialog/Karaoke/DOM related cleanup in patched clearInterval");
+
+                } catch (error) {
+                    console.error("Error in patched clearInterval:", error);
+                    // エラー時も最低限の状態リセット
+                    AudioPlayer.intervalProp = { interval: 0, length: 0, currentText: "", count: 0 };
+                    AudioPlayer.intervalItems = [];
+                    AudioPlayer.currentTime = 0;
+                    AudioPlayer.isIntervalPlay = false;
+                }
+            };
+
+             // 4. (オプション) initialize も上書きして sourceDir を設定可能にする
+             AudioPlayer._originals.initialize = AudioPlayer.initialize;
+             AudioPlayer.initialize = function() {
+                  console.log("Patched initialize called");
+                  if (AudioPlayer._originals.initialize) {
+                    AudioPlayer._originals.initialize.call(this); // 元の初期化を実行
+                  }
+                  this.sourceDir = ""; // sourceDir プロパティを初期化
+             };
+
+            console.log("AudioPlayer の上書き完了。");
+
+        } else {
+            console.error("AudioPlayer オブジェクトが見つかりません。audioPlayer4mp3.js の読み込みを確認してください。");
+            $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', true);
+        }
+
+        // --- ここからイベントリスナー等の設定 ---
+
+        const numberOfSentences = 14; // F1L1P1 は 14文
+        const audioBaseUrl = 'https://textbook.zoshindo.co.jp/fx1/sounds/textSplit';
+        const filePrefix = 'text1_1_1'; // Lesson 1, Book 1, Part 1
+
+        // AudioPlayer が正常に準備できたか最終確認
+        if (typeof AudioPlayer === 'undefined' || typeof AudioPlayer.playInterval !== 'function' || typeof AudioPlayer.clearInterval !== 'function') {
+             console.error("AudioPlayer の準備、または必要な関数の上書きに失敗しました。");
+             $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', true);
+        } else {
+             // AudioPlayer に設定を反映
+             AudioPlayer.initialize(); // パッチ適用後の初期化を実行
+             AudioPlayer.sourceDir = audioBaseUrl;
+             AudioPlayer.setSpeed(1.0); // 初期速度
+             console.log("AudioPlayer 設定完了:", {sourceDir: AudioPlayer.sourceDir, speed: AudioPlayer.currentSpeed});
+             // 初期状態ではボタンを有効化
+             $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', false);
+        }
+
+
+        // 再生ボタン
+        $('#audioPlayIntervalBtn').click(function() {
+            if (typeof AudioPlayer === 'undefined' || typeof AudioPlayer.playInterval !== 'function') {
+                 alert("音声再生機能の準備ができていません。");
+                 $(this).prop('disabled', true);
+                 return;
+            }
+
+             if (AudioPlayer.isIntervalPlay) { // 再生中フラグで判断
+                 console.log("すでにインターバル再生中です。");
+                 // 二重押し防止 or 一時停止/再開ロジック
+             } else {
+                 // 停止状態から開始
+                 AudioPlayer.clearInterval(); // 状態をクリア (上書き済み関数)
+
+                 const intervalSeconds = parseFloat($('#intervalControl').val()) || 0.5;
+                 console.log(`インターバル再生開始 (文間: ${intervalSeconds}秒)`);
+
+                 // 再生実行
+                 AudioPlayer.playInterval(
+                     intervalSeconds,
+                     numberOfSentences,
+                     filePrefix,
+                     function() { // 再生完了時のコールバック
+                         console.log("インターバル再生完了");
+                     }
+                 );
+             }
+        });
+
+        // 停止ボタン
+        $('#audioStopIntervalBtn').click(function() {
+            if (typeof AudioPlayer !== 'undefined' && typeof AudioPlayer.clearInterval === 'function') {
+                console.log('インターバル再生停止');
+                AudioPlayer.clearInterval(); // インターバル再生をリセット (上書き済み関数)
+            } else {
+                 console.error("AudioPlayer または上書きされた clearInterval が未定義です。");
+            }
+        });
+
+        // 速度コントロール
+        $('#speedControl').on('input change', function() {
+             if (typeof AudioPlayer === 'undefined') return;
+             const speed = parseFloat($(this).val());
+             $('#speedValue').text(speed.toFixed(1) + 'x');
+             AudioPlayer.setSpeed(speed);
+             if (AudioPlayer.player && !AudioPlayer.player.paused) {
+                AudioPlayer.player.playbackRate = speed;
+             }
+        });
+
+    });
+</script>
+<!-- ★★★ 音声再生用スクリプトここまで ★★★ -->
+
+
+<!-- --- 元のUI制御・単語テスト用JS --- -->
+<script>
+    // wordMeaningsなどの定数定義
     const userWordList = new Set();
     const wordMeanings = {
         'professional': { mean: '専門職の、プロの', pos: 'adj/n', incorrect: ['アマチュアの', '趣味の', '初心者の'] },
@@ -459,6 +757,8 @@
     ];
     const predefinedLower = predefinedVocabKeys.map(k => k.toLowerCase());
     const correctAnswers = { q1: 'b', q2: 'b', q3: 'c', q4: 'd' };
+
+    // グローバル変数 (元のコードから)
     let currentWord = null;
     let currentTextScale = 1.0;
     let wordTestQuestions = [];
@@ -468,6 +768,7 @@
     let initialTextFlex = 0;
     let initialQuestionFlex = 0;
 
+    // DOM要素の参照 (元のコードから)
     const body = document.body;
     const sidebar = document.getElementById('settings-sidebar');
     const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -510,8 +811,9 @@
     const testFeedback = document.getElementById('test-feedback');
     const actionFooter = document.getElementById('action-footer');
     const footerSubmitButton = document.getElementById('footer-submit-button');
-    // const footerWordTestButton = document.getElementById('footer-word-test-button'); // Removed
 
+
+    // UI初期化関数 (元のコードから)
     function initialize() {
         setupWordClickListeners();
         setupVocabTooltipsAndMarkers();
@@ -550,6 +852,17 @@
                 initialContent.classList.add('active');
                 updateFooterSubmitButton(initialTabId);
             }
+        } else { // アクティブなタブがない場合、最初のタブをアクティブにする
+             const firstTabButton = tabContainer.querySelector('.tab-button');
+             if (firstTabButton) {
+                 const firstTabId = firstTabButton.dataset.tab;
+                 const firstContent = document.getElementById(firstTabId);
+                 if (firstContent) {
+                     firstTabButton.classList.add('active');
+                     firstContent.classList.add('active');
+                     updateFooterSubmitButton(firstTabId);
+                 }
+             }
         }
         submitButtons.forEach(button => {
              button.addEventListener('click', handleSubmit);
@@ -558,13 +871,17 @@
                  if (!explanationDiv.dataset.originalHtml) {
                     explanationDiv.dataset.originalHtml = explanationDiv.innerHTML;
                  }
-                 explanationDiv.innerHTML = '';
+                 explanationDiv.innerHTML = ''; // 初期状態では解説を非表示
                  explanationDiv.style.display = 'none';
              }
         });
         hintToggles.forEach(checkbox => {
+            checkbox.checked = false; // 初期状態はヒント非表示
+            const hintText = checkbox.closest('.hint-toggle').nextElementSibling;
+            if (hintText && hintText.classList.contains('hint-text')) {
+                 hintText.style.display = 'none';
+            }
             checkbox.addEventListener('change', (event) => {
-                const hintText = event.target.closest('.hint-toggle').nextElementSibling;
                  if (hintText && hintText.classList.contains('hint-text')) {
                      hintText.style.display = event.target.checked ? 'block' : 'none';
                  }
@@ -577,32 +894,34 @@
         nextWordButton.addEventListener('click', showNextWordQuestion);
         submitTestButton.addEventListener('click', submitWordTest);
         window.onclick = (event) => { if (event.target == wordTestModal) closeWordTest(); };
+
+        console.log("Original UI initialized.");
     }
 
+    // 他の関数定義 (toggleSidebar, setupWordClickListeners, etc.)
     function toggleSidebar() { body.classList.toggle('sidebar-open'); }
-
     function setupWordClickListeners() {
-        textContentWrapper.removeEventListener('click', handleWordClick);
+        textContentWrapper.removeEventListener('click', handleWordClick); // 念のため削除
         textContentWrapper.addEventListener('click', handleWordClick);
     }
-
     function setupVocabTooltipsAndMarkers() {
         textContentWrapper.querySelectorAll('.word').forEach(wordSpan => {
             const clone = wordSpan.cloneNode(true);
             clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
             const wordText = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
             const isPredefined = predefinedLower.includes(wordText);
-            const vocabSpan = wordSpan.querySelector('.vocab-word') || wordSpan;
+            const vocabSpan = wordSpan.classList.contains('vocab-word') ? wordSpan : wordSpan.closest('.vocab-word') || wordSpan;
 
             vocabSpan.classList.remove('is-predefined');
             const existingTooltip = vocabSpan.querySelector('.tooltip');
             if (existingTooltip) existingTooltip.remove();
-            if (vocabSpan.style.position === 'relative') vocabSpan.style.position = '';
+             // position:relative の解除は副作用があるかもしれないので削除
+             // if (vocabSpan.style.position === 'relative') vocabSpan.style.position = '';
 
             if (isPredefined) {
                 vocabSpan.classList.add('is-predefined');
                  if (!vocabSpan.classList.contains('vocab-word')) {
-                     vocabSpan.classList.add('vocab-word');
+                     vocabSpan.classList.add('vocab-word'); // クラス付与
                  }
                 const meaningData = wordMeanings[wordText];
                 if (meaningData && meaningData.mean) {
@@ -610,14 +929,14 @@
                     tooltip.className = 'tooltip';
                     tooltip.textContent = meaningData.mean + (meaningData.pos ? ` (${meaningData.pos})` : '');
                     vocabSpan.appendChild(tooltip);
-                    if (window.getComputedStyle(vocabSpan).position === 'static') {
-                        vocabSpan.style.position = 'relative';
-                    }
+                    // position: relative は CSS で .vocab-word に設定するのが望ましい
+                    // if (window.getComputedStyle(vocabSpan).position === 'static') {
+                    //     vocabSpan.style.position = 'relative';
+                    // }
                 }
             }
         });
     }
-
     function applyFontSize(scale) {
         const newScale = Math.max(0.8, Math.min(scale, 1.5));
         currentTextScale = newScale;
@@ -635,57 +954,67 @@
         if (window.matchMedia('(min-width: 992px)').matches) { initialScale = 1.05; }
         applyFontSize(initialScale);
     }
-
     function setDifficulty(simplified) {
         body.classList.toggle('show-simplified', simplified);
-        sidebar.querySelector('#btn-original').classList.toggle('active', !simplified);
-        sidebar.querySelector('#btn-simplified').classList.toggle('active', simplified);
+        btnOriginal.classList.toggle('active', !simplified);
+        btnSimplified.classList.toggle('active', simplified);
+        // 難易度変更後に再度ツールチップなどを設定
         setTimeout(() => {
             setupWordClickListeners();
             setupVocabTooltipsAndMarkers();
         }, 0);
     }
-
     function handleWordClick(event) {
         const targetElement = event.target.closest('.word');
-        if (!targetElement) return;
-        event.stopPropagation();
+        if (!targetElement) {
+             // .word 以外がクリックされたらメニューを閉じる（すでにある document click listener と重複するかも）
+             if (wordMenu.style.display === 'block') wordMenu.style.display = 'none';
+             return;
+         }
+        event.stopPropagation(); // イベント伝播を止める
         const clone = targetElement.cloneNode(true);
         clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
         currentWord = clone.textContent.trim().toLowerCase().replace(/[.,!?']/g, '');
         if (!currentWord) return;
         const rect = targetElement.getBoundingClientRect();
+        // メニュー表示位置を調整
         showWordMenuAtPosition(rect.left + window.scrollX, rect.bottom + window.scrollY + 5, targetElement);
     }
-
     function showWordMenuAtPosition(x, y, targetElement) {
-        wordMenu.style.display = 'none';
+        wordMenu.style.display = 'none'; // 一旦隠してサイズ計算
         let left = x;
         let top = y;
         wordMenu.style.left = `${left}px`;
         wordMenu.style.top = `${top}px`;
         wordMenu.style.visibility = 'hidden';
         wordMenu.style.display = 'block';
-        const menuWidth = wordMenu.offsetWidth;
-        const menuHeight = wordMenu.offsetHeight;
-        const docWidth = document.documentElement.scrollWidth;
-        const docHeight = document.documentElement.scrollHeight;
-        if (left + menuWidth > docWidth) left = docWidth - menuWidth - 10;
-        if (left < window.scrollX) left = window.scrollX + 10;
-        if (top + menuHeight > docHeight) {
-            if (targetElement) {
-                const rect = targetElement.getBoundingClientRect();
-                top = window.scrollY + rect.top - menuHeight - 5;
-            } else {
-                top = docHeight - menuHeight - 10;
-            }
+
+        const menuRect = wordMenu.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // 右端チェック
+        if (menuRect.right > viewportWidth) {
+            left = viewportWidth - menuRect.width - 10; // 画面右端に合わせる
         }
-        if (top < window.scrollY) top = window.scrollY + 10;
+        // 左端チェック
+        if (left < 10) {
+            left = 10;
+        }
+        // 下端チェック（下にはみ出たら上に表示）
+        if (menuRect.bottom > viewportHeight) {
+            top = targetRect.top + window.scrollY - menuRect.height - 5;
+        }
+         // 上端チェック
+         if (top < window.scrollY + 10) {
+             top = window.scrollY + 10;
+         }
+
         wordMenu.style.left = `${left}px`;
         wordMenu.style.top = `${top}px`;
         wordMenu.style.visibility = 'visible';
     }
-
     function searchDictionary() {
         if (!currentWord) return;
         window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(currentWord)}`, '_blank');
@@ -702,7 +1031,6 @@
         alert(`「${currentWord}」を単語テストリストに追加しました。`);
         wordMenu.style.display = 'none';
     }
-
     function handleTabClick(event) {
         const clickedButton = event.target.closest('.tab-button');
         if (!clickedButton || clickedButton.classList.contains('active')) return;
@@ -715,7 +1043,6 @@
         targetContent.classList.add('active');
         updateFooterSubmitButton(targetTabId);
     }
-
     function updateFooterSubmitButton(activeTabId) {
         const activeTabContent = document.getElementById(activeTabId);
         if (!activeTabContent) { footerSubmitButton.disabled = true; return; }
@@ -724,7 +1051,9 @@
             footerSubmitButton.disabled = originalSubmitButton.disabled;
             footerSubmitButton.dataset.questionId = originalSubmitButton.dataset.questionId;
         } else {
+            // Q&Aタブでない場合などは提出ボタンを無効化
             footerSubmitButton.disabled = true;
+            delete footerSubmitButton.dataset.questionId;
         }
     }
     function handleFooterSubmit() {
@@ -733,54 +1062,65 @@
         const questionItem = document.getElementById(questionId);
         if (!questionItem) return;
         const originalSubmitButton = questionItem.querySelector(`.submit-button[data-question-id="${questionId}"]`);
-        if (originalSubmitButton) {
-            originalSubmitButton.click();
+        if (originalSubmitButton && !originalSubmitButton.disabled) {
+            // submitButton の click イベントを発火させるのではなく、handleSubmit を直接呼ぶ方が確実かも
+            handleSubmit({ target: originalSubmitButton });
+            // originalSubmitButton.click();
         }
     }
-
      function handleSubmit(event) {
-         const button = event.target;
+         const button = event.target.closest('.submit-button'); // イベント発生元がボタン自体でない場合も考慮
+         if (!button) return;
+
          const questionId = button.dataset.questionId;
          const questionItem = document.getElementById(questionId);
          const explanationDiv = questionItem.querySelector('.explanation');
          const options = questionItem.querySelectorAll(`input[name="${questionId}"]`);
          const selectedOption = questionItem.querySelector(`input[name="${questionId}"]:checked`);
 
-         if (!selectedOption || button.disabled || !explanationDiv) return; // Add check for explanationDiv
+         if (!selectedOption) {
+             alert('選択肢を選んでください。');
+             return;
+         }
+         if (button.disabled || !explanationDiv) return;
 
          const userAnswer = selectedOption.value;
          const correctAnswer = correctAnswers[questionId];
          let resultMessage = '<h4>解説</h4>';
          resultMessage += (userAnswer === correctAnswer)
              ? '<p style="color: green; font-weight: bold;">正解！</p>'
-             : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer ? correctAnswer.toUpperCase() : 'N/A'})</p>`; // Check if correctAnswer exists
+             : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer ? correctAnswer.toUpperCase() : 'N/A'})</p>`;
 
-         // Use stored HTML ensuring it's not null/undefined
          const originalExplanationHTML = explanationDiv.dataset.originalHtml || '';
-         const cleanExplanationHTML = originalExplanationHTML.replace(/<h4>.*?<\/h4>/i, '').replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '').trim();
+         // オリジナルHTMLから前の結果表示を削除 (より安全に)
+         const cleanExplanationHTML = originalExplanationHTML
+            .replace(/<h4>.*?<\/h4>/i, '')
+            .replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '')
+            .trim();
 
          explanationDiv.innerHTML = resultMessage + cleanExplanationHTML;
          explanationDiv.style.display = 'block';
 
          options.forEach(input => input.disabled = true);
          button.disabled = true;
+         // 対応するフッターボタンも無効化
          if (footerSubmitButton.dataset.questionId === questionId) {
              footerSubmitButton.disabled = true;
          }
      }
-
     function initializeResizer() {
         let isResizing = false;
         if (!resizer) return;
         resizer.addEventListener('mousedown', (e) => {
-            if (window.innerWidth <= 991) return;
+            if (window.innerWidth <= 991) return; // スマホ・タブレットでは無効
             isResizing = true;
             dragStartY = e.clientY;
-            initialTextFlex = parseFloat(getComputedStyle(textArea).flexGrow);
-            initialQuestionFlex = parseFloat(getComputedStyle(questionArea).flexGrow);
+             // getComputedStyle で現在の flex-grow を取得するのがより正確
+             initialTextFlex = parseFloat(window.getComputedStyle(textArea).flexGrow);
+             initialQuestionFlex = parseFloat(window.getComputedStyle(questionArea).flexGrow);
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
-            document.body.style.userSelect = 'none';
+            document.body.style.userSelect = 'none'; // ドラッグ中のテキスト選択を防ぐ
             document.body.style.cursor = 'ns-resize';
         });
 
@@ -788,13 +1128,25 @@
             if (!isResizing) return;
             const deltaY = e.clientY - dragStartY;
             const containerHeight = textArea.parentElement.clientHeight;
-            const totalFlex = initialTextFlex + initialQuestionFlex;
-            const sensitivity = totalFlex / (containerHeight * 0.8);
+            // flex-grow の合計値が 0 にならないように注意
+            const totalFlex = (initialTextFlex || 1) + (initialQuestionFlex || 1); // デフォルト値を設定
+            // sensitivity 調整 (小さくすると変化が緩やかに)
+            const sensitivity = totalFlex / (containerHeight * 0.7);
             let newTextFlex = initialTextFlex + deltaY * sensitivity;
             let newQuestionFlex = initialQuestionFlex - deltaY * sensitivity;
-            const minFlex = 0.2;
-            if (newTextFlex < minFlex) { newTextFlex = minFlex; newQuestionFlex = totalFlex - minFlex; }
-            if (newQuestionFlex < minFlex) { newQuestionFlex = minFlex; newTextFlex = totalFlex - minFlex; }
+            const minFlex = 0.1; // 最小 flex 値
+
+            // flex値がマイナスにならないように制限
+            if (newTextFlex < minFlex) newTextFlex = minFlex;
+            if (newQuestionFlex < minFlex) newQuestionFlex = minFlex;
+
+            // 合計値が変わらないように再計算 (一方を固定して他方を調整)
+            if (newTextFlex === minFlex) {
+                newQuestionFlex = totalFlex - minFlex;
+            } else if (newQuestionFlex === minFlex) {
+                newTextFlex = totalFlex - minFlex;
+            }
+
             textArea.style.flexGrow = newTextFlex;
             questionArea.style.flexGrow = newQuestionFlex;
         }
@@ -803,55 +1155,68 @@
                 isResizing = false;
                 document.removeEventListener('mousemove', handleMouseMove);
                 document.removeEventListener('mouseup', handleMouseUp);
-                document.body.style.userSelect = '';
+                document.body.style.userSelect = ''; // 元に戻す
                 document.body.style.cursor = '';
             }
         }
     }
-
     function startWordTest() {
-        const wordsToTest = Array.from(new Set([...predefinedVocabKeys, ...userWordList]));
-        if (wordsToTest.length === 0) {
-            alert('テストする単語がリストにありません。本文の単語をクリックして追加してください。'); return;
+        const wordsForTest = Array.from(new Set([...predefinedVocabKeys, ...userWordList]));
+        if (wordsForTest.length === 0) {
+            alert('テストする単語がリストにありません。\n本文中の <span style="text-decoration: underline wavy var(--vocab-color);">赤下線</span> の単語をクリックして「単語テストリストに登録」するか、\n語彙ヒントが表示されている単語をクリックして登録してください。');
+            return;
         }
-        wordsToTest.sort(() => Math.random() - 0.5);
+        // シャッフル
+        wordsForTest.sort(() => Math.random() - 0.5);
 
-        wordTestQuestions = wordsToTest.map(word => createTestQuestion(word)).filter(q => q !== null);
+        wordTestQuestions = wordsForTest.map(word => createTestQuestion(word)).filter(q => q !== null);
         if (wordTestQuestions.length === 0) {
              alert('テスト対象の問題を生成できませんでした。');
              return;
         }
+
         currentTestQuestionIndex = 0;
-        userTestAnswers = {};
-        wordTestResultArea.style.display = 'none';
-        testFeedback.innerHTML = ''; testScore.textContent = '';
-        submitTestButton.style.display = 'none';
-        prevWordButton.disabled = true;
-        nextWordButton.disabled = wordTestQuestions.length <= 1;
-        submitTestButton.disabled = false;
+        userTestAnswers = {}; // 回答履歴をリセット
+        wordTestResultArea.style.display = 'none'; // 結果表示を隠す
+        testFeedback.innerHTML = '';
+        testScore.textContent = '';
+        submitTestButton.style.display = 'none'; // 採点ボタンを隠す
+        prevWordButton.disabled = true; // 最初は「前へ」は無効
+        nextWordButton.disabled = wordTestQuestions.length <= 1; // 1問なら「次へ」も無効
+        submitTestButton.disabled = false; // 採点ボタンは有効に
 
-        wordTestUI.innerHTML = '<p class="loading-message">テストを読み込み中...</p>';
-        wordTestModal.style.display = 'block';
+        wordTestUI.innerHTML = '<p class="loading-message">テストを準備中...</p>';
+        wordTestModal.style.display = 'block'; // モーダル表示
 
-        setTimeout(() => { displayWordQuestion(currentTestQuestionIndex); }, 50);
+        // 少し待ってから最初の問題を表示（描画のため）
+        setTimeout(() => {
+            displayWordQuestion(currentTestQuestionIndex);
+        }, 100);
     }
 
     function createTestQuestion(word) {
         const lowerWord = word.toLowerCase();
-        const isPredefined = predefinedLower.includes(lowerWord);
         const meaningData = wordMeanings[lowerWord];
 
-        if (isPredefined && meaningData && Array.isArray(meaningData.incorrect) && meaningData.incorrect.length > 0) {
-            const options = [...meaningData.incorrect];
-            options.push(meaningData.mean);
-            options.sort(() => Math.random() - 0.5);
+        // 意味と不正解選択肢がある場合のみ MCQ を作成
+        if (meaningData && meaningData.mean && Array.isArray(meaningData.incorrect) && meaningData.incorrect.length > 0) {
+            // 不正解選択肢をシャッフルし、最大3つ選択 + 正解
+            const incorrectOptions = [...meaningData.incorrect].sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [...incorrectOptions, meaningData.mean];
+            // 選択肢全体をシャッフル
+            options.sort(() => 0.5 - Math.random());
             return { type: 'mcq', word: word, options: options, correct: meaningData.mean };
+        } else if (meaningData && meaningData.mean) {
+             // 意味だけある場合はリンク確認タイプ
+             return { type: 'link', word: word, correct: meaningData.mean };
         } else {
-            return { type: 'link', word: word, correct: meaningData ? meaningData.mean : '(意味未登録)' };
+            // 意味データがない単語はテストから除外 (またはリンクタイプにする)
+            // return { type: 'link', word: word, correct: '(意味未登録)' };
+             console.warn(`Meaning data not found for word: ${word}. Excluding from test.`);
+             return null; // null を返して filter で除外
         }
     }
-
-    function displayWordQuestion(index) {
+     function displayWordQuestion(index) {
          if (index < 0 || index >= wordTestQuestions.length) return;
          const question = wordTestQuestions[index];
          if (!question) {
@@ -861,11 +1226,12 @@
          let contentHTML = '<div class="test-question">';
          if (question.type === 'mcq') {
              let optionsHTML = '';
-             // Ensure options is an array before iterating
              if (Array.isArray(question.options)) {
-                 question.options.forEach((option) => {
+                 question.options.forEach((option, i) => {
+                     // ユーザーが既に回答しているかチェック
                      const isChecked = userTestAnswers[question.word] === option;
-                     optionsHTML += `<label><input type="radio" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
+                     const inputId = `q-${index}-option-${i}`; // ユニークID
+                     optionsHTML += `<label for="${inputId}"><input type="radio" id="${inputId}" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`;
                  });
              } else {
                  console.error("Invalid options data for MCQ:", question);
@@ -873,8 +1239,9 @@
              }
              contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${question.word}">${optionsHTML}</div>`;
          } else if (question.type === 'link') {
-             const infoText = predefinedLower.includes(question.word.toLowerCase()) ? "この単語の選択肢データがありません。" : "この単語は確認用です。";
+             const infoText = predefinedLower.includes(question.word.toLowerCase()) ? "この単語は確認用です。" : "この単語は確認用です。"; // メッセージ統一
              contentHTML += `<div class="test-word">${escapeHtml(question.word)}</div><p>${infoText}</p><a href="https://ejje.weblio.jp/content/${encodeURIComponent(question.word)}" target="_blank" class="weblio-link-button">Weblioで意味を確認</a>`;
+             // リンクタイプは自動的に「確認済み」として扱う
              if (!userTestAnswers[question.word]) userTestAnswers[question.word] = 'link_checked';
          } else {
              contentHTML += `<p style="color:red;">不明な問題タイプ: ${escapeHtml(question.word)}</p>`;
@@ -882,23 +1249,26 @@
          contentHTML += '</div>';
          wordTestUI.innerHTML = contentHTML;
 
+         // MCQ の場合、ラジオボタンに変更があったら回答を記録
          if (question.type === 'mcq') {
-             // Ensure event listeners are added only if options exist
              const optionsContainer = wordTestUI.querySelector(`.test-options[data-word="${question.word}"]`);
              if (optionsContainer) {
-                optionsContainer.querySelectorAll(`input[name="word-${question.word}"]`).forEach(radio => {
-                     radio.addEventListener('change', (e) => { userTestAnswers[question.word] = e.target.value; });
-                 });
+                optionsContainer.addEventListener('change', (e) => {
+                    if (e.target.type === 'radio') {
+                       userTestAnswers[question.word] = e.target.value;
+                       console.log(`Answered ${question.word}: ${e.target.value}`);
+                    }
+                });
              }
          }
          updateTestNavigation(index);
      }
-
     function updateTestNavigation(index) {
         currentTestQuestionIndex = index;
         const totalQuestions = wordTestQuestions.length;
         prevWordButton.disabled = (index === 0);
         nextWordButton.disabled = (index === totalQuestions - 1);
+        // 最後の問題なら「次へ」を隠し、「採点」を表示
         nextWordButton.style.display = (index === totalQuestions - 1) ? 'none' : 'inline-block';
         submitTestButton.style.display = (index === totalQuestions - 1) ? 'inline-block' : 'none';
         wordCounter.textContent = `${index + 1} / ${totalQuestions}`;
@@ -906,62 +1276,72 @@
     function showPrevWordQuestion() { if (currentTestQuestionIndex > 0) displayWordQuestion(currentTestQuestionIndex - 1); }
     function showNextWordQuestion() {
          const currentQ = wordTestQuestions[currentTestQuestionIndex];
+         // MCQ の場合、未回答ならアラート
          if (currentQ && currentQ.type === 'mcq' && !userTestAnswers[currentQ.word]) {
              alert('この問題の解答を選択してください。');
              return;
          }
+         // 次の問題へ
          if (currentTestQuestionIndex < wordTestQuestions.length - 1) displayWordQuestion(currentTestQuestionIndex + 1);
      }
     function closeWordTest() { wordTestModal.style.display = 'none'; }
     function submitWordTest() {
-        const unansweredMcq = wordTestQuestions.find(q => q && q.type === 'mcq' && !userTestAnswers[q.word]);
-        if (unansweredMcq) {
-            alert(`問題「${unansweredMcq.word}」が未解答です。`);
-            const unansweredIndex = wordTestQuestions.findIndex(q => q && q.word === unansweredMcq.word);
-            if (unansweredIndex !== -1) displayWordQuestion(unansweredIndex);
-            return;
-        }
+        // 最後の問題がMCQで未回答の場合のアラート (念のため)
+        const lastQ = wordTestQuestions[currentTestQuestionIndex];
+         if (lastQ && lastQ.type === 'mcq' && !userTestAnswers[lastQ.word]) {
+             alert('最後の問題の解答を選択してください。');
+             return;
+         }
+
         let score = 0;
         let totalMcqQuestions = 0;
-        testFeedback.innerHTML = '';
+        testFeedback.innerHTML = ''; // 結果表示をクリア
+
         wordTestQuestions.forEach(q => {
-             if (!q) return;
+             if (!q) return; // nullチェック
             if (q.type === 'mcq') {
                 totalMcqQuestions++;
                 const userAnswer = userTestAnswers[q.word];
                 const isCorrect = userAnswer === q.correct;
                 if (isCorrect) score++;
                 const feedbackItem = document.createElement('li');
-                feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}, あなたの解答: ${escapeHtml(userAnswer || '(未解答)')})`}`;
+                // 不正解の場合、ユーザーの回答も表示
+                feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}${userAnswer ? `, あなたの解答: ${escapeHtml(userAnswer)}` : ', (未解答)'})`}`;
                 testFeedback.appendChild(feedbackItem);
             } else if (q.type === 'link') {
+                 // リンク確認タイプの結果表示 (任意)
                  const feedbackItem = document.createElement('li');
                  feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> <span style="color:#666;">辞書確認</span> (意味: ${escapeHtml(q.correct)})`;
                  testFeedback.appendChild(feedbackItem);
             }
         });
+
+        // スコア表示
         if (totalMcqQuestions > 0) {
-            testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (選択式)`;
+            const percentage = Math.round((score / totalMcqQuestions) * 100);
+            testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (${percentage}%)`;
         } else {
             testScore.textContent = `結果: 選択式の問題はありませんでした。`;
         }
-        wordTestResultArea.style.display = 'block';
+        wordTestResultArea.style.display = 'block'; // 結果表示エリアを表示
+
+         // ナビゲーションボタンと回答入力を無効化
          prevWordButton.disabled = true;
          nextWordButton.disabled = true;
          submitTestButton.disabled = true;
-         wordTestUI.querySelectorAll('input[type="radio"], .weblio-link-button').forEach(el => {
-            if(el.tagName === 'INPUT') el.disabled = true;
-            if(el.classList.contains('weblio-link-button')) { el.style.pointerEvents = 'none'; el.style.opacity = '0.6'; }
-         });
+         wordTestUI.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+         wordTestUI.querySelectorAll('.weblio-link-button').forEach(btn => { btn.style.pointerEvents = 'none'; btn.style.opacity = '0.6'; });
     }
 
     function escapeHtml(unsafe) {
         if (typeof unsafe !== 'string') return '';
-        return unsafe.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, "").replace(/'/g, "'");
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
+    // ページの読み込み完了時に Initialize を呼び出す
     document.addEventListener('DOMContentLoaded', initialize);
 </script>
+<!-- --- 元のUI制御・単語テスト用JSここまで --- -->
 
 </body>
 </html>
