@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 自己紹介と日常会話 (2025/4/23)</title>
+    <style>
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #28A745; /* 緑 */
+            --color-accent: #FD7E14; /* オレンジ */
+            --color-link: #28A745;
+            --color-border: #DEE2E6;
+            --bg-answer: #F8F9FA;
+            --bg-test-result: #FFFBEB; /* 淡い黄色 */
+            --border-test-result: #FFEEBA; /* 黄色 */
+            --bg-related-test: #F1F8E9; /* 淡い緑 */
+            --border-related-test: #DCEDC8; /* 緑 */
+            --color-tooltip-bg: #343A40;
+            --color-tooltip-text: #FFFFFF;
+            --color-privacy-note-bg: #fff3cd; /* 淡い警告色 */
+            --color-privacy-note-border: #ffeeba;
+            --color-privacy-note-text: #856404;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.75;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 20px 30px 40px 30px;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow-x: hidden;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        .privacy-note {
+            background-color: var(--color-privacy-note-bg);
+            border: 1px solid var(--color-privacy-note-border);
+            color: var(--color-privacy-note-text);
+            padding: 0.8em 1.2em;
+            margin: 1.5em 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--color-primary);
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            border-bottom: 2px solid var(--color-border);
+            padding-bottom: 0.3em;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.2em;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: var(--text-main);
+        }
+
+        p {
+            margin-bottom: 1.2em;
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: darken(var(--color-link), 15%);
+        }
+
+        ul, ol {
+            margin-bottom: 1.2em;
+            padding-left: 1.8em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        .highlight {
+            background-color: rgba(var(--color-accent), 0.1);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #f1f3f5;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #343a40;
+        }
+
+        .code-block {
+            background-color: #f1f3f5;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            padding: 1em;
+            overflow-x: auto;
+            margin-bottom: 1.2em;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--color-primary);
+            margin: 1.5em 0;
+            padding: 0.5em 1.2em;
+            background-color: #f8f9fa;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        #readingTime {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 1.5em;
+            display: block;
+        }
+
+        .summary-box {
+            background-color: var(--bg-related-test);
+            border: 1px solid var(--border-related-test);
+            padding: 1em 1.5em;
+            margin-bottom: 2em;
+            border-radius: 5px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: var(--color-primary);
+            font-size: 1.2em;
+        }
+        .summary-box ul {
+            padding-left: 1.2em;
+            margin-bottom: 0;
+        }
+
+        #tableOfContents {
+            background-color: #f8f9fa;
+            border: 1px solid var(--color-border);
+            padding: 1em 1.5em;
+            margin-bottom: 2em;
+            border-radius: 5px;
+        }
+        #tableOfContents h3 {
+            margin-top: 0;
+            margin-bottom: 0.8em;
+            color: var(--color-primary);
+            font-size: 1.2em;
+        }
+        #tocList {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+            columns: 2;
+            column-gap: 2em;
+        }
+        #tocList li {
+            margin-bottom: 0.6em;
+            counter-increment: toc-counter;
+        }
+        #tocList li::before {
+            content: counter(toc-counter) ". ";
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 0.3em;
+        }
+        #tocList a {
+            color: var(--text-main);
+            display: inline-block;
+        }
+        #tocList a:hover {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        #persistentTestResults {
+            background-color: var(--bg-test-result);
+            border: 1px solid var(--border-test-result);
+            padding: 1em 1.5em;
+            margin-bottom: 2em;
+            border-radius: 5px;
+            display: none;
+        }
+        #persistentTestResults h3 {
+             margin-top: 0;
+             margin-bottom: 0.5em;
+             color: var(--color-primary);
+             font-size: 1.2em;
+        }
+        #persistentTestResults p { margin-bottom: 0.5em; }
+        #persistentTestResults ul { padding-left: 1.5em; margin-bottom: 0; }
+        #persistentTestResults li { margin-bottom: 0.3em; }
+        #persistentTestResults a { font-weight: bold; cursor: pointer; }
+        #persistentTestResults a:hover { color: var(--color-accent); }
+
+        .supplementary-box {
+            background-color: #e7f5ff;
+            border: 1px solid #b3e0ff;
+            padding: 1em 1.5em;
+            margin: 1.5em 0;
+            border-radius: 5px;
+        }
+        .supplementary-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: #1971c2;
+            font-size: 1.1em;
+        }
+
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background-color: var(--color-tooltip-bg);
+            color: var(--color-tooltip-text);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .related-pretest {
+            background-color: var(--bg-related-test);
+            border: 1px solid var(--border-related-test);
+            padding: 1em 1.5em;
+            margin-top: 2em;
+            margin-bottom: 1em;
+            border-radius: 5px;
+        }
+        .related-pretest h4 {
+            margin-top: 0;
+            margin-bottom: 0.8em;
+            color: var(--color-primary);
+            font-size: 1.1em;
+        }
+        .related-pretest p {
+            margin-bottom: 0.5em;
+        }
+        .related-pretest .answer {
+            margin-top: 0.8em;
+            padding-top: 0.8em;
+            border-top: 1px dashed var(--border-related-test);
+        }
+
+        .toggle-answer {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 5px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            transition: background-color 0.2s;
+        }
+        .toggle-answer:hover {
+            background-color: darken(var(--color-primary), 10%);
+        }
+        .toggle-answer.active {
+            background-color: var(--color-accent);
+        }
+        .toggle-answer span { display: none; }
+        html[lang="ja"] .toggle-answer span.lang-ja { display: inline; }
+        html[lang="en"] .toggle-answer span.lang-en { display: inline; }
+        html:not([lang="en"]) .toggle-answer span.lang-ja { display: inline; }
+        html:not([lang="en"]) .toggle-answer span.lang-en { display: none !important; }
+
+        .answer {
+            display: none;
+            margin-top: 1em;
+            padding: 1em;
+            background-color: var(--bg-answer);
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+        }
+
+        #drill-answers .drill-item {
+            margin-bottom: 1.5em;
+        }
+        #drill-answers h3 {
+            font-size: 1.2em;
+            margin-bottom: 0.5em;
+            color: var(--text-main);
+        }
+
+        #review .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        #review .checklist li {
+            cursor: pointer;
+            padding-left: 1.8em;
+            position: relative;
+            transition: color 0.2s;
+        }
+        #review .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            top: 0px;
+            font-size: 1.2em;
+            color: var(--color-primary);
+        }
+        #review .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+        #review .checklist li.checked::before {
+            content: '☑';
+            color: var(--color-accent);
+        }
+        #review .review-questions {
+            margin-top: 2em;
+        }
+        #review .review-questions .question-item {
+            margin-bottom: 1.5em;
+        }
+        #review .review-questions p {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+        #review .review-questions .answer-hint {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 0.8em;
+        }
+
+        #useful-phrases ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #useful-phrases li {
+            background-color: #f8f9fa;
+            padding: 0.8em 1.2em;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            margin-bottom: 0.8em;
+        }
+        #useful-phrases li strong {
+            display: block;
+            margin-bottom: 0.3em;
+            color: var(--color-primary);
+            font-size: 1.1em;
+        }
+        #useful-phrases li span {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+        #useful-phrases li .phrase-note {
+            font-style: italic;
+            color: var(--color-accent);
+            font-size: 0.9em;
+            margin-top: 0.4em;
+            display: block;
+        }
+
+        #application ul {
+             list-style-type: disc;
+             padding-left: 1.8em;
+        }
+
+        footer {
+            margin-top: 3em;
+            padding-top: 1.5em;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+        #scrollTopBtn:hover {
+            background-color: darken(var(--color-accent), 10%);
+        }
+
+        #preTestModalOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1001;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #preTestModal {
+            background-color: var(--bg-content);
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        #preTestModal h2 {
+            margin-top: 0;
+            margin-bottom: 1em;
+            color: var(--color-primary);
+            text-align: center;
+            font-size: 1.6em;
+        }
+        .test-question {
+            margin-bottom: 1.8em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .test-question:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .test-question p {
+            font-weight: bold;
+            margin-bottom: 0.8em;
+        }
+        .test-question label {
+            display: block;
+            margin-bottom: 0.5em;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 0.5em;
+        }
+        #preTestModal .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2em;
+        }
+        #preTestModal button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        #preTestModal button span { display: none; }
+        html[lang="ja"] #preTestModal button span.lang-ja { display: inline; }
+        html[lang="en"] #preTestModal button span.lang-en { display: inline; }
+        html:not([lang="en"]) #preTestModal button span.lang-ja { display: inline; }
+        html:not([lang="en"]) #preTestModal button span.lang-en { display: none !important; }
+
+
+        #preTestModal button[type="submit"] {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        #preTestModal button[type="submit"]:hover {
+            background-color: darken(var(--color-primary), 10%);
+        }
+        #preTestModal #skipTestBtn {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--color-border);
+        }
+        #preTestModal #skipTestBtn:hover {
+            background-color: var(--bg-answer);
+            color: var(--text-main);
+        }
+        #testResults {
+            margin-top: 1.5em;
+            padding: 1em;
+            background-color: var(--bg-test-result);
+            border: 1px solid var(--border-test-result);
+            border-radius: 5px;
+        }
+        #testResults h3 {
+            margin-top: 0;
+            color: var(--color-primary);
+            font-size: 1.2em;
+        }
+        #testResults p { margin-bottom: 0.5em; }
+        #testResults ul { padding-left: 1.5em; margin-bottom: 0; }
+        #testResults li { margin-bottom: 0.3em; }
+        #testResults a { font-weight: bold; cursor: pointer; }
+        #testResults a:hover { color: var(--color-accent); }
+        #closeModalBtn {
+             margin-top: 1em;
+             background-color: var(--color-accent);
+             color: white;
+             padding: 8px 16px;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+        }
+        #closeModalBtn:hover {
+             background-color: darken(var(--color-accent), 10%);
+        }
+
+        #langToggle {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 100;
+            background-color: var(--bg-content);
+            border: 1px solid var(--color-border);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .lang-en, .lang-ja { display: none; }
+        html[lang="ja"] .lang-ja { display: inline; }
+        html[lang="en"] .lang-en { display: inline; }
+
+        h1 .lang-ja, h1 .lang-en, h2 .lang-ja, h2 .lang-en, h3 .lang-ja, h3 .lang-en, h4 .lang-ja, h4 .lang-en, p .lang-ja, p .lang-en, #readingTime .lang-ja, #readingTime .lang-en { display: none; }
+        html[lang="ja"] h1 .lang-ja, html[lang="ja"] h2 .lang-ja, html[lang="ja"] h3 .lang-ja, html[lang="ja"] h4 .lang-ja, html[lang="ja"] p .lang-ja, html[lang="ja"] #readingTime .lang-ja { display: inline; }
+        html[lang="en"] h1 .lang-en, html[lang="en"] h2 .lang-en, html[lang="en"] h3 .lang-en, html[lang="en"] h4 .lang-en, html[lang="en"] p .lang-en, html[lang="en"] #readingTime .lang-en { display: inline; }
+
+        .summary-box ul li, #application ul li, #useful-phrases li span, #useful-phrases li .phrase-note, .checklist li span, .privacy-note span { display: none; }
+        html[lang="ja"] .summary-box ul li.lang-ja, html[lang="ja"] #application ul li.lang-ja, html[lang="ja"] #useful-phrases li span.lang-ja, html[lang="ja"] #useful-phrases li .phrase-note.lang-ja, html[lang="ja"] .checklist li span.lang-ja, html[lang="ja"] .privacy-note span.lang-ja { display: block; }
+        html[lang="en"] .summary-box ul li.lang-en, html[lang="en"] #application ul li.lang-en, html[lang="en"] #useful-phrases li span.lang-en, html[lang="en"] #useful-phrases li .phrase-note.lang-en, html[lang="en"] .checklist li span.lang-en, html[lang="en"] .privacy-note span.lang-en { display: block; }
+
+
+        html:not([lang="en"]) .lang-ja { display: inline; }
+        html:not([lang="en"]) h1 .lang-ja, html:not([lang="en"]) h2 .lang-ja, html:not([lang="en"]) h3 .lang-ja, html:not([lang="en"]) h4 .lang-ja, html:not([lang="en"]) p .lang-ja, html:not([lang="en"]) #readingTime .lang-ja { display: inline; }
+        html:not([lang="en"]) .summary-box ul li.lang-ja, html:not([lang="en"]) #application ul li.lang-ja, html:not([lang="en"]) #useful-phrases li span.lang-ja, html:not([lang="en"]) #useful-phrases li .phrase-note.lang-ja, html:not([lang="en"]) .checklist li span.lang-ja, html:not([lang="en"]) .privacy-note span.lang-ja { display: block; }
+
+        html:not([lang="en"]) .lang-en { display: none !important; }
+
+        .highlight-temp {
+            animation: highlight-fade 1.5s ease-out;
+        }
+        @keyframes highlight-fade {
+            0% { background-color: rgba(var(--color-accent), 0.3); }
+            100% { background-color: transparent; }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                margin: 10px;
+                padding: 15px 20px 30px 20px;
+                width: auto;
+                max-width: none;
+            }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            body { font-size: 15px; }
+            .container { padding: 10px 15px 20px 15px; }
+            #tocList { columns: 1; }
+            #preTestModal { margin: 20px 10px; padding: 20px; }
+            #preTestModal .modal-buttons { flex-direction: column; }
+            #preTestModal button { width: 100%; margin-bottom: 10px; }
+            #preTestModal button:last-child { margin-bottom: 0; }
+            #langToggle { top: 10px; right: 10px; }
+            #scrollTopBtn { bottom: 10px; right: 10px; width: 40px; height: 40px; font-size: 18px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progressBar"></div>
+
+    <div id="preTestModalOverlay">
+        <div id="preTestModal">
+            <h2><span class="lang-ja">事前理解度チェック</span><span class="lang-en">Pre-Lesson Check</span></h2>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="greetings-responses">
+                    <p>1. <span class="lang-ja">"How are you?" に対する最も一般的で会話を終わらせやすい返答はどれですか？</span><span class="lang-en">Which is the most common response to "How are you?" that easily ends the conversation?</span></p>
+                    <label><input type="radio" name="q1" value="A"> A. I'm angry.</label>
+                    <label><input type="radio" name="q1" value="B"> B. I'm awesome!</label>
+                    <label><input type="radio" name="q1" value="C" data-correct="true"> C. I'm good.</label>
+                    <label><input type="radio" name="q1" value="D"> D. I lost my job.</label>
+                </div>
+                <div class="test-question" data-section-id="self-intro-practice">
+                    <p>2. <span class="lang-ja">相手の趣味について尋ねる、より自然な英語表現はどれですか？</span><span class="lang-en">Which is a more natural English expression to ask about someone's hobbies?</span></p>
+                    <label><input type="radio" name="q2" value="A"> A. What are your hobbies?</label>
+                    <label><input type="radio" name="q2" value="B" data-correct="true"> B. What do you like to do?</label>
+                    <label><input type="radio" name="q2" value="C"> C. What do you do?</label>
+                    <label><input type="radio" name="q2" value="D"> D. Are you having fun?</label>
+                </div>
+                <div class="test-question" data-section-id="what-do-you-do">
+                    <p>3. <span class="lang-ja">"What do you do?" は通常、何を尋ねる表現ですか？</span><span class="lang-en">What does "What do you do?" usually ask about?</span></p>
+                    <label><input type="radio" name="q3" value="A"> A. <span class="lang-ja">今何をしているか</span><span class="lang-en">What you are doing now</span></label>
+                    <label><input type="radio" name="q3" value="B"> B. <span class="lang-ja">趣味は何か</span><span class="lang-en">What your hobbies are</span></label>
+                    <label><input type="radio" name="q3" value="C" data-correct="true"> C. <span class="lang-ja">職業は何か</span><span class="lang-en">What your job is</span></label>
+                    <label><input type="radio" name="q3" value="D"> D. <span class="lang-ja">どこへ行くのか</span><span class="lang-en">Where you are going</span></label>
+                </div>
+                <div class="test-question" data-section-id="tarot-cards">
+                    <p>4. <span class="lang-ja">授業で行ったタロット占いで推奨された質問の形式はどれですか？</span><span class="lang-en">What type of question format was recommended for the tarot card reading in class?</span></p>
+                    <label><input type="radio" name="q4" value="A"> A. <span class="lang-ja">WH疑問詞 (Who, Whatなど) を使う質問</span><span class="lang-en">Questions using WH-words (Who, What, etc.)</span></label>
+                    <label><input type="radio" name="q4" value="B" data-correct="true"> B. <span class="lang-ja">Yes/Noで答えられる質問</span><span class="lang-en">Questions answerable with Yes/No</span></label>
+                    <label><input type="radio" name="q4" value="C"> C. <span class="lang-ja">理由を尋ねる質問 (Why)</span><span class="lang-en">Questions asking for reasons (Why)</span></label>
+                    <label><input type="radio" name="q4" value="D"> D. <span class="lang-ja">他の人の未来に関する質問</span><span class="lang-en">Questions about other people's futures</span></label>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" id="skipTestBtn"><span class="lang-ja">テストをスキップ</span><span class="lang-en">Skip Test</span></button>
+                    <button type="submit"><span class="lang-ja">採点する</span><span class="lang-en">Submit</span></button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3><span class="lang-ja">テスト結果</span><span class="lang-en">Test Results</span></h3>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                 <button id="closeModalBtn"><span class="lang-ja">閉じる</span><span class="lang-en">Close</span></button>
+            </div>
+        </div>
+    </div>
+
+    <button id="langToggle">English</button>
+
+    <div class="container">
+        <h1><span class="lang-ja">授業記録: 自己紹介と日常会話</span><span class="lang-en">Lesson Record: Self-Introduction & Daily Conversation</span></h1>
+        <p class="privacy-note">
+            <span class="lang-ja">注記: 授業内で使用された個人を特定できる情報は、プライバシー保護のため編集または削除されています。</span>
+            <span class="lang-en">Note: Personally identifiable information used during the class has been edited or removed for privacy protection.</span>
+        </p>
+        <p><span class="lang-ja">実施日: 2025年4月23日</span><span class="lang-en">Date: April 23, 2025</span></p>
+        <span id="readingTime"><span class="lang-ja">読了時間の目安: 約 16 分</span><span class="lang-en">Estimated Reading Time: Approx. 16 min</span></span>
+
+        <div class="summary-box">
+            <h3><span class="lang-ja">授業の概要</span><span class="lang-en">Lesson Summary</span></h3>
+            <ul>
+                <li class="lang-ja">"How are you?" への様々な応答とそのニュアンス</li>
+                <li class="lang-en">Various responses to "How are you?" and their nuances</li>
+                <li class="lang-ja">自己紹介で使われる基本的な質問と応答の練習</li>
+                <li class="lang-en">Practice of basic questions and answers used in self-introductions</li>
+                <li class="lang-ja">ペアワークによるインタビュー形式の自己紹介アクティビティ</li>
+                <li class="lang-en">Pair-work interview activity for self-introduction</li>
+                <li class="lang-ja">"What do you do?" と "What do you like to do?" の違い</li>
+                <li class="lang-en">Difference between "What do you do?" and "What do you like to do?"</li>
+                <li class="lang-ja">お楽しみアクティビティ: タロット占い (Yes/No形式)</li>
+                <li class="lang-en">Fun activity: Tarot card reading (Yes/No questions)</li>
+            </ul>
+        </div>
+
+        <div id="tableOfContents">
+            <h3><span class="lang-ja">目次</span><span class="lang-en">Table of Contents</span></h3>
+            <ol id="tocList">
+                <li><a href="#greetings-responses"><span class="lang-ja">挨拶と応答</span><span class="lang-en">Greetings & Responses</span></a></li>
+                <li><a href="#self-intro-practice"><span class="lang-ja">自己紹介の練習</span><span class="lang-en">Self-Introduction Practice</span></a></li>
+                <li><a href="#qa-clarifications"><span class="lang-ja">質疑応答と補足</span><span class="lang-en">Q&A & Clarifications</span></a></li>
+                <li><a href="#activity-interview"><span class="lang-ja">アクティビティ: インタビュー</span><span class="lang-en">Activity: Interview</span></a></li>
+                <li><a href="#presentation-feedback"><span class="lang-ja">発表とフィードバック</span><span class="lang-en">Presentation & Feedback</span></a></li>
+                <li><a href="#what-do-you-do"><span class="lang-ja">"What do you do?" vs "What do you like to do?"</span><span class="lang-en">"What do you do?" vs "What do you like to do?"</span></a></li>
+                <li><a href="#tarot-cards"><span class="lang-ja">お楽しみ: タロット占い</span><span class="lang-en">Fun Activity: Tarot Cards</span></a></li>
+                <li><a href="#drill-answers"><span class="lang-ja">ドリル解答・解説</span><span class="lang-en">Drill Answers & Explanations</span></a></li>
+                <li><a href="#review"><span class="lang-ja">振り返り</span><span class="lang-en">Review</span></a></li>
+                <li><a href="#useful-phrases"><span class="lang-ja">使えるフレーズ集</span><span class="lang-en">Useful Phrases</span></a></li>
+                <li><a href="#application"><span class="lang-ja">応用</span><span class="lang-en">Application</span></a></li>
+            </ol>
+        </div>
+
+        <div id="persistentTestResults">
+            <h3><span class="lang-ja">事前理解度チェック結果</span><span class="lang-en">Pre-Lesson Check Results</span></h3>
+            <p id="persistentScore"></p>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <section id="greetings-responses">
+            <h2><span class="lang-ja">1. 挨拶と応答: "How are you?"</span><span class="lang-en">1. Greetings & Responses: "How are you?"</span></h2>
+
+            <p><span class="lang-ja">授業の始めに、基本的な挨拶 "How are you?" に対してどのような返答があるか、意見を出し合いました。</span><span class="lang-en">At the beginning of the class, we brainstormed various responses to the basic greeting, "How are you?".</span></p>
+
+            <p><span class="lang-ja">挙がった返答例 (良い状態から順に):</span><span class="lang-en">Examples of responses given (Sorted from positive):</span></p>
+            <ul>
+                <li>Awesome.</li>
+                <li>I'm happy.</li>
+                <li>I'm having fun. (<span class="lang-ja">注: "I am fun." は「私は面白い人だ」という意味になりがち</span><span class="lang-en">Note: "I am fun." tends to mean "I am an amusing person"</span>)</li>
+                <li>I'm good.</li>
+                <li>Fine.</li>
+                <li>Not bad.</li>
+                <li>I'm hungry.</li>
+                <li>I'm tired.</li>
+                <li>I'm sleepy.</li>
+                <li>I'm angry.</li>
+            </ul>
+
+            <p><span class="lang-ja">これらの返答は、ポジティブなものからネガティブな感情を表すものまで様々です。</span><span class="lang-en">These responses range from positive to expressing somewhat negative feelings.</span></p>
+
+            <h3><span class="lang-ja">なぜ "Good", "Fine", "Not bad" が一般的なのか？</span><span class="lang-en">Why are "Good", "Fine", "Not bad" common?</span></h3>
+            <p><span class="lang-ja">講師は、"I'm good.", "I'm fine.", "Not bad." が最も一般的な返答であると指摘しました。その理由は、これらの返答で会話を簡潔に終えられるからです。</span><span class="lang-en">The instructor pointed out that "I'm good.", "I'm fine.", and "Not bad." are the most common responses. The reason is that these answers allow the conversation to end concisely.</span></p>
+            <p><span class="lang-ja">一方で、"I'm awesome!" や "I'm angry." のような強い感情を表す返答をすると、相手は「なぜ？」と理由を尋ねたくなるのが普通です。その場合、理由を説明する必要が出てきます (例: "Why are you angry?" "Because I lost my job.")。多くの人は、日常的な挨拶の場面では、そこまで深い会話を望まないため、当たり障りのない返答が好まれます。</span><span class="lang-en">On the other hand, if you give a response expressing strong emotion, like "I'm awesome!" or "I'm angry.", the other person will usually want to ask "Why?". In that case, you need to explain the reason (e.g., "Why are you angry?" "Because I lost my job."). Many people don't want such deep conversations in everyday greetings, so neutral responses are preferred.</span></p>
+
+            <blockquote>
+                <p>"Most people don't want to [explain], most people want to stop [the conversation]."</p>
+            </blockquote>
+             <div class="related-pretest"></div>
+        </section>
+
+        <section id="self-intro-practice">
+            <h2><span class="lang-ja">2. 自己紹介の練習</span><span class="lang-en">2. Self-Introduction Practice</span></h2>
+
+            <p><span class="lang-ja">次に、自己紹介で使う基本的な質問と応答の練習を行いました。配布されたプリント（自己紹介シート）を使用しました。</span><span class="lang-en">Next, we practiced basic questions and answers for self-introductions using the distributed handout (self-introduction sheet).</span></p>
+
+            <h3><span class="lang-ja">練習した質問</span><span class="lang-en">Questions Practiced</span></h3>
+            <ul>
+                <li>What is your name?</li>
+                <li>Where are you from?</li>
+                <li>What is your favorite food?</li>
+                <li>When is your birthday?</li>
+                <li>What are your hobbies?</li>
+                <li>What color do you like?</li>
+                <li>How old are you?</li>
+            </ul>
+
+            <p><span class="lang-ja">講師とアシスタント (M-sensei) がデモンストレーションを行いました。</span><span class="lang-en">The instructor and the assistant (M-sensei) demonstrated the exchange.</span></p>
+            <p class="code-block">
+                Instructor: What is your name?<br>
+                M-sensei: My name is M.<br>
+                Instructor: Where are you from?<br>
+                M-sensei: I'm from Ukraine. (<span class="lang-ja">生徒の場合は "I'm from Mito." など</span><span class="lang-en">For students, "I'm from Mito.", etc.</span>)<br>
+                Instructor: What is your favorite food?<br>
+                M-sensei: I like miso soup. (<span class="lang-ja">または "My favorite food is miso soup."</span><span class="lang-en">or "My favorite food is miso soup."</span>)<br>
+                Instructor: When is your birthday?<br>
+                M-sensei: My birthday is April 10th. (<span class="lang-ja">例: 4月10日</span><span class="lang-en">e.g., April 10th</span>) (<span class="lang-ja">序数 <span data-tooltip="1st, 2nd, 3rd, 4th, 10thのような序数">ordinal numbers</span> を使う</span><span class="lang-en">Use <span data-tooltip="Numbers like 1st, 2nd, 3rd, 4th, 10th">ordinal numbers</span></span>)<br>
+                Instructor: What are your hobbies?<br>
+                M-sensei: I like drawing.<br>
+                Instructor: What color do you like?<br>
+                M-sensei: I like green.<br>
+                Instructor: How old are you?<br>
+                M-sensei: I'm 23 years old.
+            </p>
+
+            <p><span class="lang-ja">生徒は各自、シートに自分の情報を記入しました。</span><span class="lang-en">Students then filled in their own information on the sheets.</span></p>
+
+            <h3><span class="lang-ja">記入時の注意点</span><span class="lang-en">Notes for Filling Out the Sheet</span></h3>
+            <ul>
+                <li><strong>Where are you from?:</strong> <span class="lang-ja">市町村名 (Mito, Hitachiなど) でOK。都道府県名 (Ibaraki) と区別する場合は "Mito city", "Ibaraki town" のように `city` や `town` をつける。</span><span class="lang-en">City/town name (Mito, Hitachi, etc.) is fine. If distinguishing from the prefecture (Ibaraki), add `city` or `town`, like "Mito city", "Ibaraki town".</span></li>
+                <li><strong>Birthday:</strong> <span class="lang-ja">英語で書く場合、日付は序数 (1st, 2nd, 3rd, 4th...) を使う (例: March 1st, April 10th)。</span><span class="lang-en">When writing in English, use <span data-tooltip="1st, 2nd, 3rdのような序数">ordinal numbers</span> for the date (e.g., March 1st, April 10th).</span></li>
+                <li><strong>Hobbies:</strong> <span class="lang-ja">"I like [名詞]." (例: I like soccer.) または "I like [動詞-ing]..." (例: I like playing soccer, I like watching soccer, I like reading books) の形を使う。動詞を使う場合は `-ing` 形にするのが一般的。</span><span class="lang-en">Use the form "I like [noun]." (e.g., I like soccer.) or "I like [verb-ing]..." (e.g., I like playing soccer, I like watching soccer, I like reading books). Using the `-ing` form is common when using a verb.</span></li>
+            </ul>
+             <div class="related-pretest"></div>
+        </section>
+
+        <section id="qa-clarifications">
+            <h2><span class="lang-ja">3. 質疑応答と補足</span><span class="lang-en">3. Q&A and Clarifications</span></h2>
+
+            <p><span class="lang-ja">シート記入中に、生徒からいくつか質問がありました。</span><span class="lang-en">During the sheet filling, some questions arose from students.</span></p>
+
+            <ul>
+                <li>
+                    <strong class="lang-ja">質問:</strong> 趣味が「筋トレ」の場合、英語でどう言いますか？
+                    <strong class="lang-en">Question:</strong> How do you say "muscle training" (筋トレ) as a hobby in English?
+                    <br>
+                    <strong class="lang-ja">回答:</strong> "Weight lifting" や "Weight training" が適切。"Training" だけだと意味が <span data-tooltip="あいまいな、漠然とした">vague</span> (曖昧) になることがある。
+                    <strong class="lang-en">Answer:</strong> "Weight lifting" or "Weight training" are appropriate. "Training" alone can be <span data-tooltip="Unclear, not specific">vague</span>.
+                </li>
+                <li>
+                    <strong class="lang-ja">補足:</strong> 「もやし」(`moyashi`) という言葉について。英語では "bean sprout" と言い、特に男性に対して「ひょろひょろで痩せている」というネガティブな意味で使われることがある。
+                    <strong class="lang-en">Note:</strong> About the word `moyashi` (もやし). In English, it's "bean sprout," and it can be used, especially for men, in a negative way to mean very skinny.
+                </li>
+            </ul>
+
+            <div class="supplementary-box">
+                <h4><span class="lang-ja">文化的背景: 体型を表す比喩</span><span class="lang-en">Cultural Note: Metaphors for Body Shape</span></h4>
+                <p><span class="lang-ja">日本語で「もやし」を使って細い人を表現するように、文化によって体型を飲食物などに例えることがあります。英語圏でも様々な表現があります。</span><span class="lang-en">Just as Japanese uses "moyashi" (bean sprout) to describe someone thin, cultures often use food or other items as metaphors for body types. English has various expressions as well.</span></p>
+            </div>
+        </section>
+
+        <section id="activity-interview">
+            <h2><span class="lang-ja">4. アクティビティ: インタビュー</span><span class="lang-en">4. Activity: Interview</span></h2>
+
+            <p><span class="lang-ja">シート記入後、クラス内で2人の人にインタビューし、その回答を用紙の対応する欄に記入するアクティビティを行いました。教師に質問することも可能でした。</span><span class="lang-en">After filling out the sheets, students conducted an activity where they interviewed two other people in the class and wrote down their answers in the corresponding sections of the sheet. Asking the teachers was also permitted.</span></p>
+
+            <p><span class="lang-ja">指示:</span><span class="lang-en">Instructions:</span></p>
+            <ol>
+                <li><span class="lang-ja">クラスメート（または教師）を2人見つける。</span><span class="lang-en">Find two classmates (or teachers).</span></li>
+                <li><span class="lang-ja">自己紹介シートの質問をする。</span><span class="lang-en">Ask the questions from the self-introduction sheet.</span></li>
+                <li><span class="lang-ja">相手の答えを用紙の右側の欄（Person 1, Person 2）にメモする。</span><span class="lang-en">Write down their answers in the columns on the right side of the sheet (Person 1, Person 2).</span></li>
+                <li><span class="lang-ja">相手の名前のスペルが分からなければ、相手のシートを見て写しても良い。</span><span class="lang-en">If you don't know how to spell the person's name, you can copy it from their sheet.</span></li>
+                <li><span class="lang-ja">終わったら着席する。</span><span class="lang-en">Sit down when finished.</span></li>
+            </ol>
+        </section>
+
+        <section id="presentation-feedback">
+            <h2><span class="lang-ja">5. 発表とフィードバック</span><span class="lang-en">5. Presentation & Feedback</span></h2>
+
+            <p><span class="lang-ja">アクティビティの後、数名の生徒が前に出て、教師からの質問に答えたり、他の生徒に質問したりする練習を行いました。</span><span class="lang-en">After the activity, a few students came to the front to practice answering questions from the teacher or asking questions to other students.</span></p>
+
+            <h3><span class="lang-ja">練習でのポイント</span><span class="lang-en">Key Points from Practice</span></h3>
+            <ul>
+                <li><strong><span class="lang-ja">地名の補足:</span><span class="lang-en">Clarifying Place Names:</span></strong> <span class="lang-ja">茨城「町」のように、県名と同じ地名の場合は `town` や `city` をつけて区別する (例: "I'm from Ibaraki town.")。これはアメリカ英語の "New York City" / "New York State" と同様の考え方。</span><span class="lang-en">For places with the same name as the prefecture, like Ibaraki "Town", add `town` or `city` to distinguish (e.g., "I'm from Ibaraki town."). This is similar to "New York City" / "New York State" in American English.</span></li>
+                <li><strong><span class="lang-ja">序数の使用:</span><span class="lang-en">Using Ordinal Numbers:</span></strong> <span class="lang-ja">誕生日を言う際は序数を使うことが確認された (例: "April 2nd")。</span><span class="lang-en">It was confirmed that ordinal numbers are used when stating birthdays (e.g., "April 2nd").</span></li>
+                <li><strong><span class="lang-ja">複数の趣味:</span><span class="lang-en">Multiple Hobbies:</span></strong> <span class="lang-ja">趣味が複数ある場合は "My hobbies are A, B, and C." のように複数形 `hobbies are` を使う。</span><span class="lang-en">If you have more than one hobby, use the plural form `hobbies are`, like "My hobbies are A, B, and C."</span></li>
+                <li><strong><span class="lang-ja">聞き取れなかった場合:</span><span class="lang-en">If You Didn't Hear:</span></strong> <span class="lang-ja">相手の言ったことが聞き取れなかった場合は、"Excuse me?", "Can you repeat that?", "What was that again?" のように聞き返すのが適切。</span><span class="lang-en">If you couldn't hear what the other person said, it's appropriate to ask, "Excuse me?", "Can you repeat that?", or "What was that again?".</span></li>
+            </ul>
+        </section>
+
+        <section id="what-do-you-do">
+            <h2><span class="lang-ja">6. "What do you do?" vs "What do you like to do?"</span><span class="lang-en">6. "What do you do?" vs "What do you like to do?"</span></h2>
+
+            <p><span class="lang-ja">講師は、趣味について話す際、"What are your hobbies?" という質問は少し<span data-tooltip="子供っぽい">childish</span> (子供っぽい) に聞こえることがあると指摘しました。大人の間では "What do you like to do?" (何をするのが好きですか？) と尋ねる方が一般的です。</span><span class="lang-en">The instructor pointed out that the question "What are your hobbies?" can sound a bit <span data-tooltip="Immature, like a child">childish</span>. Among adults, it's more common to ask, "What do you like to do?".</span></p>
+
+            <p><span class="lang-ja">さらに重要な点として、"What do you do?" という質問は、通常「あなたの職業は何ですか？」という意味で使われることを強調しました。</span><span class="lang-en">Furthermore, it was emphasized that the question "What do you do?" usually means "What is your job?".</span></p>
+
+            <ul>
+                <li><strong>What do you like to do?</strong> <span class="lang-ja">→ 趣味や好きなこと</span><span class="lang-en">→ Hobbies, things you enjoy</span></li>
+                <li><strong>What do you do?</strong> <span class="lang-ja">→ 職業</span><span class="lang-en">→ Job/Occupation</span></li>
+            </ul>
+
+            <p><span class="lang-ja">生徒の場合、"What do you do?" と聞かれたら "I'm a student." と答えることができますが、大人が子供に対してこの質問をすることは稀です。大人が別の人に "What do you do?" と聞く場合は、通常、相手の仕事について尋ねています。（例：「ある生徒に」What do you do? → I'm a student.）</span><span class="lang-en">As a student, you can answer "I'm a student." if asked "What do you do?", but adults rarely ask children this question. When an adult asks someone "What do you do?", they are usually asking about the person's job. (e.g., "To a student:" What do you do? → I'm a student.)</span></p>
+
+            <div class="supplementary-box">
+                <h4><span class="lang-ja">補足: 現在進行形との違い</span><span class="lang-en">Note: Difference from Present Continuous</span></h4>
+                <p><span class="lang-ja">"What do you do?" (普段何をしているか → 職業) と "What are you doing?" (今、何をしているか → 現在の行動) は意味が全く異なるので注意が必要です。</span><span class="lang-en">Be careful, as "What do you do?" (What do you do usually? → Occupation) and "What are you doing?" (What action are you performing right now? → Current action) have completely different meanings.</span></p>
+            </div>
+             <div class="related-pretest"></div>
+        </section>
+
+        <section id="tarot-cards">
+            <h2><span class="lang-ja">7. お楽しみ: タロット占い</span><span class="lang-en">7. Fun Activity: Tarot Cards</span></h2>
+
+            <p><span class="lang-ja">授業の最後に、希望者向けのお楽しみアクティビティとして、M-senseiによる<span data-tooltip="未来やアドバイスを占うカード">タロットカード</span>占いが行われました。</span><span class="lang-en">At the end of the class, as a fun activity for volunteers, M-sensei conducted a <span data-tooltip="Cards used for fortune-telling or advice">tarot card</span> reading.</span></p>
+
+            <h3><span class="lang-ja">ルールと注意点</span><span class="lang-en">Rules and Precautions</span></h3>
+            <ul>
+                <li><span class="lang-ja">これはゲームであり、深刻に捉えすぎないこと。</span><span class="lang-en">This is just a game, don't take it too seriously.</span></li>
+                <li><span class="lang-ja">質問は「Yes」か「No」で答えられる形式であること (WH疑問詞 Who, What, When, Where, Why, How は使わない)。</span><span class="lang-en">Questions must be answerable with "Yes" or "No" (Do not use WH-words like Who, What, When, Where, Why, How).</span></li>
+                <li><span class="lang-ja">カードが正位置 (upright) なら「Yes」、逆位置 (upside down) なら「No」と判断する。</span><span class="lang-en">If the card is upright, it means "Yes"; if upside down, it means "No".</span></li>
+                <li><span class="lang-ja">質問は自分自身に関するものに限る。</span><span class="lang-en">Questions should be about yourself only.</span></li>
+                <li><span class="lang-ja">楽しく、ポジティブな質問を心がける。奇妙な、または怖い質問は避ける。</span><span class="lang-en">Try to make questions fun or positive. Avoid strange or scary questions.</span></li>
+                <li><span class="lang-ja">質問は英語で行う。</span><span class="lang-en">Ask questions in English.</span></li>
+            </ul>
+
+            <p><span class="lang-ja">何人かの生徒が英語で質問し、占いを受けました。</span><span class="lang-en">Several students asked questions in English and received readings.</span></p>
+            <ul>
+                <li><strong><span class="lang-ja">質問例1:</span><span class="lang-en">Example Question 1:</span></strong> "Will I keep my <span data-tooltip="奨学金">scholarship</span>?" (<span class="lang-ja">奨学金は維持できますか？</span><span class="lang-en">Will I keep my scholarship?</span>) → <span class="lang-ja">結果: Yes</span><span class="lang-en">Result: Yes</span></li>
+                <li><strong><span class="lang-ja">質問例2:</span><span class="lang-en">Example Question 2:</span></strong> "Will I be able to stay in school?" (<span class="lang-ja">学校に在籍し続けられますか？卒業できますか？</span><span class="lang-en">Can I remain enrolled? Can I graduate?</span>) → <span class="lang-ja">結果: Yes (ただし、一定期間内の意味合い)</span><span class="lang-en">Result: Yes (within a certain timeframe implication)</span></li>
+                <li><strong><span class="lang-ja">質問例3:</span><span class="lang-en">Example Question 3:</span></strong> "Will my English knowledge increase?" (<span class="lang-ja">私の英語力は向上しますか？</span><span class="lang-en">Will my English knowledge increase?</span>) → <span class="lang-ja">結果: Yes</span><span class="lang-en">Result: Yes</span></li>
+                <li><strong><span class="lang-ja">質問例4:</span><span class="lang-en">Example Question 4:</span></strong> "Will I get a girlfriend in three months?" (<span class="lang-ja">3ヶ月以内に彼女はできますか？</span><span class="lang-en">Will I get a girlfriend in three months?</span>) → <span class="lang-ja">結果: Yes</span><span class="lang-en">Result: Yes</span></li>
+            </ul>
+
+            <p><span class="lang-ja">講師は最後に、占いの結果に関わらず、目標達成のためには「努力が鍵である (Hard working is the key)」ことを強調しました。</span><span class="lang-en">Finally, the instructor emphasized that regardless of the reading's outcome, "Hard work is the key" to achieving goals.</span></p>
+
+            <blockquote>
+                <p>"Don't put too much hope on some cards, okay? Just cards, you got to work hard. You want to stay in school, work hard, it's not the cards, it's you."</p>
+            </blockquote>
+             <div class="related-pretest"></div>
+        </section>
+
+        <section id="drill-answers">
+            <h2><span class="lang-ja">8. ドリル解答・解説 (自己紹介シート記入)</span><span class="lang-en">8. Drill Answers & Explanations (Self-Intro Sheet)</span></h2>
+            <p><span class="lang-ja">この授業には明確なドリル問題はありませんでしたが、「自己紹介シート」の記入がそれに該当します。以下に記入例とポイントをまとめます。</span><span class="lang-en">While there wasn't a specific drill exercise, filling out the "Self-Introduction Sheet" served a similar purpose. Here are examples and key points for filling it out:</span></p>
+
+            <div class="drill-item">
+                <h3>1. What is your name?</h3>
+                <p><strong><span class="lang-ja">解答例:</span><span class="lang-en">Example Answer:</span></strong> My name is [Your Name]. / I'm [Your Name].</p>
+                <p><strong><span class="lang-ja">ポイント:</span><span class="lang-en">Point:</span></strong> <span class="lang-ja">フルネームでも下の名前だけでもOK。</span><span class="lang-en">Full name or first name is okay.</span></p>
+                <button class="toggle-answer" data-target="drill-ans-1"><span class="lang-ja">解説表示</span><span class="lang-en">Show Explanation</span></button>
+                <div class="answer" id="drill-ans-1">
+                    <p><span class="lang-ja">"My name is..." が最も丁寧ですが、"I'm..." も一般的です。クラス内など親しい間柄では下の名前だけで十分なことが多いです。</span><span class="lang-en">"My name is..." is the most formal, but "I'm..." is also common. Often, just your first name is sufficient in a classroom or among acquaintances.</span></p>
+                </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>2. Where are you from?</h3>
+                <p><strong><span class="lang-ja">解答例:</span><span class="lang-en">Example Answer:</span></strong> I'm from Mito. / I'm from Ibaraki town.</p>
+                <p><strong><span class="lang-ja">ポイント:</span><span class="lang-en">Point:</span></strong> <span class="lang-ja">出身地を答えます。必要に応じて `city` や `town` を追加。</span><span class="lang-en">State your place of origin. Add `city` or `town` if needed.</span></p>
+                <button class="toggle-answer" data-target="drill-ans-2"><span class="lang-ja">解説表示</span><span class="lang-en">Show Explanation</span></button>
+                <div class="answer" id="drill-ans-2">
+                    <p><span class="lang-ja">通常は市町村名で十分です。県名と同じ名前の市町村の場合は、混乱を避けるために "Ibaraki town" のように補足すると親切です。海外の人と話す場合は "I'm from Japan." や "I'm from Mito, Japan." のように国名を加えるのが一般的です。</span><span class="lang-en">Usually, the city/town name is sufficient. If the town has the same name as the prefecture, adding "town" like "Ibaraki town" helps avoid confusion. When speaking with people from other countries, adding the country name like "I'm from Japan." or "I'm from Mito, Japan." is common.</span></p>
+                </div>
+            </div>
+
+             <div class="drill-item">
+                <h3>3. When is your birthday?</h3>
+                <p><strong><span class="lang-ja">解答例:</span><span class="lang-en">Example Answer:</span></strong> My birthday is April 10th. / It's October 22nd.</p>
+                <p><strong><span class="lang-ja">ポイント:</span><span class="lang-en">Point:</span></strong> <span class="lang-ja">月と日付（序数）で答えます。</span><span class="lang-en">Answer with the month and date (ordinal number).</span></p>
+                <button class="toggle-answer" data-target="drill-ans-3"><span class="lang-ja">解説表示</span><span class="lang-en">Show Explanation</span></button>
+                <div class="answer" id="drill-ans-3">
+                    <p><span class="lang-ja">英語で日付を言うときは序数 (1st, 2nd, 3rd, 4th, 5th..., 10th, 22nd) を使います。例: January 1st (ついたち), February 2nd (ふつか), March 3rd (みっか), April 10th (とおか), May 22nd (にじゅうににち), June 30th (さんじゅうにち)。</span><span class="lang-en">When saying dates in English, use <span data-tooltip="1st, 2nd, 3rd, 4th, 10th, 22ndのような序数">ordinal numbers</span> (1st, 2nd, 3rd, 4th, 5th..., 10th, 22nd). Examples: January 1st, February 2nd, March 3rd, April 10th, May 22nd, June 30th.</span></p>
+                </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>4. What are your hobbies? / What do you like to do?</h3>
+                <p><strong><span class="lang-ja">解答例:</span><span class="lang-en">Example Answer:</span></strong> I like playing video games. / I like reading books. / My hobby is watching movies. / My hobbies are listening to music and drawing.</p>
+                <p><strong><span class="lang-ja">ポイント:</span><span class="lang-en">Point:</span></strong> <span class="lang-ja">"I like + [名詞]" または "I like + [動詞-ing]" の形を使うのが一般的。複数形にも注意。</span><span class="lang-en">Using "I like + [noun]" or "I like + [verb-ing]" is common. Pay attention to plurals.</span></p>
+                <button class="toggle-answer" data-target="drill-ans-4"><span class="lang-ja">解説表示</span><span class="lang-en">Show Explanation</span></button>
+                <div class="answer" id="drill-ans-4">
+                    <p><span class="lang-ja">"What do you like to do?" と聞かれる方が自然なことが多いです。"I like..." で答えるのが簡単でよく使われます。動詞を使う場合は "-ing" (動名詞) の形にします (例: play → playing, watch → watching, read → reading, listen → listening)。趣味が複数ある場合は "My hobbies are..." と複数形にし、"and" で繋ぎます。</span><span class="lang-en">Being asked "What do you like to do?" is often more natural. Responding with "I like..." is easy and common. If using a verb, use the "-ing" (gerund) form (e.g., play → playing, watch → watching, read → reading, listen → listening). If you have multiple hobbies, use the plural "My hobbies are..." and connect them with "and".</span></p>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="review">
+            <h2><span class="lang-ja">9. 振り返り</span><span class="lang-en">9. Review</span></h2>
+
+            <h3><span class="lang-ja">理解度チェックリスト</span><span class="lang-en">Understanding Checklist</span></h3>
+            <p><span class="lang-ja">以下の項目を理解できたか確認しましょう。クリックするとチェックが入ります。</span><span class="lang-en">Check if you understood the following points. Click to mark as checked.</span></p>
+            <ul class="checklist">
+                <li><span class="lang-ja">"How are you?" に対する一般的な応答 (Good, Fine, Not bad) とその理由がわかる。</span><span class="lang-en">Understand common responses to "How are you?" (Good, Fine, Not bad) and why.</span></li>
+                <li><span class="lang-ja">強い感情を表す応答 (Awesome, Angry) をした場合、理由の説明が必要になる可能性があることがわかる。</span><span class="lang-en">Know that responses showing strong emotions (Awesome, Angry) might require explanation.</span></li>
+                <li><span class="lang-ja">自己紹介で使われる基本的な質問 (Name, From, Food, Birthday, Hobbies, Color, Age) に英語で答えられる。</span><span class="lang-en">Can answer basic self-introduction questions (Name, From, Food, Birthday, Hobbies, Color, Age) in English.</span></li>
+                <li><span class="lang-ja">誕生日を英語で言う際に序数 (1st, 2nd, 3rd...) を使うことがわかる。</span><span class="lang-en">Know to use ordinal numbers (1st, 2nd, 3rd...) for birthdays in English.</span></li>
+                <li><span class="lang-ja">趣味を言う際に "I like [名詞]" や "I like [動詞-ing]" の形を使える。</span><span class="lang-en">Can use "I like [noun]" or "I like [verb-ing]" to talk about hobbies.</span></li>
+                <li><span class="lang-ja">"What do you like to do?" (趣味) と "What do you do?" (職業) の意味の違いがわかる。</span><span class="lang-en">Understand the difference between "What do you like to do?" (hobbies) and "What do you do?" (job).</span></li>
+                <li><span class="lang-ja">相手の発言が聞き取れなかった時に使うフレーズ (Excuse me? など) がわかる。</span><span class="lang-en">Know phrases to use when you didn't hear someone (Excuse me?, etc.).</span></li>
+            </ul>
+
+            <div class="review-questions">
+                <h3><span class="lang-ja">確認問題</span><span class="lang-en">Review Questions</span></h3>
+
+                <div class="question-item">
+                    <p>1. <span class="lang-ja">"How are you?" に対する返答で、"I'm hungry." や "I'm awesome!" と答えた場合、なぜ会話が続く可能性が高いのですか？</span><span class="lang-en">When responding to "How are you?", why is the conversation likely to continue if you answer "I'm hungry." or "I'm awesome!"?</span></p>
+                    <p class="answer-hint"><span class="lang-ja">ヒント: 聞き手の反応を考えてみましょう。</span><span class="lang-en">Hint: Think about the listener's reaction.</span></p>
+                    <button class="toggle-answer" data-target="review-ans-1"><span class="lang-ja">解答例表示</span><span class="lang-en">Show Example Answer</span></button>
+                    <div class="answer" id="review-ans-1">
+                        <p><span class="lang-ja">これらの返答は、単なる挨拶の定型句ではなく、具体的な状態や強い感情を表しているため、聞き手は「なぜそうなのか？」と興味を持ち、"Why?" や "What happened?" のように理由を尋ねる可能性が高いからです。これにより、会話が続くことになります。</span><span class="lang-en">Because these responses express a specific state or strong emotion rather than just a standard greeting platitude, the listener is likely to become interested in "why?" and ask for a reason, such as "Why?" or "What happened?". This leads to the continuation of the conversation.</span></p>
+                    </div>
+                </div>
+
+                <div class="question-item">
+                    <p>2. <span class="lang-ja">自己紹介で出身地を聞かれ "I'm from Ibaraki." と答えた場合、相手が日本人か外国人かで、追加で説明した方が良いことはありますか？</span><span class="lang-en">In a self-introduction, if you are asked where you are from and answer "I'm from Ibaraki.", is there anything additional you should explain depending on whether the listener is Japanese or a foreigner?</span></p>
+                    <p class="answer-hint"><span class="lang-ja">ヒント: 相手が地名をどの程度知っているかを考慮しましょう。</span><span class="lang-en">Hint: Consider how familiar the listener might be with the place name.</span></p>
+                    <button class="toggle-answer" data-target="review-ans-2"><span class="lang-ja">解答例表示</span><span class="lang-en">Show Example Answer</span></button>
+                    <div class="answer" id="review-ans-2">
+                        <p><span class="lang-ja">相手が日本人の場合: 「茨城県」のことか「茨城町」のことか明確でない場合、"Ibaraki town" のように補足すると親切です。相手が茨城県についてよく知っていれば不要かもしれません。<br>相手が外国人の場合: "Ibaraki" という地名を知らない可能性が高いので、"Ibaraki prefecture, Japan" や "It's near Tokyo." のように、都道府県であることや日本のどのあたりにあるかなどを補足すると良いでしょう。</span><span class="lang-en">If the listener is Japanese: If it's unclear whether you mean "Ibaraki Prefecture" or "Ibaraki Town," adding clarification like "Ibaraki town" is helpful. It might be unnecessary if they are familiar with Ibaraki Prefecture.<br>If the listener is a foreigner: They are likely unfamiliar with the name "Ibaraki," so adding context like "Ibaraki prefecture, Japan" or "It's near Tokyo" (explaining it's a prefecture and its general location in Japan) would be beneficial.</span></p>
+                    </div>
+                </div>
+
+                <div class="question-item">
+                    <p>3. <span class="lang-ja">"What do you do?" と "What do you like to do?" の違いを、それぞれどのような状況で使うかを含めて説明してください。</span><span class="lang-en">Explain the difference between "What do you do?" and "What do you like to do?", including the situations in which each is used.</span></p>
+                    <p class="answer-hint"><span class="lang-ja">ヒント: それぞれが尋ねている内容は何でしょう？</span><span class="lang-en">Hint: What is each question asking about?</span></p>
+                    <button class="toggle-answer" data-target="review-ans-3"><span class="lang-ja">解答例表示</span><span class="lang-en">Show Example Answer</span></button>
+                    <div class="answer" id="review-ans-3">
+                        <p><strong>What do you do?</strong>
+                            <span class="lang-ja">主に相手の「職業」や「普段していること（学生など）」を尋ねる時に使います。初対面の大人の間で、相手の仕事を知りたい場合によく使われます。</span>
+                            <span class="lang-en">Primarily used to ask about someone's "occupation" or what they "usually do" (like being a student). It's often used between adults meeting for the first time when wanting to know their job.</span>
+                        </p>
+                         <p><strong>What do you like to do?</strong>
+                             <span class="lang-ja">相手の「趣味」や「好きなこと」を尋ねる時に使います。"What are your hobbies?" よりも自然で、大人同士の会話でもよく使われます。リラックスした会話の中で、相手の興味を知りたい時に適しています。</span>
+                            <span class="lang-en">Used to ask about someone's "hobbies" or "things they enjoy doing." It's often considered more natural than "What are your hobbies?" and is frequently used in adult conversations. Suitable for relaxed conversations when you want to know about the other person's interests.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="useful-phrases">
+            <h2><span class="lang-ja">10. 使えるフレーズ集</span><span class="lang-en">10. Useful Phrases</span></h2>
+            <p><span class="lang-ja">今回の授業で学んだ、覚えておくと便利なフレーズです。</span><span class="lang-en">Here are some useful phrases from today's lesson to remember.</span></p>
+            <ul>
+                <li>
+                    <strong>How are you?</strong>
+                    <span class="lang-ja">元気？/ 調子はどう？</span>
+                    <span class="lang-en">How are you doing?</span>
+                </li>
+                 <li>
+                    <strong>I'm awesome! / I'm happy. / I'm having fun.</strong>
+                     <span class="lang-ja">最高！ / 幸せです。 / 楽しんでいます。</span>
+                     <span class="lang-en">I'm awesome! / I'm happy. / I'm having fun.</span>
+                     <span class="phrase-note lang-ja">※ポジティブな返答。</span>
+                     <span class="phrase-note lang-en">*Positive responses.</span>
+                 </li>
+                <li>
+                    <strong>I'm good. / Fine. / Not bad.</strong>
+                    <span class="lang-ja">元気です。/ 大丈夫です。/ まあまあです。</span>
+                    <span class="lang-en">I'm good. / Fine. / Not bad.</span>
+                    <span class="phrase-note lang-ja">※会話を簡潔に終えやすい、一般的・中立的な返答。</span>
+                    <span class="phrase-note lang-en">*Common, neutral responses that tend to keep the conversation brief.</span>
+                </li>
+                 <li>
+                    <strong>I'm hungry. / I'm tired. / I'm sleepy. / I'm angry.</strong>
+                     <span class="lang-ja">お腹が空いた。/ 疲れています。/ 眠いです。/ 怒っています。</span>
+                     <span class="lang-en">I'm hungry. / I'm tired. / I'm sleepy. / I'm angry.</span>
+                     <span class="phrase-note lang-ja">※具体的な状態やネガティブな感情を表す返答。理由を聞かれる可能性がある。</span>
+                     <span class="phrase-note lang-en">*Responses showing specific states or negative feelings. May lead to follow-up questions (Why?).</span>
+                 </li>
+                 <li>
+                    <strong>What is your name?</strong>
+                    <span class="lang-ja">あなたの名前は何ですか？</span>
+                    <span class="lang-en">What is your name?</span>
+                </li>
+                <li>
+                    <strong>Where are you from?</strong>
+                    <span class="lang-ja">出身はどこですか？</span>
+                    <span class="lang-en">Where are you from?</span>
+                </li>
+                <li>
+                    <strong>My birthday is [Month] [Day ordinal number].</strong> (e.g., April 10th)
+                    <span class="lang-ja">私の誕生日は〜月〜日です。(例: 4月10日)</span>
+                    <span class="lang-en">My birthday is [Month] [Day ordinal number]. (e.g., April 10th)</span>
+                </li>
+                 <li>
+                    <strong>I like [noun / verb-ing].</strong> (e.g., I like playing soccer.)
+                    <span class="lang-ja">私は〜が好きです。(例: サッカーをするのが好きです。)</span>
+                    <span class="lang-en">I like [noun / verb-ing]. (e.g., I like playing soccer.)</span>
+                </li>
+                <li>
+                    <strong>What do you like to do?</strong>
+                    <span class="lang-ja">何をするのが好きですか？ （趣味）</span>
+                    <span class="lang-en">What do you like to do? (Asking about hobbies)</span>
+                     <span class="phrase-note lang-ja">※"What are your hobbies?" より自然な聞き方。</span>
+                     <span class="phrase-note lang-en">*A more natural way to ask about hobbies than "What are your hobbies?".</span>
+                </li>
+                 <li>
+                    <strong>What do you do?</strong>
+                    <span class="lang-ja">あなたの職業（または普段していること）は何ですか？</span>
+                    <span class="lang-en">What is your job? (Or what you usually do, e.g., student)</span>
+                </li>
+                 <li>
+                    <strong>Excuse me? / Can you repeat that? / What was that again?</strong>
+                    <span class="lang-ja">すみません？ / もう一度言ってもらえますか？ / 何でしたっけ？</span>
+                    <span class="lang-en">Excuse me? / Can you repeat that? / What was that again?</span>
+                     <span class="phrase-note lang-ja">※相手の言ったことを聞き返す時に使う。</span>
+                     <span class="phrase-note lang-en">*Used when you didn't hear or understand what someone said.</span>
+                </li>
+                 <li>
+                    <strong>Hard working is the key. / Hard work is the key.</strong>
+                    <span class="lang-ja">努力が鍵です。</span>
+                    <span class="lang-en">Hard work is the key.</span>
+                </li>
+            </ul>
+        </section>
+
+        <section id="application">
+            <h2><span class="lang-ja">11. 応用</span><span class="lang-en">11. Application</span></h2>
+
+            <h3><span class="lang-ja">今回の知識の活用</span><span class="lang-en">Applying Today's Knowledge</span></h3>
+            <ul>
+                <li class="lang-ja"><strong>日常会話:</strong> "How are you?" への返答を状況に応じて使い分けることで、よりスムーズなコミュニケーションが取れるようになります。相手との関係性や会話の流れを読んで、適切な返答を選びましょう。</li>
+                <li class="lang-en"><strong>Daily Conversation:</strong> By using different responses to "How are you?" depending on the situation, you can communicate more smoothly. Choose an appropriate response based on your relationship with the person and the flow of the conversation.</li>
+                <li class="lang-ja"><strong>自己紹介:</strong> 学んだ質問と応答のパターンは、新しい人と出会った時（例: 転校生、留学生、新しいALTの先生など）にすぐに役立ちます。自信を持って英語で自己紹介や簡単な質疑応答ができるようになります。</li>
+                <li class="lang-en"><strong>Self-Introduction:</strong> The question and answer patterns learned are immediately useful when meeting new people (e.g., transfer students, international students, new ALTs). You'll be able to introduce yourself and handle simple Q&A in English more confidently.</li>
+                <li class="lang-ja"><strong>相手への質問:</strong> "What do you like to do?" を使って相手の興味関心を知ることで、より深い会話のきっかけを作ることができます。</li>
+                <li class="lang-en"><strong>Asking Others:</strong> Using "What do you like to do?" to learn about others' interests can create opportunities for deeper conversation.</li>
+            </ul>
+
+            <h3><span class="lang-ja">今後の繋がり</span><span class="lang-en">Future Connections</span></h3>
+            <ul>
+                 <li class="lang-ja"><strong>時制の学習:</strong> "What do you do?" (現在形) と "What are you doing?" (現在進行形) の違いは、今後の時制の学習 (過去形、未来形など) における重要な基礎となります。</li>
+                 <li class="lang-en"><strong>Learning Tenses:</strong> The difference between "What do you do?" (simple present) and "What are you doing?" (present continuous) is a crucial foundation for future learning of tenses (past, future, etc.).</li>
+                 <li class="lang-ja"><strong>疑問詞の学習:</strong> 今回使った What, Where, When, How に加え、Who, Why などの疑問詞を使った質問の作り方を学ぶことで、より多様な質問ができるようになります。</li>
+                 <li class="lang-en"><strong>Learning Question Words:</strong> Building on What, Where, When, How used today, learning how to form questions with other words like Who and Why will enable more diverse questioning.</li>
+                 <li class="lang-ja"><strong>より複雑な自己紹介・他者紹介:</strong> 基本的な自己紹介を発展させ、自分の長所や短所、将来の夢、または友人や家族について紹介するなど、より複雑な表現を学ぶステップにつながります。</li>
+                 <li class="lang-en"><strong>More Complex Introductions:</strong> This serves as a step towards learning more complex expressions, such as introducing strengths, weaknesses, future dreams, or talking about friends and family, expanding beyond basic self-introductions.</li>
+            </ul>
+
+            <h3><span class="lang-ja">今後の注意点</span><span class="lang-en">Points to Keep in Mind</span></h3>
+            <ul>
+                <li class="lang-ja"><strong>文脈の重要性:</strong> 同じ質問でも、状況や相手によって意味合いが変わることがあります (例: "What do you do?")。常に文脈を意識することが大切です。</li>
+                <li class="lang-en"><strong>Importance of Context:</strong> The meaning of a question can change depending on the situation and the person you're talking to (e.g., "What do you do?"). Always be mindful of the context.</li>
+                <li class="lang-ja"><strong>自然な表現:</strong> 教科書的な表現 ("What are your hobbies?") だけでなく、より自然な口語表現 ("What do you like to do?") も積極的に使ってみましょう。</li>
+                <li class="lang-en"><strong>Natural Expressions:</strong> Try using more natural colloquial expressions ("What do you like to do?") in addition to textbook phrases ("What are your hobbies?").</li>
+                <li class="lang-ja"><strong>積極的に話すこと:</strong> 間違いを恐れずに、学んだことを実際に使って話す機会を増やすことが上達への一番の近道です。</li>
+                <li class="lang-en"><strong>Speak Actively:</strong> Don't be afraid of making mistakes. Increasing opportunities to actually use what you've learned is the fastest way to improve.</li>
+            </ul>
+
+             <h3><span class="lang-ja">参考資料</span><span class="lang-en">Further Resources</span></h3>
+             <ul>
+                 <li><a href="https://eikaiwa.dmm.com/uknow/" target="_blank" rel="noopener noreferrer">DMM英会話なんてuKnow?</a> (<span class="lang-ja">様々な英語表現について質問・検索できるサイト</span><span class="lang-en">A site where you can ask about and search for various English expressions</span>)</li>
+                 <li><a href="https://www.bbc.co.uk/learningenglish" target="_blank" rel="noopener noreferrer">BBC Learning English</a> (<span class="lang-ja">日常会話や文法、語彙を学べる豊富なリソース</span><span class="lang-en">Offers rich resources for learning daily conversation, grammar, and vocabulary</span>)</li>
+                 <li><a href="https://www.esl-lab.com/" target="_blank" rel="noopener noreferrer">Randall's ESL Cyber Listening Lab</a> (<span class="lang-ja">様々なレベルのリスニング練習。自己紹介や日常会話のトピックも豊富</span><span class="lang-en">Provides listening practice for various levels, including topics on self-introductions and daily conversations</span>)</li>
+             </ul>
+        </section>
+
+        <footer>
+            <p><span class="lang-ja">授業記録は以上です。積極的に参加してくれてありがとうございました！</span><span class="lang-en">This concludes the lesson record. Thank you for your active participation!</span></p>
+            <p>&copy; 2025 Class Teacher. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const checklistItems = document.querySelectorAll('#review .checklist li');
+            const langToggleBtn = document.getElementById('langToggle');
+            const htmlEl = document.documentElement;
+
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestModal = document.getElementById('preTestModal');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults');
+            const testScoreEl = document.getElementById('testScore');
+            const reviewLinksEl = document.getElementById('reviewLinks');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreEl = document.getElementById('persistentScore');
+            const persistentReviewLinksEl = document.getElementById('persistentReviewLinks');
+
+            updateProgressBar();
+            checkScrollTopBtn();
+            checkLanguagePreference();
+            checkPreTestStatus();
+            injectRelatedPretests();
+            setupEventListeners();
+            setupDynamicEventListeners();
+
+
+            function updateProgressBar() {
+                const scrollY = window.scrollY || window.pageYOffset;
+                const docHeight = document.documentElement.scrollHeight;
+                const winHeight = window.innerHeight;
+                const scrollableHeight = docHeight - winHeight;
+                const scrollPercent = scrollableHeight > 0 ? (scrollY / scrollableHeight) * 100 : 0;
+                progressBar.style.width = Math.min(scrollPercent, 100) + '%';
+            }
+
+            function checkScrollTopBtn() {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            }
+
+            function smoothScrollToTop() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            function toggleChecklistItem(e) {
+                e.currentTarget.classList.toggle('checked');
+            }
+
+            function handleToggleAnswerClick(e) {
+                 const btn = e.target.closest('.toggle-answer');
+                 if (btn) {
+                    const targetId = btn.getAttribute('data-target');
+                    let answerEl = null;
+
+                    if (targetId) {
+                        answerEl = document.getElementById(targetId);
+                         if (!answerEl) {
+                            console.error(`Element with ID "${targetId}" not found for button:`, btn);
+                             return;
+                        }
+                         if (!answerEl.classList.contains('answer')) {
+                             console.error(`Target element with ID "${targetId}" is not an .answer element for button:`, btn);
+                             return;
+                         }
+                    } else {
+                        console.error('Button is missing data-target attribute:', btn);
+                        return; // Exit if no data-target is provided
+                    }
+
+                    // Toggle display and update button state/text
+                    const isVisible = answerEl.style.display === 'block';
+                    answerEl.style.display = isVisible ? 'none' : 'block';
+                    btn.classList.toggle('active', !isVisible);
+                    updateSingleToggleAnswerButtonText(btn, isVisible); // Pass the state *before* toggle
+                }
+            }
+
+            function updateSingleToggleAnswerButtonText(btn, isCurrentlyVisible) {
+                const lang = htmlEl.getAttribute('lang') || 'ja';
+                const isVisibleAfterToggle = !isCurrentlyVisible;
+                const jaSpan = btn.querySelector('.lang-ja');
+                const enSpan = btn.querySelector('.lang-en');
+
+                if (!jaSpan || !enSpan) {
+                     // If spans don't exist, update the button's direct text content (less ideal for i18n)
+                     // console.warn('Language spans not found in button:', btn);
+                     // btn.textContent = ... (logic based on isVisibleAfterToggle and lang)
+                     return;
+                 }
+
+                let showTextJa = '表示';
+                let hideTextJa = '非表示';
+                let showTextEn = 'Show';
+                let hideTextEn = 'Hide';
+
+                if (btn.closest('.related-pretest')) {
+                    showTextJa = '解答・解説表示'; hideTextJa = '解答・解説非表示';
+                    showTextEn = 'Show Answer & Explanation'; hideTextEn = 'Hide Answer & Explanation';
+                } else if (btn.closest('#drill-answers')) {
+                    showTextJa = '解説表示'; hideTextJa = '解説非表示';
+                    showTextEn = 'Show Explanation'; hideTextEn = 'Hide Explanation';
+                } else if (btn.closest('#review .review-questions')) {
+                    showTextJa = '解答例表示'; hideTextJa = '解答例非表示';
+                    showTextEn = 'Show Example Answer'; hideTextEn = 'Hide Example Answer';
+                }
+
+                if (lang === 'ja') {
+                    jaSpan.textContent = isVisibleAfterToggle ? hideTextJa : showTextJa;
+                    jaSpan.style.display = 'inline';
+                    enSpan.style.display = 'none';
+                } else {
+                    enSpan.textContent = isVisibleAfterToggle ? hideTextEn : showTextEn;
+                    enSpan.style.display = 'inline';
+                    jaSpan.style.display = 'none';
+                }
+             }
+
+            function toggleLanguage() {
+                const currentLang = htmlEl.getAttribute('lang') || 'ja';
+                const newLang = currentLang === 'ja' ? 'en' : 'ja';
+                htmlEl.setAttribute('lang', newLang);
+                langToggleBtn.textContent = newLang === 'ja' ? 'English' : '日本語';
+                localStorage.setItem('preferredLang', newLang);
+                updateAllToggleAnswerButtonText();
+                updateReadingTimeText();
+                updateModalButtonText();
+
+                const resultDataStr = sessionStorage.getItem('preTestResultData');
+                 if (persistentTestResultsDiv.style.display === 'block' && resultDataStr) {
+                    displayPersistentResults(JSON.parse(resultDataStr));
+                }
+                 if (testResultsDiv.style.display === 'block' && resultDataStr) {
+                     displayTestResults(JSON.parse(resultDataStr));
+                 }
+                 // Update privacy note language
+                 updatePrivacyNoteLanguage();
+            }
+
+            function checkLanguagePreference() {
+                const preferredLang = localStorage.getItem('preferredLang') || 'ja';
+                htmlEl.setAttribute('lang', preferredLang);
+                langToggleBtn.textContent = preferredLang === 'ja' ? 'English' : '日本語';
+                updateReadingTimeText();
+                updateModalButtonText();
+                updateAllToggleAnswerButtonText();
+                updatePrivacyNoteLanguage(); // Update privacy note on load
+            }
+
+             // Function to update privacy note language display
+             function updatePrivacyNoteLanguage() {
+                 const privacyNote = document.querySelector('.privacy-note');
+                 if (privacyNote) {
+                     const lang = htmlEl.getAttribute('lang') || 'ja';
+                     const jaSpan = privacyNote.querySelector('.lang-ja');
+                     const enSpan = privacyNote.querySelector('.lang-en');
+                     if (jaSpan && enSpan) {
+                         jaSpan.style.display = (lang === 'ja') ? 'block' : 'none'; // Use block for paragraph
+                         enSpan.style.display = (lang === 'en') ? 'block' : 'none'; // Use block for paragraph
+                     }
+                 }
+             }
+
+            function updateAllToggleAnswerButtonText() {
+                const allToggleBtns = document.querySelectorAll('.toggle-answer');
+                allToggleBtns.forEach(btn => {
+                    const targetId = btn.getAttribute('data-target');
+                    let answerEl = null;
+                     if (targetId) {
+                         answerEl = document.getElementById(targetId);
+                     }
+                    // We need the *current* visible state to determine the *next* text
+                    const isVisible = answerEl && answerEl.style.display === 'block';
+                    updateSingleToggleAnswerButtonText(btn, isVisible);
+                });
+            }
+
+            function updateReadingTimeText() {
+                const readingTimeEl = document.getElementById('readingTime');
+                if (!readingTimeEl) return;
+                const lang = htmlEl.getAttribute('lang') || 'ja';
+                const jaSpan = readingTimeEl.querySelector('.lang-ja');
+                const enSpan = readingTimeEl.querySelector('.lang-en');
+                 if (jaSpan && enSpan) {
+                     jaSpan.style.display = (lang === 'ja') ? 'inline' : 'none';
+                     enSpan.style.display = (lang === 'en') ? 'inline' : 'none';
+                 }
+            }
+
+            function updateModalButtonText() {
+                 const lang = htmlEl.getAttribute('lang') || 'ja';
+                 const skipBtn = document.getElementById('skipTestBtn');
+                 const submitBtn = preTestForm ? preTestForm.querySelector('button[type="submit"]') : null;
+                 const closeBtn = document.getElementById('closeModalBtn');
+
+                 [skipBtn, submitBtn, closeBtn].forEach(btn => {
+                     if (btn) {
+                         const jaSpan = btn.querySelector('.lang-ja');
+                         const enSpan = btn.querySelector('.lang-en');
+                         if (jaSpan && enSpan) {
+                             jaSpan.style.display = (lang === 'ja') ? 'inline' : 'none';
+                             enSpan.style.display = (lang === 'en') ? 'inline' : 'none';
+                         }
+                     }
+                 });
+            }
+
+            function checkPreTestStatus() {
+                const testCompleted = sessionStorage.getItem('preTestCompleted');
+                const resultData = sessionStorage.getItem('preTestResultData');
+
+                if (testCompleted === 'true' && resultData) {
+                    displayPersistentResults(JSON.parse(resultData));
+                     preTestModalOverlay.style.display = 'none';
+                     document.body.style.overflow = 'auto';
+                } else {
+                    if (preTestForm) preTestForm.style.display = 'block';
+                    if (testResultsDiv) testResultsDiv.style.display = 'none';
+                    preTestModalOverlay.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+                 updateModalButtonText();
+            }
+
+            function submitTest(e) {
+                e.preventDefault();
+                const formData = new FormData(preTestForm);
+                const questions = preTestForm.querySelectorAll('.test-question');
+                let score = 0;
+                const totalQuestions = questions.length;
+                const incorrectAnswers = [];
+
+                questions.forEach((question, index) => {
+                    const questionName = `q${index + 1}`;
+                    const selectedAnswer = formData.get(questionName);
+                    const correctAnswerEl = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                    const sectionId = question.getAttribute('data-section-id');
+                    const questionP = question.querySelector('p');
+                    const questionTextJa = questionP.querySelector('.lang-ja')?.textContent.trim() || questionP.textContent.trim();
+                    const questionTextEn = questionP.querySelector('.lang-en')?.textContent.trim() || questionTextJa;
+
+                    if (correctAnswerEl && selectedAnswer === correctAnswerEl.value) {
+                        score++;
+                    } else if (correctAnswerEl) {
+                        incorrectAnswers.push({
+                            name: questionName,
+                            sectionId: sectionId,
+                            questionTextJa: questionTextJa.replace(/^\d+\.\s*/, ''),
+                            questionTextEn: questionTextEn.replace(/^\d+\.\s*/, '')
+                        });
+                    }
+                });
+
+                const resultData = {
+                    score: score,
+                    total: totalQuestions,
+                    incorrect: incorrectAnswers,
+                    skipped: false
+                };
+
+                displayTestResults(resultData);
+                displayPersistentResults(resultData);
+                saveTestResults(resultData);
+
+                preTestForm.style.display = 'none';
+                testResultsDiv.style.display = 'block';
+                updateModalButtonText();
+            }
+
+            function displayTestResults(data) {
+                 const lang = htmlEl.getAttribute('lang') || 'ja';
+                 const scoreText = (lang === 'ja')
+                    ? `${data.score} / ${data.total} 問正解`
+                    : `Score: ${data.score} / ${data.total}`;
+                 testScoreEl.textContent = scoreText;
+
+                 let reviewHtml = '';
+                 if (data.incorrect.length > 0) {
+                     reviewHtml = `<p>${lang === 'ja' ? '復習が必要な項目:' : 'Items to review:'}</p><ul>`;
+                     data.incorrect.forEach(item => {
+                        const sectionTitle = getSectionTitle(item.sectionId, lang);
+                        const questionText = lang === 'ja' ? item.questionTextJa : item.questionTextEn;
+                        reviewHtml += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">${sectionTitle}</a> (${questionText})</li>`;
+                     });
+                     reviewHtml += '</ul>';
+                 } else if (!data.skipped) {
+                     reviewHtml = `<p>${lang === 'ja' ? '全問正解です！素晴らしい！' : 'All correct! Great job!'}</p>`;
+                 }
+                 reviewLinksEl.innerHTML = reviewHtml;
+
+                 const modalLinks = reviewLinksEl.querySelectorAll('a[data-section-id]');
+                 modalLinks.forEach(link => {
+                     link.removeEventListener('click', handleModalReviewLinkClick);
+                     link.addEventListener('click', handleModalReviewLinkClick);
+                 });
+
+                 closeModalBtn.removeEventListener('click', closeModal);
+                 closeModalBtn.addEventListener('click', closeModal);
+            }
+
+             function displayPersistentResults(data) {
+                 const lang = htmlEl.getAttribute('lang') || 'ja';
+                 let scoreText = '';
+                 let reviewHtml = '';
+
+                 if (data.skipped) {
+                     scoreText = lang === 'ja' ? '事前理解度チェックはスキップされました。' : 'Pre-lesson check was skipped.';
+                 } else {
+                     scoreText = (lang === 'ja')
+                         ? `スコア: ${data.score} / ${data.total} 問正解`
+                         : `Score: ${data.score} / ${data.total}`;
+                     if (data.incorrect.length > 0) {
+                         reviewHtml = `<p>${lang === 'ja' ? '復習が必要な項目:' : 'Items to review:'}</p><ul>`;
+                         data.incorrect.forEach(item => {
+                             const sectionTitle = getSectionTitle(item.sectionId, lang);
+                             const questionText = lang === 'ja' ? item.questionTextJa : item.questionTextEn;
+                             reviewHtml += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">${sectionTitle}</a> (${questionText})</li>`;
+                         });
+                         reviewHtml += '</ul>';
+                     } else {
+                         reviewHtml = `<p>${lang === 'ja' ? '全問正解です！この調子で頑張りましょう！' : 'All correct! Keep up the good work!'}</p>`;
+                     }
+                 }
+
+                 persistentScoreEl.textContent = scoreText;
+                 persistentReviewLinksEl.innerHTML = reviewHtml;
+                 persistentTestResultsDiv.style.display = 'block';
+             }
+
+             function getSectionTitle(sectionId, lang) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const langSpan = h2.querySelector(`.lang-${lang}`);
+                         if (langSpan) {
+                            let titleText = langSpan.textContent.trim();
+                            titleText = titleText.replace(/^\d+\.\s*/, '');
+                            return titleText || sectionId;
+                         } else {
+                            let titleText = h2.textContent.trim();
+                             const spans = h2.querySelectorAll('span');
+                             spans.forEach(span => titleText = titleText.replace(span.textContent, ''));
+                             titleText = titleText.replace(/^\d+\.\s*/, '').trim();
+                            return titleText || sectionId;
+                         }
+                    }
+                }
+                return sectionId;
+            }
+
+            function handleModalReviewLinkClick(e) {
+                e.preventDefault();
+                const sectionId = e.target.getAttribute('data-section-id');
+                closeModal();
+                scrollToSection(sectionId);
+            }
+
+            function handlePersistentReviewLinkClick(e) {
+                 if (e.target.matches('a[data-section-id]')) {
+                    e.preventDefault();
+                    const sectionId = e.target.getAttribute('data-section-id');
+                    scrollToSection(sectionId);
+                }
+            }
+
+            function skipTest() {
+                const resultData = { skipped: true };
+                displayPersistentResults(resultData);
+                saveTestResults(resultData);
+                closeModal();
+            }
+
+            function closeModal() {
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            function scrollToSection(sectionId) {
+                const targetElement = document.getElementById(sectionId);
+                if (targetElement) {
+                    const headerOffset = 50;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                         top: offsetPosition,
+                         behavior: "smooth"
+                    });
+
+                    targetElement.classList.add('highlight-temp');
+                    targetElement.addEventListener('animationend', () => {
+                         targetElement.classList.remove('highlight-temp');
+                    }, { once: true });
+                } else {
+                    console.warn(`Section with ID "${sectionId}" not found.`);
+                }
+            }
+
+            function saveTestResults(data) {
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify(data));
+            }
+
+             function injectRelatedPretests() {
+                 const questions = document.querySelectorAll('#preTestModal .test-question');
+                 questions.forEach((questionDiv, index) => {
+                     const sectionId = questionDiv.getAttribute('data-section-id');
+                     const targetSection = document.getElementById(sectionId);
+
+                     if (targetSection) {
+                         const questionP = questionDiv.querySelector('p');
+                         const questionTextJa = questionP.querySelector('.lang-ja')?.textContent || questionP.textContent;
+                         const questionTextEn = questionP.querySelector('.lang-en')?.textContent || questionTextJa;
+
+                         const correctAnswerInput = questionDiv.querySelector('input[data-correct="true"]');
+                         let correctAnswerTextJa = '';
+                         let correctAnswerTextEn = '';
+                         let explanationJa = '';
+                         let explanationEn = '';
+
+                         if (correctAnswerInput) {
+                             const correctAnswerLabel = questionDiv.querySelector(`label[for="${correctAnswerInput.id}"], label:has(input[value="${correctAnswerInput.value}"])`);
+                             if (correctAnswerLabel) {
+                                 const labelClone = correctAnswerLabel.cloneNode(true);
+                                 const radioInput = labelClone.querySelector('input[type="radio"]');
+                                 if(radioInput) radioInput.remove();
+                                 const fullText = labelClone.textContent.trim().replace(/^.\.\s*/, '');
+                                 correctAnswerTextJa = fullText;
+                                 correctAnswerTextEn = fullText;
+
+                                 const jaChoiceSpan = correctAnswerLabel.querySelector('.lang-ja');
+                                 const enChoiceSpan = correctAnswerLabel.querySelector('.lang-en');
+                                 if (jaChoiceSpan) correctAnswerTextJa = jaChoiceSpan.textContent.trim();
+                                 if (enChoiceSpan) correctAnswerTextEn = enChoiceSpan.textContent.trim();
+                                 else if (jaChoiceSpan) correctAnswerTextEn = jaChoiceSpan.textContent.trim();
+                                 else if (enChoiceSpan) correctAnswerTextJa = enChoiceSpan.textContent.trim();
+
+                             } else {
+                                 correctAnswerTextJa = correctAnswerInput.value;
+                                 correctAnswerTextEn = correctAnswerInput.value;
+                             }
+                         }
+
+                         switch(index) {
+                            case 0:
+                                 explanationJa = '挨拶の場面では、会話をスムーズに終わらせられる "I\'m good." などが一般的です。強い感情を示すと理由を尋ねられることが多いです。';
+                                 explanationEn = 'In greetings, responses like "I\'m good." are common as they end the conversation smoothly. Strong emotions often lead to follow-up questions.';
+                                 break;
+                             case 1:
+                                 explanationJa = '趣味を尋ねる自然な表現として "What do you like to do?" がよく使われます。"What are your hobbies?" は少し子供っぽく聞こえることがあります。';
+                                 explanationEn = '"What do you like to do?" is often used as a natural way to ask about hobbies. "What are your hobbies?" can sound a bit childish.';
+                                 break;
+                             case 2:
+                                 explanationJa = '"What do you do?" は通常、職業を尋ねる質問です。趣味は "What do you like to do?" で尋ねます。';
+                                 explanationEn = '"What do you do?" usually asks about one\'s job. Ask about hobbies with "What do you like to do?".';
+                                 break;
+                             case 3:
+                                 explanationJa = '今回のタロット占いでは、カードが明確に答えられるように「Yes/No」で答えられる質問形式が推奨されました。';
+                                 explanationEn = 'For the tarot reading, Yes/No questions were recommended so the cards could give a clear answer.';
+                                 break;
+                             default:
+                                 explanationJa = '正解の選択肢を確認しましょう。';
+                                 explanationEn = 'Let\'s check the correct option.';
+                         }
+
+                         // Create a unique ID for the answer div based on section and question index
+                         const answerDivId = `related-ans-${sectionId}-${index}`;
+
+                         const relatedTestHtml = `
+                             <h4><span class="lang-ja">関連する事前チェック問題</span><span class="lang-en">Related Pre-Check Question</span></h4>
+                             <p><strong><span class="lang-ja">問題:</span><span class="lang-en">Question:</span></strong> <span class="lang-ja">${questionTextJa}</span><span class="lang-en">${questionTextEn}</span></p>
+                             <button class="toggle-answer" data-target="${answerDivId}">
+                                <span class="lang-ja">解答・解説表示</span><span class="lang-en">Show Answer & Explanation</span>
+                             </button>
+                             <div class="answer" id="${answerDivId}">
+                                 <p><strong><span class="lang-ja">正解:</span><span class="lang-en">Correct Answer:</span></strong> <span class="lang-ja">${correctAnswerTextJa}</span><span class="lang-en">${correctAnswerTextEn}</span></p>
+                                 <p><strong><span class="lang-ja">解説:</span><span class="lang-en">Explanation:</span></strong> <span class="lang-ja">${explanationJa}</span><span class="lang-en">${explanationEn}</span></p>
+                             </div>
+                         `;
+
+                         const containerDiv = document.createElement('div');
+                         containerDiv.className = 'related-pretest';
+                         containerDiv.innerHTML = relatedTestHtml;
+
+                         targetSection.appendChild(containerDiv);
+
+                     } else {
+                         console.warn(`Target section not found for related test: ${sectionId}`);
+                     }
+                 });
+                 updateAllToggleAnswerButtonText();
+             }
+
+            function setupEventListeners() {
+                window.addEventListener('scroll', () => {
+                    updateProgressBar();
+                    checkScrollTopBtn();
+                });
+
+                scrollTopBtn.addEventListener('click', smoothScrollToTop);
+
+                checklistItems.forEach(item => {
+                    item.addEventListener('click', toggleChecklistItem);
+                });
+
+                langToggleBtn.addEventListener('click', toggleLanguage);
+
+                if (preTestForm) {
+                     preTestForm.addEventListener('submit', submitTest);
+                }
+                if (skipTestBtn) {
+                    skipTestBtn.addEventListener('click', skipTest);
+                }
+            }
+
+             function setupDynamicEventListeners() {
+                 const container = document.querySelector('.container');
+                 if (container) {
+                     container.addEventListener('click', handleToggleAnswerClick);
+                 }
+                 if (persistentTestResultsDiv) {
+                    persistentTestResultsDiv.addEventListener('click', handlePersistentReviewLinkClick);
+                }
+             }
+
+        });
+    </script>
+
+</body>
+</html>
