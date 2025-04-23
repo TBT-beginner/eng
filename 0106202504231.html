@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Ready ① 名詞・冠詞・代名詞 | 2025/4/23 授業記録</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #28A745; /* 緑色系統 */
+            --color-accent: #FD7E14; /* オレンジ系 */
+            --color-link: #28A745;
+            --color-border: #DEE2E6;
+            --bg-answer: #F0F0F0;
+            --bg-translation: #E9F5FF; /* 日本語訳の背景色 */
+            --bg-test-result: #FFFBEB;
+            --border-test-result: #FFEEBA;
+            --bg-related-test: #F1F8E9;
+            --border-related-test: #DCEDC8;
+            --font-family: 'Noto Sans JP', sans-serif;
+            --line-height: 1.75;
+            --container-width: 850px;
+        }
+
+        /* Reset and Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: var(--line-height);
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            margin: 0;
+            padding-top: 5px; /* Space for progress bar */
+        }
+
+        /* Progress Bar */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Container */
+        .container {
+            max-width: var(--container-width);
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--bg-content);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--color-primary);
+            margin-top: 1.8em;
+            margin-bottom: 0.8em;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 0.5em;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-left: 5px solid var(--color-primary);
+            padding-left: 0.5em;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        p {
+            margin-bottom: 1.2em;
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            /* Slightly darker link color on hover */
+             color: color-mix(in srgb, var(--color-link) 85%, black);
+        }
+
+        ul, ol {
+            margin-bottom: 1.2em;
+            padding-left: 1.8em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        .highlight {
+            background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        code {
+            font-family: monospace;
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .code-block {
+            background-color: #e9ecef;
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1.2em;
+            font-size: 0.9em;
+            white-space: pre-wrap; /* Allow wrapping in code blocks */
+            word-break: break-all; /* Break long words if needed */
+        }
+
+
+        blockquote {
+            border-left: 4px solid var(--color-border);
+            padding-left: 1em;
+            margin: 1.5em 0;
+            color: var(--text-main); /* Slightly darker than secondary for readability */
+        }
+        blockquote p { margin-bottom: 0.5em; } /* Adjust margin for blockquote paragraphs */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.95em;
+        }
+
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 0.8em 1em;
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+        }
+
+        th {
+            background-color: #f1f3f5;
+            font-weight: 700;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mb-2 { margin-bottom: 1rem; }
+
+        /* Page Elements */
+        #readingTime {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 1.5em;
+        }
+
+        .summary-box {
+            background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+            border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+            border-left: 5px solid var(--color-primary);
+            padding: 1em 1.5em;
+            margin-bottom: 2em;
+            border-radius: 5px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            font-size: 1.2em;
+            color: var(--color-primary);
+        }
+
+        #tableOfContents {
+            background-color: #f8f9fa;
+            padding: 1.5em;
+            border-radius: 5px;
+            margin-bottom: 2em;
+            border: 1px solid var(--color-border);
+        }
+        #tableOfContents h3 {
+            margin-top: 0;
+            margin-bottom: 1em;
+            font-size: 1.2em;
+            text-align: center;
+            color: var(--text-main);
+        }
+        #tocList {
+            list-style: none;
+            padding-left: 0;
+            columns: 2;
+            column-gap: 2em;
+            counter-reset: toc-counter;
+        }
+        #tocList li {
+            margin-bottom: 0.6em;
+            counter-increment: toc-counter;
+            break-inside: avoid-column; /* Prevent list items from breaking across columns */
+        }
+         #tocList li a::before {
+            content: counter(toc-counter) ". ";
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 0.3em;
+        }
+        #tocList li a {
+            color: var(--text-main);
+            font-size: 0.95em;
+            display: inline-block; /* Ensure proper spacing and alignment */
+        }
+        #tocList li a:hover {
+            color: var(--color-primary);
+        }
+
+        #persistentTestResults, .related-pretest {
+            padding: 1.5em;
+            margin: 2em 0;
+            border-radius: 5px;
+        }
+
+        #persistentTestResults {
+            background-color: var(--bg-test-result);
+            border: 1px solid var(--border-test-result);
+        }
+        #persistentTestResults h4 {
+            margin-top: 0;
+            margin-bottom: 0.8em;
+            color: var(--text-main);
+        }
+        #persistentTestResults p { margin-bottom: 0.5em; }
+        #persistentTestResults ul { padding-left: 1.5em; margin-bottom: 0; }
+        #persistentTestResults li a { font-weight: bold; }
+
+        .related-pretest {
+            background-color: var(--bg-related-test);
+            border: 1px solid var(--border-related-test);
+            margin-top: 2em;
+        }
+        .related-pretest h4 {
+             margin-top: 0;
+             margin-bottom: 0.8em;
+             font-size: 1.1em;
+             color: var(--text-main);
+        }
+        .related-pretest .question-text { margin-bottom: 1em; }
+        /* Hide empty related-pretest divs */
+        .related-pretest:empty {
+            display: none;
+        }
+
+
+        .supplementary-box {
+            background-color: #e7f5ff;
+            border-left: 5px solid #17a2b8;
+            padding: 1em 1.5em;
+            margin: 1.5em 0;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.95em;
+        }
+        .supplementary-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            color: #17a2b8;
+            font-size: 1.1em;
+        }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Drill Answers, Review Questions, Related Answers */
+        .toggle-answer, .toggle-translation, .toggle-view { /* Added .toggle-view */
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: white;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            transition: background-color 0.2s;
+        }
+        .toggle-answer:hover, .toggle-translation:hover, .toggle-view:hover { /* Added .toggle-view */
+            background-color: color-mix(in srgb, var(--color-accent) 85%, black);
+        }
+        .toggle-translation {
+             background-color: var(--color-primary); /* 日本語訳ボタンの色を変える */
+             margin-left: 1em; /* 問題文との間に少しスペース */
+        }
+        .toggle-translation:hover {
+            background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+        }
+        /* Story specific toggle button styling */
+        .story-controls { margin-bottom: 1em; }
+        .story-controls .toggle-view { margin-right: 1em; }
+        .story-controls .toggle-view[data-view="translations"] {
+            background-color: var(--color-primary);
+        }
+        .story-controls .toggle-view[data-view="translations"]:hover {
+             background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+        }
+
+
+        .answer, .drill-translation {
+            padding: 1em;
+            margin-top: 0.5em;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+            /* display: none; はJSで制御 */
+        }
+        .answer {
+            background-color: var(--bg-answer);
+        }
+        .drill-translation {
+            background-color: var(--bg-translation);
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .answer p:last-child, .drill-translation p:last-child { margin-bottom: 0; }
+        .answer pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #f8f9fa;
+            padding: 1em;
+            border-radius: 4px;
+            margin-top: 0.5em;
+            font-size: 0.9em;
+        }
+        .drill-item {
+            margin-bottom: 1.5em;
+            padding-bottom: 1.5em;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .drill-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        #section-drill-groupwork li { margin-bottom: 1.5em; } /* Add space between drill questions */
+
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            position: relative;
+            padding-left: 2em;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-bottom: 0.8em;
+        }
+        .checklist li::before {
+            content: '⬜';
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+            font-size: 1.2em;
+            transition: content 0.2s;
+        }
+        .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+        .checklist li.checked::before {
+            content: '✅';
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+        footer p { margin-bottom: 0.5em; }
+
+        /* Scroll Top Button */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none; /* Initially hidden */
+            opacity: 0.8;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+        }
+        #scrollTopBtn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Pre-Test Modal */
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            overflow-y: auto; /* Allow modal scroll if content is too long */
+            padding: 20px 0;
+        }
+        #preTestModal {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 700px;
+            max-height: 90vh; /* Limit height */
+            overflow-y: auto; /* Allow scroll within modal content */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        #preTestModal h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .test-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            background-color: #fdfdfd;
+        }
+        .test-question p {
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .test-options label {
+            display: block;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            padding: 0.5em;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .test-options label:hover {
+            background-color: #f1f3f5;
+        }
+        .test-options input[type="radio"] {
+            margin-right: 0.8em;
+            vertical-align: middle;
+        }
+        #preTestModal .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        #preTestModal button {
+            padding: 0.8em 1.5em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+        #preTestModal #submitTestBtn {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        #preTestModal #submitTestBtn:hover {
+            background-color: color-mix(in srgb, var(--color-primary) 85%, black);
+        }
+        #preTestModal #skipTestBtn {
+            background-color: var(--text-secondary);
+            color: white;
+        }
+        #preTestModal #skipTestBtn:hover {
+            background-color: color-mix(in srgb, var(--text-secondary) 85%, black);
+        }
+        #testResults {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-test-result);
+            background-color: var(--bg-test-result);
+            border-radius: 5px;
+        }
+        #testResults h4 { margin-top: 0; margin-bottom: 1em; }
+        #testResults ul { padding-left: 1.5em; margin-bottom: 1em;}
+        #testResults li a { font-weight: bold; }
+        #testResults .close-modal-btn {
+             display: block;
+             margin: 1.5em auto 0;
+             background-color: var(--color-accent);
+             color: white;
+        }
+
+        /* Temporary Highlight */
+        .highlight-temp {
+            animation: highlight-fade 1.5s ease-out;
+        }
+        @keyframes highlight-fade {
+            0% { background-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+            100% { background-color: transparent; }
+        }
+
+        /* Sentence Pattern Story Styles */
+        .sentence-element {
+            font-size: 0.85em;
+            color: var(--color-primary); /* Make elements stand out a bit */
+            margin-left: 0.3em;
+            font-style: italic;
+            display: none; /* Initially hidden */
+            font-weight: normal; /* Avoid inheriting highlight bold */
+        }
+        .sentence-translation {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-top: 0.3em;
+            background-color: var(--bg-translation);
+            padding: 0.2em 0.5em;
+            border-radius: 3px;
+            display: none; /* Initially hidden */
+            /* display: block; Will be toggled by JS */
+            font-style: normal;
+        }
+        /* Show elements/translations when parent has the class */
+        #story-blockquote.show-elements .sentence-element {
+            display: inline;
+        }
+        #story-blockquote.show-translations .sentence-translation {
+            display: block; /* Display on its own line when shown */
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+                width: auto;
+            }
+            #tocList {
+                columns: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            html {
+                font-size: 15px;
+            }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            .container { padding: 1rem; }
+            #preTestModal {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+            #preTestModal .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+             #preTestModal button { width: 100%; }
+            #scrollTopBtn { width: 40px; height: 40px; font-size: 20px; }
+            .toggle-translation { margin-left: 0; margin-top: 0.5em; display: block; width: fit-content;} /* Adjust translation button on small screens */
+             .story-controls .toggle-view { margin-right: 0.5em; margin-bottom: 0.5em;} /* Adjust story controls on small screens */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Pre-Test Modal -->
+    <div id="preTestModalOverlay">
+        <div id="preTestModal">
+            <h2>事前理解度チェック</h2>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="section-nouns">
+                    <p>1. 次のうち、通常<strong data-tooltip="数えられない名詞。a/anを付けず、複数形にもしないのが基本。">不可算名詞</strong>として扱われるものはどれですか？</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q1" value="a"> apple</label>
+                        <label><input type="radio" name="q1" value="b" data-correct="true"> water</label>
+                        <label><input type="radio" name="q1" value="c"> book</label>
+                        <label><input type="radio" name="q1" value="d"> country</label>
+                    </div>
+                </div>
+                <div class="test-question" data-section-id="section-articles">
+                    <p>2. "She has ___ useful information." 空所に入る冠詞はどれですか？</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q2" value="a"> a</label>
+                        <label><input type="radio" name="q2" value="b"> an</label>
+                        <label><input type="radio" name="q2" value="c"> the</label>
+                        <label><input type="radio" name="q2" value="d" data-correct="true"> 不要 (×)</label>
+                    </div>
+                </div>
+                 <div class="test-question" data-section-id="section-pronouns">
+                    <p>3. "Tom showed ___ the picture." 空所に入る適切な人称代名詞はどれですか？</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q3" value="a"> we</label>
+                        <label><input type="radio" name="q3" value="b"> our</label>
+                        <label><input type="radio" name="q3" value="c" data-correct="true"> us</label>
+                        <label><input type="radio" name="q3" value="d"> ours</label>
+                    </div>
+                </div>
+                <div class="test-question" data-section-id="section-sentence-patterns">
+                    <p>4. 第2文型 (SVC) の特徴として正しいものはどれですか？</p>
+                    <div class="test-options">
+                        <label><input type="radio" name="q4" value="a"> SがOをVする</label>
+                        <label><input type="radio" name="q4" value="b" data-correct="true"> S=Cの関係が成り立つ</label>
+                        <label><input type="radio" name="q4" value="c"> 目的語が2つある</label>
+                        <label><input type="radio" name="q4" value="d"> M(修飾語)が必須である</label>
+                    </div>
+                </div>
+                <div class="test-question" data-section-id="section-sentence-patterns">
+                    <p>5. "People call him Ted." は第何文型ですか？ また、その文型の特徴は？</p>
+                     <div class="test-options">
+                        <label><input type="radio" name="q5" value="a"> 第3文型 (SVO)</label>
+                        <label><input type="radio" name="q5" value="b"> 第4文型 (SVOO), O1≠O2</label>
+                        <label><input type="radio" name="q5" value="c" data-correct="true"> 第5文型 (SVOC), O=C</label>
+                        <label><input type="radio" name="q5" value="d"> 第1文型 (SV)</label>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="skipTestBtn">テストをスキップ</button>
+                    <button type="submit" id="submitTestBtn">採点する</button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h4>テスト結果</h4>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                 <button class="close-modal-btn">内容を確認する</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="progressBar"></div>
+    <div class="container">
+        <h1>Get Ready ① 名詞・冠詞・代名詞 | 2025/4/23 授業記録</h1>
+        <p id="readingTime">読了時間目安: 計算中...</p>
+
+        <div class="summary-box">
+            <h3>本日の授業概要 (2025/4/23)</h3>
+            <ul>
+                <li>単語練習 51-75</li>
+                <li>Get Ready ① 名詞・冠詞・代名詞 の演習問題確認（グループワーク）</li>
+                <li>品詞と文の要素、基本5文型の解説（講義）</li>
+                <li>文型判別の練習（ストーリー読解）</li>
+                <li>宿題連絡（一般動詞とbe動詞の演習、文型判別）</li>
+            </ul>
+        </div>
+
+        <div id="tableOfContents">
+             <h3>目次</h3>
+             <ol id="tocList">
+                 <!-- 目次内容はJSで生成 -->
+             </ol>
+        </div>
+
+        <div id="persistentTestResults" style="display: none;">
+            <h4>事前理解度チェックの結果</h4>
+            <p id="persistentScore"></p>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <section id="section-nouns">
+            <h2>A. 名詞</h2>
+            <p>名詞は人や物の名前を表す言葉です。名詞には大きく分けて<strong data-tooltip="一つ、二つと数えられる名詞。例: apple, book, country">数えられる名詞 (可算名詞)</strong>と<strong data-tooltip="一つ、二つとは数えない名詞。液体や物質、抽象概念など。例: water, information, homework">数えられない名詞 (不可算名詞)</strong>があります。</p>
+            <p class="code-block">Tom eats an <code data-tooltip="リンゴ（可算名詞・単数）">apple</code> and drinks <code data-tooltip="水（不可算名詞）">water</code> every morning.<br>
+            (毎朝トムはリンゴを食べ，水を飲む。)</p>
+            <p><strong>数えられる名詞 (可算名詞):</strong></p>
+            <ul>
+                <li>単数 (1つのとき): 名詞の前に <code>a</code> か <code>an</code> を付けます。 (例: <code>a book</code>, <code>an umbrella</code>)</li>
+                <li>複数 (2つ以上のとき): 名詞の語尾に <code>-s</code> か <code>-es</code> を付けます。(例: <code>books</code>, <code>classes</code>)</li>
+                <li><strong class="highlight">注意:</strong> 不規則に変化する複数形もあります (例: <code>child</code> → <code>children</code>, <code>woman</code> → <code>women</code>)。これらは覚える必要があります。 (詳細は教科書 p.146 / α p.128 を参照)</li>
+            </ul>
+            <p><strong>数えられない名詞 (不可算名詞):</strong></p>
+            <ul>
+                <li>1つ、2つ…と数えないものです。(例: <code>water</code>, <code>bread</code>, <code>information</code>, <code>homework</code>)</li>
+                <li>名詞の前に <code>a</code> / <code>an</code> は付けません。</li>
+                <li>名詞の語尾に <code>-s</code> / <code>-es</code> は付けません (複数形にしません)。</li>
+                <li>量を表すときは、<code>a piece of ~</code>, <code>a glass of ~</code>, <code>some ~</code> などの表現を使います。</li>
+            </ul>
+             <div class="related-pretest" data-for-section="section-nouns">
+                <!-- JSで関連問題挿入 -->
+            </div>
+        </section>
+
+        <section id="section-articles">
+            <h2>B. 冠詞</h2>
+            <p>冠詞は名詞の前に付く語で、<code>a</code>, <code>an</code>, <code>the</code> の3種類があります。</p>
+            <ul>
+                <li><strong>a / an:</strong> <strong data-tooltip="聞き手にとって「どの〜」か特定できない、初めて話題に出る単数の可算名詞に付く。">不特定のもの</strong>が1つあることを表します。
+                    <ul>
+                        <li>発音が<strong data-tooltip="a, i, u, e, o のような音。注意: 文字ではなく音で判断する。">母音</strong>で始まる名詞の前には <code>an</code> (例: <code>an apple</code>, <code>an hour</code>)。</li>
+                        <li>発音が<strong data-tooltip="母音以外の音。">子音</strong>で始まる名詞の前には <code>a</code> (例: <code>a book</code>, <code>a university</code>)。</li>
+                    </ul>
+                </li>
+                <li><strong>the:</strong> その名詞が<strong data-tooltip="話し手と聞き手の間で「どの〜」か分かっているもの。文脈や状況、あるいは世界に一つしかないものなど。">特定のもの</strong>であることを表します。可算名詞 (単数・複数) と不可算名詞の両方に使えます。
+                    <ul>
+                         <li>一度話題に出たもの: "I have <span class="highlight">a</span> dog. <span class="highlight">The</span> dog is cute."</li>
+                         <li>状況から明らかなもの: "Please close <span class="highlight">the</span> door." (どのドアか分かっている)</li>
+                         <li>世界に一つしかないもの: <span class="highlight">the</span> sun, <span class="highlight">the</span> moon, <span class="highlight">the</span> earth</li>
+                         <li>発音注意: 後ろの語が母音で始まるときは /ði/ (ディ), 子音で始まるときは /ðə/ (ザ) と発音します。(例: the apple /ði ǽpl/, the book /ðə bʊk/)</li>
+                    </ul>
+                </li>
+                <li><strong>冠詞なし (×):</strong> 不特定の不可算名詞 (例: <code>I like music.</code>), 不特定の複数可算名詞 (例: <code>Cats are cute.</code>), 固有名詞 (例: <code>Tokyo</code>, <code>Mr. Tanaka</code>), 食事名 (例: <code>have breakfast</code>) など、冠詞が付かない場合もあります。</li>
+            </ul>
+            <p>冠詞の使い分けは、話し手と聞き手の間の共通認識によって決まります。</p>
+             <table>
+                <thead>
+                    <tr>
+                        <th>話し手や聞き手の理解</th>
+                        <th>数えられる名詞 (単数)</th>
+                        <th>数えられる名詞 (複数)</th>
+                        <th>数えられない名詞</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>特定できない場合</td>
+                        <td><code>a book</code> (1冊の本)</td>
+                        <td><code>books</code> (複数の本)</td>
+                        <td><code>water</code> (水)</td>
+                    </tr>
+                    <tr>
+                        <td>特定できる場合</td>
+                        <td><code>the book</code> (その本)</td>
+                        <td><code>the books</code> (それらの本)</td>
+                        <td><code>the water</code> (その水)</td>
+                    </tr>
+                </tbody>
+            </table>
+             <div class="related-pretest" data-for-section="section-articles">
+                <!-- JSで関連問題挿入 -->
+            </div>
+        </section>
+
+        <section id="section-pronouns">
+            <h2>C. 人称代名詞</h2>
+            <p>人称代名詞は、名詞 (特に人) の代わりをする語です。文中での役割によって形が変わります (格変化)。</p>
+            <ul>
+                <li><strong>主格:</strong> 主語 (S) として使われる形。「～は」「～が」</li>
+                <li><strong>所有格:</strong> 名詞の前に付いて「～の」という意味を表す。</li>
+                <li><strong>目的格:</strong> 目的語 (O) や前置詞の後ろで使われる形。「～を」「～に」</li>
+                <li><strong>所有代名詞:</strong> 「～のもの」という意味を表す代名詞。〈所有格 + 名詞〉の代わり。</li>
+            </ul>
+             <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2">人称</th>
+                        <th colspan="4">単数</th>
+                        <th colspan="4">複数</th>
+                    </tr>
+                    <tr>
+                        <th>主格 (～は)</th>
+                        <th>所有格 (～の)</th>
+                        <th>目的格 (～を/に)</th>
+                        <th>所有代名詞 (～のもの)</th>
+                        <th>主格 (～は)</th>
+                        <th>所有格 (～の)</th>
+                        <th>目的格 (～を/に)</th>
+                        <th>所有代名詞 (～のもの)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1人称 (自分)</td>
+                        <td>I</td>
+                        <td>my</td>
+                        <td>me</td>
+                        <td>mine</td>
+                        <td>we</td>
+                        <td>our</td>
+                        <td>us</td>
+                        <td>ours</td>
+                    </tr>
+                    <tr>
+                        <td>2人称 (相手)</td>
+                        <td>you</td>
+                        <td>your</td>
+                        <td>you</td>
+                        <td>yours</td>
+                        <td>you</td>
+                        <td>your</td>
+                        <td>you</td>
+                        <td>yours</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">3人称 (その他)</td>
+                        <td>he (彼)</td>
+                        <td>his</td>
+                        <td>him</td>
+                        <td>his</td>
+                        <td rowspan="3">they (彼ら/彼女ら/それら)</td>
+                        <td rowspan="3">their</td>
+                        <td rowspan="3">them</td>
+                        <td rowspan="3">theirs</td>
+                    </tr>
+                    <tr>
+                        <td>she (彼女)</td>
+                        <td>her</td>
+                        <td>her</td>
+                        <td>hers</td>
+                    </tr>
+                    <tr>
+                        <td>it (それ)</td>
+                        <td>its</td>
+                        <td>it</td>
+                        <td>―</td>
+                    </tr>
+                </tbody>
+            </table>
+             <div class="related-pretest" data-for-section="section-pronouns">
+                <!-- JSで関連問題挿入 -->
+            </div>
+        </section>
+
+        <section id="section-drill-groupwork">
+             <h2>Drill（グループワーク）</h2>
+             <p>以下の問題をグループで解き、確認し合いました。解答と解説は「ドリル解答・解説」セクションで確認してください。</p>
+             <h3>１ [ ]内の名詞を必要に応じて適切な形にして，英文を完成させなさい。A</h3>
+             <ol>
+                 <li>He has a ______ and two ______. [ brother / sister ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-1">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-1" style="display: none;">彼には兄[弟]が１人と，姉[妹]が２人いる。</div>
+                 </li>
+                 <li>I have ______ and ______. [ bread / butter ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-2">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-2" style="display: none;">私はバター付きのパンを食べる。</div>
+                 </li>
+                 <li>She visited many ______. [ country ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-3">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-3" style="display: none;">彼女はたくさんの国を訪れた。</div>
+                 </li>
+                 <li>How many ______ do you have today? [ class ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-4">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-4" style="display: none;">今日は何時間授業がありますか。</div>
+                 </li>
+                 <li>He bought some ______ for dinner. [ potato ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-5">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-5" style="display: none;">彼は夕食用にいくつかジャガイモを買った。</div>
+                 </li>
+                 <li>The ______ went camping for three ______. [ child / day ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-6">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-6" style="display: none;">その子どもたちは３日間のキャンプに出かけた。</div>
+                 </li>
+                 <li>Those ______ are ______ at my school. [ woman / teacher ]
+                     <button class="toggle-translation" data-target="#drill-trans-1-7">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-1-7" style="display: none;">あの女の人たちは私の学校の先生だ。</div>
+                 </li>
+             </ol>
+             <h3>２ [ ]内から適切な冠詞を選び，下線部に入れなさい。冠詞が必要ない場合は×と答えなさい。B [ a / an / the ]</h3>
+             <ol>
+                 <li> Take ______ umbrella.
+                     <button class="toggle-translation" data-target="#drill-trans-2-1">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-2-1" style="display: none;">傘を持って行きなさい。</div>
+                 </li>
+                 <li> I have ______ dog and a cat. ______ dog sleeps under my bed.
+                     <button class="toggle-translation" data-target="#drill-trans-2-2">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-2-2" style="display: none;">私は犬と猫を飼っている。犬は私のベッドの下で寝る。</div>
+                 </li>
+                 <li> He has ______ useful information.
+                      <button class="toggle-translation" data-target="#drill-trans-2-3">日本語訳を見る</button>
+                      <div class="drill-translation" id="drill-trans-2-3" style="display: none;">彼は役に立つ情報を持っている。</div>
+                 </li>
+                 <li> I don’t have ______ homework today.
+                      <button class="toggle-translation" data-target="#drill-trans-2-4">日本語訳を見る</button>
+                      <div class="drill-translation" id="drill-trans-2-4" style="display: none;">今日は宿題がない。</div>
+                 </li>
+                 <li> ______ moon is smaller than ______ earth.
+                      <button class="toggle-translation" data-target="#drill-trans-2-5">日本語訳を見る</button>
+                      <div class="drill-translation" id="drill-trans-2-5" style="display: none;">月は地球よりも小さい。</div>
+                 </li>
+             </ol>
+             <h3>３ [ ]内の人称代名詞を必要に応じて適切な形にして，英文を完成させなさい。C</h3>
+             <ol>
+                 <li> ______ visited ______ grandmother yesterday. [ I ]
+                     <button class="toggle-translation" data-target="#drill-trans-3-1">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-3-1" style="display: none;">昨日，祖母の家を訪れた。</div>
+                 </li>
+                 <li> I saw ______ at the party. [ he ]
+                     <button class="toggle-translation" data-target="#drill-trans-3-2">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-3-2" style="display: none;">パーティーで彼を見かけた。</div>
+                 </li>
+                 <li> Tom showed ______ the picture. [ we ]
+                     <button class="toggle-translation" data-target="#drill-trans-3-3">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-3-3" style="display: none;">彼は私たちにその写真を見せてくれた。</div>
+                 </li>
+                 <li> We went to watch ______ soccer game. [ they ]
+                     <button class="toggle-translation" data-target="#drill-trans-3-4">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-3-4" style="display: none;">私たちは彼らのサッカーの試合を見に行った。</div>
+                 </li>
+                 <li> “Is this yours?” “No, it’s ______.” [ she ]
+                     <button class="toggle-translation" data-target="#drill-trans-3-5">日本語訳を見る</button>
+                     <div class="drill-translation" id="drill-trans-3-5" style="display: none;">「これはあなたのものですか。」「いいえ，それは彼女のものです。」</div>
+                 </li>
+             </ol>
+        </section>
+
+        <section id="section-sentence-elements">
+            <h2>品詞と文の要素（講義）</h2>
+            <p>英文を正しく理解するためには、単語の役割（品詞）と文の中での働き（文の要素）を知ることが重要です。</p>
+
+            <h3>品詞</h3>
+            <p>単語はその機能や形態によって、以下の品詞に分類されます。</p>
+            <ul>
+                <li><strong>名詞:</strong> 人・もの・ことの名前を表す (例: Tom, apple, water, information)</li>
+                <li><strong>代名詞:</strong> 名詞の代わりをする (例: I, you, he, she, it, they, this)</li>
+                <li><strong>動詞:</strong> 動作や状態を表す (例: eat, drink, visit, be, become)</li>
+                <li><strong>形容詞:</strong> 名詞を修飾し、その性質や状態を表す (例: useful, famous, interesting, red)</li>
+                <li><strong>副詞:</strong> 動詞、形容詞、他の副詞、文全体を修飾する (例: very, every morning, happily, quickly)</li>
+                <li><strong>前置詞:</strong> 名詞や代名詞の前に置き、他の語句との関係を示す (例: in, on, under, at, to, for, with)</li>
+                <li><strong>接続詞:</strong> 語・句・節などを結びつける (例: and, but, or, when, because, if)</li>
+                <li><strong>間投詞:</strong> 驚きや感情を表す (例: Oh!, Wow!, Well,)</li>
+            </ul>
+
+            <h3>文の要素</h3>
+            <p>英文は、以下の要素から成り立っています。文の構造を理解するために、これらの記号 (SVOCM) を使います。</p>
+            <ul>
+                <li><strong>S (主語):</strong> 「～は」「～が」にあたる部分。動作や状態の主体。主に名詞や代名詞がなる。</li>
+                <li><strong>V (動詞):</strong> 「～する」「～である」にあたる部分。動作や状態を表す。</li>
+                <li><strong>O (目的語):</strong> 「～を」「～に」にあたる部分。動作の対象。主に名詞や代名詞がなる。</li>
+                <li><strong>C (補語):</strong> 主語 (S) や目的語 (O) の性質や状態を説明する語。名詞や形容詞がなる。</li>
+                <li><strong data-tooltip="Modifier: 文の他の要素を修飾（説明）する部分。場所、時、方法、理由などを示す副詞句や前置詞句が多い。文の骨格には含まれない。">M (修飾語句):</strong> 文の骨格 (S, V, O, C) を詳しく説明する部分。副詞、前置詞句などが多い。なくても文は成り立つことが多い。</li>
+            </ul>
+            <div class="supplementary-box">
+                <h4>ポイント</h4>
+                <p>品詞は「単語の種類」、文の要素は「文の中での役割」です。例えば、名詞は主語(S)、目的語(O)、補語(C)になることができます。動詞は述語動詞(V)になります。</p>
+            </div>
+             <div class="related-pretest" data-for-section="section-sentence-elements">
+                <!-- JSで関連問題挿入: このセクションに対応する問題がない場合、このdivは空のまま -->
+            </div>
+        </section>
+
+        <section id="section-sentence-patterns">
+             <h2>文型判別の練習</h2>
+
+             <!-- === ここから修正・追加部分 === -->
+             <p>英語の文法学習の中心は、ここまで見てきた名詞の形が変わるような<strong>語形変化</strong>と、これから見ていく<strong>語順のルール</strong>を覚えることです。</p>
+             <p>例えば日本語では、次のような文において、<code>/</code>で区切った部分（文の成分）を入れ替えても意味は通じます。</p>
+             <blockquote class="code-block">
+                 わたしは / 本屋で / 昨日 / 2冊 / 本を / 買った。<br>
+                 昨日 / わたしは / 本屋で / 本を / 2冊 / 買った。<br>
+                 本を / 2冊 / わたしは / 昨日 / 本屋で / 買った。 (など多数)
+             </blockquote>
+             <p>一方、対応する英語の文では、語順を入れ替えることは基本的にできません。</p>
+             <blockquote class="code-block">
+                 I bought two books at a bookstore yesterday.
+             </blockquote>
+             <p>日本語では語順の自由度が高く、文のパターンは多様ですが、英語の基本的な文のパターン（文型）は、主に次の5つしかありません。たった5つのパターンを覚えれば英文の骨格が理解できるようになります。これは朗報ですね！</p>
+             <p>これを理解すると、英文の構造把握や読解が容易になります。主要な5つの文型を見ていきましょう。</p>
+             <!-- === ここまで修正・追加部分 === -->
+
+             <h3>第1文型: S + V (+ M)</h3>
+             <p>「SがVする」という意味を表します。動詞 (V) の後に目的語 (O) や補語 (C) は不要です。場所や時を表す修飾語 (M) が付くことが多いです。</p>
+             <p class="code-block"><u>Kate</u> <u>runs</u> <u>very fast</u>.<br>  S     V       M<br>(ケイトはとても速く走る)</p>
+             <ul>
+                 <li><strong>Point:</strong> Vには<strong data-tooltip="目的語(O)を必要としない動詞。例: run, live, sleep, go">自動詞</strong>が使われます。</li>
+                 <li>文の骨格はSとVだけで構成されます。</li>
+                 <li>M (修飾語) は文の必須要素ではありません。</li>
+             </ul>
+
+             <h3>第2文型: S + V + C</h3>
+             <p>「SはCである」または「SはCになる」という意味を表します。主語 (S) と補語 (C) の間に <strong>S = C</strong> の関係が成り立ちます。</p>
+             <p class="code-block"><u>Next Monday</u> <u>is</u> <u>a holiday</u>.<br>      S         V       C (名詞)<br>(次の月曜日は休日だ)<br><br><u>Kate</u> <u>became</u> <u>famous</u>.<br> S       V        C (形容詞)<br>(ケイトは有名になった)</p>
+             <ul>
+                 <li><strong>Point:</strong> <code>be</code>動詞 (is, am, are, was, were) や <code>become</code> が代表的な動詞です。他にも <code>look</code>, <code>seem</code>, <code>feel</code>, <code>get</code> などがあります。</li>
+                 <li>C (補語) には名詞または形容詞が来ます。</li>
+             </ul>
+
+             <h3>第3文型: S + V + O (+ M)</h3>
+             <p>「SがOを(に)Vする」という意味を表します。動詞 (V) の後に目的語 (O) が1つだけ来ます。</p>
+             <p class="code-block"><u>My little brother</u> <u>watches</u> <u>television</u> <u>every morning</u>.<br>         S              V          O            M<br>(私の弟は毎朝テレビを見る)</p>
+             <ul>
+                 <li><strong>Point:</strong> Vには<strong data-tooltip="目的語(O)を必要とする動詞。多くの動詞がこれにあたる。例: watch, eat, have, visit">他動詞</strong>が使われます。</li>
+                 <li>O (目的語) には名詞 (または代名詞の目的格) が来ます。</li>
+                 <li>S ≠ O の関係です。</li>
+             </ul>
+
+             <h3>第4文型: S + V + O1 + O2</h3>
+             <p>「SがO1 (人) に O2 (もの) をVする」という意味を表します。目的語が2つ続きます。</p>
+             <p class="code-block"><u>My uncle</u> <u>gave</u> <u>me</u> <u>this watch</u>.<br>    S        V    O1   O2<br>(叔父は私にこの腕時計をくれた)</p>
+             <ul>
+                 <li><strong>Point:</strong> <code>give</code>, <code>show</code>, <code>tell</code>, <code>buy</code>, <code>teach</code> など、授与を表す動詞が多く使われます。</li>
+                 <li>O1 (間接目的語) には主に「人」、O2 (直接目的語) には主に「もの」が来ます。</li>
+                 <li>O1 ≠ O2 の関係です。</li>
+                 <li>多くの場合、第3文型に書き換え可能です (例: My uncle gave this watch <strong>to</strong> me.)。前置詞 (to, for など) が必要になります。</li>
+             </ul>
+
+             <h3>第5文型: S + V + O + C</h3>
+              <p>「SがOをCとVする」「SがOをCの状態にVする」という意味を表します。目的語 (O) と補語 (C) の間に <strong>O = C</strong> の関係が成り立ちます。</p>
+             <p class="code-block"><u>People</u> <u>call</u> <u>him</u> <u>Ted</u>.<br>   S      V    O    C (名詞)<br>(人々は彼をテッドと呼ぶ) O (him) = C (Ted)<br><br><u>Don’t leave</u> <u>the door</u> <u>open</u>.<br> (S: You) V         O       C (形容詞)<br>(ドアを開けっ放しにしないで) O (the door) = C (open)<br><br><u>I</u> <u>found</u> <u>the book</u> <u>interesting</u>.<br> S   V       O           C (形容詞)<br>(私はその本が面白いとわかった) O (the book) = C (interesting)</p>
+             <ul>
+                 <li><strong>Point:</strong> <code>call</code>, <code>name</code>, <code>make</code>, <code>keep</code>, <code>leave</code>, <code>find</code>, <code>think</code> などの動詞が使われます。</li>
+                 <li>C (補語) には名詞または形容詞が来ます。</li>
+                 <li>O = C の関係が重要です。第4文型 (O1 ≠ O2) との見分け方になります。</li>
+             </ul>
+
+             <h3>文型判別の練習ストーリー</h3>
+             <p>以下の少し長めのストーリーで、各文がどの文型にあたるか考えてみましょう。「文型要素を表示」ボタンでS V O C Mのヒントを、「日本語訳を表示」ボタンで各文の訳を確認できます。</p>
+              <div class="story-controls">
+                  <button class="toggle-view" data-target="#story-blockquote" data-view="elements">文型要素を表示</button>
+                  <button class="toggle-view" data-target="#story-blockquote" data-view="translations">日本語訳を表示</button>
+              </div>
+             <blockquote id="story-blockquote">
+                 <p>[1] A black cat<span class="sentence-element"> (S)</span> sleeps<span class="sentence-element"> (V)</span> peacefully<span class="sentence-element"> (M)</span> on the sunny windowsill<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（黒猫が日当たりの良い窓辺で穏やかに眠っている。）</span></p>
+                 <p>[2] Suddenly<span class="sentence-element"> (M)</span>, it<span class="sentence-element"> (S)</span> opens<span class="sentence-element"> (V)</span> its green eyes<span class="sentence-element"> (O)</span>.<span class="sentence-translation">（突然、それは緑色の目を開ける。）</span></p>
+                 <p>[3] The cat<span class="sentence-element"> (S)</span> is<span class="sentence-element"> (V)</span> hungry<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（その猫はお腹が空いている。）</span></p>
+                 <p>[4] It<span class="sentence-element"> (S)</span> jumps<span class="sentence-element"> (V)</span> down<span class="sentence-element"> (M)</span> from the windowsill<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（それは窓辺から飛び降りる。）</span></p>
+                 <p>[5] A little girl<span class="sentence-element"> (S)</span> enters<span class="sentence-element"> (V)</span> the room<span class="sentence-element"> (O)</span> quietly<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（小さな女の子が静かに部屋に入ってくる。）</span></p>
+                 <p>[6] She<span class="sentence-element"> (S)</span> calls<span class="sentence-element"> (V)</span> the cat<span class="sentence-element"> (O)</span> Kuro<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（彼女はその猫をクロと呼ぶ。）</span></p>
+                 <p>[7] Kuro<span class="sentence-element"> (S)</span> looks<span class="sentence-element"> (V)</span> happy<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（クロは嬉しそうだ。）</span></p>
+                 <p>[8] The girl<span class="sentence-element"> (S)</span> gives<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O1)</span> some food<span class="sentence-element"> (O2)</span>.<span class="sentence-translation">（女の子はクロに食べ物をあげる。）</span></p>
+                 <p>[9] Kuro<span class="sentence-element"> (S)</span> eats<span class="sentence-element"> (V)</span> the food<span class="sentence-element"> (O)</span> quickly<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（クロはその食べ物を素早く食べる。）</span></p>
+                 <p>[10] Eating<span class="sentence-element"> (S)</span> makes<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O)</span> energetic<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（食べることはクロを元気にする。）</span></p>
+                 <p>[11] The girl<span class="sentence-element"> (S)</span> smiles<span class="sentence-element"> (V)</span>.<span class="sentence-translation">（女の子は微笑む。）</span></p>
+                 <p>[12] She<span class="sentence-element"> (S)</span> considers<span class="sentence-element"> (V)</span> Kuro<span class="sentence-element"> (O)</span> her best friend<span class="sentence-element"> (C)</span>.<span class="sentence-translation">（彼女はクロを一番の友達だと考えている。）</span></p>
+                 <p>[13] Her mother<span class="sentence-element"> (S)</span> bought<span class="sentence-element"> (V)</span> her<span class="sentence-element"> (O1)</span> a new toy mouse<span class="sentence-element"> (O2)</span> yesterday<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（彼女の母親は昨日、彼女に新しいおもちゃのネズミを買ってあげた。）</span></p>
+                 <p>[14] The toy mouse<span class="sentence-element"> (S)</span> seems<span class="sentence-element"> (V)</span> interesting<span class="sentence-element"> (C)</span> to Kuro<span class="sentence-element"> (M)</span>.<span class="sentence-translation">（そのおもちゃのネズミはクロにとって面白そうだ。）</span></p>
+             </blockquote>
+             <button class="toggle-answer" data-target="#story-answers-expanded">ストーリーの文型解答例を見る</button>
+             <div class="answer" id="story-answers-expanded" style="display: none;">
+                 <ol>
+                     <li>[1] 第1文型 (SV)</li>
+                     <li>[2] 第3文型 (SVO)</li>
+                     <li>[3] 第2文型 (SVC)</li>
+                     <li>[4] 第1文型 (SV)</li>
+                     <li>[5] 第3文型 (SVO)</li>
+                     <li>[6] 第5文型 (SVOC)</li>
+                     <li>[7] 第2文型 (SVC)</li>
+                     <li>[8] 第4文型 (SVOO)</li>
+                     <li>[9] 第3文型 (SVO)</li>
+                     <li>[10] 第5文型 (SVOC)</li>
+                     <li>[11] 第1文型 (SV)</li>
+                     <li>[12] 第5文型 (SVOC)</li>
+                     <li>[13] 第4文型 (SVOO)</li>
+                     <li>[14] 第2文型 (SVC)</li>
+                 </ol>
+             </div>
+             <div class="related-pretest" data-for-section="section-sentence-patterns">
+                <!-- JSで関連問題挿入 -->
+            </div>
+        </section>
+
+        <section id="drill-answers">
+            <h2>ドリル解答・解説</h2>
+            <p>グループワークで取り組んだDrillの解答と解説です。</p>
+
+            <div class="drill-item">
+                <h3>１ 名詞の形</h3>
+                <ol>
+                    <li>He has a <strong>brother</strong> and two <strong>sisters</strong>.</li>
+                    <li>I have <strong>bread</strong> and <strong>butter</strong>.</li>
+                    <li>She visited many <strong>countries</strong>.</li>
+                    <li>How many <strong>classes</strong> do you have today?</li>
+                    <li>He bought some <strong>potatoes</strong> for dinner.</li>
+                    <li>The <strong>children</strong> went camping for three <strong>days</strong>.</li>
+                    <li>Those <strong>women</strong> are <strong>teachers</strong> at my school.</li>
+                </ol>
+                <button class="toggle-answer" data-target="#drill1-explanation">解説を見る</button>
+                <div class="answer" id="drill1-explanation" style="display: none;">
+                    <p><strong>【解説】</strong>名詞には数えられる名詞(可算名詞)と数えられない名詞(不可算名詞)があります。</p>
+                    <ol>
+                        <li><code>brother</code>, <code>sister</code>: 可算名詞。単数はaを付け、複数は-s。</li>
+                        <li><code>bread</code>, <code>butter</code>: 不可算名詞。a/anを付けず、複数形にもしない。</li>
+                        <li><code>country</code>: 可算名詞。〈子音字+y〉で終わるため、yをiに変えて-es。</li>
+                        <li><code>class</code>: 可算名詞。-sで終わるため、-esを付ける。</li>
+                        <li><code>potato</code>: 可算名詞。〈子音字+o〉で終わるため、-esを付ける。</li>
+                        <li><code>child</code>: 可算名詞。不規則複数形 <code>children</code>。 <code>day</code>: 可算名詞。〈母音字+y〉なのでそのまま-s。</li>
+                        <li><code>woman</code>: 可算名詞。不規則複数形 <code>women</code>。 <code>teacher</code>: 可算名詞。複数形は-s。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>２ 冠詞</h3>
+                <ol>
+                    <li>Take <strong>an</strong> umbrella.</li>
+                    <li>I have <strong>a</strong> dog and a cat. <strong>The</strong> dog sleeps under my bed.</li>
+                    <li>He has <strong data-tooltip="informationは不可算名詞なのでa/anは付かない。特定の情報ではないのでtheも付かない。">×</strong> useful information.</li>
+                    <li>I don’t have <strong data-tooltip="homeworkは不可算名詞なのでa/anは付かない。特定の宿題ではないのでtheも付かない。">×</strong> homework today.</li>
+                    <li><strong>The</strong> moon is smaller than <strong>the</strong> earth.</li>
+                </ol>
+                 <button class="toggle-answer" data-target="#drill2-explanation">解説を見る</button>
+                 <div class="answer" id="drill2-explanation" style="display: none;">
+                     <p><strong>【解説】</strong>冠詞は名詞の特定・不特定を示します。</p>
+                     <ol>
+                         <li><code>umbrella</code>: 可算名詞・単数。母音 /ʌ/ で始まるので <code>an</code>。どの傘か特定されていない。</li>
+                         <li>1文目: <code>dog</code> は初めて出てくる単数可算名詞なので <code>a</code>。2文目: 1文目で述べた特定の犬を指すので <code>the</code>。</li>
+                         <li><code>information</code>: 不可算名詞。<code>useful</code> は /j/ (子音) で始まるが、そもそも不可算名詞に不定冠詞(a/an)は付かない。ここでは特定の情報でもないので <code>the</code> も付かない。</li>
+                         <li><code>homework</code>: 不可算名詞。通常、冠詞なし。</li>
+                         <li><code>moon</code>, <code>earth</code>: 唯一無二の存在なので <code>the</code> を付ける。</li>
+                     </ol>
+                 </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>３ 人称代名詞</h3>
+                <ol>
+                    <li><strong>I</strong> visited <strong>my</strong> grandmother yesterday.</li>
+                    <li>I saw <strong>him</strong> at the party.</li>
+                    <li>Tom showed <strong>us</strong> the picture.</li>
+                    <li>We went to watch <strong>their</strong> soccer game.</li>
+                    <li>“Is this yours?” “No, it’s <strong>hers</strong>.”</li>
+                </ol>
+                 <button class="toggle-answer" data-target="#drill3-explanation">解説を見る</button>
+                 <div class="answer" id="drill3-explanation" style="display: none;">
+                    <p><strong>【解説】</strong>文中での役割に合わせて適切な格を選びます。</p>
+                    <ol>
+                        <li>文頭の主語なので主格 <code>I</code>。grandmother の前で「私の」なので所有格 <code>my</code>。</li>
+                        <li>動詞 <code>saw</code> (seeの過去形) の目的語なので目的格 <code>him</code>。</li>
+                        <li>動詞 <code>showed</code> の後に続く目的語（～に）。与える相手なので目的格 <code>us</code>。</li>
+                        <li>名詞 <code>soccer game</code> の前で「彼らの」なので所有格 <code>their</code>。</li>
+                        <li>「彼女のもの」という意味なので所有代名詞 <code>hers</code>。<code>her</code> は所有格「彼女の」または目的格「彼女を/に」。</li>
+                    </ol>
+                 </div>
+            </div>
+        </section>
+
+        <section id="review">
+            <h2>振り返り</h2>
+            <p>今回の内容について、以下の点を確認してみましょう。</p>
+
+            <h3>理解度チェックリスト</h3>
+            <ul class="checklist">
+                <li>可算名詞と不可算名詞の違い、それぞれの基本的な扱い方を説明できる。</li>
+                <li>名詞の複数形の作り方 (規則変化・不規則変化) を理解している。</li>
+                <li>冠詞 (a, an, the) の基本的な使い分け (特定・不特定) がわかる。</li>
+                <li>人称代名詞の格変化 (主格・所有格・目的格・所有代名詞) を理解し、使い分けられる。</li>
+                <li>品詞 (名詞、動詞、形容詞など) の役割がわかる。</li>
+                <li>文の要素 (S, V, O, C, M) がわかる。</li>
+                <li>基本的な5文型 (SV, SVC, SVO, SVOO, SVOC) の構造と意味の違いを説明できる。</li>
+                <li>簡単な英文の文型を判別できる。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <div class="review-questions">
+                <div class="question-item mb-2">
+                    <p><strong>問1:</strong> 次の文の下線部が表す文の要素 (S, V, O, C, M) を答えなさい。<br>
+                    "<u>My sister</u> <u>bought</u> <u>a beautiful dress</u> <u>yesterday</u>."</p>
+                    <button class="toggle-answer" data-target="#rq1-answer">解答例を見る</button>
+                    <div class="answer" id="rq1-answer" style="display: none;">
+                        <p>My sister: S (主語)<br>
+                        bought: V (動詞)<br>
+                        a beautiful dress: O (目的語)<br>
+                        yesterday: M (修飾語 - 時)</p>
+                        <p>文型: SVO (第3文型)</p>
+                    </div>
+                </div>
+                <div class="question-item mb-2">
+                    <p><strong>問2:</strong> 次の文は第何文型ですか？ また、下線部がC(補語)である理由を説明しなさい。<br>
+                    "This information seems <u>useful</u>."</p>
+                    <button class="toggle-answer" data-target="#rq2-answer">解答例を見る</button>
+                    <div class="answer" id="rq2-answer" style="display: none;">
+                        <p>文型: 第2文型 (SVC)</p>
+                        <p>理由: <code>useful</code> (形容詞) は主語 <code>This information</code> の状態を説明しており、S = C (この情報 = 役立つ) の関係が成り立つため。</p>
+                    </div>
+                </div>
+                <div class="question-item mb-2">
+                     <p><strong>問3:</strong> 次の文の ( ) に a, an, the のいずれか適切な冠詞を入れるか、不要なら×を書きなさい。<br>
+                     (1) I need (___) pen. Can I borrow yours?<br>
+                     (2) He is (___) honest person.<br>
+                     (3) We usually have (___) lunch at noon.<br>
+                     (4) Look at (___) birds flying in (___) sky!</p>
+                     <button class="toggle-answer" data-target="#rq3-answer">解答例を見る</button>
+                     <div class="answer" id="rq3-answer" style="display: none;">
+                         <p>(1) a (特定のペンではなく、どれでもいいから1本のペンが必要)</p>
+                         <p>(2) an (<code>honest</code> は h を発音しないため母音 /ɒ/ で始まる)</p>
+                         <p>(3) × (食事名は通常、冠詞なし)</p>
+                         <p>(4) the, the (特定の鳥たち、唯一の空を指す)</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="application">
+            <h2>応用</h2>
+
+            <h3>今回の知識の活用</h3>
+            <ul>
+                <li><strong>正確な英文作成:</strong> 名詞の数、冠詞の有無、代名詞の格を正しく使うことで、より自然で正確な英文を書けるようになります。</li>
+                <li><strong>読解力の向上:</strong> 文型を意識することで、複雑な文の構造も把握しやすくなり、意味を正確に理解する助けになります。特に、動詞の後ろに来る要素 (OなのかCなのか) を見抜く力が重要です。</li>
+                <li><strong>コミュニケーション:</strong> 冠詞 (a/the) の使い分けは、相手との情報共有の度合いを示すため、円滑なコミュニケーションに不可欠です。</li>
+            </ul>
+
+            <h3>今後の学習へのつながり</h3>
+            <ul>
+                <li><strong>動詞の語法:</strong> 今回学んだ文型は、動詞の種類と密接に関連しています。今後、動詞がどの文型をとるか (例: SVOOをとる動詞、SVOCをとる動詞) を学ぶ際に、今回の知識が基礎となります。</li>
+                <li><strong>句と節:</strong> 文の要素 (S, O, C, M) には、単語だけでなく、より長い「句」や「節」が入ることがあります。文型を理解していると、これらの複雑な構造も分析しやすくなります。</li>
+                <li><strong>より複雑な文構造:</strong> 関係詞節や分詞構文など、より高度な文法事項を学ぶ際にも、基本となる5文型の理解が土台となります。</li>
+            </ul>
+
+             <h3>学習上の注意点</h3>
+             <ul>
+                 <li><strong>不可算名詞の感覚:</strong> 日本語の感覚とは異なる場合があるので、注意が必要です (例: information, advice, furniture, news)。辞書で [U] (Uncountable) の記号を確認する習慣をつけましょう。</li>
+                 <li><strong>冠詞のニュアンス:</strong> a/the の使い分けは文脈に依存することが多く、慣れが必要です。たくさんの英文に触れる中で感覚を養いましょう。</li>
+                 <li><strong>文型は絶対ではない:</strong> 5文型は英文理解の強力なツールですが、すべての文が綺麗に分類できるわけではありません。特に M (修飾語) の扱いは柔軟に考えましょう。</li>
+             </ul>
+
+            <h3>参考資料</h3>
+            <ul>
+                <li><strong>オンライン辞書:</strong>
+                    <ul>
+                        <li><a href="https://ejje.weblio.jp/" target="_blank" rel="noopener noreferrer">Weblio英和辞典・和英辞典</a> (名詞の可算[C]/不可算[U]情報も豊富)</li>
+                        <li><a href="https://dictionary.cambridge.org/" target="_blank" rel="noopener noreferrer">Cambridge Dictionary</a> (英英辞典、例文が豊富)</li>
+                    </ul>
+                </li>
+                <li><strong>文法解説サイト:</strong>
+                    <ul>
+                         <li><a href="https://eigonary.jp/" target="_blank" rel="noopener noreferrer">英語学習サイトEigonary</a> (文法解説が詳しい)</li>
+                        <li><a href="https://english-grammar-lessons.com/" target="_blank" rel="noopener noreferrer">English Grammar Lessons</a> (英語、基礎から応用まで)</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section id="homework">
+             <h2>宿題</h2>
+             <ul>
+                 <li><strong>ワークブック:</strong> Get Ready ②「一般動詞とbe動詞」の演習問題 (pp. 6-7)</li>
+                 <li><strong>プリント:</strong> 文型判別練習問題プリント (配布済み)</li>
+                 <li><strong>復習:</strong> 今日の授業記録ページ、特に理解度チェックリストで自信がなかった項目を再確認すること。</li>
+             </ul>
+         </section>
+
+        <footer>
+            <p>これで本日の授業記録は終了です。しっかり復習しておきましょう。</p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイトトップへ</a></p>
+            <p>© 2025 授業記録</p>
+        </footer>
+
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const container = document.querySelector('.container');
+            const readingTimeElement = document.getElementById('readingTime');
+            const tocList = document.getElementById('tocList');
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const submitTestBtn = document.getElementById('submitTestBtn');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsContainer = document.getElementById('testResults');
+            const testScoreElement = document.getElementById('testScore');
+            const reviewLinksElement = document.getElementById('reviewLinks');
+            const persistentTestResultsContainer = document.getElementById('persistentTestResults');
+            const persistentScoreElement = document.getElementById('persistentScore');
+            const persistentReviewLinksElement = document.getElementById('persistentReviewLinks');
+            const modalCloseBtn = testResultsContainer ? testResultsContainer.querySelector('.close-modal-btn') : null;
+
+            // --- Function Definitions ---
+
+            const updateProgressBar = () => {
+                if (!progressBar) return;
+                const scrollY = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                 const scrollPercent = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                 progressBar.style.width = `${scrollPercent}%`;
+            };
+
+            const toggleScrollTopButton = () => {
+                if (!scrollTopBtn) return;
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            };
+
+             const scrollToSection = (sectionId) => {
+                 const elementId = sectionId.startsWith('#') ? sectionId.substring(1) : sectionId;
+                 const targetElement = document.getElementById(elementId);
+                 if (targetElement) {
+                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                     if (!targetElement.classList.contains('highlight-temp')) {
+                        targetElement.classList.add('highlight-temp');
+                        setTimeout(() => {
+                            targetElement.classList.remove('highlight-temp');
+                        }, 1500);
+                    }
+                 } else {
+                     console.warn(`Element with ID "${elementId}" not found for scrolling.`);
+                 }
+             };
+
+
+            // Generic Toggle Handler (for Answers and Drill Translations)
+            function handleToggleClick(button, targetSelector, textShow, textHide, relatedTextShow = null, relatedTextHide = null, drillTextShow = null, drillTextHide = null) {
+                const targetId = button.dataset.target;
+                let targetElement = null;
+
+                if (targetId) {
+                    const elementId = targetId.startsWith('#') ? targetId.substring(1) : targetId;
+                    targetElement = document.getElementById(elementId);
+                } else {
+                    // Fallback for elements without data-target
+                    const potentialTarget = button.nextElementSibling;
+                    if (potentialTarget && potentialTarget.matches(targetSelector)) {
+                        targetElement = potentialTarget;
+                    }
+                }
+
+                if (targetElement) {
+                    const isVisible = targetElement.style.display === 'block';
+                    targetElement.style.display = isVisible ? 'none' : 'block';
+
+                    let currentTextShow = textShow;
+                    let currentTextHide = textHide;
+                    if (button.closest('.related-pretest') && relatedTextShow && button.classList.contains('toggle-answer')) {
+                        currentTextShow = relatedTextShow;
+                        currentTextHide = relatedTextHide;
+                    } else if (button.closest('#drill-answers') && drillTextShow && button.classList.contains('toggle-answer')) {
+                        currentTextShow = drillTextShow;
+                        currentTextHide = drillTextHide;
+                    }
+                    // For drill translations, use the primary textShow/textHide
+                    button.textContent = isVisible ? currentTextShow : currentTextHide;
+                } else {
+                    console.error('Toggle target not found for button:', button, 'with targetId:', targetId);
+                }
+            }
+
+
+            // Pre-Test Logic Functions
+            const showModal = () => {
+                if (!preTestModalOverlay) return;
+                preTestModalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeModal = () => {
+                 if (!preTestModalOverlay) return;
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            };
+
+            const displayResults = (resultData) => {
+                 // Ensure result display elements exist
+                 if (!persistentTestResultsContainer || !persistentScoreElement || !persistentReviewLinksElement) {
+                     console.warn("Persistent result display elements not found.");
+                 }
+                 if (testResultsContainer && (!testScoreElement || !reviewLinksElement)){
+                    console.warn("Modal result display elements not found.")
+                 }
+
+                 // Display in Persistent Area
+                 if (persistentTestResultsContainer){
+                    persistentTestResultsContainer.style.display = 'block';
+                    if (resultData.skipped) {
+                        if(persistentScoreElement) persistentScoreElement.textContent = '事前理解度チェックはスキップされました。';
+                        if(persistentReviewLinksElement) persistentReviewLinksElement.innerHTML = '<p>各セクションを読み進めてください。</p>';
+                    } else {
+                        if(persistentScoreElement) persistentScoreElement.textContent = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
+                        let reviewHTML = '';
+                        if (resultData.incorrectAnswers && resultData.incorrectAnswers.length > 0) {
+                            reviewHTML = '<p>復習が推奨される項目:</p><ul>';
+                            resultData.incorrectAnswers.forEach(item => {
+                                const hrefId = item.sectionId.startsWith('#') ? item.sectionId : `#${item.sectionId}`;
+                                const dataId = item.sectionId.startsWith('#') ? item.sectionId.substring(1) : item.sectionId;
+                                const sectionName = item.name ? document.createTextNode(item.name).textContent : `セクション ${item.sectionId}`;
+                                reviewHTML += `<li><a href="${hrefId}" data-section-id="${dataId}">${sectionName}</a></li>`;
+                            });
+                            reviewHTML += '</ul>';
+                        } else {
+                            reviewHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        }
+                        if(persistentReviewLinksElement) persistentReviewLinksElement.innerHTML = reviewHTML;
+                    }
+                 }
+
+                 // Display in Modal Area (if modal exists and is open)
+                 if (preTestModalOverlay && preTestModalOverlay.style.display === 'flex' && testResultsContainer) {
+                    if (resultData.skipped) {
+                         if(testScoreElement) testScoreElement.textContent = '事前理解度チェックはスキップされました。';
+                         if(reviewLinksElement) reviewLinksElement.innerHTML = '';
+                    } else {
+                        if(testScoreElement) testScoreElement.textContent = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
+                        let reviewHTML = '';
+                        if (resultData.incorrectAnswers && resultData.incorrectAnswers.length > 0) {
+                             reviewHTML = '<p>復習が推奨される項目:</p><ul>';
+                             resultData.incorrectAnswers.forEach(item => {
+                                const hrefId = item.sectionId.startsWith('#') ? item.sectionId : `#${item.sectionId}`;
+                                const dataId = item.sectionId.startsWith('#') ? item.sectionId.substring(1) : item.sectionId;
+                                const sectionName = item.name ? document.createTextNode(item.name).textContent : `セクション ${item.sectionId}`;
+                                reviewHTML += `<li><a href="${hrefId}" data-section-id="${dataId}">${sectionName}</a></li>`;
+                            });
+                            reviewHTML += '</ul>';
+                        } else {
+                             reviewHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        }
+                        if(reviewLinksElement) reviewLinksElement.innerHTML = reviewHTML;
+                    }
+                    testResultsContainer.style.display = 'block';
+                    if (submitTestBtn) submitTestBtn.style.display = 'none';
+                    if (skipTestBtn) skipTestBtn.style.display = 'none';
+                    if (modalCloseBtn) modalCloseBtn.style.display = 'block';
+                }
+            };
+
+
+            // Inject Related Pre-tests
+            const injectRelatedPretests = () => {
+                if (!preTestModalOverlay) return;
+                const testQuestions = preTestModalOverlay.querySelectorAll('.test-question');
+                testQuestions.forEach((questionDiv, index) => {
+                    const sectionId = questionDiv.dataset.sectionId;
+                    const targetSection = document.getElementById(sectionId);
+                    const relatedTestArea = targetSection ? targetSection.querySelector(`.related-pretest[data-for-section="${sectionId}"]`) : null;
+
+                    if (relatedTestArea) {
+                         // Clear placeholder only once
+                         if (relatedTestArea.textContent.includes("JSで関連問題挿入")) {
+                            relatedTestArea.innerHTML = '';
+                         }
+
+                         const questionText = questionDiv.querySelector('p').innerHTML;
+                         const correctAnswerInput = questionDiv.querySelector('input[data-correct="true"]');
+                         const correctAnswerLabel = correctAnswerInput?.closest('label')?.textContent?.trim() || 'N/A';
+                         let explanation = `この問題は「${targetSection?.querySelector('h2')?.textContent || '関連セクション'}」の内容に関連しています。`;
+                         if (sectionId === 'section-nouns') explanation += ` 不可算名詞は通常、数えられず、a/anや複数形(-s)を伴いません。waterはその代表例です。`;
+                         else if (sectionId === 'section-articles') explanation += ` informationは不可算名詞なので、通常冠詞は付きません。usefulのuは発音上子音/j/ですが、それ以前の問題です。`;
+                         else if (sectionId === 'section-pronouns') explanation += ` showのような動詞の後、「〜に」あたる目的語は目的格を使います。「私たちに」なのでusです。`;
+                         else if (sectionId === 'section-sentence-patterns' && questionDiv.querySelector('input[name="q4"]')) explanation += ` 第2文型(SVC)は主語の状態や性質を説明し、S=Cの関係が成り立ちます。`;
+                         else if (sectionId === 'section-sentence-patterns' && questionDiv.querySelector('input[name="q5"]')) explanation += ` 第5文型(SVOC)は目的語(O)の状態や名称を補語(C)が説明し、O=Cの関係が成り立ちます。him = Ted です。`;
+
+
+                         const relatedAnswerId = `related-answer-${sectionId}-${index}`;
+                         const tempDiv = document.createElement('div');
+                         tempDiv.classList.add('related-pretest-item'); // Add a wrapper class
+                         tempDiv.innerHTML = `
+                            <h4>関連する事前テスト問題 (問${index + 1})</h4>
+                            <div class="question-text">${questionText}</div>
+                            <button class="toggle-answer" data-target="#${relatedAnswerId}">関連問題の解答・解説を見る</button>
+                            <div class="answer" id="${relatedAnswerId}" style="display: none;">
+                                <p><strong>正解:</strong> ${correctAnswerLabel}</p>
+                                <p><strong>簡単な解説:</strong> ${explanation}</p>
+                            </div>
+                        `;
+                         relatedTestArea.appendChild(tempDiv);
+
+                    } else if (targetSection) {
+                         // console.warn(`Could not find .related-pretest[data-for-section="${sectionId}"] in section ${sectionId}`);
+                    }
+                });
+                // Remove any remaining placeholders if they are empty after injection attempt
+                document.querySelectorAll('.related-pretest').forEach(area => {
+                    if (area.innerHTML.trim() === '' || area.textContent.includes("JSで関連問題挿入")) {
+                        area.style.display = 'none'; // Hide empty areas
+                    }
+                });
+            };
+
+
+             const calculateReadingTime = () => {
+                 if (!container || !readingTimeElement) return;
+                 const text = container.textContent || container.innerText || "";
+                 const wordMatchRegExp = /[a-zA-Z0-9_\u0392-\u03c9]+|[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF]+/g;
+                 const words = text.matchAll(wordMatchRegExp);
+                 const wordCount = [...words].length;
+                 const wordsPerMinute = 200;
+                 const readingTime = Math.ceil(wordCount / wordsPerMinute);
+                 readingTimeElement.textContent = `読了時間目安: 約 ${readingTime} 分`;
+             };
+
+            const generateTOC = () => {
+                 if (!tocList || !container) return;
+                const headings = container.querySelectorAll('h2');
+                tocList.innerHTML = '';
+
+                 // Add persistent test results link if the element exists
+                 if (persistentTestResultsContainer) {
+                     const testResultId = persistentTestResultsContainer.id;
+                     const listItem = document.createElement('li');
+                     const link = document.createElement('a');
+                     link.href = `#${testResultId}`;
+                     link.textContent = '事前テスト結果'; // Or get from h4 if needed
+                     listItem.appendChild(link);
+                     tocList.appendChild(listItem);
+                 }
+
+
+                headings.forEach((heading) => {
+                    const section = heading.closest('section');
+                    const sectionId = section?.id;
+                    if (sectionId && heading.textContent.trim() !== '') {
+                        // Add link for Homework section as well if it exists
+                        if (sectionId === 'homework' || sectionId.startsWith('section-')) {
+                            const listItem = document.createElement('li');
+                            const link = document.createElement('a');
+                            link.href = `#${sectionId}`;
+                            link.textContent = heading.textContent.trim();
+                            listItem.appendChild(link);
+                            tocList.appendChild(listItem);
+                        }
+                    }
+                 });
+            };
+
+            // --- Event Listeners ---
+
+            document.body.addEventListener('click', (event) => {
+                const target = event.target;
+
+                // Handle Answer Toggles (Drills, Review, Related)
+                if (target.classList.contains('toggle-answer')) {
+                    handleToggleClick(target, '.answer',
+                        '解答例を見る', '解答例を閉じる',
+                        '関連問題の解答・解説を見る', '関連問題の解答・解説を閉じる',
+                        '解説を見る', '解説を閉じる'
+                    );
+                }
+                // Handle Drill Translation Toggles
+                else if (target.classList.contains('toggle-translation')) {
+                    handleToggleClick(target, '.drill-translation',
+                        '日本語訳を見る', '日本語訳を閉じる'
+                    );
+                }
+                // Handle Story View Toggles (Elements/Translations)
+                else if (target.classList.contains('toggle-view')) {
+                    const button = target;
+                    const targetSelector = button.dataset.target; // e.g., "#story-blockquote"
+                    const viewType = button.dataset.view; // 'elements' or 'translations'
+                    const targetElement = document.querySelector(targetSelector); // 親要素を取得
+
+                    if (targetElement && viewType) {
+                        const targetClass = `show-${viewType}`; // トグルするクラス名 (e.g., show-elements)
+                        const isActive = targetElement.classList.toggle(targetClass); // クラスをトグルし、アクティブ状態を取得
+
+                        // ボタンのテキストを更新
+                        if (viewType === 'elements') {
+                            button.textContent = isActive ? '文型要素を隠す' : '文型要素を表示';
+                        } else if (viewType === 'translations') {
+                            button.textContent = isActive ? '日本語訳を隠す' : '日本語訳を表示';
+                        }
+                    } else {
+                         console.error('Toggle view target or view type not found for button:', button);
+                    }
+                }
+                 // Handle Checklist Items
+                 else if (target.matches('.checklist li')) {
+                     target.classList.toggle('checked');
+                 }
+                 // Handle Scroll Top Button
+                 else if (target === scrollTopBtn) {
+                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                 }
+                 // Handle Modal Close Button
+                 else if (modalCloseBtn && target === modalCloseBtn) {
+                     closeModal();
+                 }
+                 // Handle Links inside Modal Results Area
+                 else if (target.matches('#reviewLinks a[data-section-id]')) {
+                     event.preventDefault();
+                     const sectionId = target.dataset.sectionId;
+                     closeModal();
+                     setTimeout(() => scrollToSection(sectionId), 50);
+                 }
+                 // Handle Links inside Persistent Results Area
+                 else if (target.matches('#persistentTestResults a[data-section-id]')) {
+                     event.preventDefault();
+                     scrollToSection(target.dataset.sectionId);
+                 }
+            });
+
+
+            // Pre-Test Form Submission
+            if (preTestForm) {
+                preTestForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(preTestForm);
+                    const questions = preTestForm.querySelectorAll('.test-question');
+                    let score = 0;
+                    let incorrectAnswers = [];
+                    const totalQuestions = questions.length;
+
+                    questions.forEach((question, index) => {
+                        const questionName = `q${index + 1}`;
+                        const selectedAnswer = formData.get(questionName);
+                        const correctAnswerInput = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                        const correctAnswerValue = correctAnswerInput ? correctAnswerInput.value : null;
+
+                        if (selectedAnswer === correctAnswerValue) {
+                            score++;
+                        } else if (correctAnswerInput) {
+                            const sectionId = question.dataset.sectionId;
+                            const sectionTitleElement = document.getElementById(sectionId)?.querySelector('h2');
+                            const sectionName = sectionTitleElement ? sectionTitleElement.textContent.trim() : `関連セクション ${index + 1}`;
+                            incorrectAnswers.push({ name: sectionName, sectionId: sectionId });
+                        }
+                    });
+
+                    const resultData = {
+                        score: score,
+                        totalQuestions: totalQuestions,
+                        incorrectAnswers: incorrectAnswers,
+                        skipped: false
+                    };
+
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                    displayResults(resultData);
+                });
+            }
+
+            // Pre-Test Skip Button
+             if (skipTestBtn) {
+                 skipTestBtn.addEventListener('click', () => {
+                     const resultData = { skipped: true };
+                     sessionStorage.setItem('preTestCompleted', 'true');
+                     sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                     displayResults(resultData);
+                     closeModal(); // スキップ時もモーダルを閉じる
+                 });
+             }
+
+            // Window Scroll Listener
+            window.addEventListener('scroll', () => {
+                updateProgressBar();
+                toggleScrollTopButton();
+            });
+
+
+            // --- Initial Setup Calls ---
+            generateTOC();
+            calculateReadingTime();
+            updateProgressBar();
+            toggleScrollTopButton();
+
+            // Check session storage for pre-test results
+            const preTestCompleted = sessionStorage.getItem('preTestCompleted');
+            const preTestResultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+
+             if (preTestCompleted === 'true' && preTestResultData) {
+                 displayResults(preTestResultData); // Display stored results
+                 closeModal(); // 結果表示後、モーダルは閉じる
+             } else if (preTestCompleted !== 'true' && preTestModalOverlay) {
+                 showModal(); // Show modal only if not completed
+             }
+
+             // Inject related pre-tests (needs modal HTML even if not shown)
+             injectRelatedPretests();
+
+        });
+    </script>
+</body>
+</html>
