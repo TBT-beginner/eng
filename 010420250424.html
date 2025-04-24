@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 動詞の活用 (過去形など)</title>
+    <style>
+        /* 基本スタイルとカラーパレット */
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --primary-color: #28A745; /* 緑 */
+            --accent-color: #17A2B8; /* 青緑 */
+            --link-color: #28A745;
+            --border-color: #DEE2E6;
+            --answer-bg: #E9F5EB; /* 薄い緑 */
+            --test-result-bg: #FFFBEB; /* 薄い黄色 */
+            --test-result-border: #FFEEBA; /* 黄色 */
+            --related-test-bg: #F1F8E9; /* 薄い緑 */
+            --related-test-border: #DCEDC8; /* 緑 */
+            --highlight-temp-bg: #FFF3CD; /* ハイライト用薄黄色 */
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.75;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 20px auto;
+            background-color: var(--bg-content);
+            padding: 30px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+
+        /* プログレスバー */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--accent-color);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        /* タイトルと読了時間 */
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 2.2em;
+        }
+
+        #readingTime {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* 概要ボックス */
+        .summary-box {
+            background-color: var(--related-test-bg);
+            border-left: 5px solid var(--related-test-border);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        .summary-box ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+        /* 目次 */
+        #tableOfContents {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        #tableOfContents h2 {
+            margin-top: 0;
+            font-size: 1.3em;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        #tableOfContents ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            column-count: 2; /* 2カラム */
+            column-gap: 40px;
+        }
+        #tableOfContents li {
+            margin-bottom: 8px;
+            break-inside: avoid-column; /* カラム区切りを調整 */
+        }
+        #tableOfContents li a {
+            text-decoration: none;
+            color: var(--link-color);
+        }
+        #tableOfContents li a:hover {
+            text-decoration: underline;
+        }
+        #tableOfContents li::before {
+            content: counter(toc-item) ". ";
+            counter-increment: toc-item;
+            font-weight: bold;
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        #tableOfContents ul {
+            counter-reset: toc-item;
+        }
+
+        /* 事前テスト結果表示エリア */
+        #persistentTestResults {
+            background-color: var(--test-result-bg);
+            border: 1px solid var(--test-result-border);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+            display: none; /* 初期状態は非表示 */
+        }
+        #persistentTestResults h3 {
+            margin-top: 0;
+            color: #c09853; /* 黄色系 */
+        }
+        #persistentTestResults #persistentReviewLinks ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         #persistentTestResults #persistentReviewLinks a {
+            color: var(--link-color);
+            cursor: pointer;
+        }
+         #persistentTestResults #persistentReviewLinks a:hover {
+            text-decoration: underline;
+        }
+
+        /* コンテンツセクション */
+        section {
+            margin-bottom: 40px;
+            padding-top: 10px; /* アンカーリンク時のヘッダー考慮 */
+            margin-top: -10px;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong, .highlight {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .code-block {
+            background-color: #343a40;
+            color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        blockquote {
+            border-left: 4px solid var(--border-color);
+            padding-left: 15px;
+            margin: 20px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .supplementary-box {
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .supplementary-box h4 {
+             margin-top: 0;
+             color: var(--accent-color);
+         }
+
+        /* テーブルスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        /* ツールチップ */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--accent-color);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+            margin-bottom: 5px;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 解答トグル */
+        .toggle-answer {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            transition: background-color 0.2s;
+        }
+        .toggle-answer:hover {
+            background-color: #138496; /* 少し濃い青緑 */
+        }
+        .answer {
+            display: none;
+            background-color: var(--answer-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .answer code { background-color: #d1e7dd; } /* 解答内のコード背景 */
+
+        /* 関連事前テスト */
+        .related-pretest {
+            background-color: var(--related-test-bg);
+            border: 1px solid var(--related-test-border);
+            padding: 15px;
+            margin-top: 25px;
+            border-radius: 4px;
+        }
+        .related-pretest h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        .related-pretest p { margin-bottom: 10px; }
+
+        /* ドリル解答セクション */
+        #drill-answers .drill-item {
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 15px;
+        }
+         #drill-answers .drill-item:last-child {
+             border-bottom: none;
+             padding-bottom: 0;
+         }
+        #drill-answers h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* 振り返りセクション */
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            cursor: pointer;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            position: relative;
+            padding-left: 35px; /* チェックマーク用スペース */
+        }
+        .checklist li::before {
+            content: '⬜'; /* 未チェック */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: var(--text-secondary);
+        }
+        .checklist li.checked {
+            background-color: #e9f5eb; /* 薄い緑 */
+            border-color: var(--primary-color);
+            color: var(--text-main);
+        }
+        .checklist li.checked::before {
+            content: '✅'; /* チェック済み */
+             color: var(--primary-color);
+        }
+        .review-questions .question {
+            margin-bottom: 20px;
+        }
+        .review-questions label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .review-questions input[type="text"],
+        .review-questions textarea {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        /* 応用セクション */
+        #application ul {
+            padding-left: 20px;
+        }
+         #application li {
+             margin-bottom: 10px;
+         }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* トップへ戻るボタン */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #scrollTopBtn:hover {
+            background-color: #138496;
+        }
+
+        /* 事前テストモーダル */
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            display: none; /* 初期非表示 */
+        }
+        #preTestModal {
+            background-color: var(--bg-content);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        #preTestModal h2 { margin-top: 0; }
+        .test-question {
+            margin-bottom: 25px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 15px;
+        }
+        .test-question p { font-weight: bold; margin-bottom: 10px; }
+        .test-question label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 10px;
+        }
+        #preTestModal .modal-buttons {
+            margin-top: 20px;
+            text-align: right;
+        }
+        #preTestModal button {
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+        }
+        #preTestModal button[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+         #preTestModal button[type="submit"]:hover {
+             background-color: #218838;
+         }
+        #preTestModal #skipTestBtn {
+            background-color: var(--text-secondary);
+            color: white;
+            border: none;
+        }
+        #preTestModal #skipTestBtn:hover {
+            background-color: #5a6268;
+        }
+        #testResults { margin-top: 20px; }
+        #testResults h3 { color: var(--primary-color); }
+        #testResults ul { padding-left: 20px; margin-top: 10px; }
+        #testResults a { color: var(--link-color); cursor: pointer; }
+        #testResults a:hover { text-decoration: underline; }
+
+        /* ハイライト */
+        .highlight-temp {
+            animation: highlightAnimation 2s ease-out;
+        }
+        @keyframes highlightAnimation {
+            0% { background-color: transparent; }
+            25% { background-color: var(--highlight-temp-bg); }
+            100% { background-color: transparent; }
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 25px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            #tableOfContents ul {
+                column-count: 1; /* スマホでは1カラム */
+            }
+             #preTestModal {
+                 max-width: 95%;
+                 padding: 20px;
+             }
+             body { line-height: 1.7; }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <!-- 事前理解度チェックテスト モーダル -->
+    <div id="preTestModalOverlay">
+        <div id="preTestModal">
+            <h2>事前理解度チェック</h2>
+            <p>授業内容の理解を深めるために、まずは簡単なテストに挑戦してみましょう。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="sec-regular-verbs">
+                    <p>1. 動詞 "plan" の過去形・過去分詞形として正しいものはどれですか？</p>
+                    <label><input type="radio" name="q1" value="planed"> planed</label>
+                    <label><input type="radio" name="q1" value="planned" data-correct="true"> planned</label>
+                    <label><input type="radio" name="q1" value="plant"> plant</label>
+                </div>
+                <div class="test-question" data-section-id="sec-regular-verbs">
+                    <p>2. 動詞 "study" の -ing形 として正しいものはどれですか？</p>
+                    <label><input type="radio" name="q2" value="studiing"> studiing</label>
+                    <label><input type="radio" name="q2" value="studying" data-correct="true"> studying</label>
+                    <label><input type="radio" name="q2" value="studing"> studing</label>
+                </div>
+                <div class="test-question" data-section-id="sec-irregular-verbs">
+                     <p>3. 動詞 "come" (来る) の活用は何型ですか？</p>
+                     <label><input type="radio" name="q3" value="A-A-A"> A-A-A型 (cut型)</label>
+                     <label><input type="radio" name="q3" value="A-B-A" data-correct="true"> A-B-A型 (come型)</label>
+                     <label><input type="radio" name="q3" value="A-B-B"> A-B-B型 (make型)</label>
+                     <label><input type="radio" name="q3" value="A-B-C"> A-B-C型 (eat型)</label>
+                </div>
+                 <div class="test-question" data-section-id="sec-irregular-verbs">
+                     <p>4. 動詞 "take" (取る) の過去分詞形として正しいものはどれですか？</p>
+                     <label><input type="radio" name="q4" value="toke"> toke</label>
+                     <label><input type="radio" name="q4" value="took"> took</label>
+                     <label><input type="radio" name="q4" value="taken" data-correct="true"> taken</label>
+                     <label><input type="radio" name="q4" value="taked"> taked</label>
+                 </div>
+                <div class="modal-buttons">
+                    <button type="button" id="skipTestBtn">テストをスキップ</button>
+                    <button type="submit">採点する</button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3>テスト結果</h3>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                 <button type="button" id="closeModalBtn" style="margin-top: 15px; background-color: var(--accent-color); color: white; border: none;">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>授業記録: 動詞の活用 (過去形など)</h1>
+        <span id="readingTime">読了時間の目安: 約 3 分</span>
+        <p>実施日: 2025年4月24日</p>
+
+        <div class="summary-box">
+            <h3>この授業のポイント</h3>
+            <ul>
+                <li>動詞の活用（過去形、過去分詞形、-ing形）の重要性</li>
+                <li>規則動詞の活用のルール（-ed, -dのつけ方）</li>
+                <li>不規則動詞の主な活用パターン（A-A-A, A-B-A, A-B-B, A-B-C型）</li>
+                <li>具体的な動詞の活用例の確認</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h2>目次</h2>
+            <ul>
+                <!-- JavaScriptで生成 -->
+            </ul>
+        </nav>
+
+        <div id="persistentTestResults">
+            <h3>事前理解度チェックの結果</h3>
+            <p id="persistentScore"></p>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <section id="sec-intro">
+            <h2>導入：動詞の活用とは</h2>
+            <p>動詞は、文の中で時間（<data-tooltip data-tooltip="いつ動作が行われたかを示す文法形式。例: 現在形, 過去形, 未来形">時制</data-tooltip>）や、動作が「される」のか「する」のか（<data-tooltip data-tooltip="動作を受ける側を主語にする表現。例: The ball was thrown.">受動態</data-tooltip>）などを表現するために形を変えます。これを「活用」と呼びます。</p>
+            <p>主に以下の形で使われます：</p>
+            <ul>
+                <li><strong>過去形:</strong> 過去の出来事を表す (例: I <code data-tooltip="walkの過去形">walked</code> home.)</li>
+                <li><strong>過去分詞形:</strong> 完了形 (<code data-tooltip="have + 過去分詞">have done</code>) や受動態 (<code data-tooltip="be動詞 + 過去分詞">be done</code>) で使う (例: I have <code data-tooltip="finishの過去分詞">finished</code>. The door was <code data-tooltip="openの過去分詞">opened</code>.)</li>
+                <li><strong>-ing形 (現在分詞形):</strong> 進行形 (<code data-tooltip="be動詞 + -ing形">be doing</code>) で使う (例: He is <code data-tooltip="readの-ing形">reading</code>.)</li>
+                <li><strong>-ing形 (動名詞):</strong> 名詞として使う (例: <code data-tooltip="readの動名詞">Reading</code> is fun.)</li>
+            </ul>
+            <p>一般動詞の活用には、ルール通りに変化する<strong data-tooltip="語尾に-edや-dをつけるなど、規則的に活用する動詞">規則動詞</strong>と、独自の形に変化する<strong data-tooltip="不規則な変化をする動詞。覚える必要がある。">不規則動詞</strong>があります。-ing形の作り方の詳細は教科書p.141 / α p.123も参照してください。</p>
+             <div class="related-pretest" data-section-id="sec-intro"></div>
+        </section>
+
+        <section id="sec-regular-verbs">
+            <h2>A. 規則動詞の活用（過去形・過去分詞形）</h2>
+            <p>規則動詞の過去形と過去分詞形は、基本的に動詞の<strong data-tooltip="辞書に載っている基本の形">原形</strong>に <code>-ed</code> または <code>-d</code> を付けて作ります。いくつかのルールがあります。</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>原形の語尾</th>
+                        <th>-ed, -dのつけ方</th>
+                        <th>例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>下記以外</td>
+                        <td><code>-ed</code>を付ける</td>
+                        <td>talk → <code>talked</code> / want → <code>wanted</code></td>
+                    </tr>
+                    <tr>
+                        <td>-e</td>
+                        <td><code>-d</code>だけを付ける</td>
+                        <td>like → <code>liked</code> / die → <code>died</code></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;<strong data-tooltip="a, i, u, e, o 以外のアルファベット">子音字</strong>＋y&gt;</td>
+                        <td>yをiに変えて<code>-ed</code>を付ける</td>
+                        <td>cry → <code>cried</code> / study → <code>studied</code></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;<strong data-tooltip="a, i, u, e, o のアルファベット">母音字</strong>＋y&gt;</td>
+                        <td>そのまま<code>-ed</code>を付ける</td>
+                        <td>play → <code>played</code> / enjoy → <code>enjoyed</code></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;<strong data-tooltip="単語の中で強く発音される部分">アクセント</strong>がある<br><strong data-tooltip="短く発音される母音。例: /ɪ/, /e/, /æ/, /ɑ/, /ʌ/, /ʊ/">短母音</strong>＋１子音字&gt;</td>
+                        <td>最後の子音字を重ねて<br><code>-ed</code>を付ける</td>
+                        <td>stóp → <code>stopped</code> / plan → <code>planned</code><br>occúr → <code>occurred</code></td>
+                    </tr>
+                     <tr>
+                         <td>&lt;アクセントがない<br>短母音＋１子音字&gt;</td>
+                         <td>そのまま<code>-ed</code>を付ける</td>
+                         <td>vísit → <code>visited</code> / óffer → <code>offered</code></td>
+                     </tr>
+                     <tr>
+                         <td>&lt;２母音字＋１子音字&gt;</td>
+                         <td>そのまま<code>-ed</code>を付ける</td>
+                         <td>look → <code>looked</code> / pour → <code>poured</code></td>
+                     </tr>
+                 </tbody>
+            </table>
+            <div class="supplementary-box">
+                 <h4>補足：短母音について</h4>
+                 <p>短母音とは、短く発音される母音のことです。発音記号で表すと /ɪ/ (sit), /e/ (pen), /æ/ (cat), /ɑ/ (hot - アメリカ英語), /ʌ/ (cup), /ʊ/ (put) などが該当します。アクセントの位置も重要になります。</p>
+            </div>
+            <div class="related-pretest" data-section-id="sec-regular-verbs"></div>
+        </section>
+
+        <section id="sec-irregular-verbs">
+            <h2>B. 不規則動詞の活用</h2>
+            <p>不規則動詞は、過去形・過去分詞形が <code>-ed</code> / <code>-d</code> のルールに従わず、独自の変化をします。これらは覚える必要があります。主なパターンは以下の通りです。（詳細は教科書p.142～ / α p.124～参照）</p>
+
+            <h3>主な活用パターン</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>パターン</th>
+                        <th>原形（意味）</th>
+                        <th>過去形</th>
+                        <th>過去分詞形</th>
+                        <th>-ing形</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A-A-A型</strong><br>(全て同じ形)</td>
+                        <td>cut (切る)<br>hit (打つ)</td>
+                        <td>cut<br>hit</td>
+                        <td>cut<br>hit</td>
+                        <td>cutting<br>hitting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A-B-A型</strong><br>(原形と過去分詞形が同じ)</td>
+                        <td>come (来る)<br>run (走る)</td>
+                        <td>came<br>ran</td>
+                        <td>come<br>run</td>
+                        <td>coming<br>running</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A-B-B型</strong><br>(過去形と過去分詞形が同じ)</td>
+                        <td>catch (つかまえる)<br>feel (感じる)<br>keep (保つ)<br>lose (失う, 負ける)<br>make (作る)<br>think (考える, 思う)</td>
+                        <td>caught /kɔːt/<br>felt<br>kept<br>lost<br>made<br>thought /θɔːt/</td>
+                        <td>caught<br>felt<br>kept<br>lost<br>made<br>thought</td>
+                        <td>catching<br>feeling<br>keeping<br>losing<br>making<br>thinking</td>
+                    </tr>
+                     <tr>
+                         <td><strong>A-B-C型</strong><br>(全て違う形)</td>
+                         <td>break (壊す)<br>get (得る)<br>go (行く)<br>know (知っている)<br>see (見える)<br>take (取る)</td>
+                         <td>broke<br>got<br>went<br>knew<br>saw<br>took</td>
+                         <td>broken<br>gotten / got<br>gone<br>known<br>seen<br>taken</td>
+                         <td>breaking<br>getting<br>going<br>knowing<br>seeing<br>taking</td>
+                     </tr>
+                 </tbody>
+            </table>
+            <div class="supplementary-box">
+                <h4>注意：-ing形について</h4>
+                <p>不規則動詞でも、-ing形は規則動詞と同じルールで作られることが多いです（例: cut → cutting, come → coming）。ただし、lie (横になる) → lying のように特殊なものもあります。</p>
+                 <p><code>gotten</code> は主にアメリカ英語で使われる <code>get</code> の過去分詞形です。イギリス英語では <code>got</code> が一般的です。</p>
+            </div>
+             <div class="related-pretest" data-section-id="sec-irregular-verbs"></div>
+        </section>
+
+        <section id="sec-drill">
+             <h2>Drill 演習問題</h2>
+             <p>以下の問題で理解度を確認しましょう。</p>
+             <h3>問題1：日本語に合うように下線部に適切な語句を補う</h3>
+             <ol>
+                 <li>昨日、夕食を作った。　　　　 I ______ dinner yesterday.</li>
+                 <li>ちょうど仕事を終えたところだ。　I have just ______ my work.</li>
+                 <li>この写真は兄が撮影した。　This picture was ______ by my brother.</li>
+                 <li>その時、彼は本を読んでいた。　He was ______ a book then.</li>
+             </ol>
+
+            <h3>問題2：規則動詞の活用</h3>
+            <p>次の規則動詞を適切な形（過去形, 過去分詞形, -ing形）にしなさい。</p>
+            <ol>
+                <li>call（呼ぶ，電話する）</li>
+                <li>arrive（到着する）</li>
+                <li>carry（運ぶ）</li>
+                <li>stay（とどまる）</li>
+                <li>drop（落とす）</li>
+                <li>happen（起こる）</li>
+            </ol>
+
+            <h3>問題3：不規則動詞の活用</h3>
+             <p>次の不規則動詞を適切な形（過去形, 過去分詞形, -ing形）にしなさい。</p>
+            <ol>
+                <li>put（置く）</li>
+                <li>bring（持って来る）</li>
+                <li>find（見つける）</li>
+                <li>have（持っている）</li>
+                <li>hear（聞こえる）</li>
+                <li>leave（去る）</li>
+                <li>meet（会う）</li>
+                <li>say（言う）</li>
+                <li>send（送る）</li>
+                <li>sleep（眠る）</li>
+                <li>tell（話す）</li>
+                <li>eat（食べる）</li>
+                <li>fall（落ちる）</li>
+                <li>give（与える）</li>
+                <li>show（見せる）</li>
+                <li>speak（話す）</li>
+                <li>write（書く）</li>
+            </ol>
+             <div class="related-pretest" data-section-id="sec-drill"></div>
+        </section>
+
+        <section id="drill-answers">
+            <h2>Drill 解答・解説</h2>
+
+            <div class="drill-item">
+                <h3>問題1 解答・解説</h3>
+                <button class="toggle-answer" data-target="drill1-answer">解答・解説を表示</button>
+                <div class="answer" id="drill1-answer">
+                    <ol>
+                        <li>I <strong>cooked</strong> [<strong>made</strong>] dinner yesterday.</li>
+                        <li>I have just <strong>finished</strong> my work.</li>
+                        <li>This picture was <strong>taken</strong> by my brother.</li>
+                        <li>He was <strong>reading</strong> a book then.</li>
+                    </ol>
+                    <p><strong>【解説】</strong>動詞を活用させることで，時制や態を表します。動詞によって規則活用するものと不規則活用するものがあります。</p>
+                    <ol>
+                        <li><code>yesterday</code>「昨日」は過去のことを表すので，動詞を過去形にします。<code>cook</code>「～を料理する」は規則動詞なので，<code>-ed</code>を付けて<code>cooked</code>にします。<code>make</code>「～を作る」は不規則動詞で，過去形は<code>made</code>です。</li>
+                        <li><code>just</code>「ちょうど」を伴った動作の完了を表す現在完了形の文なので，動詞を〈have＋過去分詞〉にします。<code>finish</code>「～を終える」は規則動詞なので，<code>finished</code>にします。</li>
+                        <li>〈by＋動作主〉から，受動態〈be動詞＋過去分詞〉「～された」の文を作るとわかります。<code>take</code>「～をとる」は不規則動詞で，過去分詞形は<code>taken</code>です。</li>
+                        <li><code>then</code>「その時」とbe動詞の<code>was</code>から，過去の時点で進行中の動作を表す過去進行形とわかります。動詞を〈was＋-ing形〉にします。<code>read</code>の-ing形は<code>reading</code>です。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>問題2 解答・解説</h3>
+                <button class="toggle-answer" data-target="drill2-answer">解答・解説を表示</button>
+                <div class="answer" id="drill2-answer">
+                    <ol>
+                        <li>call – <strong>called</strong> – <strong>called</strong> – <strong>calling</strong></li>
+                        <li>arrive – <strong>arrived</strong> – <strong>arrived</strong> – arriving</li>
+                        <li>carry – <strong>carried</strong> – <strong>carried</strong> – carrying</li>
+                        <li>stay – <strong>stayed</strong> – <strong>stayed</strong> – staying</li>
+                        <li>drop – <strong>dropped</strong> – <strong>dropped</strong> – <strong>dropping</strong></li>
+                        <li>happen – <strong>happened</strong> – <strong>happened</strong> – <strong>happening</strong></li>
+                    </ol>
+                     <p><strong>【解説】</strong>規則動詞の活用は，語尾に<code>-(e)d</code>を付けて過去形・過去分詞形に，<code>-ing</code>を付けて-ing形(現在分詞形・動名詞)にします。</p>
+                     <ol>
+                         <li><code>call</code>は<code>-ed</code>や<code>-ing</code>をそのまま付ける，規則動詞の基本の活用をします。</li>
+                         <li><code>arrive</code>は語尾が<code>-e</code>で終わるため，過去形・過去分詞形は<code>-d</code>だけを付けます。-ing形は<code>-e</code>をとって<code>-ing</code>を付けます (arriving)。</li>
+                         <li><code>carry</code>は語尾が〈子音字＋y〉で終わるため，過去形・過去分詞形はyをiに変えて<code>-ed</code>を付けます (carried)。-ing形はそのまま<code>-ing</code>を付けます (carrying)。</li>
+                         <li><code>stay</code>は語尾が〈母音字＋y〉で終わるため，過去形・過去分詞形はそのまま<code>-ed</code>を (stayed)，-ing形もそのまま<code>-ing</code>を付けます (staying)。</li>
+                         <li><code>drop</code>は語尾が〈アクセントがある短母音＋1子音字〉で終わるため，最後の子音字を重ねて<code>-ed</code> (dropped) や<code>-ing</code> (dropping) を付けます。</li>
+                         <li><code>happen</code>は語尾が〈アクセントがない短母音＋1子音字〉で終わるため，そのまま<code>-ed</code> (happened) や<code>-ing</code> (happening) を付けます。</li>
+                     </ol>
+                </div>
+            </div>
+
+            <div class="drill-item">
+                <h3>問題3 解答・解説</h3>
+                <button class="toggle-answer" data-target="drill3-answer">解答・解説を表示</button>
+                <div class="answer" id="drill3-answer">
+                    <ol>
+                        <li>put – <strong>put</strong> – <strong>put</strong> – putting</li>
+                        <li>bring – <strong>brought</strong> – <strong>brought</strong> – bringing</li>
+                        <li>find – <strong>found</strong> – <strong>found</strong> – <strong>finding</strong></li>
+                        <li>have – <strong>had</strong> – <strong>had</strong> – <strong>having</strong></li>
+                        <li>hear – <strong>heard</strong> – <strong>heard</strong> – <strong>hearing</strong></li>
+                        <li>leave – <strong>left</strong> – <strong>left</strong> – <strong>leaving</strong></li>
+                        <li>meet – <strong>met</strong> – <strong>met</strong> – meeting</li>
+                        <li>say – <strong>said</strong> – <strong>said</strong> – <strong>saying</strong></li>
+                        <li>send – <strong>sent</strong> – <strong>sent</strong> – sending</li>
+                        <li>sleep – <strong>slept</strong> – <strong>slept</strong> – <strong>sleeping</strong></li>
+                        <li>tell – <strong>told</strong> – <strong>told</strong> – <strong>telling</strong></li>
+                        <li>eat – <strong>ate</strong> – <strong>eaten</strong> – <strong>eating</strong></li>
+                        <li>fall – <strong>fell</strong> – <strong>fallen</strong> – <strong>falling</strong></li>
+                        <li>give – <strong>gave</strong> – <strong>given</strong> – <strong>giving</strong></li>
+                        <li>show – <strong>showed</strong> – <strong>shown</strong> – showing</li>
+                        <li>speak – <strong>spoke</strong> – <strong>spoken</strong> – <strong>speaking</strong></li>
+                        <li>write – <strong>wrote</strong> – <strong>written</strong> – <strong>writing</strong></li>
+                    </ol>
+                    <p><strong>【解説】</strong>不規則動詞の活用には，原形・過去形・過去分詞形が同じA-A-A型，原形と過去分詞形が同じA-B-A型，過去形と過去分詞形が同じA-B-B型，すべて違うA-B-C型などがあります。</p>
+                    <ol>
+                        <li><code>put</code>の活用はA-A-A型。-ing形は〈アクセントがある短母音＋1子音字〉なので，子音字を重ねて<code>-ing</code>を付けます (putting)。</li>
+                        <li><code>bring</code>の過去形・過去分詞形は<code>brought</code> /brɔːt/。2～11までの動詞の活用はすべてA-B-B型です。</li>
+                        <li><code>find</code>の過去形・過去分詞形は<code>found</code> /faʊnd/。</li>
+                        <li><code>have</code>の過去形・過去分詞形は<code>had</code>。-ing形は<code>-e</code>をとって<code>-ing</code>を付けます (having)。</li>
+                        <li><code>hear</code>の過去形・過去分詞形は<code>heard</code> /hɜːrd/。</li>
+                        <li><code>leave</code>の過去形・過去分詞形は<code>left</code>。-ing形は<code>-e</code>をとって<code>-ing</code>を付けます (leaving)。</li>
+                        <li><code>meet</code>の過去形・過去分詞形は<code>met</code> /met/。</li>
+                        <li><code>say</code>の過去形・過去分詞形は<code>said</code> /sed/。</li>
+                        <li><code>send</code>の過去形・過去分詞形は<code>sent</code>。</li>
+                        <li><code>sleep</code>の過去形・過去分詞形は<code>slept</code>。</li>
+                        <li><code>tell</code>の過去形・過去分詞形は<code>told</code> /toʊld/。</li>
+                        <li><code>eat</code>の過去形は<code>ate</code> /eɪt/，過去分詞形は<code>eaten</code> /ˈiːtn/。-ing形はそのまま<code>-ing</code>を付けます (eating)。12～17までの動詞の活用はすべてA-B-C型です。</li>
+                        <li><code>fall</code>の過去形は<code>fell</code> /fel/，過去分詞形は<code>fallen</code> /ˈfɔːlən/。</li>
+                        <li><code>give</code>の過去形は<code>gave</code> /ɡeɪv/，過去分詞形は<code>given</code> /ˈɡɪvn/。-ing形は<code>-e</code>をとって<code>-ing</code>を付けます (giving)。</li>
+                        <li><code>show</code>の過去形は<code>showed</code>，過去分詞形は<code>shown</code> /ʃoʊn/。(注: showed も過去分詞として使われることがある)</li>
+                        <li><code>speak</code>の過去形は<code>spoke</code> /spoʊk/，過去分詞形は<code>spoken</code> /ˈspoʊkən/。</li>
+                        <li><code>write</code>の過去形は<code>wrote</code> /roʊt/，過去分詞形は<code>written</code> /ˈrɪtn/。-ing形は<code>-e</code>をとって<code>-ing</code>を付けます (writing)。</li>
+                    </ol>
+                </div>
+            </div>
+             <div class="related-pretest" data-section-id="drill-answers"></div>
+        </section>
+
+        <section id="review">
+            <h2>振り返り</h2>
+            <p>今回の内容を理解できたか、以下の点で確認しましょう。</p>
+            <ul class="checklist">
+                <li>規則動詞の過去形・過去分詞形の基本的な作り方（-ed/-d）がわかった。</li>
+                <li>子音字+y, 母音字+y で終わる動詞の活用ルールを理解した。</li>
+                <li>短母音+子音字で終わる動詞の活用ルール（子音重ね）を理解した。</li>
+                <li>不規則動詞には様々な活用パターンがあることを認識した。</li>
+                <li>主な不規則動詞の活用形をいくつか覚えた。</li>
+                <li>-ing形の作り方の基本ルールを理解した。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <div class="review-questions">
+                <div class="question">
+                    <label for="review-q1">1. 動詞 "stop" と "visit" の過去形はそれぞれどうなりますか？なぜ形が異なるのか理由も説明してください。</label>
+                    <textarea id="review-q1" rows="3" placeholder="例: stop は stopped, visit は visited。理由は..."></textarea>
+                    <button class="toggle-answer" data-target="review-a1">解答例を表示</button>
+                    <div class="answer" id="review-a1">
+                        <p>stop → stopped, visit → visited</p>
+                        <p>理由: stop は <アクセントのある短母音 + 1子音字> で終わるため、最後の子音字 p を重ねて -ed を付けます。一方、visit はアクセントが最初の音節 (ví-) にあり、語尾は <アクセントのない短母音 + 1子音字> なので、そのまま -ed を付けます。</p>
+                    </div>
+                </div>
+                <div class="question">
+                    <label for="review-q2">2. 不規則動詞 "go" と "make" の過去形と過去分詞形をそれぞれ答えてください。また、それぞれ何型に分類されますか？</label>
+                    <textarea id="review-q2" rows="3" placeholder="例: go の過去形は..., 過去分詞形は..., 型は..."></textarea>
+                    <button class="toggle-answer" data-target="review-a2">解答例を表示</button>
+                    <div class="answer" id="review-a2">
+                        <p>go: 過去形 went, 過去分詞形 gone (A-B-C型)</p>
+                        <p>make: 過去形 made, 過去分詞形 made (A-B-B型)</p>
+                    </div>
+                </div>
+            </div>
+             <div class="related-pretest" data-section-id="review"></div>
+        </section>
+
+        <section id="application">
+             <h2>応用・発展</h2>
+             <h3>今回の知識の活用</h3>
+             <ul>
+                 <li><strong>正確な英文作成:</strong> 過去の出来事を述べたり、完了したことを表現したり、進行中の動作を描写する際に、正しい動詞の形を使うことで、意図が明確に伝わる英文を作成できます。</li>
+                 <li><strong>英文読解力の向上:</strong> 文中の動詞の形から、時制や態（受動態など）を正確に読み取ることができ、内容理解が深まります。</li>
+                 <li><strong>コミュニケーション能力の向上:</strong> 日常会話やライティングで、過去の経験や現在の状況などを自然かつ正確に表現できるようになります。</li>
+            </ul>
+
+            <h3>今後の学習へのつながり</h3>
+             <ul>
+                 <li><strong>時制の学習:</strong> 現在完了形、過去完了形、未来完了形など、様々な時制を学ぶ上で、過去分詞形の知識は必須です。</li>
+                 <li><strong>受動態の学習:</strong> 「～される」という受動態の文を作る際に、be動詞 + 過去分詞形の形が基本となります。</li>
+                 <li><strong>分詞構文・分詞の形容詞的用法:</strong> -ing形（現在分詞）や過去分詞形を使って、文をより簡潔にしたり、名詞を修飾したりする表現を学ぶ基礎となります。</li>
+            </ul>
+
+             <h3>学習上の注意点</h3>
+             <ul>
+                 <li><strong>不規則動詞の暗記:</strong> 不規則動詞は数が多く、覚えるのが大変ですが、頻出のものから少しずつ確実に覚えていくことが重要です。リストを作ったり、例文の中で覚えたりするのが効果的です。</li>
+                 <li><strong>スペルミス:</strong> 特に子音字を重ねるルールや、yをiに変えるルールなど、スペルミスをしやすい箇所に注意しましょう。</li>
+                 <li><strong>規則動詞と不規則動詞の区別:</strong> 新しい動詞に出会ったとき、それが規則動詞か不規則動詞かを確認する習慣をつけましょう。辞書や単語帳で確認できます。</li>
+            </ul>
+
+            <h3>参考資料</h3>
+             <ul>
+                 <li><a href="https://ejje.weblio.jp/english-grammar/irregular-verbs/" target="_blank" rel="noopener noreferrer">Weblio英語例文検索 - 不規則動詞一覧</a>: 代表的な不規則動詞とその活用が一覧になっています。</li>
+                 <li><a href="https://www.perfect-english-grammar.com/irregular-verbs.html" target="_blank" rel="noopener noreferrer">Perfect English Grammar - Irregular Verbs</a>: (英語サイト) クイズ形式で不規則動詞を学べます。</li>
+                 <li>教科書・参考書の巻末付録: 多くの教科書や参考書には不規則動詞の活用表が掲載されています。</li>
+            </ul>
+             <div class="related-pretest" data-section-id="application"></div>
+        </section>
+
+        <footer>
+            <p>動詞の活用は英語学習の基礎です。繰り返し練習してしっかり身につけましょう。</p>
+            <p>&copy; 2025 授業記録</p>
+        </footer>
+
+    </div><!-- /.container -->
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            const readingTimeEl = document.getElementById('readingTime');
+            const tocList = document.getElementById('tableOfContents').querySelector('ul');
+            const sections = document.querySelectorAll('section[id]');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const checklistItems = document.querySelectorAll('.checklist li');
+            const body = document.body;
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestModal = document.getElementById('preTestModal');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsContainer = document.getElementById('testResults');
+            const testScoreEl = document.getElementById('testScore');
+            const reviewLinksEl = document.getElementById('reviewLinks');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const persistentResultsContainer = document.getElementById('persistentTestResults');
+            const persistentScoreEl = document.getElementById('persistentScore');
+            const persistentReviewLinksEl = document.getElementById('persistentReviewLinks');
+            const toggleAnswerButtons = document.querySelectorAll('.toggle-answer'); // 初期読み込み時のボタン
+
+            // --- プログレスバー ---
+            function updateProgressBar() {
+                const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrolled / scrollTotal) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            window.addEventListener('scroll', updateProgressBar);
+            updateProgressBar(); // 初期表示
+
+            // --- 読了時間 (固定値) ---
+            // readingTimeEl.textContent = '読了時間の目安: 約 3 分'; // 必要なら固定値
+
+            // --- 目次生成 ---
+             function generateTableOfContents() {
+                 let tocHTML = '';
+                 sections.forEach(section => {
+                     const title = section.querySelector('h2');
+                     if (title && section.id) {
+                         // セクションIDが空でない場合のみ目次に追加
+                         tocHTML += `<li><a href="#${section.id}">${title.textContent}</a></li>`;
+                     }
+                 });
+                 if (tocList) {
+                     tocList.innerHTML = tocHTML;
+                     // 目次リンクにスムーズスクロールを追加
+                    tocList.querySelectorAll('a').forEach(anchor => {
+                         anchor.addEventListener('click', function(e) {
+                             e.preventDefault();
+                             const targetId = this.getAttribute('href').substring(1);
+                             scrollToSection(targetId);
+                         });
+                     });
+                 }
+             }
+            generateTableOfContents();
+
+             // --- トップへ戻るボタン ---
+             function toggleScrollTopButton() {
+                 if (window.scrollY > 300) {
+                     scrollTopBtn.style.display = 'block';
+                 } else {
+                     scrollTopBtn.style.display = 'none';
+                 }
+             }
+             scrollTopBtn.addEventListener('click', () => {
+                 window.scrollTo({ top: 0, behavior: 'smooth' });
+             });
+             window.addEventListener('scroll', toggleScrollTopButton);
+             toggleScrollTopButton(); // 初期表示
+
+             // --- チェックリスト ---
+             checklistItems.forEach(item => {
+                 item.addEventListener('click', () => {
+                     item.classList.toggle('checked');
+                 });
+             });
+
+            // --- 解答トグル (イベント委任を使用) ---
+             document.body.addEventListener('click', function(event) {
+                if (event.target.classList.contains('toggle-answer')) {
+                     const button = event.target;
+                     const targetId = button.dataset.target;
+                     const answerElement = targetId
+                         ? document.getElementById(targetId)
+                         : button.nextElementSibling; // data-targetがなければ次の要素
+
+                     if (answerElement && answerElement.classList.contains('answer')) {
+                         const isVisible = answerElement.style.display === 'block';
+                         answerElement.style.display = isVisible ? 'none' : 'block';
+                         button.textContent = isVisible ? '解答・解説を表示' : '解答・解説を隠す';
+                     }
+                 }
+            });
+
+
+            // --- セクションへのスクロールとハイライト ---
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    section.classList.add('highlight-temp');
+                    setTimeout(() => {
+                        section.classList.remove('highlight-temp');
+                    }, 2000); // 2秒後にハイライト解除
+                 } else {
+                    console.warn(`Section with ID "${sectionId}" not found.`);
+                }
+            }
+
+             // --- 事前理解度チェックテスト ---
+             const preTestCompleted = sessionStorage.getItem('preTestCompleted');
+             const preTestResultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+
+             function displayPersistentResults(data) {
+                 if (!data) return;
+                 persistentResultsContainer.style.display = 'block';
+                 if (data.skipped) {
+                     persistentScoreEl.textContent = 'テストはスキップされました。';
+                     persistentReviewLinksEl.innerHTML = '<p>授業内容を一通り学習することをお勧めします。</p>';
+                 } else {
+                     persistentScoreEl.textContent = `スコア: ${data.score}% (${data.correctCount}/${data.totalCount})`;
+                     if (data.incorrectItems && data.incorrectItems.length > 0) {
+                         let linksHTML = '<ul>';
+                         data.incorrectItems.forEach(item => {
+                             const sectionTitle = document.getElementById(item.sectionId)?.querySelector('h2')?.textContent || item.sectionId;
+                             linksHTML += `<li>復習推奨: <a href="#${item.sectionId}" data-section-id="${item.sectionId}">${sectionTitle}</a> (問題: ${item.name})</li>`;
+                         });
+                         linksHTML += '</ul>';
+                         persistentReviewLinksEl.innerHTML = linksHTML;
+                     } else {
+                         persistentReviewLinksEl.innerHTML = '<p>素晴らしい！全問正解です。</p>';
+                     }
+                 }
+             }
+
+             if (preTestCompleted === 'true' && preTestResultData) {
+                 displayPersistentResults(preTestResultData);
+             } else if (preTestModalOverlay) {
+                 preTestModalOverlay.style.display = 'flex';
+                 body.classList.add('modal-open');
+             }
+
+            if (preTestForm) {
+                 preTestForm.addEventListener('submit', (e) => {
+                     e.preventDefault();
+                     const formData = new FormData(preTestForm);
+                     const questions = preTestForm.querySelectorAll('.test-question');
+                     let correctCount = 0;
+                     let incorrectItems = [];
+                     const totalCount = questions.length;
+
+                     questions.forEach((question, index) => {
+                         const questionName = `q${index + 1}`;
+                         const selectedAnswer = formData.get(questionName);
+                         const correctAnswerInput = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+
+                         if (selectedAnswer && correctAnswerInput && selectedAnswer === correctAnswerInput.value) {
+                             correctCount++;
+                         } else if (correctAnswerInput) { // 不正解または未選択の場合
+                             incorrectItems.push({
+                                 name: questionName, // 問題番号的な識別子
+                                 sectionId: question.dataset.sectionId
+                             });
+                         }
+                     });
+
+                     const score = Math.round((correctCount / totalCount) * 100);
+                     let resultHTML = '';
+                     let reviewLinksHTML = '';
+
+                     if (incorrectItems.length > 0) {
+                         reviewLinksHTML = '<h4>復習が必要な項目:</h4><ul>';
+                         incorrectItems.forEach(item => {
+                             const sectionTitle = document.getElementById(item.sectionId)?.querySelector('h2')?.textContent || item.sectionId;
+                             reviewLinksHTML += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">${sectionTitle}</a> (問題: ${item.name})</li>`;
+                         });
+                         reviewLinksHTML += '</ul>';
+                     } else {
+                         reviewLinksHTML = '<p>素晴らしい！全問正解です。</p>';
+                     }
+
+                     // 結果をsessionStorageに保存
+                     const resultData = {
+                         skipped: false,
+                         score: score,
+                         correctCount: correctCount,
+                         totalCount: totalCount,
+                         incorrectItems: incorrectItems
+                     };
+                     sessionStorage.setItem('preTestCompleted', 'true');
+                     sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+
+
+                     // モーダル内に結果表示
+                     testScoreEl.textContent = `スコア: ${score}% (${correctCount}/${totalCount})`;
+                     reviewLinksEl.innerHTML = reviewLinksHTML;
+                     preTestForm.style.display = 'none';
+                     testResultsContainer.style.display = 'block';
+
+                      // メインコンテンツ内にも結果表示
+                     displayPersistentResults(resultData);
+
+                     // モーダル内の復習リンクにイベントリスナーを追加
+                     reviewLinksEl.querySelectorAll('a[data-section-id]').forEach(link => {
+                         link.addEventListener('click', (event) => {
+                             event.preventDefault();
+                             const sectionId = link.dataset.sectionId;
+                             closeModal();
+                             scrollToSection(sectionId);
+                         });
+                     });
+                 });
+            }
+
+            function closeModal() {
+                 if (preTestModalOverlay) {
+                     preTestModalOverlay.style.display = 'none';
+                     body.classList.remove('modal-open');
+                 }
+            }
+
+            if (skipTestBtn) {
+                 skipTestBtn.addEventListener('click', () => {
+                    closeModal();
+                     const resultData = { skipped: true };
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                    displayPersistentResults(resultData); // スキップ情報を表示
+                 });
+            }
+
+             if (closeModalBtn) {
+                 closeModalBtn.addEventListener('click', closeModal);
+             }
+
+             // メインコンテンツ内の結果表示エリアでのリンククリック（イベント委任）
+             if (persistentResultsContainer) {
+                persistentResultsContainer.addEventListener('click', (event) => {
+                    if (event.target.tagName === 'A' && event.target.dataset.sectionId) {
+                        event.preventDefault();
+                        const sectionId = event.target.dataset.sectionId;
+                        scrollToSection(sectionId);
+                    }
+                });
+            }
+
+             // --- 関連事前テスト問題の挿入 ---
+             function injectRelatedPretests() {
+                 const testQuestions = document.querySelectorAll('#preTestModal .test-question');
+                 if (!testQuestions.length) return;
+
+                 testQuestions.forEach((question, index) => {
+                     const sectionId = question.dataset.sectionId;
+                     const questionText = question.querySelector('p').textContent;
+                     const correctAnswerInput = question.querySelector('input[data-correct="true"]');
+                     if (!correctAnswerInput || !sectionId) return;
+
+                     const correctAnswerValue = correctAnswerInput.value;
+                     // ラベルからラジオボタンを除いたテキストを取得
+                     const correctAnswerLabel = question.querySelector(`label input[value="${correctAnswerValue}"]`).closest('label');
+                     let correctAnswerText = correctAnswerLabel ? correctAnswerLabel.textContent.trim() : correctAnswerValue;
+                    // ラジオボタン自体を除くための簡単な処理（より堅牢にするならinput要素を削除）
+                     if (correctAnswerLabel) {
+                         const inputInsideLabel = correctAnswerLabel.querySelector('input');
+                         if (inputInsideLabel) {
+                            correctAnswerText = correctAnswerLabel.innerHTML.replace(inputInsideLabel.outerHTML, '').trim();
+                        }
+                     }
+
+
+                     // 簡単な解説を生成（ここでは正答のみ表示）
+                     const explanation = `正解は「${correctAnswerText}」です。`;
+
+                     const targetSection = document.getElementById(sectionId);
+                     const relatedPretestContainer = targetSection ? targetSection.querySelector('.related-pretest') : null;
+
+                     if (relatedPretestContainer) {
+                         const uniqueId = `related-answer-${sectionId}-${index}`;
+                         relatedPretestContainer.innerHTML = `
+                             <h4>関連する事前テスト問題</h4>
+                             <p><strong>問題 ${index + 1}:</strong> ${questionText}</p>
+                             <button class="toggle-answer" data-target="${uniqueId}">解答・解説を表示</button>
+                             <div class="answer" id="${uniqueId}">
+                                 <p>${explanation}</p>
+                             </div>
+                         `;
+                     }
+                 });
+             }
+            injectRelatedPretests(); // ページ読み込み時に関連問題を挿入
+
+
+        }); // DOMContentLoaded end
+    </script>
+
+</body>
+</html>
