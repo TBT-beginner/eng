@@ -573,7 +573,7 @@
         // ★ 基本情報から音声関連の変数を設定 ★
         const numberOfSentences = 23;
         const audioBaseUrl = 'https://textbook.zoshindo.co.jp/fx1/sounds/textSplit';
-        const filePrefix = 'text11_1_1_1'; // 拡張子 .mp3 は除外
+        const filePrefix = 'text11_1_1_'; // 拡張子 .mp3 は除外
 
         if (typeof AudioPlayer === 'undefined' || typeof AudioPlayer.playInterval !== 'function' || typeof AudioPlayer.clearInterval !== 'function') {
              console.error("AudioPlayer の準備、または必要な関数の上書きに失敗しました。");
