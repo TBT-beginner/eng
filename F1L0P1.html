@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- ★ レッスンIDをタイトルに挿入 ★ -->
+    <title>F1L11P1</title>
+    <!-- jQuery (audioPlayer4mp3.js のために必須) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 元の音声再生JS -->
+    <script type="text/javascript" src="https://textbook.zoshindo.co.jp/fx1/js/audioPlayer4mp3.js"></script>
+
+    <style>
+        /* --- (元のCSSコード全体をここにそのまま挿入) --- */
+        :root {
+            --primary-color: #4a90e2; --secondary-color: #f5a623; --background-color: #f8f9fa;
+            --text-color: #373a3c; --border-color: #e8e8e8; --vocab-color: #e74c3c;
+            --phrase-marker-color: #999; --hint-color: #777; --explanation-bg: #f5f7fa;
+            --sound-tips-bg: #fff9e6; --tooltip-bg: #333; --tooltip-text: #fff;
+            --svocm-marker-color: #888; --sidebar-width: 260px; --sidebar-bg: #f8f9fa;
+            --base-font-size: 16px; --resizer-height: 10px; --footer-height: 60px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: var(--base-font-size); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.75; color: var(--text-color); background-color: var(--background-color);
+            display: flex; height: 100vh; overflow: hidden;
+            transition: padding-left 0.3s ease;
+        }
+        #settings-sidebar {
+            width: var(--sidebar-width); height: 100vh; background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color); position: fixed; left: 0; top: 0;
+            padding: 25px 20px; overflow-y: auto; transform: translateX(0);
+            transition: transform 0.3s ease; z-index: 1002; display: flex; flex-direction: column; gap: 25px;
+        }
+        .settings-group { border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+        .settings-group:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 0;}
+        .settings-group h4 { font-size: 0.95em; margin-bottom: 15px; color: var(--primary-color); font-weight: 600; }
+        #settings-sidebar label { display: flex; align-items: center; margin-bottom: 12px; cursor: pointer; font-size: 0.9em; user-select: none; }
+        #settings-sidebar input[type="checkbox"] { margin-right: 10px; transform: scale(1); accent-color: var(--primary-color); }
+        .font-size-controls { display: flex; flex-direction: column; gap: 10px; }
+        .font-size-controls > div { display: flex; align-items: center; gap: 8px; }
+        .font-size-controls label { font-size: 0.9em; margin-right: 5px; margin-bottom: 0;}
+        .font-size-controls input[type="range"] { width: 90px; height: 4px; cursor: pointer; accent-color: var(--primary-color); vertical-align: middle; flex-grow: 1;}
+        .font-size-controls button { padding: 4px 7px; font-size: 0.85em; min-width: 28px; line-height: 1; border-radius: 3px; background-color: #e0e0e0; color: #555; border: none; cursor: pointer;}
+        .font-size-controls button:hover:not(:disabled) { background-color: #d0d0d0; }
+        .font-size-controls button:disabled { background-color: #eee; color: #bbb; cursor: not-allowed;}
+        #font-size-value { font-size: 0.85em; min-width: 35px; text-align: right; color: #555; font-weight: 500; }
+        .difficulty-switch { display: flex; gap: 8px;}
+        .difficulty-switch button { padding: 7px 10px; font-size: 0.85em; margin-right: 0; flex: 1; border-radius: 5px; background-color: #e0e0e0; color: #555; border: none; cursor: pointer; }
+        .difficulty-switch button.active { background-color: var(--secondary-color); font-weight: bold; color: white; }
+        #word-test-sidebar-trigger button { width: 100%; background-color: #28a745; color: white; padding: 10px 15px; font-size: 0.95em; border-radius: 5px; border: none; cursor: pointer;}
+        #word-test-sidebar-trigger button:hover { background-color: #218838; }
+        #sidebar-toggle {
+            position: fixed; top: 12px; left: 15px; z-index: 1003; background: rgba(255, 255, 255, 0.8);
+            color: var(--primary-color); border: 1px solid var(--border-color); border-radius: 5px;
+            padding: 7px 9px; cursor: pointer; display: none; font-size: 1.3em; line-height: 1; backdrop-filter: blur(2px);
+        }
+        #sidebar-toggle:hover { background-color: rgba(255, 255, 255, 1); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        #main-content {
+            flex-grow: 1; height: 100vh; display: flex; flex-direction: column;
+            padding-left: var(--sidebar-width); transition: padding-left 0.3s ease; overflow: hidden;
+        }
+        .container { display: flex; flex-direction: column; height: 100%; width: 100%; padding: 15px; gap: 0; overflow: hidden; }
+        #text-area {
+            background-color: white; border: 1px solid var(--border-color); border-bottom: none;
+            border-radius: 6px 6px 0 0; display: flex; flex-direction: column; overflow: hidden;
+            flex-grow: 2; flex-basis: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        #question-area {
+             background-color: white; border: 1px solid var(--border-color); border-top: none;
+             border-radius: 0 0 6px 6px; overflow: hidden; min-height: 100px;
+             display: flex; flex-direction: column; flex-grow: 1; flex-basis: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        #text-content-wrapper { padding: 25px 30px; flex-grow: 1; overflow-y: auto; font-size: 1rem; }
+        .tab-content-container { padding: 25px 30px; flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
+        #resizer { height: var(--resizer-height); background-color: #e0e0e0; cursor: ns-resize; flex-shrink: 0; position: relative; display: block; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); transition: background-color 0.2s ease; }
+        #resizer:hover { background-color: #ccc; }
+        #resizer::before { content: "···"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5em; line-height: 0; color: #999; letter-spacing: 2px; }
+        #action-footer {
+            position: fixed; bottom: 0; left: 0; right: 0; height: var(--footer-height);
+            background-color: #ffffff; border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.08); display: none; align-items: center;
+            justify-content: center; padding: 0 15px; z-index: 1001;
+        }
+        #action-footer button { padding: 10px 30px; font-size: 1em; font-weight: 500; border-radius: 6px; border: none; cursor: pointer;}
+        #footer-submit-button { background-color: var(--secondary-color); color: white;}
+        #footer-submit-button:hover:not(:disabled) { background-color: #e09d1f; }
+        @media (max-width: 991px) {
+            #settings-sidebar { transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+            body.sidebar-open #settings-sidebar { transform: translateX(0); }
+            #main-content { padding-left: 0; }
+            #sidebar-toggle { display: block; }
+            body.sidebar-open::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1001; display: block; }
+            #resizer { display: none; }
+            #text-area { flex-grow: 0; flex-basis: auto; height: 60vh; border-radius: 6px; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;}
+            #question-area { flex-grow: 1; flex-basis: auto; height: auto; border-radius: 6px; border-top: 1px solid var(--border-color); }
+            #action-footer { display: flex; }
+            .question-item .submit-button { display: none; }
+            .tab-content-container { padding-bottom: calc(var(--footer-height) + 20px); }
+        }
+        button { border-radius: 5px; }
+        button:hover:not(:disabled) { opacity: 0.9; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+        #sound-tips-area { padding: 12px 20px; background-color: var(--sound-tips-bg); border-bottom: 1px solid var(--border-color); font-size: 0.9em; display: none; }
+        #sound-tips-area strong { color: var(--primary-color); }
+        body.show-sound-tips #sound-tips-area { display: block; }
+        #original-text p, #simplified-text p, #full-translation-text p, #phrase-translation-text p { margin-bottom: 1.4em; }
+        #full-translation-text, #phrase-translation-text, #simplified-text, .phrase-marker { display: none; }
+        body.show-full-translation #full-translation-text, body.show-phrase-translation #phrase-translation-text { display: block; margin-top: 2.5em; border-top: 1px dashed #ccc; padding-top: 1.8em; }
+        body.show-phrases .phrase-marker { display: inline; color: var(--phrase-marker-color); font-weight: bold; margin: 0 0.2em; }
+        body.show-simplified #original-text { display: none; }
+        body.show-simplified #simplified-text { display: block; }
+        body:not(.show-simplified) #original-text { display: block; }
+        body:not(.show-simplified) #simplified-text { display: none; }
+        .vocab-word { position: relative; text-decoration: none; border-bottom: 1px dashed transparent; transition: border-color 0.2s ease; }
+        body.show-vocab .vocab-word.is-predefined { text-decoration: underline wavy var(--vocab-color); text-underline-offset: 3px; text-decoration-thickness: 1px; cursor: help; }
+        .word { cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease; padding: 1px 2px; border-radius: 3px; display: inline-block; }
+        .word:hover { background-color: #edf4fc; transform: translateY(-1px); }
+        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-3px); background-color: var(--tooltip-bg); color: var(--tooltip-text); padding: 6px 12px; border-radius: 5px; font-size: 0.85em; white-space: nowrap; z-index: 10; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tooltip-bg) transparent transparent transparent; }
+        body.show-vocab .vocab-word.is-predefined:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .svocm-marker { display: none; font-size: 0.75em; color: var(--svocm-marker-color); margin-left: 2px; font-weight: bold; vertical-align: super; user-select: none; }
+        body.show-svocm .svocm-marker { display: inline; }
+        /* SVOCMマーカーを囲むspan要素（グループ化用） */
+        .svocm-group { display: inline-block; /* グループとして扱う */ }
+        /* グループ化されたSVOCMマーカーは最後の単語の後ろに表示 */
+        .svocm-group .word:last-child .svocm-marker { display: inline; }
+        /* 個別の単語に付いたSVOCMマーカーは非表示にする（グループ化されたもののみ表示） */
+        .svocm-group .word .svocm-marker { display: none; }
+        /* ただし、body.show-svocm が有効な場合のみ上記ルールを適用 */
+        body.show-svocm .svocm-group .word:last-child .svocm-marker { display: inline; }
+        body.show-svocm .svocm-group .word .svocm-marker { display: none; }
+        /* 単体の単語（グループ化されていない）のSVOCMマーカーは通常通り表示 */
+        body.show-svocm .word:not(:last-child) > .svocm-marker { /* This might need adjustment based on structure */ }
+
+
+        #word-menu { position: absolute; display: none; background-color: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 6px; padding: 6px; z-index: 1000; }
+        #word-menu button { display: block; width: 100%; text-align: left; padding: 9px 14px; margin-bottom: 4px; background-color: transparent; color: var(--text-color); font-size: 0.9em; border: none; border-radius: 4px; cursor: pointer;}
+        #word-menu button:last-child { margin-bottom: 0; }
+        #word-menu button:hover { background-color: #f0f0f0; }
+        .tab-container { display: flex; border-bottom: 1px solid var(--border-color); background-color: #f8f9fa; overflow-x: auto; padding: 0 15px; flex-shrink: 0; }
+        .tab-button { padding: 14px 22px; cursor: pointer; border: none; background-color: transparent; border-bottom: 3px solid transparent; transition: all 0.3s ease; font-size: 0.95em; color: #666; white-space: nowrap; position: relative; bottom: -1px; font-weight: 500; }
+        .tab-button.active { border-bottom-color: var(--primary-color); color: var(--primary-color); font-weight: 600; }
+        .tab-button:hover { color: var(--primary-color); background-color: #eee; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px);} to { opacity: 1; transform: translateY(0); } }
+        .question-item { margin-bottom: 30px; }
+        .question-text { font-weight: 600; margin-bottom: 15px; line-height: 1.5; font-size: 1.05em; }
+        .options label { display: block; margin-bottom: 8px; /* 行間を狭める */ cursor: pointer; padding: 8px 0;}
+        .options input[type="radio"] { margin-right: 10px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
+        .hint-toggle { margin-top: 15px; margin-bottom: 10px; font-size: 0.9em; }
+        .hint-toggle label { cursor: pointer; color: var(--hint-color); display: inline-flex; align-items: center; }
+        .hint-toggle input[type="checkbox"] { margin-right: 8px; vertical-align: middle; }
+        .hint-text { display: none; font-size: 0.9em; color: var(--hint-color); padding: 12px; background-color: #f8f9fa; border: 1px dashed #ccc; border-radius: 5px; margin-bottom: 18px; }
+        .explanation { display: none; margin-top: 25px; padding: 20px; background-color: var(--explanation-bg); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.95em; }
+        .explanation h4 { margin-bottom: 15px; color: var(--primary-color); font-size: 1.1em; }
+        .explanation p { margin-bottom: 12px; line-height: 1.7; }
+        .explanation ul { list-style: none; padding-left: 5px; margin-top: 12px; margin-bottom: 12px; }
+        .explanation li { margin-bottom: 10px; padding-left: 1.4em; position: relative; line-height: 1.7; }
+        .explanation li::before { content: "•"; position: absolute; left: 0; color: var(--primary-color); font-weight: bold; font-size: 1.1em; top: 1px;}
+        #word-test-modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.55); padding-top: 60px; backdrop-filter: blur(3px); }
+        .word-test-content { background-color: #fefefe; margin: 5% auto; padding: 30px 35px; border: none; width: 90%; max-width: 600px; border-radius: 8px; position: relative; text-align: left; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+        .close-test-button { color: #aaa; position: absolute; top: 12px; right: 18px; font-size: 32px; font-weight: bold; cursor: pointer; line-height: 1; }
+        .close-test-button:hover, .close-test-button:focus { color: black; text-decoration: none; }
+        #word-test-ui { font-size: 1em; min-height: 100px; }
+        #word-test-ui p.loading-message { color: #888; font-style: italic; text-align: center; width: 100%; margin-top: 20px; font-size: 0.95em; }
+        #word-test-ui .test-question { width: 100%; margin-bottom: 25px; }
+        #word-test-ui .test-word { font-weight: 600; font-size: 1.4em; margin-bottom: 18px; color: var(--primary-color); }
+        #word-test-ui .test-options label { display: block; margin-bottom: 12px; cursor: pointer; padding: 12px 15px; border-radius: 5px; background-color: #f9f9f9; border: 1px solid #eee; transition: background-color 0.2s ease, border-color 0.2s ease; }
+        #word-test-ui .test-options label:hover { background-color: #eef; border-color: #cce; }
+        #word-test-ui .test-options input[type="radio"] { margin-right: 12px; vertical-align: middle; transform: scale(1.1); accent-color: var(--primary-color); }
+        #word-test-ui .weblio-link-button { display: inline-block; padding: 9px 18px; background-color: var(--secondary-color); color: white !important; text-decoration: none !important; border-radius: 5px; margin-top: 10px; font-size: 0.9em; transition: background-color 0.2s ease; font-weight: 500; border: none; cursor: pointer;}
+        #word-test-ui .weblio-link-button:hover { background-color: #e09d1f; color: white !important; }
+        #word-test-ui .weblio-link-button:disabled { background-color: #ccc; cursor: not-allowed; opacity: 0.7; }
+        #word-test-navigation { margin-top: 25px; display: flex; justify-content: space-between; align-items: center;}
+        #word-test-navigation span { font-size: 0.9em; color: #666; }
+        #word-test-navigation button { border-radius: 5px; padding: 9px 18px; font-size: 0.9em; border: none; cursor: pointer; background-color: #e0e0e0; color: #555; }
+        #word-test-navigation button:hover:not(:disabled) { background-color: #d0d0d0; }
+        #word-test-navigation button:disabled { background-color: #eee; color: #bbb; cursor: not-allowed; }
+        #word-test-result-area { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-color); display: none; }
+        #word-test-result-area h4 { margin-bottom: 15px; }
+        #word-test-result-area ul { list-style: none; padding-left: 0; }
+        #word-test-result-area li { margin-bottom: 8px; font-size: 0.9em; line-height: 1.6; }
+        #word-test-result-area li strong { margin-right: 8px; display: inline-block; min-width: 100px;}
+
+        @media (max-width: 768px) {
+            body { height: auto; overflow: auto; }
+            #word-menu button { padding: 8px 12px; font-size: 0.9em; }
+            .word-test-content { width: 95%; margin: 8% auto; padding: 20px; }
+            .tab-button { padding: 12px 15px; font-size: 0.9em;}
+        }
+        /* --- ここまで元のCSS --- */
+
+        /* 音声コントロール用ボタンのスタイル調整 */
+        #audio-controls button {
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            padding: 5px 10px; /* Ensure padding */
+            margin-right: 5px; /* Ensure margin */
+        }
+        #audio-controls button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+        #audio-controls button:disabled {
+            background-color: #eee;
+            color: #bbb;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        #audio-controls input[type="range"], #audio-controls input[type="number"] {
+           accent-color: var(--primary-color);
+           vertical-align: middle; /* Align inputs */
+        }
+        #audio-controls label {
+            margin-left: 15px;
+            font-size: 0.9em;
+            color: #555;
+             vertical-align: middle; /* Align labels */
+        }
+        #audio-controls span#speedValue {
+             font-size: 0.9em;
+             color: #555;
+             min-width: 35px;
+             display: inline-block;
+             text-align: right;
+             vertical-align: middle; /* Align span */
+        }
+        #audio-controls input[type="number"] {
+            width: 50px; /* Ensure width */
+        }
+    </style>
+</head>
+<body>
+
+<button id="sidebar-toggle" title="設定を開閉">☰</button>
+
+<div id="settings-sidebar">
+    <!-- (設定項目は固定なのでそのまま) -->
+    <div class="settings-group">
+        <h4>表示設定</h4>
+        <label><input type="checkbox" id="toggle-full-translation"> 全文訳</label>
+        <label><input type="checkbox" id="toggle-phrase-translation"> フレーズ訳</label>
+        <label><input type="checkbox" id="toggle-vocab"> 語彙ヒント</label>
+        <label><input type="checkbox" id="toggle-phrases"> フレーズ区切り</label>
+        <label><input type="checkbox" id="toggle-sound-tips"> SOUND TIPS</label>
+        <label><input type="checkbox" id="toggle-svocm"> SVOCM</label>
+    </div>
+    <div class="settings-group">
+        <h4>フォントサイズ</h4>
+        <div class="font-size-controls">
+             <label for="font-size-slider">本文:</label>
+            <div>
+                <button id="font-decrease" title="文字を小さく">-</button>
+                <input type="range" id="font-size-slider" min="0.8" max="1.5" step="0.1" value="1" title="フォントサイズ調整">
+                <button id="font-increase" title="文字を大きく">+</button>
+                <span id="font-size-value">100%</span>
+            </div>
+        </div>
+    </div>
+    <div class="settings-group">
+        <h4>難易度</h4>
+        <div class="difficulty-switch">
+            <button id="btn-original" class="active" title="オリジナルの英文を表示">オリジナル</button>
+            <button id="btn-simplified" title="難易度を下げた英文を表示">易化</button>
+        </div>
+    </div>
+    <div class="settings-group" id="word-test-sidebar-trigger">
+        <h4>単語テスト</h4>
+        <button id="word-test-start-button">単語テストを開始</button>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="container">
+        <div id="text-area">
+             <!-- 音声コントロール -->
+             <div id="audio-controls" style="padding: 10px 20px; border-bottom: 1px solid var(--border-color); background-color: #f0f0f0; flex-shrink: 0;">
+                 <button id="audioPlayIntervalBtn">▶ 文ごと再生</button>
+                 <button id="audioStopIntervalBtn">■ 停止</button>
+                 <label for="speedControl">速度:</label>
+                 <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1.0">
+                 <span id="speedValue">1.0x</span>
+                 <label for="intervalControl">文間(秒):</label>
+                 <input type="number" id="intervalControl" min="0" max="5" step="0.1" value="0.5">
+             </div>
+
+             <!-- ★ SOUND TIPSを挿入 ★ -->
+             <div id="sound-tips-area">
+                  <strong>SOUND TIPS:</strong><br>
+                  英語の発音の特徴を意識しよう；英語は単語と単語をつないで発音するのがふつう。日本語は単語ごと・文節ごとに区切るが、英語は意味のまとまりで区切って発音します。単語の間を開けすぎないように！
+             </div>
+
+            <div id="text-content-wrapper">
+                <!-- ★ オリジナル英文を挿入 (span, svocm, phrase-marker付き) ★ -->
+                <div id="original-text">
+                    <p>
+                        <span class="svocm-group"><span class="word">Many</span> <span class="word">Japanese</span> <span class="word">towns</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">have</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">their</span> <span class="word">own</span> <span class="word vocab-word">mascot</span> <span class="word">characters</span><span class="svocm-marker svocm-O-marker">(O)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">Two</span> <span class="word">of</span> <span class="word">them</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">are</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">here</span><span class="svocm-marker svocm-M-marker">(M)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">today</span><span class="svocm-marker svocm-M-marker">(M)</span></span> <span class="svocm-group"><span class="word">in</span> <span class="word">our</span> <span class="word">class</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">They</span><span class="svocm-marker svocm-S-marker">(S)</span></span><span class="svocm-group"><span class="word">’ll</span> <span class="word">talk</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">about</span> <span class="word">their</span> <span class="word">hometowns</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span>
+                    </p>
+                    <p>
+                        <span class="word">“Hello!</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">I</span><span class="svocm-marker svocm-S-marker">(S)</span></span><span class="svocm-group"><span class="word">’m</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">Unarikun</span><span class="svocm-marker svocm-C-marker">(C)</span></span><span class="word">.”</span> <span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">I</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">come</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">from</span> <span class="word">Narita</span> <span class="word">City</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">Narita</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">is</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word vocab-word">especially</span><span class="svocm-marker svocm-M-marker">(M)</span></span> <span class="svocm-group"><span class="word">famous</span><span class="svocm-marker svocm-C-marker">(C)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">for</span> <span class="word">two</span> <span class="word">things:</span> <span class="word">its</span> <span class="word vocab-word">eel</span> <span class="word">dishes</span> <span class="word">and</span> <span class="word">its</span> <span class="word">airport</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">The</span> <span class="word vocab-word">eel</span> <span class="word">dishes</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">are</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">delicious</span><span class="svocm-marker svocm-C-marker">(C)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">From</span> <span class="word">the</span> <span class="word">airport</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">can</span> <span class="word">travel</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">to</span> <span class="word">many</span> <span class="word">different</span> <span class="word">countries</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">I</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">hope</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="svocm-group"><span class="word">many</span> <span class="word">of</span> <span class="word">you</span><span class="svocm-marker svocm-S-marker">(S')</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">will</span> <span class="word">visit</span><span class="svocm-marker svocm-V-marker">(V')</span></span> <span class="svocm-group"><span class="word">Narita</span><span class="svocm-marker svocm-O-marker">(O')</span></span></span><span class="svocm-marker svocm-O-marker">(O)</span><span class="word">.”</span><span class="phrase-marker">//</span>
+                    </p>
+                    <p>
+                        <span class="word">“Hi,</span> <span class="word">everyone!</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">I</span><span class="svocm-marker svocm-S-marker">(S)</span></span><span class="svocm-group"><span class="word">’m</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">Hikonyan</span><span class="svocm-marker svocm-C-marker">(C)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">If</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S')</span></span> <span class="svocm-group"><span class="word">like</span><span class="svocm-marker svocm-V-marker">(V')</span></span> <span class="svocm-group"><span class="word">traditional</span> <span class="word">culture</span> <span class="word">and</span> <span class="word">history</span><span class="svocm-marker svocm-O-marker">(O')</span></span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">should</span> <span class="word">visit</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">Hikone</span> <span class="word">City</span><span class="svocm-marker svocm-O-marker">(O)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">Look</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">at</span> <span class="word">my</span> <span class="word">red</span> <span class="word vocab-word">helmet</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">A</span> <span class="word">long</span> <span class="word">time</span> <span class="word">ago</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">this</span> <span class="word">kind</span> <span class="word">of</span> <span class="word vocab-word">helmet</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">was</span> <span class="word">worn</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">by</span> <span class="word">samurai</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">People</span> <span class="word">of</span> <span class="word">Hikone</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">are</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">proud</span><span class="svocm-marker svocm-C-marker">(C)</span></span> <span class="svocm-group"><span class="word">of</span> <span class="word">the</span> <span class="word vocab-word">helmets</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">They</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">are</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">proud</span><span class="svocm-marker svocm-C-marker">(C)</span></span> <span class="svocm-group"><span class="word">of</span> <span class="word">Hikone</span> <span class="word">Castle</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="svocm-group"><span class="word">too</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">I</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">hope</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="svocm-group"><span class="word">many</span> <span class="word">of</span> <span class="word">you</span><span class="svocm-marker svocm-S-marker">(S')</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">will</span> <span class="word">visit</span><span class="svocm-marker svocm-V-marker">(V')</span></span> <span class="svocm-group"><span class="word">our</span> <span class="word">city</span><span class="svocm-marker svocm-O-marker">(O')</span></span></span><span class="svocm-marker svocm-O-marker">(O)</span><span class="word">.”</span><span class="phrase-marker">//</span>
+                    </p>
+                    <p>
+                        <span class="svocm-group"><span class="word">When</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S')</span></span> <span class="svocm-group"><span class="word">see</span><span class="svocm-marker svocm-V-marker">(V')</span></span> <span class="svocm-group"><span class="word">a</span> <span class="word vocab-word">mascot</span> <span class="word">character</span><span class="svocm-marker svocm-O-marker">(O')</span></span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">may</span> <span class="word">become</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">interested</span><span class="svocm-marker svocm-C-marker">(C)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">in</span> <span class="word">its</span> <span class="word">hometown</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">In</span> <span class="word">fact</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">,</span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">you</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">can</span> <span class="word">learn</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">a</span> <span class="word">lot</span><span class="svocm-marker svocm-O-marker">(O)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">about</span> <span class="word">a</span> <span class="word">town</span><span class="svocm-marker svocm-M-marker">(M)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">through</span> <span class="word">its</span> <span class="word vocab-word">mascot</span> <span class="word">character</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">.</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">Does</span><span class="svocm-marker svocm-Aux-marker">(Aux)</span></span> <span class="svocm-group"><span class="word">your</span> <span class="word">hometown</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">have</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="phrase-marker">/</span> <span class="svocm-group"><span class="word">a</span> <span class="word vocab-word">mascot</span> <span class="word">character</span><span class="svocm-marker svocm-O-marker">(O)</span></span><span class="word">?</span><span class="phrase-marker">//</span> <span class="svocm-group"><span class="word">What</span><span class="svocm-marker svocm-C-marker">(C)</span></span> <span class="svocm-group"><span class="word">is</span><span class="svocm-marker svocm-V-marker">(V)</span></span> <span class="svocm-group"><span class="word">it</span><span class="svocm-marker svocm-S-marker">(S)</span></span> <span class="svocm-group"><span class="word">like</span><span class="svocm-marker svocm-M-marker">(M)</span></span><span class="word">?</span><span class="phrase-marker">//</span>
+                    </p>
+                </div>
+                <!-- ★ 簡易版英文を挿入 ★ -->
+                <div id="simplified-text">
+                    <h4>簡易版テキスト</h4>
+                    <p>
+                        <span class="word">Many</span> <span class="word">towns</span> <span class="word">in</span> <span class="word">Japan</span> <span class="word">have</span> <span class="word">mascot</span> <span class="word">characters.</span> <span class="word">Two</span> <span class="word">characters</span> <span class="word">are</span> <span class="word">in</span> <span class="word">our</span> <span class="word">class</span> <span class="word">today.</span> <span class="word">They</span> <span class="word">will</span> <span class="word">talk</span> <span class="word">about</span> <span class="word">their</span> <span class="word">towns.</span>
+                    </p>
+                    <p>
+                        <span class="word">“Hello!</span> <span class="word">I</span> <span class="word">am</span> <span class="word">Unarikun.</span> <span class="word">I</span> <span class="word">am</span> <span class="word">from</span> <span class="word">Narita</span> <span class="word">City.</span> <span class="word">Narita</span> <span class="word">is</span> <span class="word">famous</span> <span class="word">for</span> <span class="word">two</span> <span class="word">things:</span> <span class="word">eel</span> <span class="word">dishes</span> <span class="word">and</span> <span class="word">its</span> <span class="word">airport.</span> <span class="word">The</span> <span class="word">eel</span> <span class="word">dishes</span> <span class="word">are</span> <span class="word">very</span> <span class="word">good.</span> <span class="word">You</span> <span class="word">can</span> <span class="word">fly</span> <span class="word">to</span> <span class="word">many</span> <span class="word">countries</span> <span class="word">from</span> <span class="word">the</span> <span class="word">airport.</span> <span class="word">I</span> <span class="word">hope</span> <span class="word">you</span> <span class="word">visit</span> <span class="word">Narita.”</span>
+                    </p>
+                    <p>
+                        <span class="word">“Hi,</span> <span class="word">everyone!</span> <span class="word">I</span> <span class="word">am</span> <span class="word">Hikonyan.</span> <span class="word">Visit</span> <span class="word">Hikone</span> <span class="word">City</span> <span class="word">if</span> <span class="word">you</span> <span class="word">like</span> <span class="word">old</span> <span class="word">culture</span> <span class="word">and</span> <span class="word">history.</span> <span class="word">Look</span> <span class="word">at</span> <span class="word">my</span> <span class="word">red</span> <span class="word">helmet.</span> <span class="word">Samurai</span> <span class="word">wore</span> <span class="word">this</span> <span class="word">kind</span> <span class="word">of</span> <span class="word">helmet</span> <span class="word">long</span> <span class="word">ago.</span> <span class="word">People</span> <span class="word">in</span> <span class="word">Hikone</span> <span class="word">are</span> <span class="word">proud</span> <span class="word">of</span> <span class="word">the</span> <span class="word">helmets.</span> <span class="word">They</span> <span class="word">are</span> <span class="word">proud</span> <span class="word">of</span> <span class="word">Hikone</span> <span class="word">Castle,</span> <span class="word">too.</span> <span class="word">I</span> <span class="word">hope</span> <span class="word">you</span> <span class="word">visit</span> <span class="word">our</span> <span class="word">city.”</span>
+                    </p>
+                    <p>
+                        <span class="word">Seeing</span> <span class="word">a</span> <span class="word">mascot</span> <span class="word">character</span> <span class="word">might</span> <span class="word">make</span> <span class="word">you</span> <span class="word">interested</span> <span class="word">in</span> <span class="word">its</span> <span class="word">town.</span> <span class="word">You</span> <span class="word">can</span> <span class="word">learn</span> <span class="word">about</span> <span class="word">a</span> <span class="word">town</span> <span class="word">from</span> <span class="word">its</span> <span class="word">mascot</span> <span class="word">character.</span> <span class="word">Does</span> <span class="word">your</span> <span class="word">town</span> <span class="word">have</span> <span class="word">a</span> <span class="word">mascot</span> <span class="word">character?</span> <span class="word">What</span> <span class="word">is</span> <span class="word">it</span> <span class="word">like?</span>
+                    </p>
+                </div>
+                <!-- ★ 全文訳を挿入 ★ -->
+                <div id="full-translation-text">
+                    <h4>全文訳</h4>
+                    <p>多くの日本の町には，その町独自のマスコットキャラクターがいます。そのうちの2体が今日，私たちの授業でここにいます。キャラクターたちが自分たちの町について話してくれます。</p>
+                    <p>「こんにちは！　私はうなりくんです。私は成田市の出身です。成田は特に2つのもの，ウナギ料理と空港で有名です。ウナギ料理はとてもおいしいです。成田空港からは，さまざまな国へ旅に出ることができます。皆さんの多くが成田を訪れていただければと思います」</p>
+                    <p>「皆さん，こんにちは！　私はひこにゃんです。もし伝統文化と歴史がお好きでしたら，彦根市を訪れるといいですよ。私の赤いかぶとをご覧ください。昔，この種のかぶとは侍がかぶっていました。彦根の人々はそのかぶとを誇りに思っています。人々は彦根城も誇りに思っています。皆さんの多くに私たちの町を訪れていただければと思います」</p>
+                    <p>マスコットキャラクターを見ると，その故郷に興味を持つようになるかもしれません。実際，町について多くのことを，そこのマスコットキャラクターを通して学ぶことができるのです。あなたの故郷にはマスコットキャラクターがありますか。それはどのようなものですか。</p>
+                </div>
+                <!-- ★ フレーズ訳例を挿入 ★ -->
+                <div id="phrase-translation-text">
+                    <h4>フレーズ訳例</h4>
+                    <p>Many Japanese towns / have their own mascot characters. // Two of them are here / today in our class. // They’ll talk about their hometowns. //</p>
+                    <p>“Hello! // I’m Unarikun. // I come from Narita City. // Narita is especially famous / for two things: / its eel dishes / and its airport. // The eel dishes are delicious. // From the airport, / you can travel / to many different countries. // I hope / many of you / will visit Narita.” //</p>
+                    <p>“Hi, everyone! // I’m Hikonyan. // If you like traditional culture and history, / you should visit Hikone City. // Look at my red helmet. // A long time ago, / this kind of helmet / was worn by samurai. // People of Hikone / are proud of the helmets. // They are proud of Hikone Castle, too. // I hope / many of you / will visit our city.” //</p>
+                    <p>When you see a mascot character, / you may become interested / in its hometown. // In fact, / you can learn a lot / about a town / through its mascot character. // Does your hometown have / a mascot character? // What is it like? //</p>
+                    <hr>
+                    <p>＜訳例＞</p>
+                    <p>多くの日本の町には ／ その町独自のマスコットキャラクターがいます ／ そのうちの２体がここにいます ／ 今日，私たちの授業で ／ 彼らは自分たちの故郷について話してくれます ／</p>
+                    <p>「こんにちは！ ／ 私はうなりくんです ／ 私は成田市の出身です ／ 成田は特に有名です ／ ２つのもので ／ ウナギ料理 ／ そして空港 ／ ウナギ料理はとてもおいしいです ／ 空港からは ／ あなたたちは旅に出ることができます ／ さまざまな国へ ／ 私は望みます ／ あなたたちの多くが ／ 成田を訪れることを ／</p>
+                    <p>「皆さん，こんにちは！ ／ 私はひこにゃんです ／ もしあなたたちが伝統文化と歴史がお好きでしたら ／ 彦根市を訪れるといいですよ ／ 私の赤いかぶとを見てください ／ 昔 ／ この種のかぶとは ／ 侍にかぶられていました ／ 彦根の人々は ／ そのかぶとを誇りに思っています ／ 彼らは彦根城も誇りに思っています ／ 私は望みます ／ あなたたちの多くが ／ 私たちの町を訪れることを ／</p>
+                    <p>あなたがマスコットキャラクターを見ると ／ あなたは興味を持つようになるかもしれません ／ その故郷に ／ 実際 ／ あなたは多くのことを学ぶことができます ／ 町について ／ そこのマスコットキャラクターを通して ／ あなたの故郷にはありますか ／ マスコットキャラクターが ／ それはどのようなものですか ／</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="resizer"></div>
+
+        <div id="question-area">
+             <!-- ★ 問題数に応じてタブボタンを生成 ★ -->
+             <div class="tab-container">
+                 <button class="tab-button active" data-tab="q1">Q1</button>
+                 <button class="tab-button" data-tab="q2">Q2</button>
+                 <button class="tab-button" data-tab="q3">Q3</button>
+             </div>
+             <div class="tab-content-container">
+                <!-- ★ 問題1を挿入 ★ -->
+                <div id="q1" class="tab-content active question-item">
+                     <p class="question-text">Q1：Where is Unarikun from?</p>
+                     <div class="options">
+                         <label><input type="radio" name="q1" value="a"> He is from Narita Airport.</label>
+                         <label><input type="radio" name="q1" value="b"> He is from Narita City.</label>
+                         <label><input type="radio" name="q1" value="c"> He is from Narita dishes.</label>
+                     </div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">うなりくんはどこ出身ですか。</p>
+                     <button class="submit-button" data-question-id="q1">提出</button>
+                     <div class="explanation" data-original-html='<p>本文中に <code>I come from Narita City.</code> とあります。</p><p>He is from Narita <b>City</b>.</p>'></div>
+                 </div>
+                 <!-- ★ 問題2を挿入 ★ -->
+                 <div id="q2" class="tab-content question-item">
+                     <p class="question-text">Q2：What does Hikonyan have on his head?</p>
+                     <div class="options">
+                         <label><input type="radio" name="q2" value="a"> He has a bell on it.</label>
+                         <label><input type="radio" name="q2" value="b"> He has a castle on it.</label>
+                         <label><input type="radio" name="q2" value="c"> He has a helmet on it.</label>
+                     </div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">ひこにゃんは頭に何を持っていますか（かぶっていますか）。</p>
+                     <button class="submit-button" data-question-id="q2">提出</button>
+                     <div class="explanation" data-original-html='<p>本文中に <code>Look at my red helmet.</code> とあります。</p><p>He has a <b>helmet</b> on it.</p>'></div>
+                </div>
+                 <!-- ★ 問題3を挿入 ★ -->
+                 <div id="q3" class="tab-content question-item">
+                     <p class="question-text">Q3：What can people learn about a mascot character?</p>
+                     <div class="options">
+                         <label><input type="radio" name="q3" value="a"> They can learn a lot about the mascot’s hometown.</label>
+                         <label><input type="radio" name="q3" value="b"> They can learn a lot about the mascot’s interests.</label>
+                         <label><input type="radio" name="q3" value="c"> They can learn a lot about the mascot’s life.</label>
+                     </div>
+                     <div class="hint-toggle"><label><input type="checkbox" class="toggle-hint"> ヒント (問題文の日本語訳)</label></div>
+                     <p class="hint-text">人々はそのマスコットキャラクターについて何を学ぶことができますか。</p>
+                     <button class="submit-button" data-question-id="q3">提出</button>
+                     <div class="explanation" data-original-html='<p>本文中に <code>you can learn a lot about a town through its mascot character.</code> とあります。マスコットキャラクターを通して、その故郷 (hometown = town) について多くを学ぶことができると述べられています。</p><p>They can learn a lot about the mascot’s <b>hometown</b>.</p>'></div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="action-footer">
+    <div id="footer-submit-placeholder">
+        <button id="footer-submit-button" disabled>提出</button>
+    </div>
+</div>
+
+<div id="word-menu">
+    <button id="dict-button">辞書検索 (Weblio)</button>
+    <button id="ety-button">語源検索 (Etymonline)</button>
+    <button id="add-list-button">単語テストリストに登録</button>
+</div>
+
+<div id="word-test-modal">
+    <!-- (単語テストモーダルのHTMLは固定なのでそのまま) -->
+    <div class="word-test-content">
+        <span class="close-test-button" id="close-test-modal" title="閉じる">×</span>
+        <h3>単語テスト</h3>
+        <div id="word-test-ui">
+            <p class="loading-message">テストを読み込み中...</p>
+        </div>
+        <div id="word-test-navigation">
+            <button id="prev-word-button" disabled>前の単語</button>
+            <span id="word-counter">0 / 0</span>
+            <button id="next-word-button">次の単語</button>
+            <button id="submit-test-button" style="display: none;">採点する</button>
+        </div>
+         <div id="word-test-result-area">
+             <h4>テスト結果</h4>
+             <p id="test-score"></p>
+             <ul id="test-feedback"></ul>
+         </div>
+    </div>
+</div>
+
+<script>
+    /* (音声再生用スクリプト (モンキーパッチ含む) はそのまま) */
+    $(document).ready(function() {
+        if (typeof AudioPlayer !== 'undefined') {
+            console.log("AudioPlayer オブジェクトを上書き（モンキーパッチ）します...");
+            AudioPlayer._originals = AudioPlayer._originals || {};
+            AudioPlayer._originals.playInterval = AudioPlayer.playInterval;
+            AudioPlayer.playInterval = function(interval, length, currentText, func) {
+                console.log(`Patched playInterval called: interval=${interval}, length=${length}, currentText=${currentText}`);
+                AudioPlayer.isIntervalPlay = true;
+                var isFirstS = (AudioPlayer.intervalItems.length === 0);
+                if (isFirstS) {
+                    var basePath = AudioPlayer.sourceDir ? AudioPlayer.sourceDir + "/" : "";
+                    console.log("Audio files base path:", basePath);
+                    AudioPlayer.intervalItems = [];
+                    for (var i = 0; i < length; i++) {
+                        var audio = new Audio("");
+                        audio.src = basePath + currentText + "_" + (i + 1) + ".mp3";
+                        console.log("Loading audio:", audio.src);
+                        audio.addEventListener('error', function(e) {
+                            console.error(`音声ファイル ${this.src} の読み込みエラー:`, e);
+                            if (typeof AudioPlayer.clearInterval === 'function') {
+                                AudioPlayer.clearInterval();
+                            }
+                            alert(`音声ファイルの一部 (${this.src.split('/').pop()}) が読み込めませんでした。\nURLが正しいか、ネットワーク接続を確認してください。`);
+                            $('#audioPlayIntervalBtn').prop('disabled', false);
+                            $('#audioStopIntervalBtn').prop('disabled', true); // Stop button should be disabled on error too
+                        });
+                        audio.load();
+                        AudioPlayer.intervalItems.push(audio);
+                    }
+                }
+                var currentPlayIndex = AudioPlayer.intervalProp.count;
+                AudioPlayer.player = AudioPlayer.intervalItems[currentPlayIndex];
+                if (!AudioPlayer.player) {
+                    if (currentPlayIndex >= length) { console.log("All intervals finished."); }
+                    else { console.error("次のAudioオブジェクトが見つかりません。Index:", currentPlayIndex, "Total length:", length); }
+                    if(typeof AudioPlayer.clearInterval === 'function') AudioPlayer.clearInterval();
+                    if(func) func();
+                    return;
+                }
+                AudioPlayer.intervalProp.interval = interval;
+                AudioPlayer.intervalProp.length = length;
+                AudioPlayer.intervalProp.currentText = currentText;
+                var intervalTime = (currentPlayIndex === 0 && isFirstS) ? 100 : interval * 1000; // Wait shorter for the first sentence if needed
+                $(AudioPlayer.player).off("ended.interval").on("ended.interval", function() {
+                    console.log(`Audio ended: ${this.src.split('/').pop()}`);
+                    AudioPlayer.playInterval(interval, length, currentText, func);
+                });
+                clearTimeout(AudioPlayer.timerId);
+                AudioPlayer.timerId = setTimeout(function() {
+                    if (!AudioPlayer.isIntervalPlay || !AudioPlayer.player || AudioPlayer.intervalProp.count >= length) {
+                        console.warn("Timeout fired, but state is invalid or finished."); return; }
+                    AudioPlayer.player.playbackRate = AudioPlayer.currentSpeed;
+                    AudioPlayer.player.play().then(() => {
+                         console.log(`Playing: ${AudioPlayer.player.src.split('/').pop()} (Count: ${AudioPlayer.intervalProp.count + 1})`);
+                         AudioPlayer.intervalProp.count++;
+                     }).catch((error) => {
+                         console.error(`再生エラー: ${AudioPlayer.player.src.split('/').pop()}`, error);
+                         if(typeof AudioPlayer.clearInterval === 'function') AudioPlayer.clearInterval();
+                         alert(`音声ファイル (${AudioPlayer.player.src.split('/').pop()}) の再生に失敗しました。`);
+                         $('#audioPlayIntervalBtn').prop('disabled', false); // Enable play button on error
+                         $('#audioStopIntervalBtn').prop('disabled', true); // Disable stop button on error
+                     });
+                }, intervalTime);
+            };
+            AudioPlayer._originals.karaokeInterval = AudioPlayer.karaokeInterval;
+            AudioPlayer.karaokeInterval = function(restart) { AudioPlayer.karaokeIntervalFinish = true; }; // No operation needed
+            AudioPlayer._originals.karaokeSingle = AudioPlayer.karaokeSingle;
+            AudioPlayer.karaokeSingle = function() { /* no operation */ }; // No operation needed
+            AudioPlayer._originals.clearInterval = AudioPlayer.clearInterval;
+            AudioPlayer.clearInterval = function() {
+                console.log("Patched clearInterval called");
+                try {
+                    clearTimeout(AudioPlayer.timerId); AudioPlayer.timerId = null;
+                    if (AudioPlayer.karaoke) { clearInterval(AudioPlayer.karaoke); AudioPlayer.karaoke = null; }
+                    if (AudioPlayer.loadInterval) { clearInterval(AudioPlayer.loadInterval); AudioPlayer.loadInterval = null; }
+                    if (AudioPlayer.player) {
+                         if (typeof AudioPlayer.player.pause === 'function' && !AudioPlayer.player.paused) { AudioPlayer.player.pause(); }
+                         $(AudioPlayer.player).off("ended.interval");
+                         AudioPlayer.player = null;
+                    }
+                    // Stop all audio elements in the items array just in case
+                    if (Array.isArray(AudioPlayer.intervalItems)) {
+                        AudioPlayer.intervalItems.forEach(audio => {
+                            if (audio && typeof audio.pause === 'function' && !audio.paused) {
+                                audio.pause();
+                                audio.currentTime = 0; // Reset time
+                            }
+                        });
+                    }
+                    AudioPlayer.intervalProp = { interval: 0, length: 0, currentText: "", count: 0 };
+                    AudioPlayer.intervalItems = []; // Clear the items array
+                    AudioPlayer.currentTime = 0;
+                    AudioPlayer.karaokeIntervalFinish = true;
+                    AudioPlayer.isIntervalPlay = false;
+                    AudioPlayer.curDialog = 0;
+                    console.log("Skipping Dialog/Karaoke/DOM related cleanup in patched clearInterval");
+                } catch (error) {
+                    console.error("Error in patched clearInterval:", error);
+                    // Ensure state is reset even if error occurs
+                    AudioPlayer.intervalProp = { interval: 0, length: 0, currentText: "", count: 0 };
+                    AudioPlayer.intervalItems = [];
+                    AudioPlayer.currentTime = 0;
+                    AudioPlayer.isIntervalPlay = false;
+                } finally {
+                    // Ensure buttons are reset correctly after clear
+                    $('#audioPlayIntervalBtn').prop('disabled', false);
+                    $('#audioStopIntervalBtn').prop('disabled', true);
+                }
+            };
+             AudioPlayer._originals.initialize = AudioPlayer.initialize;
+             AudioPlayer.initialize = function() {
+                  console.log("Patched initialize called");
+                  if (AudioPlayer._originals.initialize) { AudioPlayer._originals.initialize.call(this); }
+                  this.sourceDir = ""; // Ensure sourceDir is initialized
+                  this.isIntervalPlay = false; // Initialize interval play state
+                  this.currentSpeed = 1.0; // Initialize speed
+                  this.intervalItems = []; // Initialize items array
+                  this.intervalProp = { interval: 0, length: 0, currentText: "", count: 0 }; // Initialize props
+                  this.player = null; // Initialize player
+                  this.timerId = null; // Initialize timerId
+             };
+            console.log("AudioPlayer の上書き完了。");
+        } else {
+            console.error("AudioPlayer オブジェクトが見つかりません。audioPlayer4mp3.js の読み込みを確認してください。");
+            $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', true);
+        }
+
+        // ★ 基本情報から音声関連の変数を設定 ★
+        const numberOfSentences = 23;
+        const audioBaseUrl = 'https://textbook.zoshindo.co.jp/fx1/sounds/textSplit';
+        const filePrefix = 'text11_1_1_1'; // 拡張子 .mp3 は除外
+
+        if (typeof AudioPlayer === 'undefined' || typeof AudioPlayer.playInterval !== 'function' || typeof AudioPlayer.clearInterval !== 'function') {
+             console.error("AudioPlayer の準備、または必要な関数の上書きに失敗しました。");
+             $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', true);
+        } else {
+             AudioPlayer.initialize(); // Initialize with patched version
+             AudioPlayer.sourceDir = audioBaseUrl;
+             AudioPlayer.setSpeed(1.0); // Set initial speed using the method if available
+             if (typeof AudioPlayer.setSpeed !== 'function') { // Fallback if setSpeed is not in the original object
+                 AudioPlayer.currentSpeed = 1.0;
+             }
+             console.log("AudioPlayer 設定完了:", {sourceDir: AudioPlayer.sourceDir, speed: AudioPlayer.currentSpeed});
+             $('#audioPlayIntervalBtn, #audioStopIntervalBtn, #speedControl, #intervalControl').prop('disabled', false); // Enable controls initially
+             $('#audioStopIntervalBtn').prop('disabled', true); // Disable stop button initially
+        }
+
+        $('#audioPlayIntervalBtn').click(function() {
+            if (typeof AudioPlayer === 'undefined' || typeof AudioPlayer.playInterval !== 'function') {
+                 alert("音声再生機能の準備ができていません。"); $(this).prop('disabled', true); return; }
+             if (AudioPlayer.isIntervalPlay) { console.log("すでにインターバル再生中です。"); return; } // Do nothing if already playing
+
+             AudioPlayer.clearInterval(); // Ensure any previous playback is stopped
+             const intervalSeconds = parseFloat($('#intervalControl').val()) || 0.5;
+             console.log(`インターバル再生開始 (文間: ${intervalSeconds}秒)`);
+             $(this).prop('disabled', true); // Disable play button
+             $('#audioStopIntervalBtn').prop('disabled', false); // Enable stop button
+             AudioPlayer.playInterval( intervalSeconds, numberOfSentences, filePrefix, () => {
+                  console.log("インターバル再生完了");
+                  $('#audioPlayIntervalBtn').prop('disabled', false); // Re-enable play button
+                  $('#audioStopIntervalBtn').prop('disabled', true); // Disable stop button
+                 }
+             );
+        });
+        $('#audioStopIntervalBtn').click(function() {
+            if (typeof AudioPlayer !== 'undefined' && typeof AudioPlayer.clearInterval === 'function') {
+                console.log('インターバル再生停止');
+                AudioPlayer.clearInterval(); // This should already reset button states in its 'finally' block
+            } else {
+                console.error("AudioPlayer または上書きされた clearInterval が未定義です。");
+                // Manually reset buttons if AudioPlayer is not available
+                $('#audioPlayIntervalBtn').prop('disabled', false);
+                $(this).prop('disabled', true);
+            }
+        });
+        $('#speedControl').on('input change', function() {
+             if (typeof AudioPlayer === 'undefined') return;
+             const speed = parseFloat($(this).val());
+             $('#speedValue').text(speed.toFixed(1) + 'x');
+             if (typeof AudioPlayer.setSpeed === 'function') {
+                 AudioPlayer.setSpeed(speed);
+             } else {
+                 AudioPlayer.currentSpeed = speed; // Fallback
+             }
+             // Apply speed change immediately if playing
+             if (AudioPlayer.player && !AudioPlayer.player.paused) {
+                 AudioPlayer.player.playbackRate = AudioPlayer.currentSpeed;
+             }
+             console.log("Speed set to:", AudioPlayer.currentSpeed);
+        });
+    });
+</script>
+
+<script>
+    /* (元のUI制御・単語テスト用JS (主要部分)) */
+    const userWordList = new Set();
+    // ★ 語彙リストから wordMeanings オブジェクトを生成 ★
+    const wordMeanings = {
+        'mascot': { mean: 'マスコット', pos: '名', incorrect: ['キャラクター', 'シンボル', 'お守り'] },
+        'especially': { mean: '特に，とりわけ', pos: '副', incorrect: ['通常', '一般的に', '時々'] },
+        'eel': { mean: 'ウナギ', pos: '名', incorrect: ['魚', 'ヘビ', 'アナゴ'] },
+        'helmet': { mean: 'ヘルメット，鉄かぶと，かぶと', pos: '名', incorrect: ['帽子', '冠', '鎧'] }
+    };
+    // ★ 語彙リストから predefinedVocabKeys 配列を生成 ★
+    const predefinedVocabKeys = [
+        'mascot', 'especially', 'eel', 'helmet' // フラグ指定がなかったので、リスト内の全単語を対象とした
+    ];
+    const predefinedLower = predefinedVocabKeys.map(k => k.toLowerCase());
+    // ★ 問題リストから correctAnswers オブジェクトを生成 ★
+    const correctAnswers = {
+        q1: 'b',
+        q2: 'c',
+        q3: 'a'
+    };
+
+    // グローバル変数 (元のまま)
+    let currentWord = null; let currentTextScale = 1.0; let wordTestQuestions = [];
+    let currentTestQuestionIndex = 0; let userTestAnswers = {}; let dragStartY = 0;
+    let initialTextFlex = 0; let initialQuestionFlex = 0;
+
+    // DOM要素の参照 (元のまま)
+    const body = document.body; const sidebar = document.getElementById('settings-sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle'); const mainContent = document.getElementById('main-content');
+    const textArea = document.getElementById('text-area'); const questionArea = document.getElementById('question-area');
+    const resizer = document.getElementById('resizer'); const textContentWrapper = document.getElementById('text-content-wrapper');
+    const toggleFullTranslation = document.getElementById('toggle-full-translation'); const togglePhraseTranslation = document.getElementById('toggle-phrase-translation');
+    const toggleVocab = document.getElementById('toggle-vocab'); const togglePhrases = document.getElementById('toggle-phrases');
+    const toggleSoundTips = document.getElementById('toggle-sound-tips'); const toggleSvocm = document.getElementById('toggle-svocm');
+    const fontDecreaseBtn = document.getElementById('font-decrease'); const fontIncreaseBtn = document.getElementById('font-increase');
+    const fontSizeSlider = document.getElementById('font-size-slider'); const fontSizeValue = document.getElementById('font-size-value');
+    const btnOriginal = sidebar.querySelector('#btn-original'); const btnSimplified = sidebar.querySelector('#btn-simplified');
+    const wordMenu = document.getElementById('word-menu'); const dictButton = document.getElementById('dict-button');
+    const etyButton = document.getElementById('ety-button'); const addListButton = document.getElementById('add-list-button');
+    const tabContainer = document.querySelector('.tab-container'); const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content'); const hintToggles = document.querySelectorAll('.toggle-hint');
+    const submitButtons = document.querySelectorAll('.submit-button'); const wordTestStartButtonSidebar = document.getElementById('word-test-start-button');
+    const wordTestModal = document.getElementById('word-test-modal'); const closeTestModalButton = document.getElementById('close-test-modal');
+    const wordTestUI = document.getElementById('word-test-ui'); const prevWordButton = document.getElementById('prev-word-button');
+    const nextWordButton = document.getElementById('next-word-button'); const submitTestButton = document.getElementById('submit-test-button');
+    const wordCounter = document.getElementById('word-counter'); const wordTestResultArea = document.getElementById('word-test-result-area');
+    const testScore = document.getElementById('test-score'); const testFeedback = document.getElementById('test-feedback');
+    const actionFooter = document.getElementById('action-footer'); const footerSubmitButton = document.getElementById('footer-submit-button');
+
+    // --- SVOCM Grouping Logic ---
+    function applySVOCMGrouping() {
+        // Remove existing group spans to avoid nesting issues on re-application
+        textContentWrapper.querySelectorAll('.svocm-group').forEach(group => {
+            // Move children out of the group span before removing it
+            while (group.firstChild) {
+                group.parentNode.insertBefore(group.firstChild, group);
+            }
+            group.parentNode.removeChild(group);
+        });
+
+        textContentWrapper.querySelectorAll('.svocm-marker').forEach(marker => {
+            const parentWord = marker.closest('.word');
+            if (!parentWord) return;
+
+            // Check if already part of a group (might happen with nested structures before cleanup)
+            if (parentWord.closest('.svocm-group')) return;
+
+            const elementType = marker.classList.contains('svocm-S-marker') ? 'S' :
+                                marker.classList.contains('svocm-V-marker') ? 'V' :
+                                marker.classList.contains('svocm-O-marker') ? 'O' :
+                                marker.classList.contains('svocm-C-marker') ? 'C' :
+                                marker.classList.contains('svocm-M-marker') ? 'M' :
+                                marker.classList.contains('svocm-Aux-marker') ? 'Aux' : // Added Aux
+                                marker.classList.contains('svocm-S\'-marker') ? 'S\'' :
+                                marker.classList.contains('svocm-V\'-marker') ? 'V\'' :
+                                marker.classList.contains('svocm-O\'-marker') ? 'O\'' :
+                                marker.classList.contains('svocm-C\'-marker') ? 'C\'' :
+                                marker.classList.contains('svocm-M\'-marker') ? 'M\'' :
+                                null;
+
+            if (!elementType) return;
+
+            const group = [parentWord];
+            let currentElement = parentWord;
+            let nextElement = currentElement.nextElementSibling;
+
+            // Group forward: Collect subsequent .word elements with the same marker type
+            while (nextElement && nextElement.classList.contains('word')) {
+                const nextMarker = nextElement.querySelector(`.svocm-${elementType}-marker`);
+                 // Also check for nested markers like S' within O
+                 const isNestedMarker = nextElement.querySelector('.svocm-marker:not(.svocm-' + elementType + '-marker)');
+
+                 // Stop grouping if the next word has a *different* primary marker or no marker
+                 const nextPrimaryMarker = nextElement.querySelector(`.svocm-marker`); // Find any marker
+
+                if (nextMarker || isNestedMarker) { // If the next word has the same marker OR a nested marker, include it
+                   if (!isNestedMarker || nextMarker) { // Ensure we only add if it has the primary marker OR it's nested but still part of the intended group conceptually
+                       // Check if the next word's primary role matches the group type
+                       let nextElementType = null;
+                       if (nextPrimaryMarker) {
+                            nextElementType = nextPrimaryMarker.classList.contains('svocm-S-marker') ? 'S' :
+                                              nextPrimaryMarker.classList.contains('svocm-V-marker') ? 'V' :
+                                              nextPrimaryMarker.classList.contains('svocm-O-marker') ? 'O' :
+                                              nextPrimaryMarker.classList.contains('svocm-C-marker') ? 'C' :
+                                              nextPrimaryMarker.classList.contains('svocm-M-marker') ? 'M' :
+                                              nextPrimaryMarker.classList.contains('svocm-Aux-marker') ? 'Aux' :
+                                              null; // Ignoring sub-clause markers S', V' etc. for primary grouping
+                       }
+
+                       if (nextElementType === elementType || isNestedMarker) { // Include if same type or nested structure expected
+                            group.push(nextElement);
+                            currentElement = nextElement;
+                            nextElement = currentElement.nextElementSibling;
+                       } else {
+                            break; // Different primary marker type found
+                       }
+
+                   } else {
+                       break; // Has a different nested marker, but not the primary group marker
+                   }
+
+                } else {
+                    break; // No marker found on the next word
+                }
+            }
+
+
+            // Group backward: Collect preceding .word elements with the same marker type
+            currentElement = parentWord;
+            let prevElement = currentElement.previousElementSibling;
+            while (prevElement && prevElement.classList.contains('word')) {
+                 const prevMarker = prevElement.querySelector(`.svocm-${elementType}-marker`);
+                 const isNestedMarker = prevElement.querySelector('.svocm-marker:not(.svocm-' + elementType + '-marker)');
+
+                 let prevElementType = null;
+                 const prevPrimaryMarker = prevElement.querySelector('.svocm-marker');
+                 if (prevPrimaryMarker) {
+                     prevElementType = prevPrimaryMarker.classList.contains('svocm-S-marker') ? 'S' :
+                                       prevPrimaryMarker.classList.contains('svocm-V-marker') ? 'V' :
+                                       prevPrimaryMarker.classList.contains('svocm-O-marker') ? 'O' :
+                                       prevPrimaryMarker.classList.contains('svocm-C-marker') ? 'C' :
+                                       prevPrimaryMarker.classList.contains('svocm-M-marker') ? 'M' :
+                                       prevPrimaryMarker.classList.contains('svocm-Aux-marker') ? 'Aux' :
+                                       null;
+                 }
+
+                 if (prevElementType === elementType || (isNestedMarker && prevMarker)) { // Check if the previous word's primary marker matches OR it has the group marker even if nested
+                    group.unshift(prevElement); // Add to the beginning
+                    currentElement = prevElement;
+                    prevElement = currentElement.previousElementSibling;
+                 } else {
+                    break; // Different marker type or no marker
+                 }
+            }
+
+
+            // Only wrap if more than one element is in the group or it's a complex single element
+            if (group.length > 0) { // Always wrap for consistency, even single words
+                const wrapperSpan = document.createElement('span');
+                wrapperSpan.className = 'svocm-group';
+                // Insert the wrapper before the first element in the group
+                group[0].parentNode.insertBefore(wrapperSpan, group[0]);
+                // Move all elements into the wrapper
+                group.forEach(el => wrapperSpan.appendChild(el));
+                // Move the original marker to the end of the *last* word in the group span
+                 const originalMarker = parentWord.querySelector(`.svocm-${elementType}-marker`); // Re-find the marker
+                 if (originalMarker) {
+                    // Ensure the marker is appended correctly inside the last word span
+                    group[group.length - 1].appendChild(originalMarker);
+                 }
+
+                 // Remove duplicate markers from other words in the group
+                 for (let i = 0; i < group.length -1; i++) {
+                    const dupMarker = group[i].querySelector(`.svocm-${elementType}-marker`);
+                    if (dupMarker) {
+                         dupMarker.remove();
+                     }
+                 }
+            }
+        });
+    }
+    // --- End SVOCM Grouping Logic ---
+
+
+    // UI初期化関数
+    function initialize() {
+        setupWordClickListeners();
+        setupVocabTooltipsAndMarkers();
+        applySVOCMGrouping(); // Apply grouping after initial setup
+        initializeResizer();
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        toggleFullTranslation.addEventListener('change', () => body.classList.toggle('show-full-translation'));
+        togglePhraseTranslation.addEventListener('change', () => body.classList.toggle('show-phrase-translation'));
+        toggleVocab.addEventListener('change', () => { body.classList.toggle('show-vocab'); setupVocabTooltipsAndMarkers(); }); // 語彙表示切替時に再設定
+        togglePhrases.addEventListener('change', () => body.classList.toggle('show-phrases'));
+        toggleSoundTips.addEventListener('change', () => body.classList.toggle('show-sound-tips'));
+        toggleSvocm.addEventListener('change', () => {
+            body.classList.toggle('show-svocm');
+            // Re-apply grouping or just toggle visibility based on how CSS is set up
+             applySVOCMGrouping(); // Re-apply to ensure structure is correct for visibility toggling
+        });
+        fontSizeSlider.addEventListener('input', handleFontSizeSlider);
+        fontIncreaseBtn.addEventListener('click', handleFontSizeButtonIncrease);
+        fontDecreaseBtn.addEventListener('click', handleFontSizeButtonDecrease);
+        btnOriginal.addEventListener('click', () => setDifficulty(false));
+        btnSimplified.addEventListener('click', () => setDifficulty(true));
+        setDefaultFontSize(); dictButton.addEventListener('click', searchDictionary);
+        etyButton.addEventListener('click', searchEtymology); addListButton.addEventListener('click', addWordToList);
+        document.addEventListener('click', (event) => {
+             if (wordMenu.style.display === 'block' && !wordMenu.contains(event.target) && !event.target.closest('.word')) { wordMenu.style.display = 'none'; }
+             if (body.classList.contains('sidebar-open') && window.innerWidth <= 991 && !sidebar.contains(event.target) && event.target !== sidebarToggle) { toggleSidebar(); } });
+        wordMenu.addEventListener('click', (e) => e.stopPropagation());
+        tabContainer.addEventListener('click', handleTabClick);
+        const initialActiveTab = tabContainer.querySelector('.tab-button.active');
+        if (initialActiveTab) { const initialTabId = initialActiveTab.dataset.tab; const initialContent = document.getElementById(initialTabId); if (initialContent) { initialContent.classList.add('active'); updateFooterSubmitButton(initialTabId); }
+        } else { const firstTabButton = tabContainer.querySelector('.tab-button'); if (firstTabButton) { const firstTabId = firstTabButton.dataset.tab; const firstContent = document.getElementById(firstTabId); if (firstContent) { firstTabButton.classList.add('active'); firstContent.classList.add('active'); updateFooterSubmitButton(firstTabId); } } }
+        submitButtons.forEach(button => { button.addEventListener('click', handleSubmit); const explanationDiv = button.nextElementSibling; if (explanationDiv && explanationDiv.classList.contains('explanation')) { /* data-original-htmlは動的に設定されるので、ここでは何もしない */ explanationDiv.innerHTML = ''; explanationDiv.style.display = 'none'; } });
+        hintToggles.forEach(checkbox => { checkbox.checked = false; const hintText = checkbox.closest('.hint-toggle').nextElementSibling; if (hintText && hintText.classList.contains('hint-text')) { hintText.style.display = 'none'; } checkbox.addEventListener('change', (event) => { if (hintText && hintText.classList.contains('hint-text')) { hintText.style.display = event.target.checked ? 'block' : 'none'; } }); });
+        wordTestStartButtonSidebar.addEventListener('click', startWordTest); footerSubmitButton.addEventListener('click', handleFooterSubmit);
+        closeTestModalButton.addEventListener('click', closeWordTest); prevWordButton.addEventListener('click', showPrevWordQuestion);
+        nextWordButton.addEventListener('click', showNextWordQuestion); submitTestButton.addEventListener('click', submitWordTest);
+        window.onclick = (event) => { if (event.target == wordTestModal) closeWordTest(); };
+        console.log("Original UI initialized.");
+    }
+    // 他の関数定義 (toggleSidebar, setupWordClickListeners, etc. 元のまま)
+    function toggleSidebar() { body.classList.toggle('sidebar-open'); }
+    function setupWordClickListeners() { textContentWrapper.removeEventListener('click', handleWordClick); textContentWrapper.addEventListener('click', handleWordClick); }
+    function setupVocabTooltipsAndMarkers() {
+        textContentWrapper.querySelectorAll('.word').forEach(wordSpan => {
+            const clone = wordSpan.cloneNode(true);
+            clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
+            const wordText = clone.textContent.trim().toLowerCase().replace(/[.,!?"”]/g, ''); // 句読点をより多く削除
+
+            const vocabSpan = wordSpan.closest('.vocab-word') || wordSpan;
+            const existingTooltip = vocabSpan.querySelector('.tooltip');
+            if (existingTooltip) existingTooltip.remove();
+            vocabSpan.classList.remove('is-predefined'); // Reset predefined status
+
+             if (predefinedLower.includes(wordText) && wordMeanings[wordText]) {
+                vocabSpan.classList.add('is-predefined'); // Mark as predefined for styling
+                 if (!vocabSpan.classList.contains('vocab-word')) { vocabSpan.classList.add('vocab-word'); } // Ensure vocab-word class is present
+
+                const meaningData = wordMeanings[wordText];
+                if (meaningData && meaningData.mean) {
+                     const tooltip = document.createElement('span');
+                     tooltip.className = 'tooltip';
+                     tooltip.textContent = meaningData.mean + (meaningData.pos ? ` (${meaningData.pos})` : '');
+                     vocabSpan.appendChild(tooltip);
+                 }
+             } else {
+                 vocabSpan.classList.remove('is-predefined');
+             }
+        });
+     }
+    function applyFontSize(scale) { const newScale = Math.max(0.8, Math.min(scale, 1.5)); currentTextScale = newScale; textContentWrapper.style.fontSize = `calc(1rem * ${newScale})`; fontSizeSlider.value = newScale; fontSizeValue.textContent = `${Math.round(newScale * 100)}%`; fontDecreaseBtn.disabled = newScale <= 0.8; fontIncreaseBtn.disabled = newScale >= 1.5; }
+    function handleFontSizeSlider(event) { applyFontSize(parseFloat(event.target.value)); }
+    function handleFontSizeButtonIncrease() { applyFontSize(currentTextScale + 0.1); }
+    function handleFontSizeButtonDecrease() { applyFontSize(currentTextScale - 0.1); }
+    function setDefaultFontSize() { let initialScale = 1.0; if (window.matchMedia('(min-width: 992px)').matches) { initialScale = 1.05; } applyFontSize(initialScale); }
+    function setDifficulty(simplified) {
+        body.classList.toggle('show-simplified', simplified);
+        btnOriginal.classList.toggle('active', !simplified);
+        btnSimplified.classList.toggle('active', simplified);
+        // Apply SVOCM grouping after switching difficulty
+        setTimeout(() => {
+             setupWordClickListeners();
+             setupVocabTooltipsAndMarkers();
+             applySVOCMGrouping(); // Re-apply grouping for the visible text
+        }, 0);
+    }
+    function handleWordClick(event) {
+        // Allow clicking on group span or word span inside it
+        const targetGroup = event.target.closest('.svocm-group');
+        const targetWord = event.target.closest('.word');
+        const clickTarget = targetGroup || targetWord; // Prioritize group if clicked
+
+        if (!clickTarget) {
+             if (wordMenu.style.display === 'block') wordMenu.style.display = 'none';
+             return;
+        }
+        event.stopPropagation();
+
+        // Get text from the clicked word, even if the click was on the group span
+        const wordElement = targetWord || clickTarget.querySelector('.word'); // Find a word inside if group was clicked
+        if (!wordElement) return;
+
+        const clone = wordElement.cloneNode(true);
+        clone.querySelectorAll('.tooltip, .svocm-marker').forEach(el => el.remove());
+        currentWord = clone.textContent.trim().toLowerCase().replace(/[.,!?"”]/g, '');
+        if (!currentWord) return;
+
+        // Show menu relative to the clicked element (word or group)
+        const rect = clickTarget.getBoundingClientRect();
+        showWordMenuAtPosition(rect.left + window.scrollX, rect.bottom + window.scrollY + 5, clickTarget);
+    }
+    function showWordMenuAtPosition(x, y, targetElement) { wordMenu.style.display = 'none'; let left = x; let top = y; wordMenu.style.left = `${left}px`; wordMenu.style.top = `${top}px`; wordMenu.style.visibility = 'hidden'; wordMenu.style.display = 'block'; const menuRect = wordMenu.getBoundingClientRect(); const targetRect = targetElement.getBoundingClientRect(); const viewportWidth = window.innerWidth; const viewportHeight = window.innerHeight; if (menuRect.right > viewportWidth) { left = viewportWidth - menuRect.width - 10; } if (left < 10) { left = 10; } if (menuRect.bottom > viewportHeight) { top = targetRect.top + window.scrollY - menuRect.height - 5; } if (top < window.scrollY + 10) { top = window.scrollY + 10; } wordMenu.style.left = `${left}px`; wordMenu.style.top = `${top}px`; wordMenu.style.visibility = 'visible'; }
+    function searchDictionary() { if (!currentWord) return; window.open(`https://ejje.weblio.jp/content/${encodeURIComponent(currentWord)}`, '_blank'); wordMenu.style.display = 'none'; }
+    function searchEtymology() { if (!currentWord) return; window.open(`https://www.etymonline.com/search?q=${encodeURIComponent(currentWord)}`, '_blank'); wordMenu.style.display = 'none'; }
+    function addWordToList() { if (!currentWord || !wordMeanings[currentWord]) { alert('この単語はリストに追加できません。'); return; } userWordList.add(currentWord); alert(`「${currentWord}」を単語テストリストに追加しました。`); wordMenu.style.display = 'none'; }
+    function handleTabClick(event) { const clickedButton = event.target.closest('.tab-button'); if (!clickedButton || clickedButton.classList.contains('active')) return; const targetTabId = clickedButton.dataset.tab; const targetContent = document.getElementById(targetTabId); if (!targetContent) return; tabButtons.forEach(btn => btn.classList.remove('active')); tabContents.forEach(content => content.classList.remove('active')); clickedButton.classList.add('active'); targetContent.classList.add('active'); updateFooterSubmitButton(targetTabId); }
+    function updateFooterSubmitButton(activeTabId) { const activeTabContent = document.getElementById(activeTabId); if (!activeTabContent) { footerSubmitButton.disabled = true; return; } const originalSubmitButton = activeTabContent.querySelector('.submit-button'); if (originalSubmitButton) { footerSubmitButton.disabled = originalSubmitButton.disabled; footerSubmitButton.dataset.questionId = originalSubmitButton.dataset.questionId; } else { footerSubmitButton.disabled = true; delete footerSubmitButton.dataset.questionId; } }
+    function handleFooterSubmit() { const questionId = footerSubmitButton.dataset.questionId; if (!questionId || footerSubmitButton.disabled) return; const questionItem = document.getElementById(questionId); if (!questionItem) return; const originalSubmitButton = questionItem.querySelector(`.submit-button[data-question-id="${questionId}"]`); if (originalSubmitButton && !originalSubmitButton.disabled) { handleSubmit({ target: originalSubmitButton }); } }
+    function handleSubmit(event) {
+        const button = event.target.closest('.submit-button');
+        if (!button) return;
+        const questionId = button.dataset.questionId;
+        const questionItem = document.getElementById(questionId);
+        if (!questionItem) return; // 要素が見つからない場合は終了
+        const explanationDiv = questionItem.querySelector('.explanation');
+        const options = questionItem.querySelectorAll(`input[name="${questionId}"]`);
+        const selectedOption = questionItem.querySelector(`input[name="${questionId}"]:checked`);
+
+        if (!selectedOption) {
+            alert('選択肢を選んでください。');
+            return;
+        }
+        // explanationDiv が存在するかどうかをチェック
+        if (!explanationDiv) {
+             console.error('Explanation div not found for question:', questionId);
+             // explanationDiv がなくても処理を続行する（結果表示なし）か、ここで止めるか
+             // ここでは処理を続行し、ボタンを無効化する
+        } else {
+            const userAnswer = selectedOption.value;
+            const correctAnswer = correctAnswers[questionId];
+            let resultMessage = '<h4>解説</h4>';
+            resultMessage += (userAnswer === correctAnswer) ? '<p style="color: green; font-weight: bold;">正解！</p>' : `<p style="color: red; font-weight: bold;">不正解... (正解は ${correctAnswer ? correctAnswer.toUpperCase() : 'N/A'})</p>`;
+            const originalExplanationHTML = explanationDiv.dataset.originalHtml || '';
+            // data-original-htmlから直接HTMLを生成（HTMLエンティティはブラウザが解釈する想定）
+            const cleanExplanationHTML = originalExplanationHTML.replace(/<h4>.*?<\/h4>/i, '').replace(/<p style="color: (green|red);.*?>.*?<\/p>/gi, '').trim();
+            explanationDiv.innerHTML = resultMessage + cleanExplanationHTML;
+            explanationDiv.style.display = 'block';
+        }
+
+        options.forEach(input => input.disabled = true);
+        button.disabled = true;
+        if (footerSubmitButton.dataset.questionId === questionId) {
+            footerSubmitButton.disabled = true;
+        }
+    }
+    function initializeResizer() { let isResizing = false; if (!resizer) return; resizer.addEventListener('mousedown', (e) => { if (window.innerWidth <= 991) return; isResizing = true; dragStartY = e.clientY; initialTextFlex = parseFloat(window.getComputedStyle(textArea).flexGrow) || 1; initialQuestionFlex = parseFloat(window.getComputedStyle(questionArea).flexGrow) || 1; document.addEventListener('mousemove', handleMouseMove); document.addEventListener('mouseup', handleMouseUp); document.body.style.userSelect = 'none'; document.body.style.cursor = 'ns-resize'; }); function handleMouseMove(e) { if (!isResizing) return; const deltaY = e.clientY - dragStartY; const containerHeight = textArea.parentElement.clientHeight; const totalFlex = initialTextFlex + initialQuestionFlex; const sensitivity = totalFlex / (containerHeight * 0.7); let newTextFlex = initialTextFlex + deltaY * sensitivity; let newQuestionFlex = initialQuestionFlex - deltaY * sensitivity; const minFlex = 0.1; if (newTextFlex < minFlex) newTextFlex = minFlex; if (newQuestionFlex < minFlex) newQuestionFlex = minFlex; if (newTextFlex === minFlex && totalFlex > minFlex * 2) { newQuestionFlex = totalFlex - minFlex; } else if (newQuestionFlex === minFlex && totalFlex > minFlex * 2) { newTextFlex = totalFlex - minFlex; } else if (newTextFlex < minFlex || newQuestionFlex < minFlex) { // Ensure minimums are respected even with small totalFlex
+                newTextFlex = Math.max(minFlex, newTextFlex); newQuestionFlex = Math.max(minFlex, newQuestionFlex);
+            }textArea.style.flexGrow = newTextFlex; questionArea.style.flexGrow = newQuestionFlex; } function handleMouseUp() { if (isResizing) { isResizing = false; document.removeEventListener('mousemove', handleMouseMove); document.removeEventListener('mouseup', handleMouseUp); document.body.style.userSelect = ''; document.body.style.cursor = ''; } } }
+    function startWordTest() { const wordsForTest = Array.from(new Set([...predefinedVocabKeys.map(w=>w.toLowerCase()), ...userWordList])).filter(w => wordMeanings[w]); /* 意味データがあるものだけ */ if (wordsForTest.length === 0) { alert('テストする単語がリストにありません。\n本文中の <span style="text-decoration: underline wavy var(--vocab-color);">赤下線</span> の単語をクリックして「単語テストリストに登録」するか、\n語彙ヒントが表示されている単語をクリックして登録してください。'); return; } wordsForTest.sort(() => Math.random() - 0.5); wordTestQuestions = wordsForTest.map(word => createTestQuestion(word)).filter(q => q !== null); if (wordTestQuestions.length === 0) { alert('テスト対象の問題を生成できませんでした。'); return; } currentTestQuestionIndex = 0; userTestAnswers = {}; wordTestResultArea.style.display = 'none'; testFeedback.innerHTML = ''; testScore.textContent = ''; submitTestButton.style.display = 'none'; prevWordButton.disabled = true; nextWordButton.disabled = wordTestQuestions.length <= 1; submitTestButton.disabled = false; wordTestUI.innerHTML = '<p class="loading-message">テストを準備中...</p>'; wordTestModal.style.display = 'block'; setTimeout(() => { displayWordQuestion(currentTestQuestionIndex); }, 100); }
+    function createTestQuestion(word) { const lowerWord = word.toLowerCase(); const meaningData = wordMeanings[lowerWord]; if (meaningData && meaningData.mean && Array.isArray(meaningData.incorrect) && meaningData.incorrect.length >= 3) { /* 不正解選択肢が3つ以上ある場合 */ const incorrectOptions = [...meaningData.incorrect].sort(() => 0.5 - Math.random()).slice(0, 3); const options = [...incorrectOptions, meaningData.mean]; options.sort(() => 0.5 - Math.random()); return { type: 'mcq', word: word, options: options, correct: meaningData.mean }; } else if (meaningData && meaningData.mean) { return { type: 'link', word: word, correct: meaningData.mean }; } else { console.warn(`Meaning data not found or insufficient incorrect options for word: ${word}. Excluding from test.`); return null; } }
+    function displayWordQuestion(index) { if (index < 0 || index >= wordTestQuestions.length) return; const question = wordTestQuestions[index]; if (!question) { wordTestUI.innerHTML = '<p class="loading-message" style="color:red;">問題データの読み込みエラー</p>'; return; } let contentHTML = '<div class="test-question">'; if (question.type === 'mcq') { let optionsHTML = ''; if (Array.isArray(question.options)) { question.options.forEach((option, i) => { const isChecked = userTestAnswers[question.word] === option; const inputId = `q-${index}-option-${i}`; optionsHTML += `<label for="${inputId}"><input type="radio" id="${inputId}" name="word-${question.word}" value="${escapeHtml(option)}" ${isChecked ? 'checked' : ''}> ${escapeHtml(option)}</label>`; }); } else { console.error("Invalid options data for MCQ:", question); optionsHTML = "<p style='color:red'>選択肢エラー</p>"; } contentHTML += `<div class="test-word">${escapeHtml(question.word)} の意味は？</div><div class="test-options" data-word="${question.word}">${optionsHTML}</div>`; } else if (question.type === 'link') { const infoText = "この単語は確認用です。"; contentHTML += `<div class="test-word">${escapeHtml(question.word)}</div><p>${infoText}</p><a href="https://ejje.weblio.jp/content/${encodeURIComponent(question.word)}" target="_blank" class="weblio-link-button">Weblioで意味を確認</a>`; if (!userTestAnswers[question.word]) userTestAnswers[question.word] = 'link_checked'; } else { contentHTML += `<p style="color:red;">不明な問題タイプ: ${escapeHtml(question.word)}</p>`; } contentHTML += '</div>'; wordTestUI.innerHTML = contentHTML; if (question.type === 'mcq') { const optionsContainer = wordTestUI.querySelector(`.test-options[data-word="${question.word}"]`); if (optionsContainer) { optionsContainer.addEventListener('change', (e) => { if (e.target.type === 'radio') { userTestAnswers[question.word] = e.target.value; console.log(`Answered ${question.word}: ${e.target.value}`); } }); } } updateTestNavigation(index); }
+    function updateTestNavigation(index) { currentTestQuestionIndex = index; const totalQuestions = wordTestQuestions.length; prevWordButton.disabled = (index === 0); nextWordButton.disabled = (index === totalQuestions - 1); nextWordButton.style.display = (index === totalQuestions - 1) ? 'none' : 'inline-block'; submitTestButton.style.display = (index === totalQuestions - 1) ? 'inline-block' : 'none'; wordCounter.textContent = `${index + 1} / ${totalQuestions}`; }
+    function showPrevWordQuestion() { if (currentTestQuestionIndex > 0) displayWordQuestion(currentTestQuestionIndex - 1); }
+    function showNextWordQuestion() { const currentQ = wordTestQuestions[currentTestQuestionIndex]; if (currentQ && currentQ.type === 'mcq' && !userTestAnswers[currentQ.word]) { alert('この問題の解答を選択してください。'); return; } if (currentTestQuestionIndex < wordTestQuestions.length - 1) displayWordQuestion(currentTestQuestionIndex + 1); }
+    function closeWordTest() { wordTestModal.style.display = 'none'; }
+    function submitWordTest() { const lastQ = wordTestQuestions[currentTestQuestionIndex]; if (lastQ && lastQ.type === 'mcq' && !userTestAnswers[lastQ.word]) { alert('最後の問題の解答を選択してください。'); return; } let score = 0; let totalMcqQuestions = 0; testFeedback.innerHTML = ''; wordTestQuestions.forEach(q => { if (!q) return; if (q.type === 'mcq') { totalMcqQuestions++; const userAnswer = userTestAnswers[q.word]; const isCorrect = userAnswer === q.correct; if (isCorrect) score++; const feedbackItem = document.createElement('li'); feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> ${isCorrect ? '<span style="color:green;">正解！</span>' : `<span style="color:red;">不正解</span> (正解: ${escapeHtml(q.correct)}${userAnswer ? `, あなたの解答: ${escapeHtml(userAnswer)}` : ', (未解答)'})`}`; testFeedback.appendChild(feedbackItem); } else if (q.type === 'link') { const feedbackItem = document.createElement('li'); feedbackItem.innerHTML = `<strong>${escapeHtml(q.word)}:</strong> <span style="color:#666;">辞書確認</span> (意味: ${escapeHtml(q.correct || '(意味未登録)')})`; testFeedback.appendChild(feedbackItem); } }); if (totalMcqQuestions > 0) { const percentage = Math.round((score / totalMcqQuestions) * 100); testScore.textContent = `結果: ${score} / ${totalMcqQuestions} 問正解 (${percentage}%)`; } else { testScore.textContent = `結果: 選択式の問題はありませんでした。`; } wordTestResultArea.style.display = 'block'; prevWordButton.disabled = true; nextWordButton.disabled = true; submitTestButton.disabled = true; wordTestUI.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true); wordTestUI.querySelectorAll('.weblio-link-button').forEach(btn => { btn.style.pointerEvents = 'none'; btn.style.opacity = '0.6'; }); }
+    function escapeHtml(unsafe) { if (typeof unsafe !== 'string') return ''; return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+
+    // ページの読み込み完了時に Initialize を呼び出す (元のまま)
+    document.addEventListener('DOMContentLoaded', initialize);
+
+</script>
+
+</body>
+</html>
