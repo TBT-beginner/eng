@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: マスコットキャラクターと英語表現</title>
+    <style>
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --color-primary: #28A745; /* 緑 */
+            --color-accent: #FD7E14; /* オレンジ */
+            --color-link: #28A745;
+            --color-border: #DEE2E6;
+            --color-answer-bg: #F0FDF4; /* 薄い緑 */
+            --color-progress-bar: var(--color-accent);
+            --font-family-main: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: transparent;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--color-progress-bar);
+            width: 0%;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 60px auto 40px; /* プログレスバーの分だけマージンを増やす */
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+
+        h1, h2, h3 {
+            color: var(--color-primary);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 2.2em; text-align: center; margin-bottom: 1em;}
+        h2 { font-size: 1.8em; border-bottom: 2px solid var(--color-border); padding-bottom: 0.3em;}
+        h3 { font-size: 1.4em; }
+
+        p, ul, ol {
+            margin-bottom: 1.2em;
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .summary-box, .supplementary-box {
+            background-color: #e9f5ec; /* 薄い緑 */
+            border-left: 5px solid var(--color-primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .supplementary-box {
+            background-color: #fff3e0; /* 薄いオレンジ */
+            border-left-color: var(--color-accent);
+        }
+
+        #tableOfContents {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border: 1px solid var(--color-border);
+        }
+        #tableOfContents h3 {
+            margin-top: 0;
+            color: var(--text-main);
+        }
+        #tableOfContents ul {
+            list-style-type: none;
+            padding: 0;
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+        #tableOfContents ul li {
+            margin-bottom: 8px;
+        }
+        #tableOfContents ul li a {
+            color: var(--color-link);
+        }
+
+        .code-block {
+            background-color: #2c3e50; /* ダークブルーグレー */
+            color: #ecf0f1; /* 明るいグレー */
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+        }
+        code {
+            background-color: #e9ecef;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--color-border);
+            padding-left: 15px;
+            margin-left: 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .checklist li {
+            list-style-type: none;
+            cursor: pointer;
+            padding-left: 25px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "□";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: var(--color-primary);
+        }
+        .checklist li.checked::before {
+            content: "☑";
+        }
+
+        .review-questions .question {
+            margin-bottom: 15px;
+        }
+        .review-questions input[type="text"],
+        .review-questions textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .toggle-answer-btn {
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .toggle-answer-btn:hover {
+            opacity: 0.9;
+        }
+        .answer-content {
+            display: none;
+            background-color: var(--color-answer-bg);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--text-main);
+            color: var(--bg-main);
+        }
+        footer a {
+            color: var(--color-accent);
+        }
+
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--color-primary);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #scrollTopBtn:hover {
+            background-color: var(--color-accent);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--text-secondary);
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--text-main);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--text-main) transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .highlight {
+            background-color: #FFF3CD; /* 薄い黄色 */
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        .read-time {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 50px;
+                padding: 15px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            #tableOfContents ul {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+            .tooltip .tooltiptext {
+                width: 150px;
+                margin-left: -75px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <div class="container">
+        <h1>授業記録: マスコットキャラクターを通じた英語表現の学習 (2025-05-08)</h1>
+        <p class="read-time" id="readTime">読了時間: 約1分</p>
+
+        <div class="summary-box">
+            <h3>本日の授業概要</h3>
+            <ul>
+                <li>日本の<span class="tooltip">マスコットキャラクター<span class="tooltiptext">地域や団体を象徴するキャラクター。例: くまモン、ふなっしー</span></span>を通じた町紹介の英文読解</li>
+                <li>英文の構造理解（意味の区切り、SVOCM）</li>
+                <li>音読練習（<span class="tooltip">コーラスリーディング<span class="tooltiptext">先生や音声モデルに続いて、全員で同じテキストを読み上げる練習方法。</span></span>、速音読）による発音と流暢さの向上</li>
+                <li>英語学習への心構えと効果的な学習方法</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h3>目次</h3>
+            <ul>
+                <li><a href="#section1">1. はじめに</a></li>
+                <li><a href="#section2">2. 教材本文：マスコットキャラクターと故郷</a></li>
+                <li><a href="#section3">3. 読解のポイント：意味の区切りと文構造</a></li>
+                <li><a href="#section4">4. 音読練習：発音と流暢さを鍛える</a></li>
+                <li><a href="#section5">5. 学習のヒント：先生からのメッセージ</a></li>
+                <li><a href="#review">6. 振り返り</a></li>
+                <li><a href="#application">7. 応用学習</a></li>
+            </ul>
+        </nav>
+
+        <section id="section1">
+            <h2>1. はじめに</h2>
+            <p>本日の授業では、日本のマスコットキャラクターを題材にした英語の文章を読み解き、音読練習を通して英語表現力を高めることを目指します。また、効果的な学習方法や心構えについても触れていきます。</p>
+            <p>（授業冒頭では不規則変化動詞の確認テストがありましたが、この記録には掲載していません。）</p>
+        </section>
+
+        <section id="section2">
+            <h2>2. 教材本文：マスコットキャラクターと故郷</h2>
+            <p>以下の英文と日本語訳を読み比べてみましょう。</p>
+            
+            <h3>英文</h3>
+            <p>Many Japanese towns have their own <span class="tooltip">mascot characters<span class="tooltiptext">地域やイベントなどを象徴するために作られたキャラクター。</span></span>. Two of them are here today in our class. They’ll talk about their hometowns.</p>
+            <hr>
+            <p>“Hello! I’m Unarikun. I come from Narita City. Narita is especially famous for two things: its <span class="tooltip">eel dishes<span class="tooltiptext">ウナギを使った料理。</span></span> and its <span class="tooltip">airport<span class="tooltiptext">飛行場。</span></span>. The eel dishes are delicious. From the airport, you can travel to many different countries. I hope many of you will visit Narita.”</p>
+            <p>“Hi, everyone! I’m Hikonyan. If you like <span class="tooltip">traditional culture<span class="tooltiptext">伝統的な文化。</span></span> and <span class="tooltip">history<span class="tooltiptext">歴史。</span></span>, you should visit Hikone City. Look at my red <span class="tooltip">helmet<span class="tooltiptext">かぶと。</span></span>. A long time ago, this kind of helmet was worn by <span class="tooltip">samurai<span class="tooltiptext">武士。</span></span>. People of Hikone are <span class="tooltip">proud of<span class="tooltiptext">～を誇りに思っている。</span></span> the helmets. They are proud of Hikone Castle, too. I hope many of you will visit our city.”</p>
+            <hr>
+            <p>When you see a mascot character, you may become interested in its hometown. <span class="tooltip">In fact<span class="tooltiptext">実際には、実は。</span></span>, you can learn a lot about a town through its mascot character. Does your hometown have a mascot character? What is it like?</p>
+
+            <h3>日本語訳</h3>
+            <p>多くの日本の町には，その町独自のマスコットキャラクターがいます。そのうちの2体が今日，私たちの授業でここにいます。キャラクターたちが自分たちの町について話してくれます。</p>
+            <hr>
+            <p>「こんにちは！　私はうなりくんです。私は成田市の出身です。成田は特に2つのもの，ウナギ料理と空港で有名です。ウナギ料理はとてもおいしいです。成田空港からは，さまざまな国へ旅に出ることができます。皆さんの多くが成田を訪れていただければと思います」</p>
+            <p>「皆さん，こんにちは！　私はひこにゃんです。もし伝統文化と歴史がお好きでしたら，彦根市を訪れるといいですよ。私の赤いかぶとをご覧ください。昔，この種のかぶとは侍がかぶっていました。彦根の人々はそのかぶとを誇りに思っています。人々は彦根城も誇りに思っています。皆さんの多くに私たちの町を訪れていただければと思います」</p>
+            <hr>
+            <p>マスコットキャラクターを見ると，その故郷に興味を持つようになるかもしれません。実際，町について多くのことを，そこのマスコットキャラクターを通して学ぶことができるのです。あなたの故郷にはマスコットキャラクターがありますか。それはどのようなものですか。</p>
+        </section>
+
+        <section id="section3">
+            <h2>3. 読解のポイント：意味の区切りと文構造</h2>
+            <p>英文を読む際には、意味の区切りを意識することが重要です。これにより、文の構造が理解しやすくなり、より正確に内容を把握できます。</p>
+            
+            <h3>意味の区切り（スラッシュ訳）</h3>
+            <p>英文を読むとき、以下のポイントで区切ると理解しやすくなります。練習として、まずはスラッシュを入れずに読み、次に区切りを意識して読んでみましょう。</p>
+            <ul>
+                <li>① 長い主語(S)の後（2語以上の場合）</li>
+                <li>② <span class="tooltip">前置詞<span class="tooltiptext">名詞の前に置かれ、場所・時間・方向などを示す語。例: at, on, in, with</span></span>の前 (at, on, in, with, of, for など)</li>
+                <li>③ <span class="tooltip">接続詞<span class="tooltiptext">語、句、節、文をつなぐ語。例: and, but, when, because</span></span>の前 (and, but, when, because, that など)</li>
+                <li>④ <span class="tooltip">準動詞<span class="tooltiptext">動詞の性質を持ちながら、名詞・形容詞・副詞の働きをするもの。不定詞(to do)、動名詞(doing)、分詞(doing, done)など。</span></span>の前 (to do, doing, done)</li>
+                <li>⑤ <span class="tooltip">関係詞<span class="tooltiptext">先行する名詞を修飾する節を導く語。例: who, which, that</span></span>の前 (who, which, whose, that など)</li>
+                <li>⑥ 区切り記号の前 (カンマ “,”, コロン “:”, セミコロン “;”, ダッシュ “ー” など)</li>
+            </ul>
+            <p class="highlight">例: Many Japanese towns / have their own mascot characters.</p>
+
+            <h3>文構造の把握 (SVOCM)</h3>
+            <p>英文の構造を理解するために、各単語が文の中でどのような役割（品詞）を果たしているか、そして文の要素（S, V, O, C, M）がどのように配置されているかを把握しましょう。「指さし音読表」などを活用して練習すると効果的です。</p>
+            <h4>品詞の基本</h4>
+            <ul>
+                <li><strong>名詞:</strong> 生き物やモノ・概念の名前。 (例: towns, Unarikun, culture)</li>
+                <li><strong>代名詞:</strong> 名詞の代わり。 (例: they, I, its)</li>
+                <li><strong>動詞:</strong> 状態か動作。 (例: have, are, talk, like)</li>
+                <li><strong>助動詞:</strong> 動詞に意味を添える。 (例: will, can, should, may)</li>
+                <li><strong>形容詞:</strong> 名詞の見た目や状態を説明。 (例: Japanese, own, red, delicious)</li>
+                <li><strong>副詞:</strong> 主に動詞や形容詞、他の副詞を説明。 (例: especially, here, today, ago)</li>
+                <li><strong>前置詞:</strong> 名詞とペアで場所や時間などを表す。 (例: in, from, for, of, by, through)</li>
+                <li><strong>接続詞:</strong> 文や語句をつなぐ。 (例: and, but, if, when, that)</li>
+            </ul>
+            <h4>文の要素</h4>
+            <ul>
+                <li><strong>S (Subject - 主語):</strong> 文の主役。「～は/が」。文頭の名詞や代名詞が多い。</li>
+                <li><strong>V (Verb - 述語動詞):</strong> 主語の動作や状態。</li>
+                <li><strong>O (Object - 目的語):</strong> 「～を/に」。動詞の対象。</li>
+                <li><strong>C (Complement - 補語):</strong> 直前の名詞を説明する言葉。「～だ」。SVCのCはSを、SVOCのCはOを説明。</li>
+                <li><strong>M (Modifier - 修飾語):</strong> 副詞、前置詞＋名詞、挿入句など。文の主要素を詳しく説明。</li>
+            </ul>
+            <h4>基本5文型</h4>
+            <ol>
+                <li><strong>SV:</strong> SはVする (例: They'll talk.)</li>
+                <li><strong>SVC:</strong> SはCだ (例: The eel dishes are delicious.)</li>
+                <li><strong>SVO:</strong> SはOをVする (例: Many Japanese towns have characters.)</li>
+                <li><strong>SVOO:</strong> SはO1にO2をVする (本文中には明確な例が少ないが、give型動詞で使われる)</li>
+                <li><strong>SVOC:</strong> SはOがCだとVする (本文中には明確な例が少ないが、make型動詞で使われる)</li>
+            </ol>
+            <p class="highlight">原則: 時・場所を一単語で示すものはM、前置詞＋名詞は常にMです。</p>
+            <div class="supplementary-box">
+                <strong>補足:</strong> 英文を読むとき、常にSVOCMを意識することで、複雑な文も正確に理解できるようになります。最初は難しいかもしれませんが、練習を重ねることで自然とできるようになります。
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>4. 音読練習：発音と流暢さを鍛える</h2>
+            <p>読解練習と並行して、音読練習も行いました。音読は英語のリズムやイントネーションを身につけ、流暢さを高めるのに非常に効果的です。</p>
+            <h3>練習方法</h3>
+            <ul>
+                <li><strong>コーラスリーディング:</strong> 先生の発音に続いて、クラス全体で同じ箇所を読み上げる練習です。正しい発音とリズムを模倣することがポイントです。</li>
+                <li><strong>速音読:</strong> 意味を理解した上で、できるだけ速く、かつ正確に英文を読む練習です。15秒や30秒といった時間を区切って、指定された範囲を読む練習をしました。英語を英語の語順のまま理解する力を養います。</li>
+            </ul>
+            <h3>音読の際の注意点</h3>
+            <ol>
+                <li><strong>意味を理解してから読む:</strong> 何も考えずにただ文字を追うのではなく、内容を理解しながら読むことが大切です。</li>
+                <li><strong>口を大きく開ける:</strong> 日本語よりも口の動きが大きい英語の発音を意識し、はっきりと発音しましょう。特に母音の発音がクリアになります。横に広げるイメージも持つと良いでしょう。</li>
+                <li><strong>継続する:</strong> 短時間でも良いので、毎日続けることが上達の鍵です。</li>
+            </ul>
+            <div class="supplementary-box">
+                <strong>英単語と英検レベルの目安:</strong><br>
+                本文に出てくる単語のレベルは、おおよそ以下の通りです。
+                <ul>
+                    <li>中学校レベル（英検5級～3級程度）: town, character, class, talk, hello, city, famous, thing, dish, airport, country, visit, like, culture, history, helmet, samurai, proud, castle.</li>
+                    <li>高校初級レベル（英検準2級程度）: especially, traditional, in fact.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="section5">
+            <h2>5. 学習のヒント：先生からのメッセージ</h2>
+            <p>授業中、先生から英語学習に関する心構えについて、ご自身の経験を交えたお話がありました。</p>
+            <blockquote>
+                「英語学習は、ある意味で<span class="highlight">運動と同じ</span>です。体に覚えさせることが重要です。最初はできなくても、悔しさを持って練習を続けることで必ず上達します。」
+            </blockquote>
+            <p>先生は、高校時代に英語が苦手だった経験から、ノートを工夫したり、とにかく声に出して練習したりすることで克服したエピソードを話されました。特に強調されていたのは以下の点です。</p>
+            <ul>
+                <li><strong>「悔しさ」をバネにする:</strong> できないことを放置せず、「できるようになりたい」という強い気持ちが成長につながる。</li>
+                <li><strong>「子供の三馬鹿」にならない:</strong>
+                    <ol>
+                        <li>諦める人 / 学ぼうとしない人（知らないことを放置する人）</li>
+                        <li>他人を馬鹿にする人</li>
+                        <li>もうひとつは各自で考えてみましょう。（例：間違いを恐れて挑戦しない人、努力を継続できない人など）</li>
+                    </ol>
+                    このような姿勢では成長できません。常に学ぶ意欲を持ち、他人を尊重し、粘り強く取り組むことが大切です。
+                </li>
+                <li><strong>知らないことは恥ずかしいことではない:</strong> 知らないことをそのままにせず、調べたり質問したりして理解しようとすることが重要。</li>
+                <li><strong>間違いを恐れない:</strong> 完璧でなくても、まずは声に出してみる、書いてみるという積極性が大切。間違いから学ぶことも多い。</li>
+            </ul>
+            <p>これらのメッセージは、英語学習だけでなく、あらゆる学びに通じる大切な心構えです。</p>
+        </section>
+
+        <section id="review">
+            <h2>6. 振り返り</h2>
+            <h3>理解度チェックリスト</h3>
+            <ul class="checklist">
+                <li>うなりくんとひこにゃんの出身地と特徴を説明できる。</li>
+                <li>本文の英文を意味の区切りを意識して読める。</li>
+                <li>SVOCMの基本的な役割を理解できた。</li>
+                <li>音読練習のポイント（口を大きく、意味を理解して）を意識して練習できた。</li>
+                <li>速音読に挑戦し、以前より速く読めるようになった、またはその必要性を感じた。</li>
+                <li>マスコットキャラクターを通して、その地域の文化や歴史に興味を持った。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <div class="review-questions">
+                <div class="question">
+                    <p><strong>1. Where is Unarikun from?</strong></p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>He is from Narita City.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>2. What does Hikonyan have on his head?</strong></p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>He has a red helmet on his head.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>3. What can people learn a lot about a mascot character?</strong> (※原文: What can people learn a lot about a town through its mascot character?)</p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>They can learn a lot about its hometown (a town).</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>4. What is Narita famous for?</strong></p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>It is famous for its eel dishes and its airport.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>5. Where is Hikonyan from?</strong></p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>He is from Hikone City.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>6. When can people become interested in a Japanese city?</strong> (※原文の意図を汲み取ると "When you see a mascot character" の部分)</p>
+                    <input type="text" placeholder="解答を入力してください">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>They may become interested in its hometown when they see a mascot character.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>7. Few Japanese towns have their own mascot characters. (True or False?)</strong></p>
+                    <input type="text" placeholder="True / False">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>False. (Many Japanese towns have their own mascot characters.)</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>8. Unarikun wants to visit Narita City. (True or False?)</strong></p>
+                    <input type="text" placeholder="True / False">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>False. (Unarikun is from Narita City and hopes others will visit.)</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>9. Hikonyan’s helmet is like that of a samurai. (True or False?)</strong></p>
+                    <input type="text" placeholder="True / False">
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>True.</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>10. Why is Hikonyan’s helmet red? What do you think?</strong></p>
+                    <textarea placeholder="あなたの考えを記述してください (例: It might be red because red is a color often associated with strength or good luck in Japan, or it could be related to a historical figure or symbol of Hikone.)"></textarea>
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>(解答例) The text doesn't explicitly say why his helmet is red. It might be red because red is a color often associated with strength or good luck in Japan, or it could be related to a historical figure or symbol of Hikone. (これは自由な発想を促す問題です)</p></div>
+                </div>
+                <div class="question">
+                    <p><strong>11. Which mascot character do you like? It does not have to be the one of your own hometown.</strong></p>
+                    <textarea placeholder="あなたの好きなマスコットキャラクターとその理由を記述してください"></textarea>
+                    <button class="toggle-answer-btn">解答例を見る</button>
+                    <div class="answer-content"><p>(解答例) I like Kumamon because he is cute and promotes Kumamoto Prefecture effectively. (これは個人の好みを答える問題です)</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="application">
+            <h2>7. 応用学習</h2>
+            <h3>今回の知識の活かし方</h3>
+            <ul>
+                <li><strong>地域紹介の英語表現:</strong> 旅行先や自分の故郷について英語で説明する際に、今回の本文のようなシンプルな表現が役立ちます。「〇〇 is famous for ～ (～で有名です)」「You should visit ～ (～を訪れるべきです)」などのフレーズは応用範囲が広いです。</li>
+                <li><strong>プレゼンテーションスキル:</strong> キャラクターが自分の故郷を紹介するように、物事を分かりやすく魅力的に伝える練習になります。</li>
+                <li><strong>異文化理解:</strong> マスコットキャラクターは日本の地域文化の一端を示しています。他の国の同様の文化と比較してみるのも面白いでしょう。</li>
+            </ul>
+
+            <h3>今後の学習へのつながり</h3>
+            <ul>
+                <li><strong>長文読解:</strong> 今回の構造把握や意味の区切りを意識する練習は、より複雑な長文を読む上での基礎となります。</li>
+                <li><strong>リスニング・スピーキング:</strong> 音読練習は、英語の音やリズムに慣れ、リスニング力やスピーキング力の向上にも繋がります。次回はシャドウイングや指さし音読といった、さらに発展的な音読練習を行います。</li>
+                <li><strong>語彙力強化:</strong> 新しい単語や表現に出会ったら、意味だけでなく使い方や発音も確認し、積極的に使ってみましょう。</li>
+            </ul>
+
+            <h3>今後の学習で気をつけること</h3>
+            <ul>
+                <li><strong>継続的な音読練習:</strong> 英語の「運動」として、毎日少しずつでも音読を続けることが重要です。</li>
+                <li><strong>受動的にならない:</strong> ただ聞いているだけ、読んでいるだけでなく、積極的に声に出したり、構造を考えたり、質問したりする能動的な学習を心がけましょう。</li>
+                <li><strong>文化背景の理解:</strong> 言葉の背後にある文化や歴史を知ることで、より深い理解が得られます。マスコットキャラクターの由来などを調べてみるのも良いでしょう。</li>
+            </ul>
+
+            <h3>参考資料</h3>
+            <ul>
+                <li><strong>各自治体の観光ウェブサイト:</strong> 多くの自治体が英語で観光情報を提供しています。マスコットキャラクターの情報も掲載されていることがあります。</li>
+                <li><strong>ゆるキャラグランプリ公式サイト (過去の情報など):</strong> 様々なマスコットキャラクターを知るきっかけになります。</li>
+                <li><strong>英語学習アプリ (Duolingo, Memriseなど):</strong> 語彙力強化やリスニング練習に活用できます。</li>
+                <li><strong>YouTubeなどの動画サイト:</strong> 英語のニュースやプレゼンテーション、キャラクター紹介動画など、生きた英語に触れる機会を増やしましょう。</li>
+            </ul>
+        </section>
+
+
+        <footer>
+            <p>今回の授業記録は以上です。次回も積極的に英語学習に取り組みましょう！</p>
+            <p><a href="https://tbt-beginner.github.io/eng/" target="_blank" rel="noopener noreferrer">授業記録のウェブサイト</a></p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        // Progress bar
+        window.onscroll = function() {scrollProgress()};
+        function scrollProgress() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.querySelector(".progress-bar").style.width = scrolled + "%";
+
+            // Scroll to top button
+            var scrollTopBtn = document.getElementById("scrollTopBtn");
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        }
+
+        // Scroll to top button functionality
+        document.getElementById("scrollTopBtn").addEventListener("click", function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // Checklist functionality
+        var checklistItems = document.querySelectorAll(".checklist li");
+        checklistItems.forEach(function(item) {
+            item.addEventListener("click", function() {
+                this.classList.toggle("checked");
+            });
+        });
+
+        // Toggle answer functionality
+        var toggleButtons = document.querySelectorAll(".toggle-answer-btn");
+        toggleButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var answerContent = this.nextElementSibling;
+                if (answerContent.style.display === "block") {
+                    answerContent.style.display = "none";
+                    this.textContent = "解答例を見る";
+                } else {
+                    answerContent.style.display = "block";
+                    this.textContent = "解答例を隠す";
+                }
+            });
+        });
+        
+        // 目次生成 (今回は静的に記述しましたが、動的に生成する場合の例)
+        // const tocContainer = document.getElementById('tableOfContentsUl'); // 目次のul要素のIDを仮定
+        // const headings = document.querySelectorAll('.container section h2');
+        // headings.forEach((heading, index) => {
+        //     const listItem = document.createElement('li');
+        //     const link = document.createElement('a');
+        //     const sectionId = heading.parentElement.id || `section-${index + 1}`;
+        //     heading.parentElement.id = sectionId; // IDがなければ付与
+        //     link.href = `#${sectionId}`;
+        //     link.textContent = `${index + 1}. ${heading.textContent}`;
+        //     listItem.appendChild(link);
+        //     if (tocContainer) tocContainer.appendChild(listItem);
+        // });
+    </script>
+</body>
+</html>
