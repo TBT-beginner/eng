@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不規則変化動詞 練習サイト</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* --- Basic Styles --- */
+        body { font-family: 'Arial', sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        #app-container { max-width: 950px; margin: 20px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; min-height: 80vh; }
+        header { text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #4CAF50; }
+        header h1 { color: #2c3e50; margin-bottom: 5px; font-size: 1.8em; }
+        header p { font-size: 0.9em; color: #555; }
+        .junior-high-star-legend { font-weight: bold; color: #e74c3c; }
+
+        /* --- Layout --- */
+        main { display: flex; gap: 20px; flex-wrap: wrap; }
+        /* Group Navigation is now above Content Display Area in HTML */
+        #content-display-area { flex-grow: 1; overflow: hidden; min-width: 0; width: 100%; /* Take full width available */ }
+
+        /* --- Group Navigation (Modified) --- */
+        #group-navigation {
+            width: 100%; /* Full width */
+            margin-bottom: 15px; /* Space below nav */
+            padding-bottom: 10px; /* Space below buttons */
+            border-bottom: 1px solid #ddd; /* Separator line */
+            display: flex; /* Use Flexbox */
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            gap: 6px; /* Gap between buttons */
+        }
+        #group-navigation button {
+            padding: 8px 12px; /* Adjust padding */
+            background-color: #e2f0e4; /* Light green background */
+            color: #155724; /* Darker green text */
+            border: 1px solid #badbcc; /* Greenish border */
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            font-size: 0.9em;
+            font-weight: bold;
+            line-height: 1.2;
+            flex-grow: 1; /* Allow buttons to grow if space allows */
+            min-width: 40px; /* Minimum width */
+        }
+        #group-navigation button:hover {
+            background-color: #c3e6cb;
+            border-color: #a1d4af;
+        }
+        #group-navigation button.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #3e8e41;
+        }
+
+
+        /* --- Mode Switcher --- */
+        #mode-switcher { margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap;}
+        #mode-switcher button { padding: 8px 15px; border: 1px solid #ccc; background-color: #f8f9fa; cursor: pointer; border-radius: 4px; transition: background-color 0.3s, color 0.3s; font-size: 0.9em; }
+        #mode-switcher button.active { background-color: #4CAF50; color: white; border-color: #3e8e41; }
+        #mode-switcher button:hover:not(.active) { background-color: #e2e6ea; }
+
+        /* --- Verb List Styles --- */
+        #verb-list-container { display: grid; gap: 15px; }
+        @media (min-width: 768px) { #verb-list-container { grid-template-columns: repeat(2, 1fr); } }
+        #verb-content-area .group-title { font-size: 1.6em; color: #4CAF50; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #eee; grid-column: 1 / -1; }
+        #verb-content-area .sub-group-title { font-size: 1.3em; color: #2980b9; margin-top: 20px; margin-bottom: 10px; grid-column: 1 / -1; }
+        .verb-card { background-color: #fff; border: 1px solid #ddd; border-left: 5px solid #4CAF50; border-radius: 4px; padding: 15px; cursor: pointer; transition: box-shadow 0.3s; display: flex; flex-direction: column; }
+        .verb-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .verb-card.is-open { border-left-color: #e67e22; }
+        .verb-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; margin-bottom: 10px; flex-wrap: wrap; gap: 5px;}
+        .verb-meaning { font-size: 1.1em; flex-basis: 60%; }
+        .junior-high-star { color: #e74c3c; font-weight: bold; margin-right: 5px; }
+        .verb-base-form-header { color: #2980b9; font-size: 0.9em; text-align: right; flex-basis: 35%;}
+        .verb-details { font-size: 0.95em; overflow: hidden; max-height: 0; opacity: 0; }
+        .forms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px; text-align: center; padding-top: 10px; }
+        .form-item { background-color: #f8f9fa; padding: 5px; border-radius: 3px; border: 1px solid #eee; overflow: hidden; }
+        .form-item .form-label { display: block; font-size: 0.75em; color: #6c757d; margin-bottom: 2px; }
+        .form-item .form-value { font-weight: bold; font-size: 0.9em; word-break: break-word; overflow-wrap: break-word; }
+        .pronunciation-note { font-size: 0.8em; color: #7f8c8d; font-style: italic; display: inline-block; margin-left: 3px;}
+
+        /* --- Quiz Area Styles --- */
+        #quiz-area { padding-top: 10px; }
+        #quiz-setup { display: none; margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 4px; border: 1px solid #eee; text-align: center; }
+        #quiz-setup p { margin: 5px 0; font-size: 0.9em; }
+        #start-quiz-btn { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.3s; margin-top: 10px; }
+        #start-quiz-btn:hover:not(:disabled) { background-color: #218838; }
+        #start-quiz-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        #quiz-main-content { display: none; }
+        #quiz-question-container { background-color: #e9f5ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px solid #b8daff; }
+        #question-verb-info { font-size: 1.3em; margin-bottom: 5px; color: #004085; font-weight: bold; }
+        #question-form-to-guess { font-size: 1.1em; color: #212529; margin-bottom:15px; font-weight: bold; }
+        #choices-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        @media (min-width: 600px) { #choices-container { grid-template-columns: repeat(2, 1fr); } }
+        .choice-btn { padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s, transform 0.1s; }
+        .choice-btn:hover:not(:disabled) { background-color: #0056b3; transform: translateY(-2px); }
+        .choice-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .choice-btn.correct { background-color: #28a745 !important; }
+        .choice-btn.incorrect { background-color: #dc3545 !important; }
+        #feedback-area { margin-bottom: 20px; text-align: center; min-height: 50px;}
+        #feedback-text { font-size: 1.2em; font-weight: bold; }
+        #feedback-text.correct { color: #28a745; }
+        #feedback-text.incorrect { color: #dc3545; }
+        #correct-answer-display { font-size: 1em; color: #555; margin-top:5px; }
+        #quiz-controls-ingame { text-align: center; margin-bottom: 20px; }
+        #next-question-btn { display: none; padding: 10px 20px; background-color: #ffc107; color: #212529; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.3s; }
+        #next-question-btn:hover:not(:disabled) { background-color: #e0a800; }
+        #next-question-btn.finish { background-color: #17a2b8; color: white;}
+        #next-question-btn.finish:hover { background-color: #138496;}
+        #quiz-progress-score { display: flex; justify-content: space-between; font-size: 0.9em; color: #555; margin-bottom: 10px;}
+        #quiz-results-area { padding: 20px; background-color: #f8f9fa; border-radius: 8px; text-align: center; display: none; }
+        #quiz-results-area h3 { color: #007bff; margin-bottom:10px;}
+        #final-score-text { font-size: 1.5em; font-weight: bold; margin-bottom:15px;}
+        #quiz-mistakes-list { margin-top: 20px; text-align: left; max-height: 200px; overflow-y: auto; border-top: 1px solid #eee; padding-top: 15px; }
+        #quiz-mistakes-list h4 { font-size: 1.1em; color: #dc3545; margin-bottom: 10px; text-align: center; }
+        .mistake-item { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #ccc; font-size: 0.9em; }
+        .mistake-item:last-child { border-bottom: none; }
+        .mistake-question { margin-bottom: 3px; }
+        .mistake-answer { margin-left: 15px; }
+        .mistake-answer .user-answer { color: #dc3545; text-decoration: line-through; margin-right: 8px;}
+        .mistake-answer .correct-answer { color: #28a745; font-weight: bold;}
+        #restart-quiz-btn { margin-top: 15px; padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.3s; }
+        #restart-quiz-btn:hover { background-color: #5a6268; }
+
+        /* --- Typing Game Styles --- */
+        #typing-game-area { padding-top: 10px; }
+        #typing-setup { display: none; margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 4px; border: 1px solid #eee; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+        #typing-setup p { margin: 0; font-size: 0.9em; }
+        #typing-setup .mobile-warning { color: #dc3545; font-weight: bold; font-size: 0.85em; margin-top: 5px;}
+        #start-typing-btn { padding: 12px 25px; background-color: #17a2b8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s; margin-top: 10px; }
+        #start-typing-btn:hover:not(:disabled) { background-color: #138496; }
+        #start-typing-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        #typing-main-content { display: none; flex-direction: column; align-items: center; gap: 15px; }
+        #typing-info-bar { width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px 15px; font-size: 0.9em; color: #555; padding: 5px 10px; background-color: #eee; border-radius: 4px;}
+        #typing-question-display { text-align: center; font-size: 1.1em; color: #555; margin-top: 10px; min-height: 1.2em; }
+        #typing-target-word { font-size: 2.5em; font-family: 'Courier New', Courier, monospace; letter-spacing: 2px; padding: 10px 15px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; min-height: 1.6em; user-select: none; width: 90%; text-align: center; overflow-wrap: break-word; }
+        #typing-target-word span { display: inline-block; min-width: 0.5ch; line-height: 1.2; }
+        #typing-target-word .typed-char { color: #adb5bd; }
+        #typing-target-word .current-char { color: #000; background-color: #cce5ff; padding: 0 1px; border-radius: 2px; animation: blinkCursor 1s infinite; position: relative; }
+        #typing-target-word .incorrect-char { color: #fff !important; background-color: #dc3545 !important; padding: 0 1px; border-radius: 2px; animation: none; }
+        #typing-input-display { opacity: 0; position: absolute; top: -9999px; left: -9999px; width:0; height:0; border:0; padding:0; }
+        #typing-feedback { min-height: 25px; font-weight: bold; font-size: 1.1em; text-align: center; margin-top: 5px;}
+        .typing-correct { color: #28a745; }
+        .typing-incorrect { color: #dc3545; }
+        #typing-results-area { padding: 25px; background-color: #f8f9fa; border-radius: 8px; text-align: center; width: 80%; margin: 20px auto; display: none; }
+        #typing-results-area h3 { color: #17a2b8; margin-bottom: 15px; }
+        #typing-final-stats p { font-size: 1.2em; margin: 8px 0; }
+        #typing-final-stats span { font-weight: bold; color: #0056b3; }
+        #restart-typing-btn { margin-top: 15px; padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.3s; }
+        #restart-typing-btn:hover { background-color: #5a6268; }
+        @keyframes blinkCursor { 0%, 100% { background-color: #cce5ff; } 50% { background-color: transparent; } }
+
+        /* --- Footer Styles --- */
+        footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; font-size: 0.9em; color: #777; }
+        footer p { margin-bottom: 5px; }
+        .level-label { display: inline-block; padding: 2px 6px; border-radius: 3px; margin: 0 5px; font-size: 0.8em; }
+        .junior-high-label { background-color: #e74c3c; color: white; }
+        .high-school-label { background-color: #3498db; color: white; }
+        .quizlet-link { display: inline-block; margin: 5px; padding: 8px 15px; color: white; text-decoration: none; border-radius: 4px; transition: opacity 0.3s; }
+        .quizlet-link:hover { opacity: 0.8; }
+        .junior-high-quizlet { background-color: #e74c3c; }
+        .high-school-quizlet { background-color: #3498db; }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <header>
+            <h1>不規則変化動詞 練習サイト</h1>
+            <p>音読して覚えよう (<span class="junior-high-star-legend">*</span>印が中学校で覚えておきたいもの)</p>
+        </header>
+
+        <main>
+             <!-- Group Navigation Moved Here -->
+            <nav id="group-navigation"></nav>
+            <div id="content-display-area">
+                <div id="mode-switcher">
+                    <button id="mode-list-btn">一覧表示</button>
+                    <button id="mode-quiz-btn">クイズ形式</button>
+                    <button id="mode-typing-btn">タイピングゲーム</button>
+                </div>
+                <div id="verb-content-area" style="display: none;"></div>
+                <div id="quiz-area" style="display: none;">
+                    <div id="quiz-setup" style="display: none;"> <p>選択グループ: <span id="selected-group-for-quiz">なし</span></p> <p id="quiz-info-text"></p> <button id="start-quiz-btn" disabled>クイズ開始</button> </div>
+                    <div id="quiz-main-content" style="display:none;"> <div id="quiz-progress-score"> <span id="current-progress-text"></span> <span id="current-score-text"></span> </div> <div id="quiz-question-container"> <p id="question-verb-info"></p> <p id="question-form-to-guess"></p> </div> <div id="choices-container"></div> <div id="feedback-area"> <p id="feedback-text"></p> <p id="correct-answer-display"></p> </div> <div id="quiz-controls-ingame"> <button id="next-question-btn" style="display:none;">次の問題へ</button> </div> </div>
+                    <div id="quiz-results-area" style="display:none;">
+                        <h3>クイズ終了！</h3>
+                        <p id="final-score-text"></p>
+                        <div id="quiz-mistakes-list">
+                             <!-- Mistakes will be listed here -->
+                        </div>
+                        <button id="restart-quiz-btn">もう一度このグループで挑戦</button>
+                    </div>
+                </div>
+                <div id="typing-game-area" style="display: none;">
+                    <div id="typing-setup" style="display: none;">
+                        <p>選択グループ: <span id="selected-group-for-typing">なし</span></p>
+                        <p id="typing-info-text"></p>
+                        <p class="mobile-warning">（注意）スマートフォンでの完全な動作は保証できません。PCでのプレイを推奨します。</p>
+                        <button id="start-typing-btn" disabled>ゲーム開始</button>
+                    </div>
+                    <div id="typing-main-content" style="display:none;">
+                         <div id="typing-info-bar"> <span id="typing-timer">時間: 0s</span> <span id="typing-word-count">単語: 0 / 0</span> <span id="typing-wpm">WPM: 0</span> <span id="typing-accuracy">正確性: 100%</span> </div>
+                        <div id="typing-question-display"></div>
+                        <div id="typing-target-word"></div>
+                         <div id="typing-feedback"></div>
+                         <input type="text" id="typing-input-display" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    </div>
+                    <div id="typing-results-area" style="display:none;">
+                        <h3>タイピングゲーム終了！</h3>
+                         <div id="typing-final-stats"> <p>最終スコア (WPM): <span id="typing-final-wpm">0</span></p> <p>正確性: <span id="typing-final-accuracy">0</span>%</p> <p>タイプ数: <span id="typing-final-typed">0</span></p> <p>ミス数: <span id="typing-final-mistakes">0</span></p> <p>経過時間: <span id="typing-final-time">0</span>s</p> </div>
+                        <button id="restart-typing-btn">もう一度このグループで挑戦</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+             <p> レベル目安: <span class="level-label junior-high-label">* 中学生レベル</span> <span class="level-label high-school-label">無印 高校生レベル</span> </p>
+             <p> Quizletで練習: <a href="https://quizlet.com/jp/535475507/%E5%8E%9F%E5%BD%A2%E3%82%92%E8%A6%8B%E3%81%A6%E5%8E%9F%E5%BD%A2-%E9%81%8E%E5%8E%BB%E5%BD%A2-%E9%81%8E%E5%8E%BB%E5%88%86%E8%A9%9E%E3%81%B8-flash-cards/" target="_blank" class="quizlet-link junior-high-quizlet">中学生レベル</a> <a href="https://quizlet.com/jp/704484491/%E5%8E%9F%E5%BD%A2%E3%82%92%E8%A6%8B%E3%81%A6%E5%8E%9F%E5%BD%A2-%E9%81%8E%E5%8E%BB%E5%BD%A2-%E9%81%8E%E5%8E%BB%E5%88%86%E8%A9%9E%E3%81%B8-flash-cards/" target="_blank" class="quizlet-link high-school-quizlet">高校生レベル</a> </p>
+        </footer>
+    </div>
+
+    <script>
+        const verbData = [ /* Verb Data Array (Same as before) */
+            {id:"groupA",name:"Group A",description:"語尾がay – aid – aidと変化するもの",verbs:[{meaning:"*言う",base:"say",past:"said[sed]",pp:"said",ing:"saying"},{meaning:"横たえる",base:"lay",past:"laid",pp:"laid",ing:"laying"},{meaning:"払う",base:"pay",past:"paid",pp:"paid",ing:"paying"}]},
+            {id:"groupB",name:"Group B",description:"No change, words end with t. 変化なし、 tで終わるもの + spread",verbs:[{meaning:"(サイズが)合う",base:"fit",past:"fit",pp:"fit",ing:"fitting"},{meaning:"*打つ",base:"hit",past:"hit",pp:"hit",ing:"hitting"},{meaning:"編む",base:"knit",past:"knit",pp:"knit",ing:"knitting"},{meaning:"つばを吐く",base:"spit",past:"spit",pp:"spit",ing:"spitting"},{meaning:"割る",base:"split",past:"split",pp:"split",ing:"splitting"},{meaning:"やめる",base:"quit",past:"quit",pp:"quit",ing:"quitting"},{meaning:"*させる",base:"let",past:"let",pp:"let",ing:"letting"},{meaning:"*設置する",base:"set",past:"set",pp:"set",ing:"setting"},{meaning:"不安にさせる",base:"upset",past:"upset",pp:"upset",ing:"upsetting"},{meaning:"広まる",base:"spread",past:"spread",pp:"spread",ing:"spreading"},{meaning:"*切る",base:"cut",past:"cut",pp:"cut",ing:"cutting"},{meaning:"閉める",base:"shut",past:"shut",pp:"shut",ing:"shutting"},{meaning:"*痛める",base:"hurt",past:"hurt",pp:"hurt",ing:"hurting"},{meaning:"*置く",base:"put",past:"put",pp:"put",ing:"putting"},{meaning:"費用が掛かる",base:"cost",past:"cost",pp:"cost",ing:"costing"},{meaning:"投げる",base:"cast",past:"cast",pp:"cast",ing:"casting"},{meaning:"放送する",base: "broadcast", past: "broadcast", pp: "broadcast", ing: "broadcasting"}]},
+            {id:"groupC",name:"Group C",description:"words end with w, -ew -wn",verbs:[{meaning:"吹く",base:"blow",past:"blew",pp:"blown",ing:"blowing"},{meaning:"*描く",base:"draw",past:"drew",pp:"drawn",ing:"drawing"},{meaning:"引き出す",base:"withdraw",past:"withdrew",pp:"withdrawn",ing:"withdrawing"},{meaning:"*成長する",base:"grow",past:"grew",pp:"grown",ing:"growing"},{meaning:"*知っている",base:"know",past:"knew",pp:"known",ing:"knowing"},{meaning:"*投げる",base:"throw",past:"threw",pp:"thrown",ing:"throwing"},{meaning:"*飛ぶ",base:"fly",past:"flew",pp:"flown",ing:"flying"}]},
+            {id:"groupD",name:"Group D",description:"IAUの順番",verbs:[{meaning:"*始める",base:"begin",past:"began",pp:"begun",ing:"beginning"},{meaning:"*飲む",base:"drink",past:"drank",pp:"drunk",ing:"drinking"},{meaning:"*歌う",base:"sing",past:"sang",pp:"sung",ing:"singing"},{meaning:"沈む",base:"sink",past:"sank",pp:"sunk",ing:"sinking"},{meaning:"縮む",base:"shrink",past:"shrank",pp:"shrunk",ing:"shrinking"},{meaning:"*泳ぐ",base:"swim",past:"swam",pp:"swum",ing:"swimming"},{meaning:"鳴る",base:"ring",past:"rang",pp:"rung",ing:"ringing"}]},
+            {id:"groupE",name:"Group E",description:"/o:t/ 「なにか＋オート」という語尾になるもの",verbs:[{meaning:"*持ってくる",base:"bring",past:"brought",pp:"brought",ing:"bringing"},{meaning:"*買う",base:"buy",past:"bought",pp:"bought",ing:"buying"},{meaning:"*喧嘩する",base:"fight",past:"fought",pp:"fought",ing:"fighting"},{meaning:"探す",base:"seek",past:"sought",pp:"sought",ing:"seeking"},{meaning:"*考える",base:"think",past:"thought",pp:"thought",ing:"thinking"},{meaning:"*教える",base:"teach",past:"taught",pp:"taught",ing:"teaching"},{meaning:"*捕まえる",base:"catch",past:"caught",pp:"caught",ing:"catching"}]},
+            {id:"groupF",name:"Group F",description:"end with t 過去形・過去分詞形がtで終わるもの",verbs:[{meaning:"曲げる",base:"bend",past:"bent",pp:"bent",ing:"bending"},{meaning:"*送る",base:"send",past:"sent",pp:"sent",ing:"sending"},{meaning:"貸す",base:"lend",past:"lent",pp:"lent",ing:"lending"},{meaning:"*費やす",base:"spend",past:"spent",pp:"spent",ing:"spending"},{meaning:"*建てる",base:"build",past:"built",pp:"built",ing:"building"},{meaning:"*眠る",base:"sleep",past:"slept",pp:"slept",ing:"sleeping"},{meaning:"*保つ",base:"keep",past:"kept",pp:"kept",ing:"keeping"},{meaning:"這う",base:"creep",past:"crept",pp:"crept",ing:"creeping"},{meaning:"泣く",base:"weep",past:"wept",pp:"wept",ing:"weeping"},{meaning:"掃く",base:"sweep",past:"swept",pp:"swept",ing:"sweeping"},{meaning:"漏れる",base:"leap",past:"leapt",pp:"leapt",ing:"leaping"},{meaning:"*感じる",base:"feel",past:"felt",pp:"felt",ing:"feeling"},{meaning:"*意味する",base:"mean",past:"meant",pp:"meant",ing:"meaning"},{meaning:"燃える",base:"burn",past:"burnt",pp:"burnt",ing:"burning"},{meaning:"夢見る",base:"dream",past:"dreamt",pp:"dreamt",ing:"dreaming"},{meaning:"*会う",base:"meet",past:"met",pp:"met",ing:"meeting"},{meaning:"*去る",base:"leave",past:"left",pp:"left",ing:"leaving"},{meaning:"*失う、負ける",base:"lose",past:"lost",pp:"lost",ing:"losing"}]},
+            {id:"groupG",name:"Group G",description:"A – B – B",verbs:[{meaning:"食べさせる",base:"feed",past:"fed",pp:"fed",ing:"feeding"},{meaning:"導く",base:"lead",past:"led",pp:"led",ing:"leading"},{meaning:"育てる",base:"breed",past:"bred",pp:"bred",ing:"breeding"},{meaning:"*読む",base:"read",past:"read[red]",pp:"read[red]",ing:"reading"},{meaning:"*売る",base:"sell",past:"sold",pp:"sold",ing:"selling"},{meaning:"*伝える",base:"tell",past:"told",pp:"told",ing:"telling"},{meaning:"滑る",base:"slide",past:"slid",pp:"slid",ing:"sliding"},{meaning:"*抱える",base:"hold",past:"held",pp:"held",ing:"holding"},{meaning:"吊るす",base:"hang",past:"hung",pp:"hung",ing:"hanging"},{meaning:"*掘る",base:"dig",past:"dug",pp:"dug",ing:"digging"},{meaning:"突き刺す",base:"stick",past:"stuck",pp:"stuck",ing:"sticking"},{meaning:"打つ",base:"strike",past:"struck",pp:"struck",ing:"striking"},{meaning:"*勝ち取る",base:"win",past:"won",pp:"won",ing:"winning"},{meaning:"撃つ",base:"shoot",past:"shot",pp:"shot",ing:"shooting"},{meaning:"*立つ",base:"stand",past:"stood",pp:"stood",ing:"standing"},{meaning:"*理解する",base:"understand",past:"understood",pp:"understood",ing:"understanding"},{meaning:"*座る",base:"sit",past:"sat",pp:"sat",ing:"sitting"},{meaning:"*作る",base:"make",past:"made",pp:"made",ing:"making"},{meaning:"明かりを点ける",base:"light",past:"lit",pp:"lit",ing:"lighting"},{meaning:"*見つける",base:"find",past:"found",pp:"found",ing:"finding"},{meaning:"*聞こえる",base:"hear",past:"heard",pp:"heard",ing:"hearing"},{meaning:"*持っている",base:"have",past:"had",pp:"had",ing:"having"}]},
+            {id:"groupH",name:"Group H",description:"過去分詞 ends with (e)n （原形/過去形などにnが続く）過去形にも注目",verbs:[{meaning:"*運転する",base:"drive",past:"drove",pp:"driven",ing:"driving"},{meaning:"*乗る",base:"ride",past:"rode",pp:"ridden",ing:"riding"},{meaning:"*上がる",base:"rise",past:"rose",pp:"risen",ing:"rising"},{meaning:"*書く",base:"write",past:"wrote",pp:"written",ing:"writing"},{meaning:"*選ぶ",base:"choose",past:"chose",pp:"chosen",ing:"choosing"},{meaning:"凍る",base:"freeze",past:"froze",pp:"frozen",ing:"freezing"},{meaning:"*話す",base:"speak",past:"spoke",pp:"spoken",ing:"speaking"},{meaning:"*盗む",base:"steal",past:"stole",pp:"stolen",ing:"stealing"},{meaning:"織る",base:"weave",past:"wove",pp:"woven",ing:"weaving"},{meaning:"起きる",base:"awake",past:"awoke",pp:"awoken",ing:"awaking"},{meaning:"*壊す",base:"break",past:"broke",pp:"broken",ing:"breaking"},{meaning:"剃(そ)る",base:"shave",past:"shaved",pp:"shaven",ing:"shaving"},{meaning:"*起こす",base:"wake",past:"woke",pp:"woken",ing:"waking"},{meaning:"*揺らす",base:"shake",past:"shook",pp:"shaken",ing:"shaking"},{meaning:"*取る",base:"take",past:"took",pp:"taken",ing:"taking"},{meaning:"追いつく",base:"overtake",past:"overtook",pp:"overtaken",ing:"overtaking"},{meaning:"間違える",base:"mistake",past:"mistook",pp:"mistaken",ing:"mistaking"},{meaning:"*生む",base:"bear",past:"bore",pp:"born",ing:"bearing"},{meaning:"ののしる",base:"swear",past:"swore",pp:"sworn",ing:"swearing"},{meaning:"裂く",base:"tear",past:"tore",pp:"torn",ing:"tearing"},{meaning:"*着ている",base:"wear",past:"wore",pp:"worn",ing:"wearing"},{meaning:"噛む",base:"bite",past:"bit",pp:"bitten",ing:"biting"},{meaning:"*隠す",base:"hide",past:"hid",pp:"hidden",ing:"hiding"},{meaning:"*与える",base:"give",past:"gave",pp:"given",ing:"giving"},{meaning:"許す",base:"forgive",past:"forgave",pp:"forgiven",ing:"forgiving"},{meaning:"禁ずる",base:"forbid",past:"forbade",pp:"forbidden",ing:"forbidding"},{meaning:"打つ",base:"beat",past:"beat",pp:"beaten",ing:"beating"},{meaning:"*食べる",base:"eat",past:"ate",pp:"eaten",ing:"eating"},{meaning:"*手に入れる",base:"get",past:"got",pp:"gotten",ing:"getting"},{meaning:"*忘れる",base:"forget",past:"forgot",pp:"forgotten",ing:"forgetting"},{meaning:"証明する",base:"prove",past:"proved",pp:"proven",ing:"proving"},{meaning:"*示す",base:"show",past:"showed",pp:"shown",ing:"showing"},{meaning:"縫う",base:"sew",past:"sewed",pp:"sewn",ing:"sewing"},{meaning:"*見る",base:"see",past:"saw",pp:"seen",ing:"seeing"},{meaning:"*する",base:"do",past:"did",pp:"done",ing:"doing"},{meaning:"*be動詞",base:"be (am/is/are)",past:"was/were",pp:"been",ing:"being"},{meaning:"*倒れる/落ちる",base:"fall",past:"fell",pp:"fallen",ing:"falling"},{meaning:"*行く",base:"go",past:"went",pp:"gone",ing:"going"}]},
+            {id:"groupJ",name:"Group J",description:"Learn by heart（注意して覚えましょう）",subGroups:[{title:"A-B-A型",verbs:[{meaning:"*来る",base:"come",past:"came",pp:"come",ing:"coming"},{meaning:"*なる",base:"become",past:"became",pp:"become",ing:"becoming"},{meaning:"打ち勝つ",base:"overcome",past:"overcame",pp:"overcome",ing:"overcoming"},{meaning:"*走る、経営する",base:"run",past:"ran",pp:"run",ing:"running"}]},{title:"区別しておこう 横たわる/横たえる/嘘をつく",verbs:[{meaning:"*横たわる",base:"lie",past:"lay",pp:"lain",ing:"lying"},{meaning:"横たえる",base:"lay",past:"laid",pp:"laid",ing:"laying"},{meaning:"嘘をつく",base:"lie",past:"lied",pp:"lied",ing:"lying"}]},{title:"区別しておこう 上がる/上げる/発生する/引き起こす",verbs:[{meaning:"*上がる",base:"rise",past:"rose",pp:"risen",ing:"rising"},{meaning:"上げる",base:"raise",past:"raised",pp:"raised",ing:"raising"},{meaning:"発生する",base:"arise",past:"arose",pp:"arisen",ing:"arising"},{meaning:"引き起こす",base:"arouse",past:"aroused",pp:"aroused",ing:"arousing"}]}]}
+        ];
+        const genericDummyForms = ["went", "seen", "did", "done", "had", "been", "knew", "known", "ate", "eaten", "took", "taken", "gave", "given", "spoke", "spoken", "made", "wrote", "written", "cut", "put", "read"];
+        const typingFormOrder = ['base', 'past', 'pp', 'ing'];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get DOM Elements (Same as before)
+            const groupNav = document.getElementById('group-navigation');
+            const verbContentArea = document.getElementById('verb-content-area');
+            const quizArea = document.getElementById('quiz-area');
+            const typingGameArea = document.getElementById('typing-game-area');
+            const modeListBtn = document.getElementById('mode-list-btn');
+            const modeQuizBtn = document.getElementById('mode-quiz-btn');
+            const modeTypingBtn = document.getElementById('mode-typing-btn');
+            const selectedGroupForQuizSpan = document.getElementById('selected-group-for-quiz');
+            const quizInfoText = document.getElementById('quiz-info-text');
+            const startQuizBtn = document.getElementById('start-quiz-btn');
+            const quizSetupDiv = document.getElementById('quiz-setup');
+            const quizMainContentDiv = document.getElementById('quiz-main-content');
+            const quizResultsAreaDiv = document.getElementById('quiz-results-area');
+            const questionVerbInfoEl = document.getElementById('question-verb-info');
+            const questionFormToGuessEl = document.getElementById('question-form-to-guess');
+            const choicesContainer = document.getElementById('choices-container');
+            const feedbackTextEl = document.getElementById('feedback-text');
+            const correctAnswerDisplayEl = document.getElementById('correct-answer-display');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const currentProgressTextEl = document.getElementById('current-progress-text');
+            const currentScoreTextEl = document.getElementById('current-score-text');
+            const finalScoreTextEl = document.getElementById('final-score-text');
+            const quizMistakesListDiv = document.getElementById('quiz-mistakes-list'); // Get mistake list div
+            const restartQuizBtn = document.getElementById('restart-quiz-btn');
+            const selectedGroupForTypingSpan = document.getElementById('selected-group-for-typing');
+            const typingInfoText = document.getElementById('typing-info-text');
+            const startTypingBtn = document.getElementById('start-typing-btn');
+            const typingSetupDiv = document.getElementById('typing-setup');
+            const typingMainContentDiv = document.getElementById('typing-main-content');
+            const typingResultsAreaDiv = document.getElementById('typing-results-area');
+            const typingTimerEl = document.getElementById('typing-timer');
+            const typingWordCountEl = document.getElementById('typing-word-count');
+            const typingWpmEl = document.getElementById('typing-wpm');
+            const typingAccuracyEl = document.getElementById('typing-accuracy');
+            const typingQuestionDisplayEl = document.getElementById('typing-question-display');
+            const typingTargetWordEl = document.getElementById('typing-target-word');
+            const typingFeedbackEl = document.getElementById('typing-feedback');
+            const typingInputElement = document.getElementById('typing-input-display');
+            const typingFinalWpmEl = document.getElementById('typing-final-wpm');
+            const typingFinalAccuracyEl = document.getElementById('typing-final-accuracy');
+            const typingFinalTypedEl = document.getElementById('typing-final-typed');
+            const typingFinalMistakesEl = document.getElementById('typing-final-mistakes');
+            const typingFinalTimeEl = document.getElementById('typing-final-time');
+            const restartTypingBtn = document.getElementById('restart-typing-btn');
+
+            // State Variables (Same as before)
+            let activeNavButton = null;
+            let currentMode = 'list';
+            let currentSelectedGroup = null;
+            const MAX_VERBS = 10;
+            let quizQuestions = [];
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let typingVerbs = [];
+            let currentVerbIndex = 0;
+            let currentFormKey = typingFormOrder[0];
+            let currentCharIndex = 0;
+            let typingMistakes = 0;
+            let totalTypedChars = 0;
+            let typingStartTime = 0;
+            let typingTimerInterval = null;
+            let typingGameActive = false;
+            let currentIncorrectTimeout = null;
+
+            // --- Utility Functions (Same as before) ---
+            function cleanWord(wordWithPronunciation) { if (!wordWithPronunciation || typeof wordWithPronunciation !== 'string') return ''; if (wordWithPronunciation.toLowerCase() === 'read[red]') return 'read'; return wordWithPronunciation.replace(/\[.*?\]/g, '').trim(); }
+            function formatWordWithPronunciation(word, isHint = false) { if (!word || typeof word !== 'string') return ''; let displayWord = word; let starPrefix = ''; if (word.startsWith('*')) { starPrefix = '<span class="junior-high-star">*</span>'; displayWord = word.substring(1); } const cleaned = cleanWord(displayWord); const pronMatch = displayWord.match(/\[(.*?)\]/); if (pronMatch && !isHint) { return `${starPrefix}${cleaned}<span class='pronunciation-note'> [${pronMatch[1]}]</span>`; } return `${starPrefix}${cleaned}`; }
+            function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+            function getAllVerbsFromGroup(group) { let verbs = []; if (!group) return verbs; if (group.verbs) { verbs = [...group.verbs]; } else if (group.subGroups) { group.subGroups.forEach(sg => verbs.push(...sg.verbs)); } return verbs; }
+            function getFormDisplayName(formKey) { switch (formKey) { case 'base': return '原形'; case 'past': return '過去形'; case 'pp': return '過去分詞'; case 'ing': return '現在分詞'; default: return ''; } }
+
+            // --- Verb List Mode ---
+            function renderVerbList(group) { /* ... logic unchanged ... */ verbContentArea.innerHTML = ''; const listContainer = document.createElement('div'); listContainer.id = 'verb-list-container'; if(group) { const groupTitleEl = document.createElement('h2'); groupTitleEl.classList.add('group-title'); groupTitleEl.textContent = `${group.name}: ${group.description}`; listContainer.appendChild(groupTitleEl); const allVerbs = getAllVerbsFromGroup(group); allVerbs.forEach(verb => { const card = document.createElement('div'); card.classList.add('verb-card'); const header = document.createElement('div'); header.classList.add('verb-header'); let isJuniorHigh = verb.meaning.startsWith('*'); let cleanMeaningText = isJuniorHigh ? verb.meaning.substring(1) : verb.meaning; header.innerHTML = `<span class="verb-meaning">${isJuniorHigh ? '<span class="junior-high-star">*</span>' : ''}${cleanMeaningText}</span><span class="verb-base-form-header">${cleanWord(verb.base)}</span>`; const details = document.createElement('div'); details.classList.add('verb-details'); details.style.maxHeight = '0'; details.style.opacity = '0'; details.innerHTML = `<div class="forms-grid"><div class="form-item"><span class="form-label">原形</span><span class="form-value">${formatWordWithPronunciation(verb.base)}</span></div><div class="form-item"><span class="form-label">過去形</span><span class="form-value">${formatWordWithPronunciation(verb.past)}</span></div><div class="form-item"><span class="form-label">過去分詞</span><span class="form-value">${formatWordWithPronunciation(verb.pp)}</span></div><div class="form-item"><span class="form-label">現在分詞</span><span class="form-value">${formatWordWithPronunciation(verb.ing)}</span></div></div>`; card.appendChild(header); card.appendChild(details); listContainer.appendChild(card); card.addEventListener('click', () => { const isOpen = card.classList.toggle('is-open'); gsap.to(details, { maxHeight: isOpen ? details.scrollHeight + 20 : 0, opacity: isOpen ? 1 : 0, duration: 0.3, ease: "power1.inOut" }); }); }); } else { listContainer.innerHTML = "<p>グループを選択してください。</p>"; } verbContentArea.appendChild(listContainer); gsap.from("#verb-list-container .verb-card", { opacity: 0, y: 20, duration: 0.3, stagger: 0.05, ease: "power1.out" }); }
+
+             // --- Quiz Mode ---
+             function setupQuizInterfaceForGroup(group) { /* ... logic unchanged ... */ selectedGroupForQuizSpan.textContent = group?.name || 'なし'; const allVerbs = getAllVerbsFromGroup(group); const usableVerbs = allVerbs.filter(v => cleanWord(v.base) !== cleanWord(v.past) || cleanWord(v.base) !== cleanWord(v.pp)); quizInfoText.textContent = usableVerbs.length > 0 ? `このグループの動詞でクイズを開始します。(最大${MAX_VERBS}問)` : 'このグループにはクイズに適した動詞が十分にありません。'; startQuizBtn.disabled = usableVerbs.length === 0; quizSetupDiv.style.display = 'block'; quizMainContentDiv.style.display = 'none'; quizResultsAreaDiv.style.display = 'none'; }
+             function startQuizHandler() { /* ... logic unchanged ... */ prepareQuizQuestions(); if (quizQuestions.length > 0) { currentQuestionIndex = 0; score = 0; quizSetupDiv.style.display = 'none'; quizMainContentDiv.style.display = 'block'; quizResultsAreaDiv.style.display = 'none'; displayCurrentQuestion(); } else { alert("クイズを作成できませんでした。十分な問題が生成できませんでした。"); setupQuizInterfaceForGroup(currentSelectedGroup); } }
+             function prepareQuizQuestions() { /* ... logic unchanged ... */ quizQuestions = []; const allVerbs = getAllVerbsFromGroup(currentSelectedGroup); shuffleArray(allVerbs); const verbsForQuiz = allVerbs.slice(0, MAX_VERBS * 2); verbsForQuiz.forEach(verb => { if (quizQuestions.length >= MAX_VERBS) return; const cBase = cleanWord(verb.base); const cPast = cleanWord(verb.past); const cPp = cleanWord(verb.pp); const meaning = verb.meaning; const possibleFormsToGuess = []; if (cBase !== cPast) possibleFormsToGuess.push({form: 'past', answer: cPast, hintBase: cBase, hintPp: cPp}); if (cBase !== cPp) possibleFormsToGuess.push({form: 'pp', answer: cPp, hintBase: cBase, hintPast: cPast}); if (cBase !== cPast || cBase !== cPp) { if(cBase !== cPast) possibleFormsToGuess.push({form: 'base', answer: cBase, hintPast: cPast, hintPp: (cBase !== cPp ? cPp : '')}); else if(cBase !== cPp) possibleFormsToGuess.push({form: 'base', answer: cBase, hintPp: cPp, hintPast: ''}); } if (possibleFormsToGuess.length === 0) return; shuffleArray(possibleFormsToGuess); const guessAttempt = possibleFormsToGuess[0]; let questionTextForForm, displayVerbInfo; const correctAnswer = guessAttempt.answer; if (!correctAnswer) return; switch (guessAttempt.form) { case 'past': questionTextForForm = `の【過去形】は？`; displayVerbInfo = `${meaning} (原形: ${guessAttempt.hintBase})`; break; case 'pp': questionTextForForm = `の【過去分詞】は？`; displayVerbInfo = `${meaning} (原形: ${guessAttempt.hintBase})`; break; case 'base': questionTextForForm = `の【原形】は？`; let hints = []; if (guessAttempt.hintPast && guessAttempt.hintPast !== correctAnswer) hints.push(`過去形: ${guessAttempt.hintPast}`); if (guessAttempt.hintPp && guessAttempt.hintPp !== correctAnswer) hints.push(`過去分詞: ${guessAttempt.hintPp}`); displayVerbInfo = hints.length > 0 ? `${meaning} (${hints.join(', ')})` : `${meaning}`; break; default: return; } let choicesSet = new Set([correctAnswer]); let tempVerbPool = [...allVerbs].filter(v => v !== verb); shuffleArray(tempVerbPool); let formType = guessAttempt.form; for (let i = 0; choicesSet.size < 4 && i < tempVerbPool.length; i++) { let potentialDummyVerb = tempVerbPool[i]; let dummyWord = cleanWord(potentialDummyVerb[formType]); if (dummyWord && dummyWord !== correctAnswer && !choicesSet.has(dummyWord)) { choicesSet.add(dummyWord); } } if (choicesSet.size < 4 && cBase !== correctAnswer && !choicesSet.has(cBase)) choicesSet.add(cBase); if (choicesSet.size < 4 && cPast !== correctAnswer && !choicesSet.has(cPast)) choicesSet.add(cPast); if (choicesSet.size < 4 && cPp !== correctAnswer && !choicesSet.has(cPp)) choicesSet.add(cPp); let genericDummiesCopy = [...genericDummyForms]; shuffleArray(genericDummiesCopy); for (let i = 0; choicesSet.size < 4 && i < genericDummiesCopy.length; i++) { if (genericDummiesCopy[i] !== correctAnswer && !choicesSet.has(genericDummiesCopy[i])) { choicesSet.add(genericDummiesCopy[i]); } } let dummyCounter = 1; while (choicesSet.size < 4) { const fallbackChoice = `選択肢${dummyCounter++}`; if (!choicesSet.has(fallbackChoice)) choicesSet.add(fallbackChoice); else dummyCounter++; } let choicesArray = Array.from(choicesSet); shuffleArray(choicesArray); quizQuestions.push({ questionTextForForm: questionTextForForm, displayVerbInfo: displayVerbInfo, choices: choicesArray.slice(0,4), correctAnswer: correctAnswer, userAnswer: null /* Initialize userAnswer */ }); }); }
+            function displayCurrentQuestion() { /* ... logic unchanged ... */ if (currentQuestionIndex >= quizQuestions.length) { showQuizResults(); return; } const q = quizQuestions[currentQuestionIndex]; let displayInfoHTML = q.displayVerbInfo; if (q.displayVerbInfo.startsWith('*')) { displayInfoHTML = `<span class="junior-high-star">*</span>${q.displayVerbInfo.substring(1)}`; } questionVerbInfoEl.innerHTML = displayInfoHTML; questionFormToGuessEl.textContent = q.questionTextForForm; choicesContainer.innerHTML = ''; q.choices.forEach(choice => { const btn = document.createElement('button'); btn.classList.add('choice-btn'); btn.textContent = choice; btn.disabled = false; btn.onclick = () => handleChoiceSelection(choice, q.correctAnswer, btn); choicesContainer.appendChild(btn); }); feedbackTextEl.textContent = ''; correctAnswerDisplayEl.textContent = ''; nextQuestionBtn.style.display = 'none'; updateProgressAndScore(); gsap.from("#quiz-question-container > *", { opacity: 0, y: -10, duration: 0.3, stagger: 0.1 }); gsap.from(".choice-btn", { opacity: 0, scale: 0.8, stagger: 0.1, duration: 0.3, delay:0.2 }); }
+            function handleChoiceSelection(selectedChoice, correctAnswer, btnElement) {
+                quizQuestions[currentQuestionIndex].userAnswer = selectedChoice; // Store user's answer
+                const allChoiceBtns = choicesContainer.querySelectorAll('.choice-btn'); allChoiceBtns.forEach(btn => btn.disabled = true);
+                if (selectedChoice === correctAnswer) { score++; feedbackTextEl.textContent = '正解！'; feedbackTextEl.className = 'correct'; btnElement.classList.add('correct'); gsap.fromTo(btnElement, { scale: 1 }, { scale: 1.1, duration: 0.2, yoyo: true, repeat: 1 }); }
+                else { feedbackTextEl.textContent = '不正解...'; feedbackTextEl.className = 'incorrect'; btnElement.classList.add('incorrect'); correctAnswerDisplayEl.textContent = `正解は: ${correctAnswer}`; allChoiceBtns.forEach(btn => { if(btn.textContent === correctAnswer) { btn.classList.add('correct'); } }); }
+                updateProgressAndScore(); nextQuestionBtn.style.display = 'inline-block'; if (currentQuestionIndex === quizQuestions.length - 1) { nextQuestionBtn.textContent = '結果を見る'; nextQuestionBtn.classList.add('finish'); } else { nextQuestionBtn.textContent = '次の問題へ'; nextQuestionBtn.classList.remove('finish'); } gsap.from("#feedback-area > *", {opacity:0, y:10, duration:0.3, stagger:0.1}); gsap.from(nextQuestionBtn, {opacity:0, scale:0.5, duration:0.3});
+            }
+             function updateProgressAndScore() { /* ... logic unchanged ... */ currentProgressTextEl.textContent = `問題: ${Math.min(currentQuestionIndex + 1, quizQuestions.length)} / ${quizQuestions.length}`; currentScoreTextEl.textContent = `スコア: ${score}`; }
+
+             function showQuizResults() { // ** MODIFIED TO SHOW MISTAKES **
+                 quizMainContentDiv.style.display = 'none';
+                 quizResultsAreaDiv.style.display = 'block';
+                 quizMistakesListDiv.innerHTML = ''; // Clear previous mistakes
+
+                 let resultMessage = `最終スコア: ${score} / ${quizQuestions.length}`;
+                 if (quizQuestions.length === 0) resultMessage = "問題がありませんでした。";
+                 finalScoreTextEl.textContent = resultMessage;
+
+                 const mistakes = quizQuestions.filter(q => q.userAnswer !== null && q.userAnswer !== q.correctAnswer);
+
+                 if (mistakes.length > 0) {
+                     const mistakesHeader = document.createElement('h4');
+                     mistakesHeader.textContent = '間違えた問題';
+                     quizMistakesListDiv.appendChild(mistakesHeader);
+
+                     mistakes.forEach(q => {
+                         const item = document.createElement('div');
+                         item.classList.add('mistake-item');
+                         let displayInfoHTML = q.displayVerbInfo;
+                         if (q.displayVerbInfo.startsWith('*')) {
+                             displayInfoHTML = `<span class="junior-high-star">*</span>${q.displayVerbInfo.substring(1)}`;
+                         }
+                         item.innerHTML = `
+                             <div class="mistake-question">${displayInfoHTML}${q.questionTextForForm}</div>
+                             <div class="mistake-answer">
+                                 あなたの答え: <span class="user-answer">${q.userAnswer}</span>
+                                 正解: <span class="correct-answer">${q.correctAnswer}</span>
+                             </div>
+                         `;
+                         quizMistakesListDiv.appendChild(item);
+                     });
+                     quizMistakesListDiv.style.display = 'block'; // Show the list
+                 } else {
+                     quizMistakesListDiv.style.display = 'none'; // Hide if no mistakes
+                 }
+
+                 gsap.from("#quiz-results-area > *", {opacity:0, y:20, duration:0.4, stagger:0.1});
+            }
+
+            // --- Typing Game ---
+            function setupTypingInterfaceForGroup(group) { /* ... logic unchanged ... */ selectedGroupForTypingSpan.textContent = group?.name || 'なし'; const allVerbs = getAllVerbsFromGroup(group); const usableVerbs = allVerbs.filter(v => { const base = cleanWord(v.base); const past = cleanWord(v.past); const pp = cleanWord(v.pp); const ing = cleanWord(v.ing); return base && /^[a-zA-Z]+$/.test(base) && past && /^[a-zA-Z]+$/.test(past) && pp && /^[a-zA-Z]+$/.test(pp) && ing && /^[a-zA-Z]+$/.test(ing); }); typingInfoText.textContent = usableVerbs.length > 0 ? `このグループの動詞変化形でタイピングゲームを開始します。(最大${MAX_VERBS}セット)` : 'このグループにはタイピングに適した動詞がありません。'; startTypingBtn.disabled = usableVerbs.length === 0; typingSetupDiv.style.display = 'flex'; typingMainContentDiv.style.display = 'none'; typingResultsAreaDiv.style.display = 'none'; }
+            function startTypingGameHandler() { /* ... logic unchanged ... */ prepareTypingWords(); if (typingVerbs.length === 0) { alert("タイピングゲーム用の単語を準備できませんでした。"); setupTypingInterfaceForGroup(currentSelectedGroup); return; } currentVerbIndex = 0; currentFormKey = typingFormOrder[0]; currentCharIndex = 0; typingMistakes = 0; totalTypedChars = 0; typingStartTime = Date.now(); typingGameActive = true; typingSetupDiv.style.display = 'none'; typingMainContentDiv.style.display = 'flex'; typingResultsAreaDiv.style.display = 'none'; typingFeedbackEl.textContent = ""; displayCurrentTypingWord(); startTypingTimer(); typingInputElement.value = ""; typingInputElement.focus(); document.removeEventListener('keydown', handleTypingInput); document.addEventListener('keydown', handleTypingInput); document.removeEventListener('touchstart', focusTypingInput); document.addEventListener('touchstart', focusTypingInput, { passive: true }); }
+            function focusTypingInput() { if (typingGameActive) { typingInputElement.focus(); } }
+            function prepareTypingWords() { /* ... logic unchanged ... */ typingVerbs = []; const allVerbs = getAllVerbsFromGroup(currentSelectedGroup); shuffleArray(allVerbs); const usableVerbs = allVerbs.filter(v => { const base = cleanWord(v.base); const past = cleanWord(v.past); const pp = cleanWord(v.pp); const ing = cleanWord(v.ing); return base && /^[a-zA-Z]+$/.test(base) && past && /^[a-zA-Z]+$/.test(past) && pp && /^[a-zA-Z]+$/.test(pp) && ing && /^[a-zA-Z]+$/.test(ing); }); typingVerbs = usableVerbs.slice(0, MAX_VERBS); }
+
+             function displayCurrentTypingWord() { // ** MODIFIED TYPING DISPLAY LOGIC **
+                if (!typingGameActive) return;
+                if (currentVerbIndex >= typingVerbs.length) { endTypingGame(); return; }
+                const currentVerbData = typingVerbs[currentVerbIndex];
+                if (!currentVerbData || typeof currentVerbData[currentFormKey] === 'undefined') { console.error("Error: Word data invalid in display.", currentVerbIndex, currentFormKey); endTypingGame(); return; }
+                const targetWord = cleanWord(currentVerbData[currentFormKey]);
+                const formDisplayName = getFormDisplayName(currentFormKey);
+                typingQuestionDisplayEl.innerHTML = `${formatWordWithPronunciation(currentVerbData.meaning, true)} (${formDisplayName})`;
+                let html = '';
+                for (let i = 0; i < currentCharIndex; i++) { html += `<span class="typed-char">${targetWord[i]}</span>`; } // Display typed chars
+                if (currentCharIndex < targetWord.length) { html += `<span class="current-char">${targetWord[currentCharIndex]}</span>`; } // Display current char
+                // Future characters are not displayed
+                typingTargetWordEl.innerHTML = html || '&nbsp;';
+                updateTypingInfo();
+                typingInputElement.focus();
+            }
+
+            function handleTypingInput(event) { /* ... logic unchanged ... */ if (!typingGameActive || currentVerbIndex >= typingVerbs.length) return; if (event.metaKey || event.ctrlKey || event.altKey) return; if (event.key.length > 1 && !['Backspace', 'Enter'].includes(event.key)) return; event.preventDefault(); const currentVerbData = typingVerbs[currentVerbIndex]; if (!currentVerbData || typeof currentVerbData[currentFormKey] === 'undefined') { console.error("Error: Word data missing in input handle."); return; } const targetWord = cleanWord(currentVerbData[currentFormKey]); if (event.key === 'Backspace') { /* Ignore */ } else if (event.key.length === 1 && /^[a-zA-Z]$/.test(event.key)) { if (currentCharIndex >= targetWord.length) return; const expectedChar = targetWord[currentCharIndex].toLowerCase(); const typedChar = event.key.toLowerCase(); clearTimeout(currentIncorrectTimeout); const currentCharSpan = typingTargetWordEl.querySelector('.current-char'); if (currentCharSpan) currentCharSpan.classList.remove('incorrect-char'); if (typedChar === expectedChar) { currentCharIndex++; totalTypedChars++; typingFeedbackEl.textContent = ""; const spans = typingTargetWordEl.querySelectorAll('span'); if (currentCharIndex > 0 && spans[currentCharIndex - 1]) { gsap.fromTo(spans[currentCharIndex - 1], { scale: 1 }, { scale: 1.2, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.out" }); } if (currentCharIndex === targetWord.length) { const currentFormIndex = typingFormOrder.indexOf(currentFormKey); typingFeedbackEl.textContent = "OK!"; typingFeedbackEl.className = 'typing-correct'; gsap.from(typingFeedbackEl, { opacity: 0, y: 10, duration: 0.3 }); setTimeout(() => { if (!typingGameActive) return; if (currentFormIndex < typingFormOrder.length - 1) { currentFormKey = typingFormOrder[currentFormIndex + 1]; currentCharIndex = 0; displayCurrentTypingWord(); typingFeedbackEl.textContent = ""; } else { currentVerbIndex++; if (currentVerbIndex < typingVerbs.length) { currentFormKey = typingFormOrder[0]; currentCharIndex = 0; typingFeedbackEl.textContent = "次の単語へ"; gsap.from(typingFeedbackEl, { opacity: 0, y: 10, duration: 0.3 }); setTimeout(() => { if(typingGameActive) { displayCurrentTypingWord(); typingFeedbackEl.textContent = ""; } }, 400); } else { endTypingGame(); } } }, 400); } else { displayCurrentTypingWord(); } } else { typingMistakes++; totalTypedChars++; typingFeedbackEl.textContent = "ミス!"; typingFeedbackEl.className = 'typing-incorrect'; gsap.from(typingFeedbackEl, { opacity: 0, x: -10, duration: 0.3 }); if (currentCharSpan) { currentCharSpan.classList.add('incorrect-char'); gsap.fromTo(typingTargetWordEl, { x: 0 }, { x: 5, duration: 0.05, repeat: 3, yoyo: true, ease: 'power1.inOut', clearProps: 'x' }); currentIncorrectTimeout = setTimeout(() => { if (currentCharSpan) currentCharSpan.classList.remove('incorrect-char'); }, 500); } } updateTypingInfo(); } typingInputElement.focus(); typingInputElement.value = ""; }
+            function startTypingTimer() { /* ... logic unchanged ... */ clearInterval(typingTimerInterval); typingTimerInterval = setInterval(() => { if (!typingGameActive) { clearInterval(typingTimerInterval); return; } updateTypingInfo(); }, 1000); }
+            function updateTypingInfo() { /* ... logic unchanged ... */ if (!typingGameActive) return; const elapsedTimeSeconds = Math.max(0.1, (Date.now() - typingStartTime) / 1000); typingTimerEl.textContent = `時間: ${Math.floor(elapsedTimeSeconds)}s`; typingWordCountEl.textContent = `単語: ${Math.min(currentVerbIndex + 1, typingVerbs.length)} / ${typingVerbs.length}`; const elapsedTimeMinutes = elapsedTimeSeconds / 60; const wpm = elapsedTimeMinutes > 0 ? Math.max(0, Math.round(((totalTypedChars) / 5) / elapsedTimeMinutes)) : 0; typingWpmEl.textContent = `WPM: ${wpm}`; const accuracy = totalTypedChars > 0 ? Math.max(0, Math.round(((totalTypedChars - typingMistakes) / totalTypedChars) * 100)) : 100; typingAccuracyEl.textContent = `正確性: ${accuracy}%`; }
+            function endTypingGame() { /* ... logic unchanged ... */ if (!typingGameActive) return; typingGameActive = false; clearInterval(typingTimerInterval); document.removeEventListener('keydown', handleTypingInput); document.removeEventListener('touchstart', focusTypingInput); const elapsedTimeSeconds = Math.max(0.1, (Date.now() - typingStartTime) / 1000); const elapsedTimeMinutes = elapsedTimeSeconds / 60; const correctChars = totalTypedChars - typingMistakes; const grossWpm = elapsedTimeMinutes > 0 ? Math.max(0, Math.round((totalTypedChars / 5) / elapsedTimeMinutes)) : 0; const finalAccuracy = totalTypedChars > 0 ? Math.max(0, Math.round(((totalTypedChars - typingMistakes) / totalTypedChars) * 100)) : 100; typingFinalWpmEl.textContent = grossWpm; typingFinalAccuracyEl.textContent = finalAccuracy; typingFinalTypedEl.textContent = totalTypedChars; typingFinalMistakesEl.textContent = typingMistakes; typingFinalTimeEl.textContent = Math.floor(elapsedTimeSeconds); typingMainContentDiv.style.display = 'none'; typingResultsAreaDiv.style.display = 'block'; gsap.from("#typing-results-area > *", { opacity: 0, y: 20, duration: 0.4, stagger: 0.1 }); }
+
+             // --- Mode Switching ---
+             function switchMode(mode) {
+                if (typingGameActive) { typingGameActive = false; clearInterval(typingTimerInterval); document.removeEventListener('keydown', handleTypingInput); document.removeEventListener('touchstart', focusTypingInput); }
+                currentMode = mode;
+                [modeListBtn, modeQuizBtn, modeTypingBtn].forEach(btn => btn.classList.remove('active'));
+                [verbContentArea, quizArea, typingGameArea, quizSetupDiv, quizMainContentDiv, quizResultsAreaDiv, typingSetupDiv, typingMainContentDiv, typingResultsAreaDiv].forEach(el => { if(el) el.style.display = 'none'; });
+
+                if (mode === 'list') { modeListBtn.classList.add('active'); verbContentArea.style.display = 'block'; renderVerbList(currentSelectedGroup); }
+                else if (mode === 'quiz') { modeQuizBtn.classList.add('active'); quizArea.style.display = 'block'; setupQuizInterfaceForGroup(currentSelectedGroup); }
+                else if (mode === 'typing') { modeTypingBtn.classList.add('active'); typingGameArea.style.display = 'block'; setupTypingInterfaceForGroup(currentSelectedGroup); }
+            }
+
+            // --- Navigation ---
+            verbData.forEach(group => {
+                 const button = document.createElement('button');
+                 const buttonLabel = group.id.slice(-1).toUpperCase(); // Get last char (A, B, C...)
+                 button.textContent = buttonLabel;
+                 button.dataset.groupId = group.id;
+                 button.title = `${group.name}: ${group.description}`;
+                 button.addEventListener('click', () => {
+                     if (activeNavButton) activeNavButton.classList.remove('active');
+                     button.classList.add('active');
+                     activeNavButton = button;
+                     currentSelectedGroup = group;
+                     switchMode(currentMode);
+                 });
+                 groupNav.appendChild(button); // Append button directly to nav
+            });
+
+             // --- Attach Event Listeners ONCE ---
+             modeListBtn.addEventListener('click', () => switchMode('list'));
+             modeQuizBtn.addEventListener('click', () => switchMode('quiz'));
+             modeTypingBtn.addEventListener('click', () => switchMode('typing'));
+             startQuizBtn.addEventListener('click', startQuizHandler);
+             restartQuizBtn.addEventListener('click', () => { if (currentSelectedGroup) setupQuizInterfaceForGroup(currentSelectedGroup); });
+             startTypingBtn.addEventListener('click', startTypingGameHandler);
+             restartTypingBtn.addEventListener('click', () => { if (currentSelectedGroup) setupTypingInterfaceForGroup(currentSelectedGroup); });
+             nextQuestionBtn.addEventListener('click', () => { currentQuestionIndex++; if (currentQuestionIndex < quizQuestions.length) { displayCurrentQuestion(); } else { showQuizResults(); } });
+
+            // --- Initial Load ---
+            if (verbData.length > 0) {
+                const firstButton = groupNav.querySelector('button');
+                if (firstButton) {
+                    modeListBtn.classList.add('active'); // Default mode
+                    verbContentArea.style.display = 'block';
+                     // Set initial group and render list view
+                    setTimeout(() => { firstButton.click(); }, 50);
+                } else { switchMode('list'); }
+            } else {
+                verbContentArea.innerHTML = "<p>動詞データが見つかりません。</p>";
+                verbContentArea.style.display = 'block';
+                modeListBtn.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
