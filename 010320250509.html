@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【2025/5/9 授業記録】例文暗唱と接続詞の学習</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #F0F4F0;
+            --bg-content: #FFFFFF;
+            --text-main: #333333;
+            --text-secondary: #555555;
+            --color-primary: #4CAF50;
+            --color-accent: #FF9800;
+            --color-link: #4CAF50;
+            --color-border: #DDDDDD;
+            --color-answer-bg: #E8F5E9;
+            --color-test-result-bg: #FFFDE7;
+            --color-test-result-border: #FFF59D;
+            --color-related-test-bg: #E8F5E9;
+            --color-related-test-border: #A5D6A7;
+            --color-tooltip-bg: #333;
+            --color-tooltip-text: #fff;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        h1, h2, h3 {
+            color: var(--color-primary);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 2em; border-bottom: 2px solid var(--color-primary); padding-bottom: 0.3em; }
+        h2 { font-size: 1.6em; border-bottom: 1px solid var(--color-border); padding-bottom: 0.2em; }
+        h3 { font-size: 1.3em; }
+
+        p, ul, ol {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            padding-left: 1.5em;
+        }
+        li { margin-bottom: 0.5em; }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        strong {
+            color: var(--color-primary);
+        }
+        .highlight {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #f4f4f4;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            border: 1px solid var(--color-border);
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+            font-size: 0.9em;
+        }
+        .code-block pre { margin: 0; }
+
+        blockquote {
+            border-left: 4px solid var(--color-primary);
+            padding-left: 1em;
+            margin-left: 0;
+            margin-bottom: 1em;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .summary-box, .supplementary-box {
+            background-color: var(--color-answer-bg);
+            border: 1px solid var(--color-border);
+            padding: 1em;
+            border-radius: 5px;
+            margin-bottom: 1.5em;
+        }
+        .summary-box h3, .supplementary-box h3 {
+            margin-top: 0;
+            color: var(--color-primary);
+        }
+
+        #tableOfContents {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2em;
+        }
+        #tableOfContents h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: var(--color-primary);
+        }
+        #tableOfContents ol {
+            padding-left: 0;
+            list-style-type: none;
+            column-count: 2;
+            column-gap: 20px;
+        }
+        #tableOfContents li {
+            margin-bottom: 0.5em;
+            counter-increment: toc-item;
+        }
+        #tableOfContents li::before {
+            content: counter(toc-item) ". ";
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        #readingTime {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 1.5em;
+        }
+
+        .toggle-answer, .modal-content button, #preTestForm button[type="submit"], #preTestForm button[type="button"] {
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            margin-right: 0.5em;
+        }
+        .toggle-answer:hover, .modal-content button:hover, #preTestForm button:hover {
+            opacity: 0.9;
+        }
+        .answer {
+            display: none;
+            background-color: var(--color-answer-bg);
+            padding: 0.8em;
+            margin-top: 0.5em;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+        }
+        .answer p:last-child { margin-bottom: 0; }
+
+        .checklist li {
+            cursor: pointer;
+            list-style-type: '☐ ';
+        }
+        .checklist li.checked {
+            list-style-type: '☑ ';
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .review-questions li {
+            margin-bottom: 1em;
+        }
+        .review-questions input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2em;
+            padding-top: 1em;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Modal Styles */
+        #preTestModalOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 1000;
+            overflow-y: auto;
+            align-items: center; /* 中央寄せのため追加 */
+            justify-content: center; /* 中央寄せのため追加 */
+        }
+        .modal-content {
+            background-color: var(--bg-content);
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-height: 90vh; /* 追加：モーダルの高さ制限 */
+            overflow-y: auto; /* 追加：モーダル内スクロール */
+        }
+        .modal-content h2 { margin-top: 0; }
+        .test-question {
+            margin-bottom: 1.5em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .test-question p { font-weight: bold; margin-bottom: 0.5em; }
+        .test-question label { display: block; margin-bottom: 0.3em; cursor: pointer; padding: 5px; border-radius: 3px;}
+        .test-question label:hover { background-color: #f0f0f0; }
+        .test-question input[type="radio"] { margin-right: 0.5em; vertical-align: middle; }
+        #testResults, #persistentTestResults {
+            margin-top: 1.5em;
+            padding: 1em;
+            border-radius: 5px;
+        }
+        #testResults { /* Modal内の結果表示 */
+            background-color: var(--color-test-result-bg);
+            border: 1px solid var(--color-test-result-border);
+        }
+        #persistentTestResults { /* メインコンテンツ内の結果表示 */
+            display: none; /* 初期非表示 */
+            background-color: var(--color-test-result-bg);
+            border: 1px solid var(--color-test-result-border);
+        }
+        #persistentTestResults h3, #testResults h3 { margin-top: 0; color: var(--color-primary); }
+        #reviewLinks ul, #persistentReviewLinks ul { list-style-type: disc; padding-left: 1.5em; }
+
+
+        /* Related Pretest Section */
+        .related-pretest {
+            background-color: var(--color-related-test-bg);
+            border: 1px solid var(--color-related-test-border);
+            padding: 1em;
+            margin-top: 1.5em;
+            border-radius: 5px;
+        }
+        .related-pretest h4 { margin-top: 0; color: var(--color-primary); }
+        .related-pretest .answer { background-color: var(--bg-content); } /* 少し色を変える */
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        [data-tooltip]::before,
+        [data-tooltip]::after {
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out;
+            position: absolute;
+            bottom: 125%; /* ツールチップを要素の上に表示 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        [data-tooltip]::before { /* ツールチップのテキスト */
+            content: attr(data-tooltip);
+            background-color: var(--color-tooltip-bg);
+            color: var(--color-tooltip-text);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap; /* テキストを折り返さない */
+            min-width: 100px;
+            text-align: center;
+        }
+        [data-tooltip]::after { /* ツールチップの矢印 */
+            content: '';
+            border-style: solid;
+            border-width: 5px 5px 0 5px; /* 上向きの三角形 */
+            border-color: var(--color-tooltip-bg) transparent transparent transparent;
+            margin-left: -5px; /* 矢印を中央に配置 */
+            position: absolute; 
+            bottom: 100%;      
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        [data-tooltip]:hover::before,
+        [data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .highlight-temp {
+            animation: highlightAnimation 2s ease-out;
+        }
+        @keyframes highlightAnimation {
+            0% { background-color: var(--color-accent); }
+            70% { background-color: var(--color-accent); }
+            100% { background-color: transparent; }
+        }
+
+        @media (max-width: 600px) {
+            #tableOfContents ol {
+                column-count: 1;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
+            h3 { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <div id="preTestModalOverlay">
+        <div class="modal-content">
+            <h2>事前理解度チェックテスト</h2>
+            <p>この授業内容に関連する簡単なテストです。現在の理解度を確認しましょう。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="section-expressions-1-7">
+                    <p>1. "My cellphone ( &nbsp;&nbsp;&nbsp;&nbsp; ) <span data-tooltip="～の間に">while</span> I was having dinner." に入る適切な語は？</p>
+                    <label><input type="radio" name="q1" value="a"> a) ring</label>
+                    <label><input type="radio" name="q1" value="b" data-correct="true"> b) rang</label>
+                    <label><input type="radio" name="q1" value="c"> c) rung</label>
+                    <label><input type="radio" name="q1" value="d"> d) ringing</label>
+                </div>
+                <div class="test-question" data-section-id="section-conjunctions-8-12">
+                    <p>2. "Please wash your hands ( &nbsp;&nbsp;&nbsp;&nbsp; ) you eat." に入る適切な語は？</p>
+                    <label><input type="radio" name="q2" value="a"> a) after</label>
+                    <label><input type="radio" name="q2" value="b"> b) while</label>
+                    <label><input type="radio" name="q2" value="c" data-correct="true"> c) before</label>
+                    <label><input type="radio" name="q2" value="d"> d) because</label>
+                </div>
+                <div class="test-question" data-section-id="section-group-work">
+                    <p>3. ペアワークやグループワークで大切なことの一つとして、無理のない範囲でコミュニケーションを取ることが挙げられる。</p>
+                    <label><input type="radio" name="q3" value="a" data-correct="true"> a) はい</label>
+                    <label><input type="radio" name="q3" value="b"> b) いいえ</label>
+                </div>
+                <button type="submit">採点する</button>
+                <button type="button" id="skipTestBtn">テストをスキップ</button>
+            </form>
+            <div id="testResults" style="display:none;">
+                <h3>テスト結果</h3>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                <button id="closeModalBtn">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>【2025/5/9 授業記録】例文暗唱と接続詞の学習</h1>
+        <p id="readingTime">読了時間の目安: 約10分</p>
+
+        <div class="summary-box">
+            <h3>本日の授業内容</h3>
+            <ul>
+                <li>文の種類② 例文暗唱 (1-7番) の復習とペアワーク練習</li>
+                <li>接続詞の学習と例文暗唱 (8-12番)</li>
+                <li>グループワークによる暗唱確認と問題演習</li>
+                <li>発展学習として模試過去問演習の案内</li>
+            </ul>
+        </div>
+
+        <div id="tableOfContents">
+            <h2>目次</h2>
+            <ol>
+                <li><a href="#section-intro">導入と本日の流れ</a></li>
+                <li><a href="#section-expressions-1-7">例文暗唱 (1-7番) とペアワーク</a></li>
+                <li><a href="#section-conjunctions-8-12">接続詞の学習と例文暗唱 (8-12番)</a></li>
+                <li><a href="#section-group-work">グループワークと演習</a></li>
+                <li><a href="#section-advanced-study">発展学習</a></li>
+                <li><a href="#section-summary-next">まとめと次回予告</a></li>
+                <li><a href="#drill-answers">ドリル解答・解説</a></li>
+                <li><a href="#review">振り返り</a></li>
+                <li><a href="#application">応用</a></li>
+            </ol>
+        </div>
+        
+        <div id="persistentTestResults">
+            <h3>事前理解度チェックテストの結果</h3>
+            <p id="persistentScore"></p>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <section id="section-intro">
+            <h2>導入と本日の流れ</h2>
+            <p>本日の授業は、まず前回の「文の種類②」で扱った例文1番から7番の暗唱練習からスタートします。その後、新しい内容として接続詞の学習に入り、関連する例文8番から12番の暗唱を行います。学習した内容はペアワークやグループワークを通じて定着を図ります。最後に、確認テストや演習問題に取り組みます。</p>
+            <p>授業全体の流れは以下の通りです：</p>
+            <ol>
+                <li>例文暗唱 (1-7番) とペアワークによる確認</li>
+                <li>問題演習 (半分ずつ配布し、解きあい)</li>
+                <li>接続詞の学習と例文暗唱 (8-12番)</li>
+                <li>グループワークによる暗唱確認</li>
+                <li>確認テスト</li>
+            </ol>
+            <div class="supplementary-box">
+                <h3>ポイント</h3>
+                <p>暗唱はただ覚えるだけでなく、文の構造や意味を理解しながら行うことが重要です。ペアワークでは自分のペースで、相手に説明したり、質問したりして理解を深めましょう。</p>
+            </div>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="section-expressions-1-7">
+            <h2>例文暗唱 (1-7番) とペアワーク</h2>
+            <p>まず、前回学習した「文の種類②」の例文1番から7番の暗唱状況を確認します。各自で2分間、これらの例文がスラスラと言えるかチェックしてください。</p>
+            <p>その後、ペアを組み、暗唱練習を行います。じゃんけんで先攻・後攻を決め、以下のルールで進めます：</p>
+            <ul>
+                <li><strong>先攻</strong>: 1番から7番の例文の中から4つを選び、その日本語訳を相手に伝えます。</li>
+                <li><strong>後攻</strong>: 先攻が言った日本語に対応する英語の例文を答えます。</li>
+                <li><strong>制限時間</strong>: 1つの例文につき10秒。時間内に答えられない場合は、一度立ってから、その例文の英語と日本語を3回ずつ繰り返して言います。これは罰ゲームではなく、記憶を定着させるための工夫です。</li>
+            </ul>
+            <p>この練習を通じて、例文を確実に記憶し、口頭でスムーズに表現できるようにしましょう。重要なのは、<strong data-tooltip="ただ暗記するだけでなく、意味や構造を理解して覚えること">能動的に記憶を引き出す練習</strong>をすることです。</p>
+            <p>授業では、このペアワークを攻守交替で行い、さらに練習していない例文3つを選んで同様の練習をしました。</p>
+            <blockquote>
+                「一度読んだだけではなかなか覚えられないものです。ヒントをもらったり、何度も練習したりすることで、初めて自分のものになります。特に苦手だと感じる文は、重点的に練習しましょう。」
+            </blockquote>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="section-conjunctions-8-12">
+            <h2>接続詞の学習と例文暗唱 (8-12番)</h2>
+            <p>次に、新しい内容として<strong>接続詞</strong>の学習に入ります。接続詞は文と文、語と語をつなぐ重要な役割を果たします。以下の例文8番から12番を暗唱し、それぞれの接続詞の使い方をマスターしましょう。暗唱の際は、顔を上げ、文字を見ないで挑戦することが推奨されました。</p>
+            <p>例文中の<span class="highlight">赤字</span>（このページでは強調表示）で示されているのが、注目すべき接続詞です。</p>
+            
+            <h3>例文と接続詞のポイント</h3>
+            <ol start="8">
+                <li>
+                    <strong>My cellphone <span data-tooltip="ring (鳴る) の過去形">rang</span> <span data-tooltip="～している間に、～の時に">while</span> I was having dinner.</strong>
+                    <p>（私が夕食を食べている間に、携帯電話が鳴った。）</p>
+                    <ul><li><code>while</code>: 「～している間に」「～の時に」という意味で、2つの出来事が同時に起こっている状況を表します。</li></ul>
+                </li>
+                <li>
+                    <strong>Wash your hands <span data-tooltip="～の前に">before</span> you eat.</strong>
+                    <p>（食べる前に手を洗いなさい。）</p>
+                    <ul><li><code>before</code>: 「～の前に」という意味で、時間的な順序を表します。</li></ul>
+                </li>
+                <li>
+                    <strong><span data-tooltip="もし～ならば">If</span> you need any help, please <span data-tooltip="私に知らせて (熟語)">let me know</span>.</strong>
+                    <p>（もし助けが必要なら、私に知らせてください。）</p>
+                    <ul>
+                        <li><code>if</code>: 「もし～ならば」という意味で、条件を表します。</li>
+                        <li><code>let me know</code>: 「私に知らせてください」という依頼の表現です。</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>I went home early <span data-tooltip="なぜなら～だから">because</span> I was sick.</strong>
+                    <p>（病気だったので、早く家に帰った。）</p>
+                    <ul><li><code>because</code>: 「なぜなら～だから」という意味で、理由や原因を表します。</li></ul>
+                </li>
+                <li>
+                    <strong>We went out shopping, <span data-tooltip="～だけれども、～にもかかわらず">though</span> it was raining.</strong>
+                    <p>（雨が降っていたけれども、私たちは買い物に出かけた。）</p>
+                    <ul><li><code>though</code>: 「～だけれども」「～にもかかわらず」という意味で、逆接の関係を表します。<code>although</code> も同様の意味で使われます。</li></ul>
+                </li>
+            </ol>
+            <p>これらの例文を繰り返し音読し、接続詞のニュアンスと使い方を身体で覚えましょう。練習の際には、接続詞を意識して、文全体の意味を捉えることが大切です。</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="section-group-work">
+            <h2>グループワークと演習</h2>
+            <p>接続詞を含む新しい例文の学習後、グループワークに移りました。各グループで、まず新しく学んだ例文 (8-12番) の暗唱確認を行います。その後、授業の冒頭で予告された通り、問題演習に取り組みました。</p>
+            <p>問題は半分ずつ配布され、グループ内で協力して解き進める「解きあい」の形式が取られました。この活動の目的は以下の通りです：</p>
+            <ul>
+                <li>学習内容の理解度を深める。</li>
+                <li>他者とのコミュニケーションを通じて、多様な視点や解法を学ぶことを目指す。</li>
+                <li>教えあうことで、知識の定着を促進する。</li>
+            </ul>
+            <p>授業では、暗唱が早く終わったグループから演習問題に取り組み、活発な学びあいが行われました。</p>
+            <div class="supplementary-box">
+                <h3>解きあいのコツ</h3>
+                <p>ただ答えを教えあうだけでなく、なぜその答えになるのか、根拠や考え方を説明しあうことが大切です。疑問点は遠慮なく質問し、グループ全体で解決していく姿勢が望ましいです。</p>
+            </div>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="section-advanced-study">
+            <h2>発展学習</h2>
+            <p>授業内で暗唱練習や確認テストが早く終わった生徒向けには、発展的な学習として、河合塾の「全統模試」の過去問題に取り組む機会が提供されました。</p>
+            <p>これは、日々の学習内容を実際の試験形式の問題に応用する力を養うことを目的としています。模試の過去問に取り組むことで、以下のような効果が期待できます：</p>
+            <ul>
+                <li>試験の難易度や出題傾向を把握する。</li>
+                <li>時間配分の練習をする。</li>
+                <li>現在の実力を測り、今後の学習課題を明確にする。</li>
+            </ul>
+            <p>希望者は、5月の中旬に実施される全統模試（河合塾）の過去問が数冊用意されているので、それらを利用して自主的に学習を進めることが推奨されました。</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="section-summary-next">
+            <h2>まとめと次回予告</h2>
+            <p>本日の授業では、例文暗唱を通じて基本的な文型と接続詞の使い方を学びました。ペアワークやグループワークにより、能動的な学習と知識の定着が図られました。</p>
+            <p>重要なのは、一度学習した内容でも繰り返し練習し、確実に自分のものにすることです。特に暗唱は、声に出して練習することで記憶に残りやすくなります。苦手な文や接続詞は、今回の授業で配布されたプリントやノートを見返し、集中的に復習してください。</p>
+            
+            <h3>次回の予定</h3>
+            <p>次回は以下の内容を進める予定です：</p>
+            <ul>
+                <li>学びあい演習</li>
+                <li>確認テスト (本日学習した内容を含む)</li>
+                <li>（時間があれば）模試問題演習</li>
+            </ul>
+            <p>今回の内容をしっかりと復習し、次回の授業に備えてください。</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="drill-answers">
+            <h2>ドリル解答・解説</h2>
+            <div class="drill-item">
+                <h3>例文暗唱ドリル (接続詞 8-12番)</h3>
+                <p>以下の日本語に対応する英語の例文を暗唱し、確認しましょう。</p>
+                <ol start="8">
+                    <li>私が夕食を食べている間に、携帯電話が鳴った。
+                        <button class="toggle-answer" data-target="ans-drill-8">解答表示</button>
+                        <div class="answer" id="ans-drill-8"><p>My cellphone rang while I was having dinner.</p></div>
+                    </li>
+                    <li>食べる前に手を洗いなさい。
+                        <button class="toggle-answer" data-target="ans-drill-9">解答表示</button>
+                        <div class="answer" id="ans-drill-9"><p>Wash your hands before you eat.</p></div>
+                    </li>
+                    <li>もし助けが必要なら、私に知らせてください。
+                        <button class="toggle-answer" data-target="ans-drill-10">解答表示</button>
+                        <div class="answer" id="ans-drill-10"><p>If you need any help, please let me know.</p></div>
+                    </li>
+                    <li>病気だったので、早く家に帰った。
+                        <button class="toggle-answer" data-target="ans-drill-11">解答表示</button>
+                        <div class="answer" id="ans-drill-11"><p>I went home early because I was sick.</p></div>
+                    </li>
+                    <li>雨が降っていたけれども、私たちは買い物に出かけた。
+                        <button class="toggle-answer" data-target="ans-drill-12">解答表示</button>
+                        <div class="answer" id="ans-drill-12"><p>We went out shopping, though it was raining.</p></div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+
+        <section id="review">
+            <h2>振り返り</h2>
+            <h3>理解度チェックリスト</h3>
+            <p>以下の項目について、理解できたか確認しましょう。</p>
+            <ul class="checklist">
+                <li>例文1-7番を意味を理解して暗唱できる。</li>
+                <li>ペアワークでの暗唱練習の進め方を理解した。</li>
+                <li>接続詞 <code>while</code> の意味と使い方を理解した。</li>
+                <li>接続詞 <code>before</code> の意味と使い方を理解した。</li>
+                <li>接続詞 <code>if</code> の意味と使い方を理解した。</li>
+                <li>接続詞 <code>because</code> の意味と使い方を理解した。</li>
+                <li>接続詞 <code>though</code> の意味と使い方を理解した。</li>
+                <li>例文8-12番を接続詞に注意して暗唱できる。</li>
+                <li>グループワークでの「解きあい」の目的を理解した。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <ol class="review-questions">
+                <li>
+                    <p>空欄に適切な接続詞を入れなさい: 「( &nbsp;&nbsp;&nbsp;&nbsp; ) it was cold, I went for a walk.」<br>（寒かったけれども、散歩に出かけた。）</p>
+                    <input type="text" placeholder="解答を入力">
+                    <button class="toggle-answer" data-target="ans-q1">解答表示</button>
+                    <div class="answer" id="ans-q1"><p><strong>解答:</strong> Though (または Although)<br><strong>解説:</strong> 「～にもかかわらず」「～だけれども」という逆接の意味を表す接続詞が必要です。</p></div>
+                </li>
+                <li>
+                    <p>次の文を日本語に訳しなさい: 「Please call me if you arrive at the station.」</p>
+                    <input type="text" placeholder="日本語訳を入力">
+                    <button class="toggle-answer" data-target="ans-q2">解答表示</button>
+                    <div class="answer" id="ans-q2"><p><strong>解答:</strong> もし駅に着いたら、私に電話してください。<br><strong>解説:</strong> <code>if</code> は「もし～ならば」という条件を表します。</p></div>
+                </li>
+                <li>
+                    <p><code>because</code> を使って、次の2つの文を1つに繋ぎなさい: 「I studied hard. I wanted to pass the exam.」<br>（私は一生懸命勉強した。私は試験に合格したかった。）</p>
+                    <input type="text" placeholder="繋いだ文を入力">
+                    <button class="toggle-answer" data-target="ans-q3">解答表示</button>
+                    <div class="answer" id="ans-q3"><p><strong>解答:</strong> I studied hard because I wanted to pass the exam.<br><strong>解説:</strong> <code>because</code> は理由「試験に合格したかったから」を導きます。</p></div>
+                </li>
+            </ol>
+        </section>
+
+        <section id="application">
+            <h2>応用</h2>
+            <h3>今回の知識の活用例</h3>
+            <ul>
+                <li><strong>英作文・スピーキング:</strong> 学習した接続詞を使うことで、より複雑で論理的な文章を組み立てたり、会話の流れをスムーズにしたりすることができます。例えば、理由を述べるときに <code>because</code> を、条件を示すときに <code>if</code> を自然に使えるようになります。</li>
+                <li><strong>読解:</strong> 長文を読む際に接続詞に注目することで、文と文の関係性（原因と結果、対比、時間的順序など）を正確に把握し、内容理解を深めることができます。</li>
+                <li><strong>日常会話:</strong> 「～している間に」「～する前に」といった表現は日常的によく使われるため、<code>while</code> や <code>before</code> を使いこなせると、より自然なコミュニケーションが可能になります。</li>
+            </ul>
+
+            <h3>今後の学習への繋がり</h3>
+            <ul>
+                <li><strong>より高度な接続詞・接続表現:</strong> 今回は基本的な接続詞を学びましたが、今後は <code>therefore</code> (それゆえに), <code>however</code> (しかしながら), <code>in spite of</code> (～にもかかわらず) といった、よりニュアンスの細かい接続表現の学習へと繋がっていきます。</li>
+                <li><strong>従属節と主節の関係:</strong> 接続詞が導く節（従属節）と主節の関係を深く理解することは、複文構造の把握に不可欠であり、より高度な英文解釈や作文能力の基礎となります。</li>
+                <li><strong>論理的思考力の養成:</strong> 文と文の論理的なつながりを意識する訓練は、英語だけでなく、他の科目や日常生活における論理的思考力を養うことにも役立ちます。</li>
+            </ul>
+
+            <h3>学習上の注意点</h3>
+            <ul>
+                <li><strong>丸暗記からの脱却:</strong> 例文を暗唱することも重要ですが、各接続詞が持つ核となる意味や機能を理解し、様々な文脈で使えるように意識しましょう。</li>
+                <li><strong>ニュアンスの違い:</strong> 似たような意味を持つ接続詞でも、微妙なニュアンスの違いや使われる文脈が異なる場合があります。例えば、<code>though</code>, <code>although</code>, <code>even though</code> の使い分けなど、辞書や参考書で確認する習慣をつけましょう。</li>
+                <li><strong>実践的な使用:</strong> 学習した接続詞を、実際に自分で英文を書いたり話したりする際に積極的に使ってみることが定着への近道です。間違いを恐れずにアウトプットしましょう。</li>
+            </ul>
+            
+            <h3>参考資料</h3>
+            <ul>
+                <li><a href="https://english-club.jp/blog/english-conjunction/" target="_blank" rel="noopener noreferrer">英語【接続詞】基本の28種類を徹底解説※話すための英文法！</a></li>
+                <li><a href="https://www.try-it.jp/keyword_articles/5/" target="_blank" rel="noopener noreferrer">中2英語 接続詞 | 映像授業のTry IT (トライイット)</a></li>
+                <li>中学校や高校で使用している英語の教科書・参考書の接続詞の単元</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>本日の授業は以上です。しっかりと復習し、次回の授業に備えましょう。</p>
+            <p>&copy; 2025 授業記録</p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const progressBar = document.getElementById('progressBar');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const checklists = document.querySelectorAll('.checklist');
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults');
+            const testScoreP = document.getElementById('testScore');
+            const reviewLinksDiv = document.getElementById('reviewLinks');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreP = document.getElementById('persistentScore');
+            const persistentReviewLinksDiv = document.getElementById('persistentReviewLinks');
+            const tableOfContents = document.getElementById('tableOfContents').querySelector('ol');
+            const readingTimeP = document.getElementById('readingTime');
+
+            // --- Reading Time Estimation ---
+            function estimateReadingTime() {
+                const content = document.querySelector('.container').innerText;
+                const words = content.split(/\s+/).length;
+                const wpm = 200; // Average WPM for English, adjust if needed
+                const minutes = Math.ceil(words / wpm);
+                readingTimeP.textContent = `読了時間の目安: 約${minutes}分`;
+            }
+            estimateReadingTime();
+
+            // --- Table of Contents Generation ---
+            // 目次はHTMLに直接記述されているため、この関数は呼び出しません。
+            // function generateTableOfContents() { ... }
+
+
+            // --- Progress Bar ---
+            window.addEventListener('scroll', () => {
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (scrollTop / scrollHeight) * 100;
+                progressBar.style.width = scrolled + '%';
+
+                // ScrollTop Button Visibility
+                if (scrollTop > 200) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+
+            // --- Scroll to Top Button ---
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- Checklist ---
+            checklists.forEach(checklist => {
+                checklist.addEventListener('click', (event) => {
+                    if (event.target.tagName === 'LI') {
+                        event.target.classList.toggle('checked');
+                    }
+                });
+            });
+
+            // --- Toggle Answers ---
+            function setupToggleButtons() {
+                document.querySelectorAll('.toggle-answer').forEach(button => {
+                    // Remove existing event listeners to prevent duplicates if called multiple times
+                    const newButton = button.cloneNode(true);
+                    button.parentNode.replaceChild(newButton, button);
+                    
+                    newButton.addEventListener('click', () => {
+                        const targetId = newButton.dataset.target;
+                        const answerDiv = document.getElementById(targetId) || newButton.nextElementSibling;
+                        if (answerDiv && answerDiv.classList.contains('answer')) {
+                            const isVisible = answerDiv.style.display === 'block';
+                            answerDiv.style.display = isVisible ? 'none' : 'block';
+                            newButton.textContent = isVisible ? '解答表示' : '解答非表示';
+                        }
+                    });
+                });
+            }
+            setupToggleButtons(); // Initial setup
+
+            // --- Scroll to Section with Highlight ---
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    section.classList.add('highlight-temp');
+                    setTimeout(() => {
+                        section.classList.remove('highlight-temp');
+                    }, 2000);
+                }
+            }
+            
+            // --- Pre-Test Modal Logic ---
+            function showPreTestModal() {
+                preTestModalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function hidePreTestModal() {
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            function displayTestResults(score, totalQuestions, incorrectAnswers, isSkipped = false) {
+                let resultHTML = '';
+                let persistentResultHTML = '';
+                
+                if (isSkipped) {
+                    resultHTML = '<p>テストはスキップされました。</p>';
+                    persistentResultHTML = '<p>事前理解度チェックテストはスキップされました。各セクションの学習を進めてください。</p>';
+                    testScoreP.innerHTML = resultHTML;
+                    persistentScoreP.innerHTML = persistentResultHTML;
+                    reviewLinksDiv.innerHTML = '';
+                    persistentReviewLinksDiv.innerHTML = '';
+                } else {
+                    const scoreText = `あなたのスコア: ${score} / ${totalQuestions}`;
+                    testScoreP.textContent = scoreText;
+                    persistentScoreP.textContent = scoreText;
+
+                    if (incorrectAnswers.length === 0) {
+                        resultHTML = '<p>全問正解です！素晴らしいスタートです。</p>';
+                        persistentResultHTML = '<p>全問正解でした！この調子で授業内容を深めていきましょう。</p>';
+                        reviewLinksDiv.innerHTML = resultHTML;
+                        persistentReviewLinksDiv.innerHTML = persistentResultHTML;
+                    } else {
+                        let linksHTML = '<ul>';
+                        incorrectAnswers.forEach(item => {
+                            const sectionTitleElement = document.querySelector(`section[id="${item.sectionId}"] h2`);
+                            const sectionTitle = sectionTitleElement ? sectionTitleElement.textContent : item.sectionId;
+                            linksHTML += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">「${sectionTitle}」の復習をおすすめします。</a> (問題: ${item.question.replace(/<span.*?>.*?<\/span>/g, '').replace(/\(&nbsp;&nbsp;&nbsp;&nbsp;\)/g, '( )')})</li>`;
+                        });
+                        linksHTML += '</ul>';
+                        reviewLinksDiv.innerHTML = '<p>以下の項目を重点的に復習しましょう:</p>' + linksHTML;
+                        persistentReviewLinksDiv.innerHTML = '<p>以下の項目は、授業で特に注意して学習しましょう:</p>' + linksHTML;
+                    }
+                }
+                
+                testResultsDiv.style.display = 'block';
+                persistentTestResultsDiv.style.display = 'block';
+                preTestForm.style.display = 'none'; // Hide form after submission
+            }
+
+            if (sessionStorage.getItem('preTestCompleted') === 'true') {
+                const savedResultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+                if (savedResultData) {
+                    if (savedResultData.skipped) {
+                        displayTestResults(0, 0, [], true);
+                    } else {
+                         displayTestResults(savedResultData.score, savedResultData.totalQuestions, savedResultData.incorrectAnswers);
+                    }
+                }
+                 persistentTestResultsDiv.style.display = 'block';
+            } else {
+                showPreTestModal();
+            }
+
+            preTestForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const formData = new FormData(preTestForm);
+                let score = 0;
+                const incorrectAnswers = [];
+                const questions = preTestForm.querySelectorAll('.test-question');
+                const totalQuestions = questions.length;
+
+                questions.forEach((questionDiv, index) => {
+                    const qName = `q${index + 1}`;
+                    const userAnswer = formData.get(qName);
+                    const correctAnswerInput = questionDiv.querySelector(`input[name="${qName}"][data-correct="true"]`);
+                    
+                    if (correctAnswerInput && userAnswer === correctAnswerInput.value) {
+                        score++;
+                    } else if (correctAnswerInput) { 
+                        const questionPHTML = questionDiv.querySelector('p').innerHTML;
+                        const cleanedQuestionText = questionPHTML.replace(/<span.*?>.*?<\/span>/g, '').replace(/\(&nbsp;&nbsp;&nbsp;&nbsp;\)/g, '( )');
+                        incorrectAnswers.push({
+                            question: cleanedQuestionText.substring(0,30) + "...",
+                            sectionId: questionDiv.dataset.sectionId
+                        });
+                    }
+                });
+                
+                const resultData = { score, totalQuestions, incorrectAnswers, skipped: false };
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                displayTestResults(score, totalQuestions, incorrectAnswers);
+            });
+
+            skipTestBtn.addEventListener('click', () => {
+                hidePreTestModal();
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify({ skipped: true }));
+                displayTestResults(0, 0, [], true);
+            });
+            
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', hidePreTestModal);
+            }
+
+            // Event delegation for review links in modal
+            reviewLinksDiv.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A' && event.target.dataset.sectionId) {
+                    event.preventDefault();
+                    const sectionId = event.target.dataset.sectionId;
+                    hidePreTestModal();
+                    scrollToSection(sectionId);
+                }
+            });
+            
+            // Event delegation for review links in persistent area
+            persistentTestResultsDiv.addEventListener('click', (event) => {
+                if (event.target.tagName === 'A' && event.target.dataset.sectionId) {
+                    event.preventDefault();
+                    const sectionId = event.target.dataset.sectionId;
+                    scrollToSection(sectionId);
+                }
+            });
+
+            // --- Inject Related Pre-tests ---
+            function injectRelatedPretests() {
+                const testQuestions = document.querySelectorAll('#preTestModalOverlay .test-question');
+                testQuestions.forEach((questionDiv, index) => { // Added index for unique ID
+                    const sectionId = questionDiv.dataset.sectionId;
+                    const relatedSection = document.getElementById(sectionId);
+
+                    if (relatedSection) {
+                        const questionPHTML = questionDiv.querySelector('p').innerHTML;
+                        const cleanedQuestionText = questionPHTML.replace(/<span.*?>.*?<\/span>/g, '').replace(/\(&nbsp;&nbsp;&nbsp;&nbsp;\)/g, '( )');
+                        
+                        const correctAnswerInput = questionDiv.querySelector('input[data-correct="true"]');
+                        let correctAnswerText = 'N/A';
+                        if (correctAnswerInput) {
+                           const label = correctAnswerInput.closest('label');
+                           if (label) {
+                               let textContent = '';
+                               for (const node of label.childNodes) {
+                                   if (node.nodeType === Node.TEXT_NODE) {
+                                       textContent += node.textContent.trim();
+                                   }
+                               }
+                               correctAnswerText = textContent || correctAnswerInput.value; 
+                           }
+                        }
+
+
+                        // Simple explanations based on provided examples
+                        let explanation = "この問題は、このセクションの基本的な理解を問うものです。";
+                        if (sectionId === "section-expressions-1-7" && cleanedQuestionText.includes("My cellphone")) {
+                            explanation = "`rang` は `ring` (鳴る) の過去形です。文脈が過去なので過去形を選びます。";
+                        } else if (sectionId === "section-conjunctions-8-12" && cleanedQuestionText.includes("wash your hands")) {
+                            explanation = "`before` は「～の前に」という意味の接続詞です。";
+                        } else if (sectionId === "section-group-work" && cleanedQuestionText.includes("ペアワーク")) {
+                            explanation = "ペアワークやグループワークでは、自分のペースでコミュニケーションを取ることが理解を深める上で役立ちます。";
+                        }
+                        
+                        const uniqueIdSuffix = `${sectionId}-q${index}`;
+                        const relatedPretestDiv = document.createElement('div');
+                        relatedPretestDiv.classList.add('related-pretest');
+                        relatedPretestDiv.innerHTML = `
+                            <h4>関連する事前チェック問題</h4>
+                            <p><strong>問題:</strong> ${cleanedQuestionText}</p>
+                            <button class="toggle-answer" data-target="ans-related-${uniqueIdSuffix}">解答・解説表示</button>
+                            <div class="answer" id="ans-related-${uniqueIdSuffix}">
+                                <p><strong>正解:</strong> ${correctAnswerText}</p>
+                                <p><strong>解説:</strong> ${explanation}</p>
+                            </div>
+                        `;
+                        relatedSection.appendChild(relatedPretestDiv);
+                    }
+                });
+                setupToggleButtons(); // Re-setup toggle buttons for newly added elements
+            }
+            injectRelatedPretests();
+
+        });
+    </script>
+</body>
+</html>
