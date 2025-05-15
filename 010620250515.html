@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025/5/15 授業記録: マスコットキャラクターと故郷</title>
+    <style>
+        :root {
+            --bg-main: #F0F4F0;
+            --bg-content: #FFFFFF;
+            --text-main: #333333;
+            --text-secondary: #555555;
+            --color-primary: #4CAF50; /* 緑 */
+            --color-accent: #FF9800; /* オレンジ */
+            --color-link: #4CAF50;
+            --color-border: #DDDDDD;
+            --bg-answer: #E8F5E9; /* 薄い緑 */
+            --bg-test-result: #FFFDE7; /* 薄い黄色 */
+            --border-test-result: #FFF59D; /* 黄色 */
+            --bg-related-test: #E8F5E9; /* 薄い緑 */
+            --border-related-test: #C8E6C9; /* 緑 */
+            --highlight-temp-bg: #FFFACD; /* 薄いレモン色 */
+            --sentence-pattern-color: var(--color-accent); /* 文型表示の色 */
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            font-size: 2.2em;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            color: var(--color-primary);
+            font-size: 1.8em;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.3em;
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        h3 {
+            color: var(--color-primary);
+            font-size: 1.4em;
+            margin-top: 1.2em;
+            margin-bottom: 0.8em;
+        }
+        
+        h4 {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        p sup.sentence-pattern {
+            color: var(--sentence-pattern-color);
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 0.3em;
+            vertical-align: super;
+        }
+
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 1em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            z-index: 1000;
+        }
+
+        #readingTime {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .summary-box {
+            background-color: var(--bg-answer);
+            border-left: 5px solid var(--color-primary);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        .summary-box h2 {
+            margin-top: 0;
+            border-bottom: none;
+        }
+
+        #tableOfContentsContainer {
+            margin-bottom: 25px;
+        }
+
+        #tableOfContents {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style-type: decimal;
+            padding-left: 25px;
+        }
+        #tableOfContents li {
+            margin-bottom: 0.5em;
+            break-inside: avoid-column;
+        }
+
+        #persistentTestResults, .related-pretest {
+            background-color: var(--bg-test-result);
+            border: 1px solid var(--border-test-result);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .related-pretest {
+            background-color: var(--bg-related-test);
+            border-color: var(--border-related-test);
+            margin-top: 20px;
+        }
+        #persistentTestResults h3, .related-pretest h4 {
+             margin-top: 0;
+             color: var(--text-main);
+        }
+        #persistentTestResults ul, .related-pretest ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            border: 1px solid var(--color-border);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 1em;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--color-border);
+            padding-left: 15px;
+            margin-left: 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .supplementary-box {
+            background-color: var(--bg-answer); /* 薄緑に変更 */
+            border-left: 5px solid var(--color-primary); /* 緑 */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .supplementary-box h3 {
+            margin-top: 0;
+            color: var(--color-primary); /* 緑 */
+        }
+
+        .highlight {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .checklist li {
+            list-style-type: none;
+            cursor: pointer;
+            padding-left: 25px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+        .checklist li.checked::before {
+            content: "☑";
+            color: var(--color-primary);
+        }
+        .checklist li.checked {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .toggle-answer {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .toggle-answer:hover {
+            opacity: 0.9;
+        }
+        .answer {
+            display: none;
+            background-color: var(--bg-answer);
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .review-questions .question {
+            margin-bottom: 15px;
+        }
+        .review-questions textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            margin-top: 5px;
+            min-height: 60px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #scrollTopBtn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--text-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 125%; /* 上に表示 */
+            background-color: var(--text-main);
+            color: var(--bg-content);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Pre-Test Modal */
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+        #preTestModal {
+            background-color: var(--bg-content);
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        #preTestModal h2 { margin-top: 0; }
+        .test-question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .test-question:last-of-type {
+            border-bottom: none;
+        }
+        .test-question p { font-weight: bold; }
+        .test-question label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 8px;
+        }
+        #preTestModal button {
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        #preTestModal button#skipTestBtn {
+            background-color: var(--text-secondary);
+        }
+        #testResults {
+            margin-top: 20px;
+        }
+        #testResults ul { list-style-type: disc; padding-left: 20px; }
+
+        .highlight-temp {
+            background-color: var(--highlight-temp-bg) !important;
+            transition: background-color 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            #tableOfContents {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+            #preTestModal {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="preTestModalOverlay" style="display: none;">
+    <div id="preTestModal">
+        <h2>事前理解度チェック</h2>
+        <p>授業内容の理解を深めるために、いくつかの質問にお答えください。</p>
+        <form id="preTestForm">
+            <div class="test-question" data-section-id="unarikun-section">
+                <p>1. うなりくん (Unarikun) は、どの都市のマスコットキャラクターですか？</p>
+                <label><input type="radio" name="q1" value="a" data-correct="true"> 成田市 (Narita City)</label>
+                <label><input type="radio" name="q1" value="b"> 彦根市 (Hikone City)</label>
+                <label><input type="radio" name="q1" value="c"> 東京市 (Tokyo City)</label>
+            </div>
+            <div class="test-question" data-section-id="hikonyan-section">
+                <p>2. ひこにゃん (Hikonyan) がかぶっている赤いヘルメットは、昔どのような人々が着用していましたか？</p>
+                <label><input type="radio" name="q2" value="a"> 農民 (Farmers)</label>
+                <label><input type="radio" name="q2" value="b" data-correct="true"> 武士 (Samurai)</label>
+                <label><input type="radio" name="q2" value="c"> 商人 (Merchants)</label>
+            </div>
+            <div class="test-question" data-section-id="mascot-overview-section">
+                <p>3. マスコットキャラクターを通して、主に何について多くを学ぶことができると述べられていますか？</p>
+                <label><input type="radio" name="q3" value="a"> 天気 (Weather)</label>
+                <label><input type="radio" name="q3" value="b"> 食べ物 (Food)</label>
+                <label><input type="radio" name="q3" value="c" data-correct="true"> 町 (Town)</label>
+            </div>
+             <div class="test-question" data-section-id="grammar-sv-section">
+                <p>4. "The eel dishes are delicious." の文で、主語は何ですか？</p>
+                <label><input type="radio" name="q4" value="a" data-correct="true"> The eel dishes</label>
+                <label><input type="radio" name="q4" value="b"> are</label>
+                <label><input type="radio" name="q4" value="c"> delicious</label>
+            </div>
+        </form>
+        <div id="testResults" style="display: none;">
+            <h3>テスト結果</h3>
+            <p id="testScore"></p>
+            <h4>復習が必要な項目：</h4>
+            <ul id="reviewLinks"></ul>
+        </div>
+        <button type="submit" form="preTestForm" id="submitTestBtn">採点する</button>
+        <button id="skipTestBtn">テストをスキップ</button>
+    </div>
+</div>
+
+<div id="progressBar"></div>
+<div class="container">
+    <header>
+        <h1>2025/5/15 授業記録: マスコットキャラクターと故郷</h1>
+        <p id="readingTime">読了時間の目安: 約3分</p>
+    </header>
+
+    <div class="summary-box">
+        <h2>授業の概要</h2>
+        <ul>
+            <li>単語練習</li>
+            <li>Lesson 0 本文の音読復習</li>
+            <li>英文における主語と動詞の把握練習</li>
+            <li>指さし音読練習</li>
+            <li>連絡事項（次回の授業内容について）</li>
+        </ul>
+    </div>
+
+    <nav id="tableOfContentsContainer">
+        <h2>目次</h2>
+        <ol id="tableOfContents">
+            <!-- JavaScriptで生成されます -->
+        </ol>
+    </nav>
+
+    <div id="persistentTestResults" style="display: none;">
+         <h3>事前テスト結果</h3>
+         <p id="persistentScore"></p>
+         <h4>復習が必要な項目：</h4>
+         <ul id="persistentReviewLinks"></ul>
+    </div>
+
+    <main>
+        <section id="introduction-section">
+            <h2>導入: Lesson 0 本文の音読復習</h2>
+            <p>今回の授業では、まずLesson 0の本文を音読し、内容を復習します。特に、各文の主語と動詞を正確に把握することに焦点を当てます。</p>
+            <p><sup class="sentence-pattern">1A</sup>Many Japanese towns have their own <data-tooltip data-tooltip="町やイベントのシンボルとなるキャラクター">mascot characters</data-tooltip>.</p>
+            <p><sup class="sentence-pattern">3L</sup>Two of them are here today in our class.</p>
+            <p><sup class="sentence-pattern">1B</sup>They’ll talk about their hometowns.</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="unarikun-section">
+            <h2>うなりくんの紹介</h2>
+            <p>“Hello! <sup class="sentence-pattern">2F</sup>I’m Unarikun. <sup class="sentence-pattern">1B</sup>I come from Narita City. <sup class="sentence-pattern">2F</sup>Narita is <data-tooltip data-tooltip="特に、とりわけ">especially</data-tooltip> famous for two things: its eel dishes and its airport. <sup class="sentence-pattern">2F</sup>The eel dishes are delicious. <sup class="sentence-pattern">1B</sup>From the airport, you can travel to many different countries. <sup class="sentence-pattern">1A</sup>I hope <sup class="sentence-pattern">1A</sup>many of you will visit Narita.”</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="hikonyan-section">
+            <h2>ひこにゃんの紹介</h2>
+            <p>“Hi, everyone! <sup class="sentence-pattern">2F</sup>I’m Hikonyan. <sup class="sentence-pattern">1A</sup>If you like <data-tooltip data-tooltip="伝統的な">traditional</data-tooltip> culture and history, <sup class="sentence-pattern">1A</sup>you should visit Hikone City. <sup class="sentence-pattern">1B</sup>Look at my red helmet. <sup class="sentence-pattern">4N</sup>A long time ago, this kind of helmet was worn by <data-tooltip data-tooltip="日本の武士">samurai</data-tooltip>. <sup class="sentence-pattern">2F</sup>People of Hikone are proud of the helmets. <sup class="sentence-pattern">2F</sup>They are proud of Hikone Castle, too. <sup class="sentence-pattern">1A</sup>I hope <sup class="sentence-pattern">1A</sup>many of you will visit our city.”</p>
+            <div class="related-pretest"></div>
+        </section>
+        
+        <section id="mascot-overview-section">
+            <h2>マスコットキャラクターの役割</h2>
+            <p><sup class="sentence-pattern">1A</sup>When you see a mascot <data-tooltip data-tooltip="登場人物、性格、文字">character</data-tooltip>, <sup class="sentence-pattern">4N</sup>you may become interested in its hometown. <sup class="sentence-pattern">1A</sup>In fact, you can learn a lot about a town through its mascot character. <sup class="sentence-pattern">1A</sup>Does your hometown have a mascot character? <sup class="sentence-pattern">2F</sup>What is it like?</p>
+            <div class="supplementary-box">
+                <h3>補足: "What is it like?" の文型</h3>
+                <p>"What is it like?" (それはどんな感じですか？/どんなものですか？) という疑問文は、一見するとSVC（第2文型）のように見えるかもしれませんが、実はSV+M（第1文型＋修飾語句）と解釈されます。</p>
+                <p>この文の成り立ちを理解するために、肯定文から考えてみましょう。</p>
+                <p>例えば、「He is like a bear.」（彼は熊みたいな人だ）という文があります。この文で、<code>like</code> は「～のような」という意味の<strong data-tooltip data-tooltip="名詞の前に置かれる語">前置詞</strong>です。前置詞は名詞（この場合は `a bear`）と結びついて前置詞句 (<code>like a bear</code>) を作り、これは文全体を修飾する<strong data-tooltip data-tooltip="文の要素を詳しく説明する語句">修飾語句 (M)</strong> として機能します。したがって、「He (S) is (V) like a bear (M).」となり、第1文型です。</p>
+                <p>この `a bear` の部分を「何 (what)」と尋ねる疑問文にする場合、<code>what</code> が文頭に出て、「What is he like?」となります。ここでも `like` は前置詞であり、<code>like what</code> がひとまとまりの修飾語句 (M) と考えられます。したがって、「What (Mの一部) is (V) he (S) like (Mの一部)?」という構造になります。(疑問文なので is と he が倒置)</p>
+                <p>このように、"What is it like?" の <code>like</code> は形容詞の「似ている」ではなく前置詞の「～のような」であり、文型はSV+M（第1文型）となります。</p>
+            </div>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="grammar-sv-section">
+            <h2>文法ポイント: 主語(S)と動詞(V)の把握</h2>
+            <p>英語の文を理解する上で最も基本的なことは、主語 (誰が/何が) と動詞 (どうする/どんな状態か) を見つけることです。今回の本文を使って、各文のSとVを確認しましょう。</p>
+            <p class="highlight">練習のポイント:</p>
+            <ul>
+                <li>主語は通常、文の最初の方にあります。</li>
+                <li>動詞は主語の次に来ることが多いですが、疑問文や倒置では語順が変わります。</li>
+                <li>be動詞 (am, is, are, was, were) も重要な動詞です。</li>
+                <li>助動詞 (will, can, may, shouldなど) がある場合、その直後の動詞の原形とセットで動詞句を形成します。</li>
+            </ul>
+            <p>この後、指さし音読練習を行いながら、SとVを意識して読み進めます。</p>
+            
+            <div class="related-pretest"></div>
+        </section>
+        
+        <section id="communication-section">
+            <h2>連絡事項</h2>
+            <p>次回の授業は2時間続きで行います。</p>
+            <ul>
+                <li>1時間目: 文法（詳細別途連絡）</li>
+                <li>2時間目: Lesson 1 の内容に入ります。</li>
+            </ul>
+            <p>予習として、Lesson 1の単語や本文に目を通しておくと、授業の理解が深まります。</p>
+            <div class="related-pretest"></div>
+        </section>
+    </main>
+
+    <section id="drill-answers">
+        <h2>ドリル 解答・解説: 主語と動詞の把握</h2>
+        <p>Lesson 0 本文中の各文について、主語(S)と動詞(V)を抜き出してみましょう。</p>
+        
+        <div class="drill-item">
+            <h3>導入パート</h3>
+            <button class="toggle-answer" data-target="answer1">解答を表示</button>
+            <div class="answer" id="answer1">
+                <ol>
+                    <li><sup class="sentence-pattern">1A</sup>Many Japanese towns (S) have (V) their own mascot characters.</li>
+                    <li><sup class="sentence-pattern">3L</sup>Two of them (S) are (V) here today in our class.</li>
+                    <li><sup class="sentence-pattern">1B</sup>They (S) ’ll talk (V) about their hometowns. (will talk)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="drill-item">
+            <h3>うなりくんの紹介パート</h3>
+            <button class="toggle-answer" data-target="answer2">解答を表示</button>
+            <div class="answer" id="answer2">
+                <ol>
+                    <li><sup class="sentence-pattern">2F</sup>I (S) ’m (V) Unarikun. (am)</li>
+                    <li><sup class="sentence-pattern">1B</sup>I (S) come (V) from Narita City.</li>
+                    <li><sup class="sentence-pattern">2F</sup>Narita (S) is (V) especially famous for two things: its eel dishes and its airport.</li>
+                    <li><sup class="sentence-pattern">2F</sup>The eel dishes (S) are (V) delicious.</li>
+                    <li><sup class="sentence-pattern">1B</sup>you (S) can travel (V) to many different countries. (From the airport は副詞句)</li>
+                    <li><sup class="sentence-pattern">1A</sup>I (S) hope (V) (that) many of you (s) will visit (v) Narita. (hopeの目的語が節になっています)</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="drill-item">
+            <h3>ひこにゃんの紹介パート</h3>
+            <button class="toggle-answer" data-target="answer3">解答を表示</button>
+            <div class="answer" id="answer3">
+                <ol>
+                    <li><sup class="sentence-pattern">2F</sup>I (S) ’m (V) Hikonyan. (am)</li>
+                    <li><sup class="sentence-pattern">1A</sup>If you (s) like (v) traditional culture and history, you (S) should visit (V) Hikone City. (If節と主節)</li>
+                    <li><sup class="sentence-pattern">1B</sup>(You) (S, 省略) Look (V) at my red helmet. (命令文)</li>
+                    <li><sup class="sentence-pattern">4N</sup>this kind of helmet (S) was worn (V) by samurai. (A long time ago は副詞句)</li>
+                    <li><sup class="sentence-pattern">2F</sup>People of Hikone (S) are (V) proud of the helmets.</li>
+                    <li><sup class="sentence-pattern">2F</sup>They (S) are (V) proud of Hikone Castle, too.</li>
+                    <li><sup class="sentence-pattern">1A</sup>I (S) hope (V) (that) many of you (s) will visit (v) our city. (hopeの目的語が節)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="drill-item">
+            <h3>マスコットキャラクターの役割パート</h3>
+            <button class="toggle-answer" data-target="answer4">解答を表示</button>
+            <div class="answer" id="answer4">
+                <ol>
+                    <li><sup class="sentence-pattern">1A</sup>When you (s) see (v) a mascot character, you (S) may become (V) interested in its hometown. (When節と主節)</li>
+                    <li><sup class="sentence-pattern">1A</sup>you (S) can learn (V) a lot about a town through its mascot character. (In fact は副詞)</li>
+                    <li><sup class="sentence-pattern">1A</sup>Does your hometown (S) have (V) a mascot character? (疑問文のためDoesが前に)</li>
+                    <li><sup class="sentence-pattern">2F</sup>What is it like? (it (S) is (V) like what (M)? の疑問形)</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="review">
+        <h2>振り返り</h2>
+        <h3>理解度チェックリスト</h3>
+        <ul class="checklist">
+            <li>マスコットキャラクターが町の紹介に役立つことを理解した。</li>
+            <li>うなりくんとひこにゃんがそれぞれどの町を代表しているか覚えた。</li>
+            <li>本文中の主語と動詞をいくつか見つけることができた。</li>
+            <li>"What is it like?" の文型について理解した。</li>
+            <li>次回の授業内容（文法とLesson 1）について把握した。</li>
+        </ul>
+
+        <h3>確認問題</h3>
+        <div class="review-questions">
+            <div class="question">
+                <p>1. うなりくんが紹介した成田市の名物は、空港の他に何でしたか？</p>
+                <textarea placeholder="解答を記述してください (ヒント: 食べ物です)"></textarea>
+                <button class="toggle-answer" data-target="reviewAnswer1">解答例を表示</button>
+                <div class="answer" id="reviewAnswer1">
+                    <p>うなぎ料理 (eel dishes)</p>
+                </div>
+            </div>
+            <div class="question">
+                <p>2. ひこにゃんが誇りに思っているものは、ヘルメットの他に何でしたか？</p>
+                <textarea placeholder="解答を記述してください (ヒント: 歴史的な建物です)"></textarea>
+                <button class="toggle-answer" data-target="reviewAnswer2">解答例を表示</button>
+                <div class="answer" id="reviewAnswer2">
+                    <p>彦根城 (Hikone Castle)</p>
+                </div>
+            </div>
+            <div class="question">
+                <p>3. "This kind of helmet was worn by samurai." の文で、主語と動詞（受動態の動詞句）は何ですか？</p>
+                <textarea placeholder="解答を記述してください (ヒント: 主語「この種類のヘルメット」、動詞「着用された」)"></textarea>
+                <button class="toggle-answer" data-target="reviewAnswer3">解答例を表示</button>
+                <div class="answer" id="reviewAnswer3">
+                    <p>主語 (S): This kind of helmet</p>
+                    <p>動詞 (V): was worn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="application">
+        <h2>応用</h2>
+        <h3>今回の知識の活用</h3>
+        <p>今回学んだマスコットキャラクターに関する知識や、主語・動詞の把握スキルは、以下のような場面で役立ちます。</p>
+        <ul>
+            <li><strong>旅行先の選定:</strong> マスコットキャラクターをきっかけに、その地域の文化や歴史に興味を持ち、旅行先を選ぶ際の参考にできます。</li>
+            <li><strong>地域活性化のアイデア:</strong> 自分の住む町や地域をアピールするためのアイデアとして、マスコットキャラクターの活用を考えることができます。</li>
+            <li><strong>プレゼンテーションやスピーチ:</strong> 親しみやすいキャラクターを導入部分で使うことで、聴衆の関心を引くことができます。</li>
+            <li><strong>英文読解力の向上:</strong> 主語と動詞を正確に把握することは、より複雑な英文を読むための基礎となります。</li>
+        </ul>
+
+        <h3>今後の学習への繋がり</h3>
+        <p>今回の学習内容は、今後の英語学習において以下のような単元や分野に繋がっていきます。</p>
+        <ul>
+            <li><strong>長文読解:</strong> より長く複雑な文章でも、SとVを見つける基本スキルが読解を助けます。</li>
+            <li><strong>比較文化:</strong> 日本と海外のキャラクター文化の違いなどを学ぶ際に役立ちます。</li>
+            <li><strong>歴史学習:</strong> ひこにゃんのヘルメットのように、キャラクターが地域の歴史的背景を反映していることがあります。</li>
+            <li><strong>関係代名詞や分詞構文:</strong> 文が複雑になると、主語や動詞が修飾語句によって離れることがありますが、基本のS+V構造を見抜く力が重要になります。</li>
+        </ul>
+
+        <h3>気をつけるべきこと</h3>
+        <ul>
+            <li><strong>ステレオタイプの回避:</strong> マスコットキャラクターは時に地域の特徴を単純化して表現することがあります。実際の地域の多様性を理解することも大切です。</li>
+            <li><strong>文法構造の多様性:</strong> 今回は基本的なS+Vの把握でしたが、英語には様々な文型や構文があります。常に文全体の構造を意識するよう心がけましょう。</li>
+            <li><strong>文化的背景の理解:</strong> キャラクターのデザインや名前に込められた文化的背景を知ることで、より深い理解が得られます。</li>
+        </ul>
+        
+        <h3>さらに深掘りするための資料</h3>
+        <ul>
+            <li><a href="https://www.yurugp.jp/" target="_blank" rel="noopener noreferrer">ゆるキャラグランプリ公式サイト</a> (過去のアーカイブなど)</li>
+            <li>各自治体の公式観光情報ウェブサイト (例: 成田市観光協会、彦根観光ガイドなど)</li>
+            <li><a href="https://www.japan.travel/en/" target="_blank" rel="noopener noreferrer">Japan National Tourism Organization (JNTO)</a> - 日本の観光情報（英語）</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>授業記録ページへのリンク: <a href="https://tbt-beginner.github.io/eng" target="_blank" rel="noopener noreferrer">tbt-beginner.github.io/eng</a></p>
+        <p>これで本日の授業は終了です。復習をしっかり行い、次回の授業に備えましょう。お疲れ様でした！</p>
+    </footer>
+</div>
+<button id="scrollTopBtn" title="トップへ戻る">↑</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('progressBar');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const checklistItems = document.querySelectorAll('#review .checklist li');
+        const tableOfContents = document.getElementById('tableOfContents');
+        const sections = document.querySelectorAll('main section[id]');
+        const readingTimeEl = document.getElementById('readingTime');
+        
+        // 読了時間計算 (仮の単語数と速度)
+        const contentText = document.querySelector('main').innerText;
+        const words = contentText.split(/\s+/).length;
+        const wordsPerMinute = 200; // 平均的な英語読解速度
+        const minutes = Math.ceil(words / wordsPerMinute);
+        readingTimeEl.textContent = `読了時間の目安: 約${minutes}分`;
+
+        // 目次生成
+        sections.forEach((section, index) => {
+            const title = section.querySelector('h2').textContent;
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.textContent = `${index + 1}. ${title}`;
+            link.href = `#${section.id}`;
+            listItem.appendChild(link);
+            tableOfContents.appendChild(listItem);
+            
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToSection(section.id);
+            });
+        });
+
+        // プログレスバー
+        window.addEventListener('scroll', () => {
+            const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / scrollTotal) * 100;
+            progressBar.style.width = progress + '%';
+
+            // トップへ戻るボタン表示
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
+        });
+
+        // トップへ戻るボタン機能
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // チェックリスト
+        checklistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('checked');
+            });
+        });
+        
+        // 解答トグル (グローバルに設定)
+        function setupToggleButtons() {
+            document.querySelectorAll('.toggle-answer').forEach(button => {
+                // 既にリスナーが設定されていればスキップ
+                if (button.dataset.listenerAttached) return;
+
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const answerElement = targetId ? document.getElementById(targetId) : button.nextElementSibling;
+                    if (answerElement && answerElement.classList.contains('answer')) {
+                        if (answerElement.style.display === 'block') {
+                            answerElement.style.display = 'none';
+                            button.textContent = '解答を表示';
+                        } else {
+                            answerElement.style.display = 'block';
+                            button.textContent = '解答を隠す';
+                        }
+                    }
+                });
+                button.dataset.listenerAttached = 'true'; // リスナー設定済みフラグ
+            });
+        }
+        setupToggleButtons(); // 初期ロード時のボタンに設定
+
+        // 事前テスト関連
+        const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+        const preTestForm = document.getElementById('preTestForm');
+        const submitTestBtn = document.getElementById('submitTestBtn');
+        const skipTestBtn = document.getElementById('skipTestBtn');
+        const testResultsDiv = document.getElementById('testResults');
+        const testScoreEl = document.getElementById('testScore');
+        const reviewLinksUl = document.getElementById('reviewLinks');
+        
+        const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+        const persistentScoreEl = document.getElementById('persistentScore');
+        const persistentReviewLinksUl = document.getElementById('persistentReviewLinks');
+
+        const questions = Array.from(document.querySelectorAll('#preTestForm .test-question'));
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                section.classList.add('highlight-temp');
+                setTimeout(() => {
+                    section.classList.remove('highlight-temp');
+                }, 2000); // 2秒後にハイライト解除
+            }
+        }
+        
+        function displayResults(score, incorrectAnswersData, targetScoreEl, targetReviewLinksUl, targetPersistentResultsDiv) {
+            const totalQuestions = questions.length;
+            targetScoreEl.textContent = `あなたのスコア: ${score} / ${totalQuestions}`;
+            targetReviewLinksUl.innerHTML = ''; // Clear previous links
+
+            if (incorrectAnswersData.length > 0) {
+                incorrectAnswersData.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${item.sectionId}`;
+                    a.textContent = item.name;
+                    a.dataset.sectionId = item.sectionId; // スクロール用
+                    li.appendChild(a);
+                    targetReviewLinksUl.appendChild(li);
+                });
+            } else if (score === totalQuestions) {
+                targetReviewLinksUl.innerHTML = '<li>全問正解です！素晴らしい！</li>';
+            } else {
+                 targetReviewLinksUl.innerHTML = '<li>復習が必要な項目はありません。</li>';
+            }
+            
+            if (targetPersistentResultsDiv) { // メインコンテンツの結果表示エリアの場合
+                 targetPersistentResultsDiv.style.display = 'block';
+            }
+        }
+        
+        function handleTestSubmit(event) {
+            event.preventDefault();
+            let score = 0;
+            const incorrectAnswersData = [];
+            const formData = new FormData(preTestForm);
+
+            questions.forEach((question, index) => {
+                const questionName = `q${index + 1}`;
+                const selectedAnswer = formData.get(questionName);
+                const correctAnswerEl = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                
+                if (correctAnswerEl && selectedAnswer === correctAnswerEl.value) {
+                    score++;
+                } else {
+                    const sectionId = question.dataset.sectionId;
+                    const sectionTitleEl = document.querySelector(`#${sectionId} h2`);
+                    const sectionName = sectionTitleEl ? sectionTitleEl.textContent : `セクション ${index + 1}`;
+                    incorrectAnswersData.push({ name: sectionName, sectionId: sectionId });
+                }
+            });
+
+            testResultsDiv.style.display = 'block';
+            displayResults(score, incorrectAnswersData, testScoreEl, reviewLinksUl);
+            displayResults(score, incorrectAnswersData, persistentScoreEl, persistentReviewLinksUl, persistentTestResultsDiv);
+            
+            submitTestBtn.style.display = 'none'; // 採点ボタンを隠す
+            skipTestBtn.textContent = '閉じる'; // スキップボタンを閉じるに変更
+
+            sessionStorage.setItem('preTestCompleted', 'true');
+            sessionStorage.setItem('preTestResultData', JSON.stringify({
+                type: 'scored',
+                score: score,
+                total: questions.length,
+                incorrectAnswers: incorrectAnswersData
+            }));
+
+            // モーダル内の復習リンクにイベントリスナーを追加
+            reviewLinksUl.querySelectorAll('a[data-section-id]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    preTestModalOverlay.style.display = 'none';
+                    document.body.classList.remove('modal-open');
+                    scrollToSection(link.dataset.sectionId);
+                });
+            });
+        }
+
+        function handleSkipTest() {
+            preTestModalOverlay.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            persistentScoreEl.textContent = '事前テストはスキップされました。';
+            persistentReviewLinksUl.innerHTML = '<li>授業内容を一通り学習することをお勧めします。</li>';
+            persistentTestResultsDiv.style.display = 'block';
+            
+            sessionStorage.setItem('preTestCompleted', 'true');
+            sessionStorage.setItem('preTestResultData', JSON.stringify({ type: 'skipped' }));
+        }
+        
+        if (preTestForm) preTestForm.addEventListener('submit', handleTestSubmit);
+        if (skipTestBtn) {
+            skipTestBtn.addEventListener('click', () => {
+                if (skipTestBtn.textContent === '閉じる') {
+                    preTestModalOverlay.style.display = 'none';
+                    document.body.classList.remove('modal-open');
+                } else {
+                    handleSkipTest();
+                }
+            });
+        }
+
+        // メインコンテンツ内の復習リンクのイベント委任
+        persistentTestResultsDiv.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && e.target.dataset.sectionId) {
+                e.preventDefault();
+                scrollToSection(e.target.dataset.sectionId);
+            }
+        });
+
+        function initPreTest() {
+            if (sessionStorage.getItem('preTestCompleted') === 'true') {
+                const resultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+                if (resultData) {
+                    if (resultData.type === 'scored') {
+                        displayResults(resultData.score, resultData.incorrectAnswers, persistentScoreEl, persistentReviewLinksUl, persistentTestResultsDiv);
+                    } else if (resultData.type === 'skipped') {
+                        persistentScoreEl.textContent = '事前テストはスキップされました。';
+                        persistentReviewLinksUl.innerHTML = '<li>授業内容を一通り学習することをお勧めします。</li>';
+                        persistentTestResultsDiv.style.display = 'block';
+                    }
+                }
+                preTestModalOverlay.style.display = 'none';
+            } else {
+                preTestModalOverlay.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            }
+        }
+        
+        function injectRelatedPretests() {
+            const testQuestions = document.querySelectorAll('#preTestModal .test-question');
+            testQuestions.forEach(questionDiv => {
+                const sectionId = questionDiv.dataset.sectionId;
+                const targetSection = document.getElementById(sectionId);
+                if (!targetSection) return;
+
+                const relatedPretestContainer = targetSection.querySelector('.related-pretest');
+                if (!relatedPretestContainer) return;
+
+                const questionText = questionDiv.querySelector('p').textContent;
+                const correctAnswerEl = questionDiv.querySelector('input[data-correct="true"]');
+                let correctAnswerText = '';
+                if (correctAnswerEl && correctAnswerEl.parentElement.tagName === 'LABEL') {
+                     // ラジオボタン自体を除いたラベルテキストを取得
+                    correctAnswerText = Array.from(correctAnswerEl.parentElement.childNodes)
+                                        .filter(node => node.nodeType === Node.TEXT_NODE)
+                                        .map(node => node.textContent.trim())
+                                        .join('');
+                }
+
+
+                // 簡単な解説（ここでは固定の文言）
+                let explanation = `この問題は「${targetSection.querySelector('h2').textContent}」の理解度を確認するものです。`;
+                if (sectionId === "grammar-sv-section") {
+                    explanation += `文の構造を理解する上で主語と動詞の特定は基本です。正解は「${correctAnswerText}」です。`;
+                } else if (sectionId === "mascot-overview-section" && questionText.includes("What is it like?")) {
+                     explanation += `「What is it like?」の like は前置詞で、「～のような」という意味です。そのため、この文は第1文型 (SV+M) となります。正解は「${correctAnswerText}」です。`;
+                }
+                else {
+                    explanation += `正解は「${correctAnswerText}」です。本文をよく読んで確認しましょう。`;
+                }
+
+
+                const html = `
+                    <h4>関連する事前テスト問題</h4>
+                    <p><strong>問題:</strong> ${questionText}</p>
+                    <button class="toggle-answer" data-target="related-answer-${sectionId}">解答・解説を表示</button>
+                    <div class="answer" id="related-answer-${sectionId}">
+                        <p><strong>正解:</strong> ${correctAnswerText}</p>
+                        <p><strong>解説:</strong> ${explanation}</p>
+                    </div>
+                `;
+                relatedPretestContainer.innerHTML = html;
+            });
+            setupToggleButtons(); // 新しく追加されたボタンにリスナーを設定
+        }
+
+        initPreTest();
+        injectRelatedPretests();
+
+    });
+</script>
+</body>
+</html>
