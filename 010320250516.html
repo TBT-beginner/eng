@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文型(1) 授業記録 (2025/5/16 2限)</title>
+    <style>
+        :root {
+            --bg-main: #F8F9FA;
+            --bg-content: #FFFFFF;
+            --text-main: #212529;
+            --text-secondary: #6C757D;
+            --primary-color: #28A745; /* 緑色系統 */
+            --accent-color: #FD7E14; /* オレンジ系 */
+            --link-color: #28A745;
+            --border-color: #DEE2E6;
+            --answer-bg: #F8F9FA;
+            --test-result-bg: #FFFBEB;
+            --test-result-border: #FFEEBA;
+            --related-test-bg: #F1F8E9;
+            --related-test-border: #DCEDC8;
+            --code-bg: #e9ecef;
+            --highlight-bg: #FFF3CD; /* 黄色系ハイライト */
+            --highlight-temp-bg: rgba(253, 126, 20, 0.2); /* アクセントカラーの薄い版 */
+            --table-header-bg: #e9ecef;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif, Arial, sans-serif;
+            line-height: 1.75;
+            margin: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--accent-color);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.3em; }
+        h2 { font-size: 1.8em; border-left: 5px solid var(--primary-color); padding-left: 0.5em;}
+        h3 { font-size: 1.4em; }
+
+        p { margin-bottom: 1em; }
+
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 1.5em;
+        }
+        li { margin-bottom: 0.5em; }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        strong { font-weight: bold; }
+        .highlight {
+            background-color: var(--highlight-bg);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .code-block {
+            background-color: var(--code-bg);
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+            font-size: 0.9em;
+        }
+        .code-block pre {
+            margin: 0;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--border-color);
+            padding-left: 1em;
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 1em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .summary-box, .supplementary-box {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 1em 1.5em;
+            margin-bottom: 1.5em;
+            border-radius: 5px;
+        }
+        .summary-box h3, .supplementary-box h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        #readingTime {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 1.5em;
+            display: block;
+        }
+        
+        #tableOfContents {
+            margin-bottom: 2em;
+            padding: 1em;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: #fdfdff;
+        }
+        #tableOfContents h2 {
+            margin-top:0;
+            font-size: 1.5em;
+            border-left: none;
+            padding-left:0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5em;
+        }
+        #tableOfContents ol {
+            column-count: 2;
+            column-gap: 20px;
+            list-style-position: inside;
+            padding-left: 0;
+        }
+        #tableOfContents li {
+            break-inside: avoid-column;
+            margin-bottom: 0.6em;
+        }
+        #tableOfContents a {
+            display: block;
+            padding: 0.2em 0;
+        }
+
+        @media (max-width: 600px) {
+            #tableOfContents ol {
+                column-count: 1;
+            }
+        }
+
+        .checklist li {
+            list-style-type: none;
+            cursor: pointer;
+            padding-left: 1.5em;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        .checklist li.checked::before {
+            content: "☑";
+        }
+
+        .review-questions .question {
+            margin-bottom: 1em;
+        }
+        .review-questions textarea {
+            width: 100%;
+            padding: 0.5em;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            min-height: 80px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+        .toggle-answer {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .toggle-answer:hover {
+            opacity: 0.9;
+        }
+        .answer {
+            background-color: var(--answer-bg);
+            border: 1px solid var(--border-color);
+            padding: 1em;
+            margin-top: 0.5em;
+            border-radius: 4px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2em;
+            padding: 1em;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 999;
+        }
+        #scrollTopBtn:hover {
+            opacity: 0.9;
+        }
+
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--text-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            background-color: var(--text-main);
+            color: var(--bg-content);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Pre-Test Modal Styles */
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        #preTestModal {
+            background-color: var(--bg-content);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        #preTestModal h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        .test-question {
+            margin-bottom: 1.5em;
+            padding: 1em;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+        .test-question p {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+        .test-question label {
+            display: block;
+            margin-bottom: 0.3em;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 0.5em;
+        }
+        #preTestModal .modal-buttons {
+            text-align: center;
+            margin-top: 1.5em;
+        }
+        #preTestModal button {
+            padding: 0.8em 1.5em;
+            margin: 0 0.5em;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        #preTestModal button[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        #preTestModal #skipTestBtn {
+            background-color: var(--text-secondary);
+            color: white;
+            border: none;
+        }
+        #testResults, #persistentTestResultsContent {
+            margin-top: 1.5em;
+            padding: 1em;
+            border-radius: 5px;
+        }
+        #testResults {
+            background-color: var(--test-result-bg);
+            border: 1px solid var(--test-result-border);
+        }
+        #persistentTestResults {
+            display: none; /* Initially hidden */
+            margin-bottom: 2em;
+            background-color: var(--test-result-bg);
+            border: 1px solid var(--test-result-border);
+            padding: 1em 1.5em;
+            border-radius: 5px;
+        }
+        #persistentTestResults h3 { margin-top:0; color: var(--primary-color); }
+        #testScore, #persistentScore {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        #reviewLinks ul, #persistentReviewLinks ul {
+            list-style-type: disc;
+            padding-left: 1.5em;
+        }
+        .highlight-temp {
+            animation: highlightAnimation 2s ease-out;
+        }
+        @keyframes highlightAnimation {
+            0% { background-color: var(--highlight-temp-bg); }
+            100% { background-color: transparent; }
+        }
+
+        .related-pretest {
+            margin-top: 1.5em;
+            padding: 1em;
+            background-color: var(--related-test-bg);
+            border: 1px solid var(--related-test-border);
+            border-radius: 5px;
+        }
+        .related-pretest h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        .related-pretest p { margin-bottom: 0.5em; }
+        .related-pretest .answer { background-color: var(--bg-content); }
+
+        /* CSS for responsive video embed */
+        .video-responsive {
+            overflow: hidden;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            position: relative;
+            height: 0;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            border-radius: 5px; /* Added for consistency */
+        }
+        .video-responsive iframe {
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border: 0;
+        }
+
+        /* Table Styles */
+        .sentence-type-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.95em;
+        }
+        .sentence-type-table th, .sentence-type-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.6em 0.8em;
+            text-align: left;
+            vertical-align: top;
+        }
+        .sentence-type-table th {
+            background-color: var(--table-header-bg);
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .sentence-type-table td:nth-child(1), /* 文型 */
+        .sentence-type-table td:nth-child(2)  /* 種類 */ { 
+            font-weight: bold;
+        }
+        .sentence-type-table .verb-type-auto { /* 自動詞の行の背景 */
+            background-color: #e6ffed; /* 薄い緑 */
+        }
+        .sentence-type-table .verb-type-trans { /* 他動詞の行の背景 */
+            background-color: #fff0e6; /* 薄いオレンジ */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div id="preTestModalOverlay">
+        <div id="preTestModal">
+            <h2>事前理解度チェックテスト</h2>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="sentence-structure-basics">
+                    <p>1. 「The sun rises in the east.」の動詞 <code>rises</code> は何動詞ですか？</p>
+                    <label><input type="radio" name="q1" value="auto" data-correct="true"> 自動詞</label>
+                    <label><input type="radio" name="q1" value="trans"> 他動詞</label>
+                    <label><input type="radio" name="q1" value="both"> 両方</label>
+                </div>
+                <div class="test-question" data-section-id="first-sentence-type">
+                    <p>2. 第1文型の動詞が示す主な意味は「存在する」ともう一つは何ですか？</p>
+                    <label><input type="radio" name="q2" value="change"> 変化する</label>
+                    <label><input type="radio" name="q2" value="move" data-correct="true"> 移動する</label>
+                    <label><input type="radio" name="q2" value="feel"> 感じる</label>
+                </div>
+                <div class="test-question" data-section-id="third-sentence-type">
+                    <p>3. 「SVO」で表される文型は何ですか？</p>
+                    <label><input type="radio" name="q3" value="sv"> 第1文型</label>
+                    <label><input type="radio" name="q3" value="svc"> 第2文型</label>
+                    <label><input type="radio" name="q3" value="svo" data-correct="true"> 第3文型</label>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit">採点する</button>
+                    <button type="button" id="skipTestBtn">テストをスキップ</button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3>テスト結果</h3>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                <p style="margin-top:1em; text-align:center;">
+                    <button onclick="document.getElementById('preTestModalOverlay').style.display = 'none'; document.body.style.overflow = 'auto';">閉じる</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="progressBar"></div>
+
+    <div class="container">
+        <header>
+            <h1>文型(1) 授業記録</h1>
+            <p><strong>実施日:</strong> 2025年5月16日 (2時間目)</p>
+            <span id="readingTime"></span>
+        </header>
+
+        <main>
+            <div class="summary-box">
+                <h3>本日の授業のポイント</h3>
+                <ul>
+                    <li>文型とは：動詞の後ろの語順のパターン</li>
+                    <li>文型の覚え方のコツ：①自動詞/他動詞の区別、②徐々に複雑になるパターン</li>
+                    <li>文型を学ぶメリット：知らない動詞でも意味を推測しやすくなる</li>
+                    <li>第1文型 (SV) の特徴と例：存在する、移動する</li>
+                    <li>第3文型 (SVO) の特徴と例：「SがOをVする」</li>
+                    <li>歌のディクテーション: DNCE - Toothbrush</li>
+                </ul>
+            </div>
+
+            <nav id="tableOfContents">
+                <h2>目次</h2>
+                <ol>
+                    <li><a href="#sentence-structure-basics">文型とは？覚え方のコツ</a></li>
+                    <li><a href="#benefits-of-learning-sentence-structure">文型を学ぶメリット</a></li>
+                    <li><a href="#first-sentence-type">第1文型 (SV): 「存在する」「移動する」</a></li>
+                    <li><a href="#third-sentence-type">第3文型 (SVO): 「SがOをVする」</a></li>
+                    <li><a href="#song-dictation">Song Dictation: DNCE - Toothbrush</a></li>
+                    <li><a href="#drill-answers">ドリル解答・解説</a></li>
+                    <li><a href="#review">本日の振り返り</a></li>
+                    <li><a href="#application">応用と今後の学習</a></li>
+                </ol>
+            </nav>
+            
+            <div id="persistentTestResults">
+                <h3>事前理解度チェックテスト結果</h3>
+                <div id="persistentTestResultsContent">
+                    <p id="persistentScore"></p>
+                    <div id="persistentReviewLinks"></div>
+                </div>
+            </div>
+
+            <section id="sentence-structure-basics">
+                <h2>文型とは？覚え方のコツ</h2>
+                <p>これまで、文の種類について学んできました。平叙文ならSV、疑問文ならbe動詞や助動詞が文頭に、命令文なら動詞の原形で始まり、感嘆文ならwhatやhowで始めるなど、「伝えたい内容によって英語の文の始まりの語順が決まる」というルールを学習しましたね。今回の「文型」では、文中の<strong data-tooltip="動詞の後に続く語の並び順のこと">動詞から後ろの語順</strong>について学んでいきます。</p>
+                <p>まず、5つの基本文型の覚え方を整理しましょう。</p>
+                
+                <div class="supplementary-box">
+                    <h3>整理ポイント</h3>
+                    <p>文型を覚える上での重要な視点として、「自動詞と他動詞の区別」と「文型の複雑さの段階」があります。</p>
+                    
+                    <h4>1. 自動詞と他動詞</h4>
+                    <ul>
+                        <li><strong data-tooltip="動詞の動作が主語だけで完結し、目的語を必要としない動詞">自動詞 (Intransitive Verb)</strong>: 例: "The sun <code class="highlight">rises</code> in the east." (太陽は東から昇る)。この文では、<code>rises</code> (昇る) という動作は主語である <code>The sun</code> だけで完結しており、動詞のターゲットとなる他の登場人物（目的語）がいません。</li>
+                        <li><strong data-tooltip="動詞の動作が目的語に影響を与える動詞">他動詞 (Transitive Verb)</strong>: 例: "<code class="highlight">Raise</code> your hand." (手を挙げてください)。この文では、<code>Raise</code> (挙げる) という動詞のターゲットとして <code>your hand</code> (あなたの手) という目的語が必要です。</li>
+                    </ul>
+
+                    <h4>文型と動詞の性質</h4>
+                    <table class="sentence-type-table">
+                        <thead>
+                            <tr>
+                                <th>文型</th>
+                                <th>種類</th>
+                                <th>動詞の性質</th>
+                                <th>目的語(O)の有無</th>
+                                <th>補語(C)の有無</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="verb-type-auto">
+                                <td>第I文型</td>
+                                <td>SV(M)</td>
+                                <td>自動詞</td>
+                                <td>なし</td>
+                                <td>なし</td>
+                            </tr>
+                            <tr class="verb-type-auto">
+                                <td>第II文型</td>
+                                <td>SVC</td>
+                                <td>自動詞 (主にbe動詞や連結動詞)</td>
+                                <td>なし</td>
+                                <td>あり (S=C)</td>
+                            </tr>
+                            <tr class="verb-type-trans">
+                                <td>第III文型</td>
+                                <td>SVO</td>
+                                <td>他動詞</td>
+                                <td>あり (1つ)</td>
+                                <td>なし</td>
+                            </tr>
+                            <tr class="verb-type-trans">
+                                <td>第IV文型</td>
+                                <td>SVOO</td>
+                                <td>他動詞</td>
+                                <td>あり (2つ)</td>
+                                <td>なし</td>
+                            </tr>
+                            <tr class="verb-type-trans">
+                                <td>第V文型</td>
+                                <td>SVOC</td>
+                                <td>他動詞</td>
+                                <td>あり (1つ)</td>
+                                <td>あり (O=C)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>この表から分かるように、<strong class="highlight">第1文型と第2文型は自動詞</strong>を使い、<strong class="highlight">第3文型、第4文型、第5文型は他動詞</strong>を使います。これが文型を区別する大きなポイントです。</p>
+
+                    <h4>2. だんだんと複雑に</h4>
+                    <p>文型の番号が大きくなるにつれて、文を構成する要素の数が増え、構造が少しずつ複雑になっていきます。</p>
+                    <ul>
+                        <li>第I文型: SV (2要素)</li>
+                        <li>第II文型: SVC (3要素)</li>
+                        <li>第III文型: SVO (3要素)</li>
+                        <li>第IV文型: SVOO (4要素)</li>
+                        <li>第V文型: SVOC (4要素)</li>
+                    </ul>
+                    <p>※ M (修飾語) は文の主要素ではないため、要素数には含めていません。</p>
+                </div>
+                <p>これらのポイントを意識すると、5つの文型がどのような順番で、どのような要素で構成されているのかを思い出しやすくなります。</p>
+                <div class="related-pretest" data-section-id="sentence-structure-basics"></div>
+            </section>
+
+            <section id="benefits-of-learning-sentence-structure">
+                <h2>文型を学ぶメリット</h2>
+                <p>文型を学ぶ最大のメリットは、ずばり「<strong class="highlight">知らない動詞に出会っても、文構造からおおよその意味を推測できるようになる</strong>」ことです。</p>
+                <p>文型を理解することで、文全体の構造が見えやすくなり、各単語がどのような役割を果たしているのかが明確になります。これにより、未知の単語があっても文脈から意味を類推する手がかりを得られるのです。</p>
+                <div class="related-pretest" data-section-id="benefits-of-learning-sentence-structure"></div>
+            </section>
+
+            <section id="first-sentence-type">
+                <h2>第1文型 (SV): 「存在する」「移動する」</h2>
+                <p>第1文型は <code>S + V</code> (主語 + 動詞) という最もシンプルな構造です。この文型で使われる動詞は自動詞で、主に以下の2つの意味合いを持つことが多いです。</p>
+                <ol>
+                    <li><strong>存在する・起こる:</strong> 何かが「ある」「いる」「起こる」といった状態や事象を表します。</li>
+                    <li><strong>移動する:</strong> 主語が「行く」「来る」「動く」といった移動を表します。</li>
+                </ol>
+                <p>例を見てみましょう。</p>
+                <blockquote>Japanese people believe that a soul <code data-tooltip="住む、宿る">dwells</code> in everything.</blockquote>
+                <p>この文で <code>dwells</code> という単語を知らなくても、文脈と第1文型の知識から「魂がすべてのものの中に[存在する]」という意味合いだと推測できます。実際、<code>dwell</code> は「宿る、住む」という意味です。</p>
+                <blockquote>The earth <code data-tooltip="回転する、公転する">revolves</code> around the sun.</blockquote>
+                <p>この文も、<code>revolves</code> が分からなくても「地球が太陽の周りを[移動している]」と捉えれば、「公転している」という意味に近いことが推測できます。<code>revolve</code> は「回転する」という意味で、拳銃の「リボルバー」の語源でもあります。</p>
+                <blockquote>The car <code data-tooltip="猛スピードで進む、突進する">hurtled</code> down the hill at full speed.</blockquote>
+                <p>この文では「車はフルスピードで丘を[移動した]」と考えられ、実際には「駆け下った」という意味になります。</p>
+                <p>このように、第1文型だと判断できれば、動詞の意味を「存在する」か「移動する」のどちらかに絞り込んで推測することができます。</p>
+                <div class="related-pretest" data-section-id="first-sentence-type"></div>
+            </section>
+
+            <section id="third-sentence-type">
+                <h2>第3文型 (SVO): 「SがOをVする」</h2>
+                <p>第3文型は <code>S + V + O</code> (主語 + 動詞 + 目的語) という構造です。この文型は、主語(S)が目的語(O)に対して何か動作(V)を行う、つまり「SがOをVする」という意味を表します。動詞は他動詞が使われます。</p>
+                <p>例を考えてみましょう。</p>
+                <blockquote>They <code class="highlight">ABCed</code> the list.</blockquote>
+                <p><code>ABCed</code> という動詞は実際には存在しませんが、この文がSVOの形をとっていることから、「彼らがリストをどうにかした」という意味だと分かります。具体的には、「リストをアルファベット順に並べた」や「リストにABC評価を付けた」といった意味が考えられますね。</p>
+                <blockquote><code class="highlight" data-tooltip="Facebookで「いいね！」してね、の意味。">Like</code> us on Facebook. (命令文なので主語Youが省略)</blockquote>
+                <p>この文も、<code>Like</code> が動詞、<code>us</code> が目的語と捉えれば、「私たちに『いいね』を押してください」という意味だと推測できます。</p>
+                <p>このように、第3文型の知識があれば、たとえ動詞が未知のものであっても、「主語が目的語に対して何かをする」という基本的な関係性を読み取ることができます。これが文型学習の力です。</p>
+                <div class="related-pretest" data-section-id="third-sentence-type"></div>
+            </section>
+
+            <section id="song-dictation">
+                <h2>Song Dictation: DNCE - Toothbrush</h2>
+                <p>最後に、DNCEの "Toothbrush" という曲の一部を書き取りました。英語の歌を覚えることは、楽しく語彙を増やす良い方法の一つです。好きな歌を見つけて、歌詞を書き取ったり、一緒に歌ったりする練習をしてみてください。</p>
+                <div class="code-block">
+                    <pre>
+Baby, you don't have to rush
+(慌てる必要なんてないよ)
+
+You can leave a toothbrush
+At my place, at my place
+(僕の家に歯ブラシを置いていってもいいからね)
+
+We don't need to keep it hush
+(内緒にする必要もないでしょ)
+
+You can leave a toothbrush
+At my place, at my place
+(僕の家に歯ブラシを置いていってもいいからね)
+                    </pre>
+                </div>
+                <p>参考動画：</p>
+                <div class="video-responsive">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/UrUJyKsLQeU?si=7fXGsNVIZdsm7pP1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                <p>この歌詞では、<code>leave a toothbrush at my place</code> (僕の場所に歯ブラシを置いていく) というフレーズが繰り返されています。これは、相手ともっと親密な関係になりたい、一緒に過ごす時間が増えても構わない、という気持ちを表していると解釈できますね。<code>rush</code> (急ぐ) や <code>hush</code> (内緒にする、静かにする) といった単語も使われています。</p>
+                 <div class="related-pretest" data-section-id="song-dictation"></div>
+            </section>
+            
+            <section id="drill-answers">
+                <h2>ドリル解答・解説</h2>
+                <p>本日の授業では、教科書に記載のドリルには直接触れませんでした。以下は一般的な文型に関する補足です。</p>
+                <div class="supplementary-box">
+                    <h3>文型を見分ける練習</h3>
+                    <p>手元の教材 (教 p.18 / α p.19) には、各文型の例文が載っています。これらの例文のS, V, O, Cを特定し、どの文型に当てはまるかを確認する練習をしてみましょう。</p>
+                    <p>例: "The girl smiled shyly." (その少女は恥ずかしそうにほほ笑んだ。)</p>
+                    <ul>
+                        <li>S (主語): The girl</li>
+                        <li>V (動詞): smiled</li>
+                        <li>M (修飾語): shyly (どのようにほほ笑んだか)</li>
+                    </ul>
+                    <p>この文は目的語(O)も補語(C)もないため、第1文型 (SV) となります。<code>shyly</code> は動詞を修飾する副詞なので、文の主要素には含まれません。</p>
+                </div>
+                 <div class="related-pretest" data-section-id="drill-answers"></div>
+            </section>
+
+            <section id="review">
+                <h2>本日の振り返り</h2>
+                <p>今日の授業内容をしっかり理解できたか、以下のチェックリストで確認しましょう。</p>
+                <ul class="checklist">
+                    <li>5つの基本文型の種類とそれぞれの構成要素（SV, SVCなど）を言える。</li>
+                    <li>自動詞と他動詞の違いを説明でき、どの文型がどちらの動詞を使うか区別できる。</li>
+                    <li>文型を学ぶメリットが分かった。</li>
+                    <li>第1文型の主な意味（存在する、移動する）を理解した。</li>
+                    <li>第3文型の「SがOをVする」という基本的な意味を理解した。</li>
+                </ul>
+
+                <h3>確認問題</h3>
+                <div class="review-questions">
+                    <div class="question">
+                        <p><strong>問1:</strong> 次の文は第何文型ですか？また、その理由も簡潔に説明してください。<br>"My sister is a college student."</p>
+                        <textarea placeholder="ここに解答を入力してください（例: 第X文型。理由はS=Cの関係だから。）"></textarea>
+                        <button class="toggle-answer">解答・解説を見る</button>
+                        <div class="answer">
+                            <p><strong>解答:</strong> 第2文型 (SVC)</p>
+                            <p><strong>解説:</strong>
+                                <ul>
+                                    <li>S (主語): My sister</li>
+                                    <li>V (動詞): is</li>
+                                    <li>C (補語): a college student</li>
+                                </ul>
+                               この文では、「My sister = a college student」という関係 (S=C) が成り立っています。<code>is</code> (be動詞) は主語と補語を結びつけ、主語が何であるか、どのような状態であるかを説明しています。この文型の動詞は自動詞に分類されます（目的語を取らないため）。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <p><strong>問2:</strong> 「知らない動詞でも文型から意味を推測できる」というメリットについて、具体的な例を一つ挙げて説明してください（授業で扱ったもの以外でも可）。</p>
+                        <textarea placeholder="ここに解答を入力してください"></textarea>
+                        <button class="toggle-answer">解答・解説を見る</button>
+                        <div class="answer">
+                            <p><strong>解答例:</strong></p>
+                            <p>例えば、"He <code class="highlight">fabricated</code> a story." という文があったとします。<code>fabricated</code> という動詞の意味が分からなくても、この文が SVO (第3文型) であることが分かれば、「彼が物語をどうにかした」という意味だと推測できます。「物語を」という目的語があるので、おそらく「作った」「でっちあげた」のような意味ではないかと考えられます。実際に <code>fabricate</code> は「でっちあげる、捏造する」という意味です。このように、文型は未知の単語の意味を推測する強力な手がかりになります。</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="related-pretest" data-section-id="review"></div>
+            </section>
+
+            <section id="application">
+                <h2>応用と今後の学習</h2>
+                <h3>今回の知識の活用</h3>
+                <ul>
+                    <li><strong>英文読解力の向上:</strong> 文の構造を素早く把握できるようになり、長文読解の助けになります。</li>
+                    <li><strong>英作文の精度向上:</strong> 正しい語順で自然な英語を書くための基礎となります。</li>
+                    <li><strong>語彙学習の効率化:</strong> 動詞がどの文型で使われるかを知ることで、その動詞の使い方がより深く理解できます。</li>
+                </ul>
+
+                <h3>今後の学習へのつながり</h3>
+                <p>今回学んだ5文型の基礎は、今後の英語学習において非常に重要です。</p>
+                <ul>
+                    <li><strong>各文型の詳細学習:</strong> 今日は第1文型と第3文型に焦点を当てましたが、今後は第2、第4、第5文型についても詳しく学びます。それぞれの文型でよく使われる動詞や注意点などを押さえていきましょう。</li>
+                    <li><strong>句や節の理解:</strong> 文型を構成する要素 (S, V, O, C, M) が、単語だけでなく句（複数の語のまとまり）や節（主語と動詞を含むまとまり）になる場合も学習します。</li>
+                    <li><strong>受動態や関係詞など:</strong> より複雑な文構造を理解する上でも、基本文型の知識が土台となります。</li>
+                </ul>
+
+                <h3>学習を進める上での注意点</h3>
+                <ul>
+                    <li><strong>丸暗記だけでなく理解を深める:</strong> 各文型のパターンを覚えるだけでなく、「なぜその語順になるのか」「動詞がどのような意味合いを持つのか」を意識することが大切です。</li>
+                    <li><strong>全ての文が綺麗に5文型に収まるわけではない:</strong> 5文型はあくまで基本的なパターンです。実際の英文には例外や、より複雑な構造も存在します。しかし、基本を理解していれば応用も効きやすくなります。</li>
+                    <li><strong>多くの英文に触れる:</strong> 学習した知識を定着させるためには、たくさんの英文を読んだり聞いたりすることが不可欠です。</li>
+                </ul>
+
+                <h3>さらに深く学ぶための資料</h3>
+                <ul>
+                    <li><a href="https://eikaiwa.dmm.com/blog/english-grammar/sentence-patterns/" target="_blank" rel="noopener noreferrer" data-tooltip="DMM英会話ブログの文型解説ページ">5つの基本文型を徹底解説！英語の文型を理解するためのポイント（DMM英会話ブログ）</a></li>
+                    <li><a href="https://www.englishclub.com/grammar/sentence-structure.htm" target="_blank" rel="noopener noreferrer" data-tooltip="EnglishClubの文構造解説ページ（英語）">English Sentence Structure (EnglishClub.com)</a></li>
+                    <li>お持ちの文法参考書や問題集で、文型の章を復習するのも効果的です。</li>
+                </ul>
+                 <div class="related-pretest" data-section-id="application"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>本日の授業は以上です。文型の学習は英語理解の土台となります。復習をしっかり行いましょう。</p>
+            <p><a href="https://tbt-beginner.github.io/eng" target="_blank" rel="noopener noreferrer">授業記録ページ一覧へ</a></p>
+            <p>&copy; 2025 英語科</p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Progress Bar
+            const progressBar = document.getElementById('progressBar');
+            window.addEventListener('scroll', () => {
+                const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / scrollTotal) * 100;
+                progressBar.style.width = `${scrolled}%`;
+            });
+
+            // Scroll to Top Button
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Checklist
+            const checklistItems = document.querySelectorAll('.checklist li');
+            checklistItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('checked');
+                });
+            });
+
+            // Reading Time Calculation (English lyrics part)
+            calculateReadingTime();
+            
+            // Pre-Test Logic
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const testResultsDiv = document.getElementById('testResults');
+            const testScoreEl = document.getElementById('testScore');
+            const reviewLinksEl = document.getElementById('reviewLinks');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreEl = document.getElementById('persistentScore');
+            const persistentReviewLinksEl = document.getElementById('persistentReviewLinks');
+
+            function displayPersistentResults(data) {
+                if (data.skipped) {
+                    persistentScoreEl.textContent = '事前理解度チェックテストはスキップされました。';
+                    persistentReviewLinksEl.innerHTML = '';
+                } else {
+                    persistentScoreEl.textContent = `スコア: ${data.score} / ${data.totalQuestions} 問正解`;
+                    let reviewHTML = '';
+                    if (data.incorrectAnswers.length > 0) {
+                        reviewHTML += '<p>以下の項目を復習しましょう:</p><ul>';
+                        data.incorrectAnswers.forEach(item => {
+                            const sectionTitle = document.getElementById(item.sectionId)?.querySelector('h2')?.textContent || '関連セクション';
+                            reviewHTML += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">「${sectionTitle}」 (${item.questionText})</a></li>`;
+                        });
+                        reviewHTML += '</ul>';
+                    } else if (data.score === data.totalQuestions) {
+                         reviewHTML += '<p>全問正解です！素晴らしいスタートです。</p>';
+                    }
+                    persistentReviewLinksEl.innerHTML = reviewHTML;
+                }
+                persistentTestResultsDiv.style.display = 'block';
+            }
+            
+            if (sessionStorage.getItem('preTestCompleted')) {
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                const resultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+                if (resultData) {
+                    displayPersistentResults(resultData);
+                }
+            } else {
+                preTestModalOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            preTestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(preTestForm);
+                let score = 0;
+                const questions = document.querySelectorAll('#preTestForm .test-question');
+                const totalQuestions = questions.length;
+                const incorrectAnswers = [];
+
+                questions.forEach((question, index) => {
+                    const questionName = `q${index + 1}`;
+                    const userAnswer = formData.get(questionName);
+                    const correctAnswerInput = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                    
+                    if (correctAnswerInput && userAnswer === correctAnswerInput.value) {
+                        score++;
+                    } else if (correctAnswerInput) { 
+                        incorrectAnswers.push({
+                            questionText: question.querySelector('p').textContent,
+                            sectionId: question.dataset.sectionId
+                        });
+                    }
+                });
+
+                testScoreEl.textContent = `スコア: ${score} / ${totalQuestions} 問正解`;
+                let reviewHTML = '';
+                if (incorrectAnswers.length > 0) {
+                    reviewHTML += '<p>以下の項目を復習しましょう (クリックすると該当箇所へ移動します):</p><ul>';
+                    incorrectAnswers.forEach(item => {
+                         const sectionTitle = document.getElementById(item.sectionId)?.querySelector('h2')?.textContent || '関連セクション';
+                        reviewHTML += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">「${sectionTitle}」 (${item.questionText})</a></li>`;
+                    });
+                    reviewHTML += '</ul>';
+                } else if (score === totalQuestions) {
+                    reviewHTML += '<p>全問正解です！素晴らしいスタートです。</p>';
+                }
+                reviewLinksEl.innerHTML = reviewHTML;
+                
+                const resultData = { score, totalQuestions, incorrectAnswers, skipped: false };
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                displayPersistentResults(resultData);
+
+                preTestForm.style.display = 'none';
+                testResultsDiv.style.display = 'block';
+
+                reviewLinksEl.querySelectorAll('a[data-section-id]').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const sectionId = this.dataset.sectionId;
+                        preTestModalOverlay.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        scrollToSection(sectionId);
+                    });
+                });
+            });
+
+            skipTestBtn.addEventListener('click', function() {
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                const resultData = { skipped: true };
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                displayPersistentResults(resultData);
+            });
+            
+            persistentTestResultsDiv.addEventListener('click', function(event) {
+                if (event.target.matches('a[data-section-id]')) {
+                    event.preventDefault();
+                    const sectionId = event.target.dataset.sectionId;
+                    scrollToSection(sectionId);
+                }
+            });
+
+            injectRelatedPretests();
+            setupToggleAnswers();
+        });
+
+        function calculateReadingTime() {
+            const songLyricsSection = document.getElementById('song-dictation');
+            let minutes = 0;
+            if (songLyricsSection) {
+                const textBlock = songLyricsSection.querySelector('.code-block'); 
+                if (textBlock) {
+                    const text = textBlock.innerText || textBlock.textContent;
+                    const words = text.trim().split(/\s+/).filter(word => word.length > 0 && /[a-zA-Z]/.test(word));
+                    const wordCount = words.length;
+                    const wordsPerMinute = 150; 
+                    if (wordCount > 0) {
+                        minutes = Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+                    }
+                }
+            }
+            document.getElementById('readingTime').textContent = `読了時間の目安: 約${minutes}分 (歌詞の英語部分)`;
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                section.classList.add('highlight-temp');
+                setTimeout(() => {
+                    section.classList.remove('highlight-temp');
+                }, 2000);
+            }
+        }
+        
+        function setupToggleAnswers() {
+            const toggleButtons = document.querySelectorAll('.toggle-answer');
+            toggleButtons.forEach(button => {
+                if (button.dataset.listenerAttached) return;
+
+                button.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    let answerElement = targetId ? document.getElementById(targetId) : null;
+                    if (!answerElement) {
+                        let parentContainer = this.closest('.question') || this.closest('.related-pretest') || this.parentElement;
+                         if (parentContainer) {
+                            answerElement = parentContainer.querySelector('.answer');
+                        }
+                    }
+                    
+                    if (answerElement && answerElement.classList.contains('answer')) {
+                        const isVisible = answerElement.style.display === 'block';
+                        answerElement.style.display = isVisible ? 'none' : 'block';
+                        this.textContent = isVisible ? (this.dataset.showText || '解答・解説を見る') : (this.dataset.hideText || '解答・解説を隠す');
+                    }
+                });
+                button.dataset.listenerAttached = 'true';
+            });
+        }
+
+        function injectRelatedPretests() {
+            const testQuestions = document.querySelectorAll('#preTestForm .test-question');
+            testQuestions.forEach(questionDiv => {
+                const sectionId = questionDiv.dataset.sectionId;
+                const targetSection = document.getElementById(sectionId);
+                const relatedPretestContainer = targetSection ? targetSection.querySelector('.related-pretest[data-section-id="' + sectionId + '"]') : null;
+
+                if (relatedPretestContainer) {
+                    const questionText = questionDiv.querySelector('p').textContent;
+                    const radioButtons = questionDiv.querySelectorAll('input[type="radio"]');
+                    let correctAnswerText = '';
+                    let correctAnswerValue = '';
+                    radioButtons.forEach(radio => {
+                        if (radio.dataset.correct === 'true') {
+                            correctAnswerValue = radio.value;
+                            const label = radio.parentElement;
+                            if (label) {
+                                const labelClone = label.cloneNode(true);
+                                const inputClone = labelClone.querySelector('input[type="radio"]');
+                                if (inputClone) labelClone.removeChild(inputClone);
+                                correctAnswerText = labelClone.textContent.trim();
+                            }
+                        }
+                    });
+
+                    let explanation = `この問題は「${targetSection.querySelector('h2').textContent}」の理解を問うものです。`;
+                    if (sectionId === "sentence-structure-basics" && questionText.includes("rises")) {
+                        explanation += ` 「rises」は目的語を取らずに「太陽が昇る」と主語の動作だけで完結するため自動詞です。`;
+                    } else if (sectionId === "first-sentence-type" && questionText.includes("第1文型")) {
+                        explanation += ` 第1文型SVの動詞は、主語が「存在する」ことや「移動する」ことを表す場合が多いです。`;
+                    } else if (sectionId === "third-sentence-type" && questionText.includes("SVO")) {
+                        explanation += ` SVOは第3文型で、「主語が目的語を動詞する」という基本的な動作を表します。`;
+                    }
+
+                    relatedPretestContainer.innerHTML = `
+                        <h4>関連する事前テスト問題</h4>
+                        <p><strong>問題:</strong> ${questionText}</p>
+                        <p><strong>正解:</strong> ${correctAnswerText || correctAnswerValue}</p>
+                        <button class="toggle-answer" data-show-text="解説を見る" data-hide-text="解説を隠す">解説を見る</button>
+                        <div class="answer">
+                            <p>${explanation}</p>
+                        </div>
+                    `;
+                }
+            });
+            setupToggleAnswers(); 
+        }
+
+    </script>
+</body>
+</html>
