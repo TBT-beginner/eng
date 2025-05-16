@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録 - 助動詞の基本と応用 (2025/5/16 FLEX 1)</title>
+    <style>
+        :root {
+            --bg-main: #F0F4F8; /* 背景 (Main) */
+            --bg-content: #FFFFFF; /* コンテンツ背景 (Content) */
+            --text-main: #333333; /* メインテキスト (Main) */
+            --text-secondary: #555555; /* 補助テキスト (Secondary) */
+            --color-primary: #4CAF50; /* 見出しや強調 (Primary) */
+            --color-accent: #FF9800; /* ハイライトやボタン (Accent) */
+            --color-link: #4CAF50; /* リンク (Link) */
+            --color-border: #DDDDDD; /* 境界線 (Border) */
+            --color-answer-bg: #E8F5E9; /* 解答例の背景 (Answer) */
+            --color-test-result-bg: #FFFDE7; /* テスト結果表示エリア背景 (TestResultBG) */
+            --color-test-result-border: #FFF59D; /* テスト結果表示エリア境界線 (TestResultBorder) */
+            --color-related-test-bg: #E8F5E9; /* 関連テストエリア背景 (RelatedTestBG) */
+            --color-related-test-border: #C8E6C9; /* 関連テストエリア境界線 (RelatedTestBorder) */
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--color-primary);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 2.2em; margin-top: 0.5em;}
+        h2 { font-size: 1.8em; border-bottom: 2px solid var(--color-primary); padding-bottom: 0.3em;}
+        h3 { font-size: 1.4em; border-left: 5px solid var(--color-primary); padding-left: 0.5em;}
+        h4 { font-size: 1.2em; color: var(--text-main); }
+
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 1.5em;
+        }
+
+        a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background-color: var(--color-accent);
+            width: 0%;
+            z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        .summary-box {
+            border: 1px solid var(--color-border);
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: #F9F9F9;
+            border-radius: 5px;
+        }
+        .summary-box h3 {
+            margin-top: 0;
+            color: var(--color-primary);
+        }
+
+        #tableOfContents {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid var(--color-border);
+            background-color: #FDFDFD;
+            border-radius: 5px;
+        }
+        #tableOfContents h3 {
+            margin-top: 0;
+        }
+        #tableOfContents ol {
+            list-style: none;
+            counter-reset: section-counter;
+            padding-left: 0;
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            column-gap: 30px;
+        }
+        #tableOfContents li {
+            margin-bottom: 0.5em;
+            break-inside: avoid-column;
+            page-break-inside: avoid;
+        }
+        #tableOfContents li::before {
+            counter-increment: section-counter;
+            content: counter(section-counter) ". ";
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-right: 0.3em;
+        }
+        @media (max-width: 600px) {
+            #tableOfContents ol {
+                columns: 1;
+                -webkit-columns: 1;
+                -moz-columns: 1;
+            }
+        }
+
+
+        #persistentTestResults {
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: var(--color-test-result-bg);
+            border: 1px solid var(--color-test-result-border);
+            border-radius: 5px;
+        }
+        #persistentTestResults h3 { margin-top: 0; }
+        #persistentTestResults ul { padding-left: 20px; }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .code-block code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+
+        blockquote {
+            border-left: 5px solid var(--color-border);
+            padding-left: 15px;
+            margin-left: 0;
+            margin-right: 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .supplementary-box {
+            background-color: #E3F2FD; /* 薄い青色 */
+            border: 1px solid #90CAF9; /* やや濃い青色 */
+            padding: 15px;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            border-radius: 5px;
+        }
+        .supplementary-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            text-decoration: underline dotted var(--color-secondary);
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 125%; /* ツールチップを要素の上に表示 */
+            background-color: var(--text-main);
+            color: var(--bg-content);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .related-pretest {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--color-related-test-bg);
+            border: 1px solid var(--color-related-test-border);
+            border-radius: 5px;
+        }
+        .related-pretest h4 { margin-top: 0; }
+
+        .toggle-answer {
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .toggle-answer:hover {
+            opacity: 0.9;
+        }
+
+        .answer {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: var(--color-answer-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+        }
+        .answer p:last-child { margin-bottom: 0; }
+
+        .checklist li {
+            list-style: none;
+            cursor: pointer;
+            padding: 5px 0 5px 30px;
+            position: relative;
+            user-select: none; /* テキスト選択を防ぐ */
+        }
+        .checklist li::before {
+            content: "☐"; /* 未チェックの四角 */
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            color: var(--color-primary);
+        }
+        .checklist li.checked::before {
+            content: "☑"; /* チェック済みの四角 */
+            color: var(--color-accent);
+        }
+        .checklist li.checked {
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .review-questions .question-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .review-questions .question-item p:first-child { margin-top: 0; }
+        .review-questions .answer-placeholder {
+            display: block;
+            width: 100%;
+            min-height: 50px;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px dashed var(--color-border);
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-style: italic;
+            color: #777;
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--color-border);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            z-index: 100;
+            font-size: 1.2em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #scrollTopBtn:hover {
+            opacity: 0.9;
+        }
+
+        #preTestModalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none; /* 初期非表示 */
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .modal-content {
+            background-color: var(--bg-content);
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 { margin-top: 0; }
+        .test-question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+        }
+        .test-question p { margin-top: 0; margin-bottom: 10px; font-weight: bold;}
+        .test-question label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .test-question input[type="radio"] {
+            margin-right: 8px;
+        }
+        #testResults {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--color-test-result-bg);
+            border: 1px solid var(--color-test-result-border);
+            border-radius: 4px;
+        }
+        #testResults h4 { margin-top: 0; }
+        #testResults ul { padding-left: 20px; }
+        .modal-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .modal-buttons button {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .modal-buttons button[type="submit"] {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        .modal-buttons button#skipTestBtn {
+            background-color: var(--text-secondary);
+            color: white;
+        }
+
+        .highlight-temp {
+            animation: highlightAnimation 2s ease-out;
+        }
+        @keyframes highlightAnimation {
+            0% { background-color: yellow; }
+            100% { background-color: transparent; } /* 最終的な背景色は要素自身のものに戻る */
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: var(--color-primary);
+        }
+        td:nth-child(1) { font-weight: bold; } /* 度合い/助動詞列を太字に */
+        td:nth-child(2) { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; } /* 助動詞列を等幅フォントに */
+
+    </style>
+</head>
+<body>
+
+    <div id="preTestModalOverlay">
+        <div class="modal-content">
+            <h2>事前理解度チェックテスト</h2>
+            <p>授業内容の理解を深めるため、いくつかの質問にお答えください。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="modal-aux-principles">
+                    <p>1. 次の文の空所に最も適切なものを選びなさい: Tony ( ) fast.</p>
+                    <div><label><input type="radio" name="q1" value="a" data-correct="true"> can swim</label></div>
+                    <div><label><input type="radio" name="q1" value="b"> can swims</label></div>
+                    <div><label><input type="radio" name="q1" value="c"> swims can</label></div>
+                </div>
+                <div class="test-question" data-section-id="modal-aux-principles">
+                    <p>2. 助動詞の後ろにつづく動詞の形として正しいものはどれですか？</p>
+                    <div><label><input type="radio" name="q2" value="a" data-correct="true"> 原形</label></div>
+                    <div><label><input type="radio" name="q2" value="b"> 過去形</label></div>
+                    <div><label><input type="radio" name="q2" value="c"> 主語に合わせて変化する形 (-sなど)</label></div>
+                </div>
+                <div class="test-question" data-section-id="modal-aux-overview">
+                    <p>3. "He must be sick." という文が示す話者の確信度はどの程度ですか？</p>
+                    <div><label><input type="radio" name="q3" value="a" data-correct="true"> 非常に高い (～に違いない)</label></div>
+                    <div><label><input type="radio" name="q3" value="b"> 中程度 (～かもしれない)</label></div>
+                    <div><label><input type="radio" name="q3" value="c"> 低い (～のわけがない)</label></div>
+                </div>
+                <div class="test-question" data-section-id="modal-aux-types">
+                    <p>4. "had better" の意味合いとして最も近いものはどれですか？</p>
+                    <div><label><input type="radio" name="q4" value="a"> ～したほうがよい (軽い提案)</label></div>
+                    <div><label><input type="radio" name="q4" value="b" data-correct="true"> ～しないとまずいことになる (警告・強い忠告)</label></div>
+                    <div><label><input type="radio" name="q4" value="c"> ～するのが得意だ</label></div>
+                </div>
+
+                <div id="testResults" style="display: none;">
+                    <h4>テスト結果</h4>
+                    <div id="testScore"></div>
+                    <div id="reviewLinksModal"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit">採点する</button>
+                    <button type="button" id="skipTestBtn">テストをスキップ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="progressBar"></div>
+
+    <div class="container">
+        <header>
+            <h1>授業記録 - 助動詞の基本と応用</h1>
+            <p><strong>実施日:</strong> 2025/5/16 (3時間目) | <strong>単元:</strong> FLEX 1 - 単語練習, 助動詞</p>
+            <p id="readingTime" style="font-size: 0.9em; color: var(--text-secondary);"></p>
+        </header>
+
+        <div class="summary-box">
+            <h3>本日の授業概要</h3>
+            <ul>
+                <li>松岡修造さんに関する導入（次回から本文）</li>
+                <li>助動詞の基本的な考え方：義務感と推量</li>
+                <li>助動詞の概要と種類、伝える意味の整理</li>
+                <li>助動詞使用時の重要な原則（語順、動詞の原形など）</li>
+                <li>キーセンテンスの確認と訳出準備</li>
+            </ul>
+        </div>
+
+        <nav id="tableOfContents">
+            <h3>目次</h3>
+            <ol>
+                <!-- JSで生成 -->
+            </ol>
+        </nav>
+
+        <div id="persistentTestResults" style="display: none;">
+            <h3>事前理解度チェック結果</h3>
+            <div id="persistentScore"></div>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <main>
+            <section id="introduction">
+                <h2>導入: ポジティブの力</h2>
+                <p>今日から（次回本文で詳しく触れますが）松岡修造さんの話に入ります。彼は「太陽神」というあだ名もあるように、非常にポジティブで熱い元テニスプレイヤーとして知られていますね。（お笑い芸人の「ポジティブなしじみ芸人」とは異なりますのでご注意を！）。</p>
+                <p>彼の言葉には、私たちを励まし、前向きな気持ちにさせてくれる力があります。この授業記録でも、ポジティブな学びの姿勢を大切にしていきましょう。</p>
+            </section>
+
+            <section id="modal-aux-overview">
+                <h2>助動詞: 概要</h2>
+                <p><data-tooltip data-tooltip="動詞を助け、意味を付け加える品詞">助動詞</data-tooltip>は、動詞とともに用いて、①話者の気持ち（確信度、義務感、許可など）を付け加えたり、②完了形や進行形のような<data-tooltip data-tooltip="動詞が示す動作や状態の時間的な側面">相 (aspect)</data-tooltip>、または受動態のような<data-tooltip data-tooltip="動詞が示す動作の主体と客体の関係">態 (voice)</data-tooltip> を作ったりする際に重要な役割を果たします。</p>
+                <p>中学校レベルの基本的な助動詞から確認し、徐々に範囲を広げていきましょう。助動詞は、大きく<strong class="highlight">「義務感」</strong>と<strong class="highlight">「推量（可能性/確信度合い）」</strong>の二つの意味合いで整理すると理解しやすくなります。</p>
+                <p>例えば、助動詞を使わない文は「事実を客観的に説明・断定する」ことが多いですが、助動詞を用いることで、話し手がその事柄に対してどの程度確信を持っているか、あるいはどのような感情（義務、許可、能力など）を抱いているかを表すことができます。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>表現タイプ</th>
+                            <th>例文 (英語)</th>
+                            <th>例文 (日本語訳)</th>
+                            <th>話者のニュアンス</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>事実/断定</td>
+                            <td>He is sick.</td>
+                            <td>彼は体調が悪い。</td>
+                            <td>客観的な事実として述べている。</td>
+                        </tr>
+                        <tr>
+                            <td>確信度 高</td>
+                            <td>He <strong class="highlight">must be</strong> sick.</td>
+                            <td>彼は体調が悪いに違いない。</td>
+                            <td>ほぼ確信している。</td>
+                        </tr>
+                        <tr>
+                            <td>確信度 中</td>
+                            <td>He <strong class="highlight">may be</strong> sick.</td>
+                            <td>彼は体調が悪いのかもしれない。</td>
+                            <td>可能性があると考えている。</td>
+                        </tr>
+                        <tr>
+                            <td>否定的な確信度 高</td>
+                            <td>He <strong class="highlight">cannot be</strong> sick.</td>
+                            <td>彼の体調が悪いわけはない。</td>
+                            <td>そうである可能性を強く否定している。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="modal-aux-types">
+                <h2>助動詞の種類と伝える意味</h2>
+                <p>助動詞が付け加える気持ちには、主に①<strong data-tooltip="何かをすべき、またはする必要があると感じる度合い">義務感の度合い</strong>と②<strong data-tooltip="ある事柄が事実であると信じる度合い">確信の度合い</strong>があります。以下に代表的な助動詞を、その度合い（主観的な目安）とともに示します。太字以外のものは中学校で学習済みのはずです。</p>
+                <div class="supplementary-box">
+                    <p><strong>注意:</strong> ここで示す「度合い」はあくまで一般的な目安であり、文脈や話し手の意図によって変わることがあります。</p>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>度合(目安)</th>
+                            <th>助動詞</th>
+                            <th>義務の例文</th>
+                            <th>確信の例文</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>100%</td><td>must</td><td>You <strong>must</strong> get some sleep. (君は寝なきゃダメだ。)</td><td>He <strong>must</strong> be tired. (彼は疲れているに違いない。)</td></tr>
+                        <tr><td>95%</td><td>have to</td><td>I <strong>have to</strong> finish this report today. (今日このレポートを仕上げる必要がある。)</td><td>-</td></tr>
+                        <tr><td>90%</td><td>need to</td><td>You <strong>need to</strong> breathe to live. (生きるために呼吸する必要がある。)</td><td>-</td></tr>
+                        <tr><td>85%</td><td>had better</td><td>You <strong>had better</strong> see a doctor. (医者に行かなきゃだめだよ。)</td><td>-</td></tr>
+                        <tr><td>80%</td><td>shall</td><td><strong>Shall</strong> we meet at the station? (駅で落ち合いましょうよ。)</td><td>It <strong>shall</strong> rain tomorrow. (きっと明日は雨だろう。) <data-tooltip data-tooltip="現代英語では古風な表現。予言や強い意志を表す。">古風</data-tooltip></td></tr>
+                        <tr><td>75%</td><td>will</td><td>I <strong>will</strong> finish my homework. (宿題を終わらせてやるぞ。)</td><td>It <strong>will</strong> rain today. (きっと今日は雨だろう。)</td></tr>
+                        <tr><td>75%</td><td>be going to</td><td>I<strong>'m going to</strong> start a new project next month. (来月新しいプロジェクトを始める予定だ。)</td><td>It<strong>'s going to</strong> rain soon. (もうすぐ雨が降りそうだ。)</td></tr>
+                        <tr><td>70%</td><td>should</td><td>You <strong>should</strong> be more careful. (もっと注意すべきだよ。)</td><td>They <strong>should</strong> arrive soon. (もうすぐ彼らは着くはずだ。)</td></tr>
+                        <tr><td>70%</td><td>ought to</td><td>You <strong>ought to</strong> be careful. (君は注意すべきだ。)</td><td>They <strong>ought to</strong> arrive soon. (もうすぐ彼らは着くはずだ。)</td></tr>
+                        <tr><td>60%</td><td>may as well</td><td>We <strong>may as well</strong> go in the rain as stay. (留まるなら雨の中行った方がマシだ。)</td><td>-</td></tr>
+                        <tr><td>60%</td><td>may well</td><td>-</td><td>He <strong>may well</strong> beat the opponent. (きっと彼は敵に勝つだろう。)</td></tr>
+                        <tr><td>50%</td><td>may</td><td><strong>May</strong> I ask you a question? (質問してもいいですか？)</td><td>He <strong>may</strong> be at home. (彼は家にいるかもしれない。)</td></tr>
+                        <tr><td>40%</td><td>might</td><td>You <strong>might</strong> want to consider doing it. (実行の検討をしてもいいかもしれません。) <data-tooltip data-tooltip="控えめな提案">提案</data-tooltip></td><td>That <strong>might</strong> be the solution. (それが解決策かもしれません。)</td></tr>
+                        <tr><td>30%</td><td>can</td><td>You <strong>can</strong> use my phone. (私の電話使ってもいいよ。)</td><td>Accidents <strong>can</strong> happen. (事故は起こりうるものだ。) <data-tooltip data-tooltip="一般的な可能性">可能性</data-tooltip></td></tr>
+                        <tr><td>20%</td><td>would</td><td><strong>Would</strong> you mind closing the window? (窓を閉めていただけますか？) <data-tooltip data-tooltip="丁寧な依頼">依頼</data-tooltip></td><td>If I were you, I <strong>would</strong> accept it. (私なら、受け入れるだろう。) <data-tooltip data-tooltip="仮定法で使われることが多い">仮定</data-tooltip></td></tr>
+                        <tr><td>10%</td><td>could</td><td><strong>Could</strong> you help me with this? (この仕事を手伝っていただけますか？) <data-tooltip data-tooltip="canより丁寧な依頼">丁寧な依頼</data-tooltip></td><td>It <strong>could</strong> rain later today. (今日の午後に雨が降るかもしれない。)</td></tr>
+                        <tr><td>0%</td><td>don’t have to</td><td>You <strong>don’t have to</strong> worry. (心配する必要はないよ。)</td><td>-</td></tr>
+                        <tr><td>-75%</td><td>cannot</td><td>You <strong>cannot</strong> take photos here. (ここで写真を撮ることはできません。)</td><td>That rumor <strong>cannot</strong> be true. (あの噂が本当なわけない。)</td></tr>
+                        <tr><td>-100%</td><td>must not</td><td>You <strong>must not</strong> talk in the library. (図書館で話してはいけません。)</td><td>-</td></tr>
+                        <tr><td>番外</td><td>used to</td><td>-</td><td>There <strong>used to</strong> be a school here. (ここには学校があったものだ。) <data-tooltip data-tooltip="過去の習慣・状態。現在はそうではない含み。">過去の習慣</data-tooltip></td></tr>
+                    </tbody>
+                </table>
+                <div class="supplementary-box">
+                    <p><strong><code data-tooltip="「～しないとまずいことになる」という強い警告・忠告の意味。">had better</code> の注意点:</strong></p>
+                    <p><code>had better</code> は「～したほうがよい」と訳されることもありますが、実際には「～しないと（何か悪い結果が待っているから）そうすべきだ」という<strong class="highlight">強い忠告や警告</strong>のニュアンスを持ちます。目上の人や初対面の人に使うと失礼にあたる場合があるので注意が必要です。より穏やかな提案には <code>should</code> や <code>might want to</code> などが適しています。</p>
+                </div>
+            </section>
+
+            <section id="modal-aux-principles">
+                <h2>助動詞の重要な原則</h2>
+                <p>助動詞を使う際には、いくつかの重要な原則があります。これらをしっかり押さえましょう。</p>
+                
+                <h3>1. 語順を覚えましょう</h3>
+                <ul>
+                    <li><strong>肯定文:</strong> 主語 + <strong class="highlight">助動詞 + 動詞の原形</strong> ...
+                        <br>例: <code>Tony <strong class="highlight">can swim</strong> fast.</code> （トニーは速く泳げる。）
+                    </li>
+                    <li><strong>否定文:</strong> 主語 + <strong class="highlight">助動詞 + not + 動詞の原形</strong> ... (短縮形: can't, won'tなど)
+                        <br>例: <code>Tony <strong class="highlight">can't swim</strong> fast.</code> （トニーは速く泳げない。）
+                    </li>
+                    <li><strong>疑問文:</strong> <strong class="highlight">助動詞 + 主語 + 動詞の原形</strong> ...?
+                        <br>例: <code><strong class="highlight">Can Tony swim</strong> fast?</code> （トニーは速く泳げますか。）
+                    </li>
+                </ul>
+
+                <h3>2. 助動詞のうしろは常に動詞の原形</h3>
+                <p>助動詞の後ろに続く動詞は、主語の人称（一人称、二人称、三人称）や数（単数、複数）に関わらず、<strong class="highlight">常に<data-tooltip data-tooltip="辞書に載っている形、変化していない形">動詞の原形</data-tooltip></strong>です。</p>
+                <p>例: <code>Tony can <strong class="highlight">swim</strong> fast.</code> ( <code style="text-decoration: line-through;">swims</code> ではない)</p>
+
+                <h3>3. 助動詞自体は変化しない</h3>
+                <p>助動詞は、主語の人称や数によって形が変わることはありません（例: <code>s</code> が付いたりしない）。</p>
+                <p>例: <code>Tony <strong class="highlight">can</strong> swim fast.</code> ( <code style="text-decoration: line-through;">cans</code> ではない)</p>
+
+                <h3>4. 助動詞は原則として重ねて使えない</h3>
+                <p>通常、意味を付加する<data-tooltip data-tooltip="can, may, must, will, should など、話者の判断や態度を表す助動詞">法助動詞</data-tooltip>（例: will, can, may, must）を2つ以上並べて使うことはできません。</p>
+                <p>例: <code style="text-decoration: line-through;">Tony will can swim fast.</code></p>
+                <p><strong>例外的な組み合わせ:</strong></p>
+                <p>特定の状況では助動詞が組み合わさることがあります。これは通常、法助動詞1つ ＋ <data-tooltip data-tooltip="have (完了形), be (進行形・受動態) など、時制や態を表す助動詞">相助動詞</data-tooltip> ＋ 疑似法助動詞 (<code>be able to</code>, <code>be going to</code> など、助動詞的な意味を持つ句) の形を取ります。</p>
+                <ul>
+                    <li>例: <code>may <strong class="highlight">have been</strong></code> (～だったかもしれない) - 法助動詞 <code>may</code> + 相助動詞 <code>have</code></li>
+                    <li>例: <code>must <strong class="highlight">be going to</strong></code> (きっと～するつもりだ) - 法助動詞 <code>must</code> + 疑似法助動詞 <code>be going to</code></li>
+                    <li>例: <code>He <strong class="highlight">will be able to</strong> swim.</code> (彼は泳げるようになるだろう。) - 法助動詞 <code>will</code> + 疑似法助動詞 <code>be able to</code></li>
+                </ul>
+
+                <h3>ドリル: 原則の確認</h3>
+                <p>以下の文の ( ) 内から正しいものを選びましょう。（解答はドリル解答・解説セクションにあります）</p>
+                <ol>
+                    <li>肯定文: Tony ( can swim / can swims / swims can ) fast.</li>
+                    <li>否定文: Tony ( can’t swim / can’t swims / swims can’t ) fast.</li>
+                    <li>疑問文: ( Can Tony swim / Does Tony can swim ) fast?</li>
+                    <li>助動詞の後ろの動詞: Tony can ( swim / swims ) fast.</li>
+                    <li>助動詞の形: Tony ( can / cans ) swim fast.</li>
+                    <li>助動詞の重複: Tony ( will can / will be able to ) swim fast next year.</li>
+                </ol>
+            </section>
+
+            <section id="modal-aux-keysentences">
+                <h2>キーセンテンス解説</h2>
+                <p>本文（次回以降）に出てくる重要なキーセンテンスを確認します。今日は訳すためのヒントを提示しますので、次回までに意味を考えてみましょう。苦手な人は以下の手順で取り組んでみてください。</p>
+                <ol>
+                    <li>文型（SV, SVC, SVO, SVOO, SVOC）を把握する。</li>
+                    <li>文を意味のまとまり（要素）に分け、主語を日本語に訳した後、文の後ろから要素ごとに日本語にしていくと、自然な訳になることが多いです。</li>
+                </ol>
+
+                <h3>Key Sentence 1</h3>
+                <div class="code-block"><code>[S] You [V] may think [M] of such words [M] as “passion,” “spirit,” or “cheer.”</code></div>
+                <p><strong>ヒント:</strong></p>
+                <ul>
+                    <li><code>may</code>: 助動詞「～かもしれない」（推量）</li>
+                    <li><code>think of A</code>: 「Aを思い浮かべる」</li>
+                    <li><code>such A as B</code>: 「BのようなA」</li>
+                </ul>
+                <p><strong>あなたの訳:</strong> ________________________________________________</p>
+
+                <h3>Key Sentence 2</h3>
+                <div class="code-block"><code>[S] I [M] always [V] try to support [O] myself [M] with positive words [M] of encouragement.</code></div>
+                <p><strong>ヒント:</strong></p>
+                <ul>
+                    <li><code>try to + 動詞の原形</code>: 「～しようとする」（名詞的用法の<data-tooltip data-tooltip="to + 動詞の原形 の形で、名詞・形容詞・副詞のような働きをする">不定詞</data-tooltip>）</li>
+                    <li><code>support A with B</code>: 「AをBで支える/応援する」</li>
+                </ul>
+                <p><strong>あなたの訳:</strong> ________________________________________________</p>
+
+                <h3>Key Sentence 3</h3>
+                <div class="code-block"><code>[S] I [V] hope [O] <mark>that</mark> [S] they [V] might help [O] you, [M] too.</code></div>
+                <p><strong>ヒント:</strong></p>
+                <ul>
+                    <li><code>hope that節</code>: 「～ということを望む」（接続詞 <code>that</code> が名詞節を導く）</li>
+                    <li><code>might</code>: 助動詞「（ひょっとして）～かもしれない」（<code>may</code> より控えめな推量）</li>
+                </ul>
+                <p><strong>あなたの訳:</strong> ________________________________________________</p>
+                <p>これらの文の正確な意味は次回確認しましょう。</p>
+            </section>
+
+            <section id="drill-answers">
+                <h2>ドリル解答・解説</h2>
+                <h3>「重要な原則」セクションのドリル解答</h3>
+                
+                <div>
+                    <h4>1. 肯定文: Tony ( <strong>can swim</strong> / <span style="text-decoration: line-through;">can swims</span> / <span style="text-decoration: line-through;">swims can</span> ) fast.</h4>
+                    <button class="toggle-answer" data-target="answer-drill-1">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-1" style="display:none;">
+                        <p><strong>正解:</strong> <code>can swim</code></p>
+                        <p><strong>解説:</strong> 肯定文の語順は「主語 + 助動詞 + 動詞の原形」。<code>can</code> (助動詞) + <code>swim</code> (動詞の原形)。</p>
+                    </div>
+                </div>
+                <hr style="margin: 1em 0;">
+                <div>
+                    <h4>2. 否定文: Tony ( <strong>can’t swim</strong> / <span style="text-decoration: line-through;">can’t swims</span> / <span style="text-decoration: line-through;">swims can’t</span> ) fast.</h4>
+                     <button class="toggle-answer" data-target="answer-drill-2">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-2" style="display:none;">
+                        <p><strong>正解:</strong> <code>can’t swim</code></p>
+                        <p><strong>解説:</strong> 否定文の語順は「主語 + 助動詞 + not + 動詞の原形」。<code>can't</code> (can not の短縮形) + <code>swim</code> (動詞の原形)。</p>
+                    </div>
+                </div>
+                <hr style="margin: 1em 0;">
+                <div>
+                    <h4>3. 疑問文: ( <strong>Can Tony swim</strong> / <span style="text-decoration: line-through;">Does Tony can swim</span> ) fast?</h4>
+                    <button class="toggle-answer" data-target="answer-drill-3">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-3" style="display:none;">
+                        <p><strong>正解:</strong> <code>Can Tony swim</code></p>
+                        <p><strong>解説:</strong> 疑問文の語順は「助動詞 + 主語 + 動詞の原形」。<code>Can</code> (助動詞) + <code>Tony</code> (主語) + <code>swim</code> (動詞の原形)。助動詞があるので <code>Do/Does</code> は不要。</p>
+                    </div>
+                </div>
+                <hr style="margin: 1em 0;">
+                <div>
+                    <h4>4. 助動詞の後ろの動詞: Tony can ( <strong>swim</strong> / <span style="text-decoration: line-through;">swims</span> ) fast.</h4>
+                    <button class="toggle-answer" data-target="answer-drill-4">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-4" style="display:none;">
+                        <p><strong>正解:</strong> <code>swim</code></p>
+                        <p><strong>解説:</strong> 助動詞の後ろは常に動詞の原形です。</p>
+                    </div>
+                </div>
+                <hr style="margin: 1em 0;">
+                <div>
+                    <h4>5. 助動詞の形: Tony ( <strong>can</strong> / <span style="text-decoration: line-through;">cans</span> ) swim fast.</h4>
+                    <button class="toggle-answer" data-target="answer-drill-5">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-5" style="display:none;">
+                        <p><strong>正解:</strong> <code>can</code></p>
+                        <p><strong>解説:</strong> 助動詞自体は主語の人称や数によって変化しません。</p>
+                    </div>
+                </div>
+                <hr style="margin: 1em 0;">
+                 <div>
+                    <h4>6. 助動詞の重複: Tony ( <span style="text-decoration: line-through;">will can</span> / <strong>will be able to</strong> ) swim fast next year.</h4>
+                    <button class="toggle-answer" data-target="answer-drill-6">解答・解説を表示</button>
+                    <div class="answer" id="answer-drill-6" style="display:none;">
+                        <p><strong>正解:</strong> <code>will be able to</code></p>
+                        <p><strong>解説:</strong> 法助動詞 <code>will</code> と <code>can</code> は直接重ねて使えません。<code>can</code> と同様の意味を持つ疑似法助動詞 <code>be able to</code> を使い、<code>will be able to</code> (～できるようになるだろう) とします。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="review">
+                <h2>振り返り</h2>
+                <h3>理解度チェックリスト</h3>
+                <p>以下の項目について、理解できたかどうか確認しましょう。クリックするとチェックが入ります。</p>
+                <ul class="checklist">
+                    <li>助動詞が話者の気持ち（義務感、推量など）を表すことを理解した。</li>
+                    <li>助動詞の基本的な意味（例: must, may, can）をいくつか説明できる。</li>
+                    <li>助動詞の後ろには動詞の原形が来るというルールを理解した。</li>
+                    <li>助動詞を使った肯定文・否定文・疑問文の語順を理解した。</li>
+                    <li><code>had better</code> の強い警告のニュアンスを理解した。</li>
+                    <li>法助動詞は原則として重ねて使えないことを理解した。</li>
+                </ul>
+
+                <h3>確認問題</h3>
+                <div class="review-questions">
+                    <div class="question-item">
+                        <p><strong>問題1:</strong> 助動詞 <code>must</code> と <code>have to</code> はどちらも「～しなければならない」という義務を表しますが、ニュアンスにどのような違いがありますか？</p>
+                        <span class="answer-placeholder">ここにあなたの考えを書いてみましょう（ヒント: 主観的 vs 客観的）</span>
+                        <button class="toggle-answer" data-target="answer-review-1">解答例を表示</button>
+                        <div class="answer" id="answer-review-1" style="display:none;">
+                            <p><code>must</code> は話者の主観的な強い義務感（「～すべきだ」という内からの気持ち）を表すのに対し、<code>have to</code> は客観的な状況や規則による必要性（「～する必要がある」）を表すことが多いです。また、否定形では <code>must not</code> (禁止「～してはいけない」) と <code>don't have to</code> (不必要「～する必要はない」) で意味が大きく異なります。</p>
+                        </div>
+                    </div>
+                    <div class="question-item">
+                        <p><strong>問題2:</strong> 推量を表す助動詞 <code>may</code> と <code>might</code> の確信度の違いを説明してください。</p>
+                        <span class="answer-placeholder">あなたの考えをどうぞ（ヒント: どちらがより確信度が低い？）</span>
+                        <button class="toggle-answer" data-target="answer-review-2">解答例を表示</button>
+                        <div class="answer" id="answer-review-2" style="display:none;">
+                            <p>どちらも「～かもしれない」という推量を表しますが、一般的に <code>might</code> の方が <code>may</code> よりも確信度が低い（可能性がより低い、またはより控えめな）推量を表します。ただし、現代英語ではこの区別が曖昧になることもあり、丁寧さを示すために <code>might</code> が使われることもあります。</p>
+                        </div>
+                    </div>
+                     <div class="question-item">
+                        <p><strong>問題3:</strong> 「彼は明日パーティーに来ることはできないだろう」を英語で表現する場合、<code>cannot</code> を使った推量と <code>will not be able to</code> を使った未来の能力の否定、どちらが適切で、どのようなニュアンスの違いがありますか？</p>
+                        <span class="answer-placeholder">あなたの考えをどうぞ（ヒント: 推量のcannot vs 能力のcan）</span>
+                        <button class="toggle-answer" data-target="answer-review-3">解答例を表示</button>
+                        <div class="answer" id="answer-review-3" style="display:none;">
+                            <p>文脈によりますが、一般的には以下のような違いがあります。</p>
+                            <ul>
+                                <li><code>He cannot come to the party tomorrow.</code>: これは「彼が明日パーティーに来るはずがない」という強い否定的な推量を表す場合があります（例: 彼は海外にいるはずだから）。または、現在の能力や許可の否定として「彼は来ることができない（能力がない、許可がない）」という意味にもなります。</li>
+                                <li><code>He will not be able to come to the party tomorrow.</code> (短縮形: <code>He won't be able to come...</code>): これは「彼は明日パーティーに来る能力がないだろう」または「（何らかの事情で）来ることができないだろう」という未来の能力や可能性の否定を明確に表します。こちらの方が「来られないだろう」という予測をストレートに伝える場合が多いです。</li>
+                            </ul>
+                            <p>「来ることができないだろう」という単純な予測であれば、<code>He won't be able to come...</code> の方がより直接的で一般的です。<code>cannot</code> を推量で使う場合は、文脈からその意味が明確である必要があります。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="application">
+                <h2>応用と今後の学習</h2>
+                <h3>今回の知識の活用</h3>
+                <ul>
+                    <li><strong>より正確なコミュニケーション:</strong> 助動詞を使い分けることで、自分の確信度や意図（依頼、許可、提案など）をより細かく、正確に相手に伝えられるようになります。</li>
+                    <li><strong>英文読解力の向上:</strong> 文章中の助動詞のニュアンスを読み取ることで、筆者の意図や登場人物の心情を深く理解できるようになります。</li>
+                    <li><strong>英作文・英会話の表現力アップ:</strong> 単純な事実だけでなく、自分の意見や感情を込めた表現豊かな英語を使えるようになります。</li>
+                </ul>
+
+                <h3>今後の繋がり</h3>
+                <ul>
+                    <li><strong>仮定法:</strong> <code>would</code>, <code>could</code>, <code>might</code> などの助動詞は、仮定法（現在の事実に反する仮定や未来の仮定など）を表現する上で不可欠です。</li>
+                    <li><strong>助動詞 + have + 過去分詞:</strong> <code>must have done</code> (～したに違いない), <code>should have done</code> (～すべきだったのにしなかった) のように、過去の事柄に対する推量や後悔などを表現する形を学びます。</li>
+                    <li><strong>より複雑なニュアンスの表現:</strong> <code>would rather</code> (むしろ～したい), <code>need hardly</code> (ほとんど～する必要がない) など、さらに多くの助動詞的表現を学ぶことで、より高度なコミュニケーションが可能になります。</li>
+                </ul>
+
+                <h3>学習上の注意点</h3>
+                <ul>
+                    <li><strong>意味の混同に注意:</strong> 一つの助動詞が複数の意味を持つことがあるため（例: <code>may</code> は「～かもしれない」と「～してもよい」）、文脈から正しい意味を判断する練習が必要です。</li>
+                    <li><strong>類似表現との使い分け:</strong> 例えば「提案」を表す場合でも <code>should</code>, <code>ought to</code>, <code>had better</code>, <code>Why don't you...?</code> など様々な表現があり、それぞれニュアンスが異なります。場面に応じた適切な表現を選べるようにしましょう。</li>
+                    <li><strong>丸暗記ではなく理解を重視:</strong> 各助動詞の核となるイメージ（コアミーニング）を掴むと、様々な用法に応用しやすくなります。</li>
+                </ul>
+
+                <h3>参考資料</h3>
+                <ul>
+                    <li><a href="https://eikaiwa.dmm.com/uknow/questions/70628/" target="_blank" rel="noopener noreferrer">DMM英会話なんてuKnow? - 「助動詞」に関する質問</a></li>
+                    <li><a href="https://www.englishclub.com/grammar/verbs-modal.htm" target="_blank" rel="noopener noreferrer">EnglishClub - Modal Verbs</a> (英語)</li>
+                    <li><a href="https://www.ef.com/wwen/english-resources/english-grammar/modal-verbs/" target="_blank" rel="noopener noreferrer">EF English Live - Modal Verbs Grammar</a> (英語)</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>本日の授業はここまでです。助動詞は英語の表現を豊かにする重要な要素です。しっかり復習しましょう！</p>
+            <p><a href="https://tbt-beginner.github.io/eng" target="_blank" rel="noopener noreferrer">TBT Beginner English - 授業記録一覧へ</a></p>
+            <p>&copy; 2025 授業記録システム</p>
+        </footer>
+
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            const mainContent = document.querySelector('main');
+            const readingTimeEl = document.getElementById('readingTime');
+            const tableOfContentsOl = document.querySelector('#tableOfContents ol');
+            
+            // 1. プログレスバー
+            function updateProgressBar() {
+                const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrollTotal > 0) ? (scrolled / scrollTotal) * 100 : 0;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // 2. トップへ戻るボタン
+            function toggleScrollTopBtn() {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            }
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', () => {
+                updateProgressBar();
+                toggleScrollTopBtn();
+            });
+            updateProgressBar(); 
+            toggleScrollTopBtn(); 
+
+            // 3. チェックリスト
+            const checklists = document.querySelectorAll('.checklist');
+            checklists.forEach(checklist => {
+                checklist.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'LI') {
+                        e.target.classList.toggle('checked');
+                    }
+                });
+            });
+
+            // 4. 解答トグル (共通関数)
+            function initializeToggleAnswers() {
+                document.querySelectorAll('.toggle-answer').forEach(button => {
+                    const newButton = button.cloneNode(true);
+                    button.parentNode.replaceChild(newButton, button);
+                    
+                    newButton.addEventListener('click', function() {
+                        const targetId = this.dataset.target;
+                        const answerElement = targetId ? document.getElementById(targetId) : this.nextElementSibling;
+                        if (answerElement && (answerElement.classList.contains('answer') || answerElement.id.startsWith('related-answer-'))) {
+                            const isVisible = answerElement.style.display === 'block' || answerElement.style.display === '';
+                            answerElement.style.display = isVisible ? 'none' : 'block';
+                            
+                            const showText = this.dataset.showText || "解答・解説を表示";
+                            const hideText = this.dataset.hideText || "解答・解説を隠す";
+
+                            this.textContent = isVisible ? showText : hideText;
+                            
+                            if (!this.dataset.showText) this.dataset.showText = showText;
+                            if (!this.dataset.hideText) this.dataset.hideText = hideText;
+                        }
+                    });
+                });
+            }
+             initializeToggleAnswers();
+
+            // 5. 目次生成 (修正箇所)
+            function generateTableOfContents() {
+                if (!tableOfContentsOl) {
+                    console.error("目次の<ol>要素が見つかりません。");
+                    return;
+                }
+                tableOfContentsOl.innerHTML = ''; // 既存の目次をクリア
+                const sections = document.querySelectorAll('main section[id]'); // id属性を持つsectionを取得
+                
+                sections.forEach(section => {
+                    const heading = section.querySelector('h2'); // section内のh2を取得
+                    if (heading && section.id) { // h2が存在し、sectionにidがあれば
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`; // sectionのidをリンク先にする
+                        link.textContent = heading.textContent; // h2のテキストを目次名にする
+                        listItem.appendChild(link);
+                        tableOfContentsOl.appendChild(listItem);
+                    }
+                });
+            }
+            generateTableOfContents(); // 修正された関数を呼び出し
+
+            // 6. 読了時間目安
+            function calculateReadingTime() {
+                if (!mainContent || !readingTimeEl) return;
+                const text = mainContent.innerText || mainContent.textContent;
+                const words = text.trim().split(/\s+/).filter(Boolean).length;
+                const wpm = 200; 
+                const minutes = Math.ceil(words / wpm);
+                readingTimeEl.textContent = `読了時間の目安: 約${minutes}分`;
+            }
+            calculateReadingTime();
+
+            // 7. 事前理解度チェックテスト
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults');
+            const testScoreDiv = document.getElementById('testScore');
+            const reviewLinksModalDiv = document.getElementById('reviewLinksModal');
+            
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreDiv = document.getElementById('persistentScore');
+            const persistentReviewLinksDiv = document.getElementById('persistentReviewLinks');
+
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    section.classList.add('highlight-temp');
+                    setTimeout(() => {
+                        section.classList.remove('highlight-temp');
+                    }, 2000);
+                }
+            }
+
+            function displayTestResults(resultData, scoreContainer, reviewLinksContainer) {
+                if (!scoreContainer || !reviewLinksContainer) return; // 要素がない場合は何もしない
+
+                scoreContainer.innerHTML = '';
+                reviewLinksContainer.innerHTML = '';
+
+                if (resultData.skipped) {
+                    scoreContainer.innerHTML = `<p>テストはスキップされました。</p>`;
+                    return;
+                }
+
+                scoreContainer.innerHTML = `<p>あなたのスコア: ${resultData.score} / ${resultData.totalQuestions} 点</p>`;
+                if (resultData.incorrectQuestions.length === 0 && resultData.totalQuestions > 0) {
+                    reviewLinksContainer.innerHTML = '<p>全問正解です！素晴らしい！</p>';
+                } else if (resultData.totalQuestions === 0) { 
+                     reviewLinksContainer.innerHTML = '<p>採点対象の問題がありませんでした。</p>';
+                } else if (resultData.incorrectQuestions.length > 0) {
+                    let linksHtml = '<p>以下の項目を復習しましょう:</p><ul>';
+                    resultData.incorrectQuestions.forEach(item => {
+                        // item.name と item.sectionId が存在することを確認
+                        const itemName = item.name || `セクション ${item.sectionId || 'ID不明'}`;
+                        const itemSectionId = item.sectionId || '#';
+                        linksHtml += `<li><a href="#${itemSectionId}" data-section-id="${itemSectionId}">${itemName}</a></li>`;
+                    });
+                    linksHtml += '</ul>';
+                    reviewLinksContainer.innerHTML = linksHtml;
+                } else {
+                     reviewLinksContainer.innerHTML = '<p>採点結果の表示に問題があるか、復習項目はありません。'; // 全問正解以外のケースでincorrectQuestionsが空の場合
+                }
+            }
+            
+            function closePreTestModal() {
+                if(preTestModalOverlay) preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            if (preTestForm) {
+                preTestForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(preTestForm);
+                    let score = 0;
+                    const incorrectQuestions = [];
+                    const questions = preTestModalOverlay.querySelectorAll('.test-question');
+                    
+                    questions.forEach((question, index) => {
+                        const questionName = `q${index + 1}`;
+                        const userAnswer = formData.get(questionName);
+                        const correctAnswerInput = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                        
+                        if (correctAnswerInput && userAnswer === correctAnswerInput.value) {
+                            score++;
+                        } else if (correctAnswerInput) { 
+                            const sectionId = question.dataset.sectionId;
+                            const sectionTitleEl = document.querySelector(`section#${sectionId} h2`); // セクションIDからh2のテキストを取得
+                            const sectionName = sectionTitleEl ? sectionTitleEl.textContent : (document.getElementById(sectionId)?.querySelector('h2')?.textContent.substring(0,30) || `不明なセクション (${sectionId})`);
+                            incorrectQuestions.push({ name: sectionName, sectionId: sectionId });
+                        }
+                    });
+
+                    const resultData = {
+                        score: score,
+                        totalQuestions: questions.length,
+                        incorrectQuestions: incorrectQuestions,
+                        skipped: false
+                    };
+
+                    displayTestResults(resultData, testScoreDiv, reviewLinksModalDiv);
+                    if(testResultsDiv) testResultsDiv.style.display = 'block';
+                    const submitButton = preTestForm.querySelector('button[type="submit"]');
+                    if(submitButton) submitButton.style.display = 'none';
+                    if(skipTestBtn) skipTestBtn.textContent = '閉じる'; 
+
+                    displayTestResults(resultData, persistentScoreDiv, persistentReviewLinksDiv);
+                    if(persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block';
+                    
+                    sessionStorage.setItem('preTestCompleted', 'true');
+                    sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                });
+            }
+
+            if (skipTestBtn) {
+                skipTestBtn.addEventListener('click', () => {
+                    closePreTestModal();
+                    if (sessionStorage.getItem('preTestCompleted') !== 'true') { 
+                        const resultData = { skipped: true, totalQuestions: 0, incorrectQuestions:[], score:0 };
+                        displayTestResults(resultData, persistentScoreDiv, persistentReviewLinksDiv);
+                        if(persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block';
+                        sessionStorage.setItem('preTestCompleted', 'true');
+                        sessionStorage.setItem('preTestResultData', JSON.stringify(resultData));
+                    }
+                });
+            }
+
+            if (reviewLinksModalDiv) {
+                 reviewLinksModalDiv.addEventListener('click', (e) => {
+                    const targetLink = e.target.closest('a[data-section-id]');
+                    if (targetLink) {
+                        e.preventDefault();
+                        const sectionId = targetLink.dataset.sectionId;
+                        closePreTestModal();
+                        scrollToSection(sectionId);
+                    }
+                });
+            }
+
+            if (persistentReviewLinksDiv) {
+                persistentReviewLinksDiv.addEventListener('click', (e) => {
+                    const targetLink = e.target.closest('a[data-section-id]');
+                    if (targetLink) {
+                        e.preventDefault();
+                        scrollToSection(targetLink.dataset.sectionId);
+                    }
+                });
+            }
+
+            function initPreTest() {
+                const preTestCompleted = sessionStorage.getItem('preTestCompleted');
+                if (preTestCompleted === 'true') {
+                    const resultDataString = sessionStorage.getItem('preTestResultData');
+                    if (resultDataString) {
+                        try {
+                            const resultData = JSON.parse(resultDataString);
+                            if (resultData && typeof resultData === 'object') {
+                                displayTestResults(resultData, persistentScoreDiv, persistentReviewLinksDiv);
+                                if(persistentTestResultsDiv) persistentTestResultsDiv.style.display = 'block';
+                            } else {
+                                sessionStorage.removeItem('preTestResultData'); 
+                                sessionStorage.removeItem('preTestCompleted'); 
+                            }
+                        } catch (e) {
+                            console.error("Error parsing preTestResultData from sessionStorage:", e);
+                            sessionStorage.removeItem('preTestResultData');
+                            sessionStorage.removeItem('preTestCompleted');
+                        }
+                    }
+                    if(preTestModalOverlay) preTestModalOverlay.style.display = 'none';
+                } else {
+                    if(preTestModalOverlay) { 
+                       preTestModalOverlay.style.display = 'flex';
+                       document.body.style.overflow = 'hidden';
+                    }
+                }
+            }
+            
+            function injectRelatedPretests() {
+                const testQuestions = document.querySelectorAll('#preTestModalOverlay .test-question');
+                testQuestions.forEach(questionElement => {
+                    const sectionId = questionElement.dataset.sectionId;
+                    const targetSection = document.getElementById(sectionId);
+
+                    if (targetSection) {
+                        const questionText = questionElement.querySelector('p')?.textContent || "問題文不明";
+                        const correctAnswerInput = questionElement.querySelector('input[data-correct="true"]');
+                        let correctAnswerText = 'N/A';
+                        if (correctAnswerInput) {
+                            const parentLabel = correctAnswerInput.closest('label');
+                            if (parentLabel) {
+                                const tempLabel = parentLabel.cloneNode(true);
+                                const tempInputInLabel = tempLabel.querySelector('input');
+                                if (tempInputInLabel) tempInputInLabel.remove(); 
+                                correctAnswerText = tempLabel.textContent.trim();
+                            } else {
+                                correctAnswerText = correctAnswerInput.value; 
+                            }
+                        }
+                        
+                        const explanation = `正解は「${correctAnswerText}」です。`;
+
+                        const relatedTestDiv = document.createElement('div');
+                        relatedTestDiv.classList.add('related-pretest');
+                        
+                        const uniqueIdSuffix = Math.random().toString(36).substr(2, 5);
+                        const answerDivId = `related-answer-${sectionId}-${uniqueIdSuffix}`;
+
+                        relatedTestDiv.innerHTML = `
+                            <h4>関連する事前テスト問題</h4>
+                            <p>${questionText}</p>
+                            <button class="toggle-answer" data-target="${answerDivId}" data-show-text="解答・解説を表示" data-hide-text="解答・解説を隠す">解答・解説を表示</button>
+                            <div class="answer" id="${answerDivId}" style="display:none;">
+                                <p><strong>正解:</strong> ${correctAnswerText}</p>
+                                <p><strong>解説:</strong> ${explanation}</p>
+                            </div>
+                        `;
+                        targetSection.appendChild(relatedTestDiv);
+                    }
+                });
+                initializeToggleAnswers(); 
+            }
+            
+            initPreTest(); 
+            injectRelatedPretests(); 
+
+        });
+    </script>
+
+</body>
+</html>
