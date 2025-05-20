@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,58 +31,40 @@
         }
         h1 {
             color: #2a3b4c;
-            margin-bottom: 20px; /* Adjusted margin */
+            margin-bottom: 20px;
             font-size: 26px;
             font-weight: 600;
         }
-        #problem-selector-container {
-            margin-bottom: 25px;
-        }
+        #problem-selector-container { margin-bottom: 25px; }
         #problem-selector {
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            min-width: 250px;
-            cursor: pointer;
+            padding: 10px 15px; font-size: 16px; border-radius: 6px;
+            border: 1px solid #ccc; min-width: 250px; cursor: pointer;
         }
         #sentence-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            align-items: baseline;
-            margin-bottom: 30px;
-            padding: 10px 5px;
-            min-height: 100px; /* Ensure some height even when empty */
-            line-height: 2.2;
-            text-align: left;
-            font-size: 19px;
-            color: #444;
-            border: 1px dashed #e0e0e0; /* Light border to indicate text area */
-            border-radius: 6px;
+            display: flex; flex-wrap: wrap; justify-content: flex-start;
+            align-items: baseline; margin-bottom: 30px; padding: 10px 5px;
+            min-height: 100px; line-height: 2.3; /* Increased for better click targets */
+            text-align: left; font-size: 19px; color: #444;
+            border: 1px dashed #e0e0e0; border-radius: 6px;
+            user-select: none; /* Prevent text selection during clicks */
         }
         .char-span {
-            display: inline-block;
-            text-align: center;
-            margin: 0 0.5px;
-            padding: 0 1px;
+            display: inline-block; text-align: center;
+            margin: 1px 0.5px; /* Added vertical margin for click separation */
+            padding: 2px 1px;   /* Added vertical padding */
             transition: color 0.2s ease-out, background-color 0.2s, border-color 0.2s;
+            cursor: pointer; /* Indicate clickable */
         }
         .char-span.letter-char {
-            color: #777;
-            min-width: 10px;
-            font-weight: 600;
+            color: #777; min-width: 10px; font-weight: 600;
             border-bottom: 2px solid transparent;
         }
         .char-span.is-space {
-            min-width: 6px;
-            display: inline;
+            min-width: 6px; display: inline; cursor: default; /* Spaces not directly clickable for focus */
         }
         .char-span.current.letter-char {
-            background-color: #e0f2fe;
-            border-bottom: 2px solid #0ea5e9;
-            color: #555;
-            border-radius: 3px;
+            background-color: #e0f2fe; border-bottom: 2px solid #0ea5e9;
+            color: #555; border-radius: 3px;
             animation: blinkCursorBorder 1.2s infinite ease-in-out;
         }
         @keyframes blinkCursorBorder {
@@ -89,30 +72,19 @@
             50% { border-bottom-color: #7dd3fc; }
         }
         .char-span.correct.letter-char {
-            color: #2c3e50;
-            font-weight: 600;
-            background-color: transparent;
-            border-bottom-color: transparent;
+            color: #2c3e50; font-weight: 600; background-color: transparent;
+            border-bottom-color: transparent; cursor: default; /* Corrected chars not primary click targets for moving focus */
         }
-        .feedback {
-            margin-top: 20px;
-            font-size: 17px;
-            height: 28px;
-            font-weight: 500;
-        }
+        .char-span.correct.is-space { cursor: default; }
+
+        .feedback { margin-top: 20px; font-size: 17px; height: 28px; font-weight: 500; }
         .feedback.error { color: #ef4444; }
         .feedback.success { color: #22c55e; font-weight: 600; }
         #initial-message { font-style: italic; color: #666; }
         #reset-button {
-            margin-top: 30px;
-            padding: 12px 30px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #0ea5e9;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.25s ease;
+            margin-top: 30px; padding: 12px 30px; font-size: 16px;
+            color: #fff; background-color: #0ea5e9; border: none;
+            border-radius: 8px; cursor: pointer; transition: background-color 0.25s ease;
             font-weight: 500;
         }
         #reset-button:hover { background-color: #0284c7; }
@@ -122,13 +94,11 @@
 <body>
     <div class="container">
         <h1>Typing Dictation Practice</h1>
-
         <div id="problem-selector-container">
             <select id="problem-selector">
                 <option value="">-- Select a Problem --</option>
             </select>
         </div>
-
         <div id="sentence-container">
             <p id="initial-message">Please select a problem from the dropdown above to start.</p>
         </div>
@@ -137,24 +107,20 @@
     </div>
 
     <script>
-        // Define your problem files here
-        // 'name' is what displayed in the dropdown, 'path' is the actual file name
         const problemFiles = [
             { name: "Dictionary Text (Default)", path: "default_english_text.txt" },
             { name: "Sample Problem 1", path: "problem1.txt" },
             { name: "Sample Problem 2", path: "problem2.txt" },
-            // Add more problems here as needed:
-            // { name: "My Custom Problem", path: "my_custom_problem.txt" },
         ];
 
         const sentenceContainer = document.getElementById('sentence-container');
         const feedbackMessage = document.getElementById('feedback-message');
         const resetButton = document.getElementById('reset-button');
         const problemSelector = document.getElementById('problem-selector');
-        const initialMessage = document.getElementById('initial-message');
 
-        let sourceText = ""; // Will be loaded from file
+        let sourceText = "";
         let charSpans = [];
+        let wordBoundaries = []; // Stores {start, end} for each word
         let currentIndex = 0;
         let gameActive = false;
 
@@ -170,47 +136,71 @@
         async function loadProblem(filePath) {
             if (!filePath) {
                 sourceText = "";
-                initGame(); // This will show the initial message
-                return;
+                initGame(); return;
             }
             try {
-                const response = await fetch(filePath);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status} - Could not load ${filePath}`);
-                }
+                const urlWithCacheBust = `${filePath}?t=${new Date().getTime()}`;
+                const response = await fetch(urlWithCacheBust);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const text = await response.text();
-                sourceText = text.trim(); // Trim whitespace from loaded text
+                sourceText = text.trim();
                 initGame();
             } catch (error) {
                 console.error("Error loading problem:", error);
-                sentenceContainer.innerHTML = `<p style="color:red;">Error: Could not load the problem file. Make sure '${filePath}' exists in the same directory and you are using a local web server.</p>`;
-                feedbackMessage.textContent = '';
-                resetButton.style.display = 'none';
+                sentenceContainer.innerHTML = `<p style="color:red;">Error: Could not load problem. Check console.</p>`;
                 gameActive = false;
-                document.removeEventListener('keydown', handleKeydown);
+            }
+        }
+        
+        function parseWordBoundaries() {
+            wordBoundaries = [];
+            if (!sourceText) return;
+
+            let inWord = false;
+            let currentWordStart = -1;
+            for (let i = 0; i < sourceText.length; i++) {
+                const char = sourceText[i];
+                // Word characters are typically letters or numbers. Apostrophes can be part of words.
+                const isWordChar = (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') || (char >= '0' && char <= '9') || char === "'";
+                
+                if (isWordChar && !inWord) {
+                    inWord = true;
+                    currentWordStart = i;
+                } else if (!isWordChar && inWord) {
+                    inWord = false;
+                    if (currentWordStart !== -1) {
+                        wordBoundaries.push({ start: currentWordStart, end: i - 1 });
+                        currentWordStart = -1;
+                    }
+                }
+            }
+            // If the text ends with a word
+            if (inWord && currentWordStart !== -1) {
+                wordBoundaries.push({ start: currentWordStart, end: sourceText.length - 1 });
             }
         }
 
+
         function initGame() {
-            sentenceContainer.innerHTML = ''; // Clear previous content, including initial message or error
+            sentenceContainer.innerHTML = '';
             charSpans = [];
             currentIndex = 0;
             
             if (!sourceText) {
-                sentenceContainer.innerHTML = '<p id="initial-message">Please select a problem from the dropdown above to start.</p>';
-                feedbackMessage.textContent = '';
-                resetButton.style.display = 'none';
-                gameActive = false;
-                document.removeEventListener('keydown', handleKeydown);
+                sentenceContainer.innerHTML = '<p id="initial-message">Please select a problem to start.</p>';
+                feedbackMessage.textContent = ''; resetButton.style.display = 'none';
+                gameActive = false; document.removeEventListener('keydown', handleKeydown);
                 return;
             }
             
             gameActive = true;
+            parseWordBoundaries(); // Parse words before creating spans
 
-            sourceText.split('').forEach(originalChar => {
+            sourceText.split('').forEach((originalChar, index) => {
                 const span = document.createElement('span');
                 span.classList.add('char-span');
                 span.dataset.original = originalChar;
+                span.dataset.index = index; // Store original index
 
                 if (originalChar === ' ') {
                     span.innerHTML = '&nbsp;';
@@ -218,147 +208,246 @@
                 } else {
                     span.textContent = '_';
                     span.classList.add('letter-char');
+                    span.addEventListener('click', handleCharClick); // Add click listener only to letter chars
                 }
                 sentenceContainer.appendChild(span);
                 charSpans.push(span);
             });
 
-            feedbackMessage.textContent = '';
-            feedbackMessage.className = 'feedback';
-            resetButton.style.display = 'none'; // Hide reset button until game ends
-            resetButton.disabled = true;
+            feedbackMessage.textContent = ''; feedbackMessage.className = 'feedback';
+            resetButton.style.display = 'none'; resetButton.disabled = true;
 
             document.removeEventListener('keydown', handleKeydown);
             document.addEventListener('keydown', handleKeydown);
             
-            advanceToNextTypableCharacter();
+            setCurrentIndex(0, true); // Initial cursor placement
         }
 
-        function advanceToNextTypableCharacter() {
-            if (currentIndex > 0 && currentIndex <= sourceText.length) {
-                 if(charSpans[currentIndex-1]) charSpans[currentIndex-1].classList.remove('current');
-            }
+        function handleCharClick(event) {
+            if (!gameActive) return;
+            const clickedIndex = parseInt(event.target.dataset.index, 10);
             
-            while (currentIndex < sourceText.length && charSpans[currentIndex].dataset.original === ' ') {
-                const spaceSpan = charSpans[currentIndex];
-                spaceSpan.classList.add('correct');
-                currentIndex++;
+            // If clicked char is already correct, try to find the next non-correct char in its word or next word
+            if (charSpans[clickedIndex].classList.contains('correct')) {
+                let nextFocusIndex = clickedIndex;
+                // Try to find next non-correct char in the same word
+                const word = wordBoundaries.find(w => clickedIndex >= w.start && clickedIndex <= w.end);
+                if (word) {
+                    let foundInWord = false;
+                    for (let i = clickedIndex; i <= word.end; i++) {
+                        if (sourceText[i] !== ' ' && !charSpans[i].classList.contains('correct')) {
+                            nextFocusIndex = i;
+                            foundInWord = true;
+                            break;
+                        }
+                    }
+                    if (!foundInWord) { // If all in word are correct, find next word
+                        nextFocusIndex = findNextUncompletedChar(word.end + 1);
+                    }
+                } else { // If not in a defined word (e.g. punctuation after word), just find next
+                     nextFocusIndex = findNextUncompletedChar(clickedIndex + 1);
+                }
+                setCurrentIndex(nextFocusIndex !== -1 ? nextFocusIndex : currentIndex);
+
+            } else { // Clicked on a non-correct, non-space char
+                 setCurrentIndex(clickedIndex);
+            }
+        }
+        
+        function findNextUncompletedChar(startIndex) {
+            for (let i = startIndex; i < sourceText.length; i++) {
+                if (sourceText[i] !== ' ' && !charSpans[i].classList.contains('correct')) {
+                    return i;
+                }
+            }
+            return -1; // No uncompleted char found
+        }
+         function findPrevUncompletedChar(startIndex) {
+            for (let i = startIndex; i >= 0; i--) {
+                if (sourceText[i] !== ' ' && !charSpans[i].classList.contains('correct')) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+
+        function setCurrentIndex(newIndex, forceSkip = false) {
+            if (currentIndex < charSpans.length && charSpans[currentIndex]) {
+                charSpans[currentIndex].classList.remove('current');
             }
 
-            if (currentIndex < sourceText.length) {
+            currentIndex = newIndex;
+
+            if (currentIndex >= sourceText.length) {
+                if (gameActive) completeGame();
+                return;
+            }
+            
+            // Skip spaces and already correct characters
+            while (currentIndex < sourceText.length && 
+                   (sourceText[currentIndex] === ' ' || (charSpans[currentIndex].classList.contains('correct') && !forceSkip))) {
+                if (sourceText[currentIndex] === ' ' && !charSpans[currentIndex].classList.contains('correct')) {
+                    charSpans[currentIndex].classList.add('correct'); // Auto-correct skipped spaces
+                }
+                currentIndex++;
+                if (currentIndex >= sourceText.length) {
+                    if (gameActive) completeGame();
+                    return;
+                }
+            }
+            // If forceSkip was true, it means we want to land on this char even if correct (e.g. for tab)
+            // but we still need to ensure it's not a space for the 'current' marker
+             while (currentIndex < sourceText.length && sourceText[currentIndex] === ' ') {
+                 if (!charSpans[currentIndex].classList.contains('correct')) {
+                    charSpans[currentIndex].classList.add('correct');
+                 }
+                 currentIndex++;
+                  if (currentIndex >= sourceText.length) {
+                    if (gameActive) completeGame();
+                    return;
+                }
+             }
+
+
+            if (currentIndex < sourceText.length && charSpans[currentIndex]) {
                 charSpans[currentIndex].classList.add('current');
-            } else if (gameActive) { // All characters processed
+                 // Scroll into view if needed
+                // charSpans[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            } else if (currentIndex >= sourceText.length && gameActive) {
                 completeGame();
             }
         }
         
-        function completeGame() {
-            if (!gameActive) return;
-            gameActive = false;
-
-            // Clean up 'current' from last char if any
-            if(currentIndex > 0 && charSpans[currentIndex-1]) {
-                 charSpans[currentIndex-1].classList.remove('current');
-            }
-             // If completion was due to trailing spaces, current might point beyond array
-            if(currentIndex < sourceText.length && charSpans[currentIndex]) {
-                charSpans[currentIndex].classList.remove('current');
-            }
-
-
+        function completeGame() { /* ... (same as before) ... */ 
+            if (!gameActive) return; gameActive = false;
+            if(currentIndex > 0 && charSpans[currentIndex-1]) charSpans[currentIndex-1].classList.remove('current');
+            if(currentIndex < sourceText.length && charSpans[currentIndex]) charSpans[currentIndex].classList.remove('current');
             feedbackMessage.textContent = 'Congratulations! You completed it!';
             feedbackMessage.className = 'feedback success';
             gsap.fromTo(feedbackMessage, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-            
-            resetButton.style.display = 'inline-block';
-            resetButton.disabled = false;
+            resetButton.style.display = 'inline-block'; resetButton.disabled = false;
             gsap.fromTo(resetButton, {opacity:0, scale:0.9}, {opacity:1, scale:1, duration:0.3, delay:0.1, ease: "back.out(1.7)"});
             document.removeEventListener('keydown', handleKeydown);
         }
 
         function handleKeydown(event) {
-            if (!gameActive || currentIndex >= sourceText.length) return;
-            if (event.metaKey || event.ctrlKey || event.altKey) return;
+            if (!gameActive) return;
+            
+            const isTypingKey = event.key.length === 1 && event.key !== ' ';
+            const isSpaceKey = event.key === ' ';
+            const isTabKey = event.key === 'Tab';
 
-            const currentSpan = charSpans[currentIndex];
-            // This check is mostly a safeguard; advanceToNextTypableCharacter should handle spaces.
-            if (!currentSpan || currentSpan.dataset.original === ' ') {
-                advanceToNextTypableCharacter();
-                if (!gameActive || currentIndex >= sourceText.length) return; 
+            if (event.metaKey || event.ctrlKey || (event.altKey && !isTypingKey)) { // Allow AltGr for typing
+                 // Exception for Tab which might be combined with Alt sometimes on some systems
+                if(!isTabKey && !(event.altKey && event.key === 'Control')) return; // Allow Alt+Ctrl for some inputs
             }
 
-            const typedKey = event.key;
 
-            if (typedKey.length === 1 && typedKey !== ' ') {
+            if (isTabKey) {
+                event.preventDefault();
+                let nextWordStartIndex = -1;
+                const currentWord = wordBoundaries.find(w => currentIndex >= w.start && currentIndex <= w.end);
+
+                if (event.shiftKey) { // Shift + Tab: Move to previous uncompleted word
+                    let searchEndIndex = currentWord ? currentWord.start -1 : currentIndex -1;
+                    for (let i = wordBoundaries.length - 1; i >= 0; i--) {
+                        const word = wordBoundaries[i];
+                        if (word.end < searchEndIndex) { // Word is before current focus
+                            // Check if this word is uncompleted
+                            for (let j = word.start; j <= word.end; j++) {
+                                if (sourceText[j] !== ' ' && !charSpans[j].classList.contains('correct')) {
+                                    nextWordStartIndex = j; // Found first uncompleted char of this word
+                                    break;
+                                }
+                            }
+                        }
+                        if (nextWordStartIndex !== -1) break;
+                    }
+                     if (nextWordStartIndex === -1) { // If no prev uncompleted word, try from beginning
+                        nextWordStartIndex = findNextUncompletedChar(0);
+                    }
+
+                } else { // Tab: Move to next uncompleted word
+                    let searchStartIndex = currentWord ? currentWord.end + 1 : currentIndex + 1;
+                     for (const word of wordBoundaries) {
+                        if (word.start >= searchStartIndex) { // Word is after current focus
+                            // Check if this word is uncompleted
+                            for (let j = word.start; j <= word.end; j++) {
+                                 if (sourceText[j] !== ' ' && !charSpans[j].classList.contains('correct')) {
+                                    nextWordStartIndex = j; // Found first uncompleted char of this word
+                                    break;
+                                }
+                            }
+                        }
+                        if (nextWordStartIndex !== -1) break;
+                    }
+                    if (nextWordStartIndex === -1) { // If no next uncompleted word, try from current pos (might be at end)
+                        nextWordStartIndex = findNextUncompletedChar(currentIndex);
+                    }
+                }
+                
+                if (nextWordStartIndex !== -1) {
+                    setCurrentIndex(nextWordStartIndex, true); // forceSkip true to land on it
+                }
+                return;
+            }
+
+
+            if (currentIndex >= sourceText.length) return; // Already completed
+            
+            // If current char is a space, it should be skipped by setCurrentIndex.
+            // This is a safeguard.
+            if (sourceText[currentIndex] === ' ') {
+                setCurrentIndex(currentIndex + 1);
+                if (!gameActive || currentIndex >= sourceText.length) return;
+            }
+
+
+            if (isTypingKey) {
                 event.preventDefault(); 
-
                 const expectedChar = charSpans[currentIndex].dataset.original;
-
-                if (typedKey === expectedChar) {
+                if (event.key === expectedChar) {
                     const spanToCorrect = charSpans[currentIndex];
                     spanToCorrect.classList.remove('current');
                     spanToCorrect.classList.add('correct');
                     spanToCorrect.textContent = expectedChar;
-
-                    gsap.fromTo(spanToCorrect, 
-                        { scaleY: 1.3, scaleX: 1.1, opacity: 0.7 }, 
-                        { scaleY: 1, scaleX: 1, opacity: 1, duration: 0.3, ease: "elastic.out(1, 0.6)" }
-                    );
-
-                    feedbackMessage.textContent = '';
-                    feedbackMessage.className = 'feedback';
-                    
-                    currentIndex++;
-                    advanceToNextTypableCharacter();
-
+                    gsap.fromTo(spanToCorrect, { scaleY: 1.3, scaleX: 1.1, opacity: 0.7 }, { scaleY: 1, scaleX: 1, opacity: 1, duration: 0.3, ease: "elastic.out(1, 0.6)" });
+                    feedbackMessage.textContent = ''; feedbackMessage.className = 'feedback';
+                    setCurrentIndex(currentIndex + 1);
                 } else {
                     feedbackMessage.textContent = 'Incorrect. Try again.';
                     feedbackMessage.className = 'feedback error';
                     gsap.fromTo(feedbackMessage, {opacity:0}, {opacity:1, duration:0.2});
-
                     const targetSpan = charSpans[currentIndex];
-                    gsap.to(targetSpan, { 
-                        x: '+=2', yoyo: true, repeat: 3, duration: 0.06, 
-                        ease: 'power1.inOut',
-                        onComplete: () => gsap.set(targetSpan, {clearProps: "x"}) 
-                    });
-                    gsap.to(targetSpan, {
-                        backgroundColor: '#fee2e2', duration: 0.1, yoyo: true, repeat: 1,
-                        onComplete: () => {
-                            if(targetSpan.classList.contains('current')) {
-                                targetSpan.style.backgroundColor = '#e0f2fe';
-                            } else {
-                                targetSpan.style.backgroundColor = '';
-                            }
-                        }
-                    });
+                    gsap.to(targetSpan, { x: '+=2', yoyo: true, repeat: 3, duration: 0.06, ease: 'power1.inOut', onComplete: () => gsap.set(targetSpan, {clearProps: "x"}) });
+                    gsap.to(targetSpan, { backgroundColor: '#fee2e2', duration: 0.1, yoyo: true, repeat: 1, onComplete: () => {
+                        if(targetSpan.classList.contains('current')) targetSpan.style.backgroundColor = '#e0f2fe';
+                        else targetSpan.style.backgroundColor = '';
+                    }});
                 }
-            } else if (typedKey === ' ' && charSpans[currentIndex].dataset.original !== ' ') {
+            } else if (isSpaceKey && sourceText[currentIndex] !== ' ') {
                 event.preventDefault();
                 feedbackMessage.textContent = 'Incorrect. A letter or punctuation was expected.';
                 feedbackMessage.className = 'feedback error';
                 gsap.fromTo(feedbackMessage, {opacity:0}, {opacity:1, duration:0.2});
-                const targetSpan = charSpans[currentIndex];
-                gsap.to(targetSpan, { 
-                    x: '+=2', yoyo: true, repeat: 3, duration: 0.06, ease: 'power1.inOut',
-                    onComplete: () => gsap.set(targetSpan, {clearProps: "x"}) 
-                });
+                // ... (shake animation if desired) ...
             }
         }
 
-        problemSelector.addEventListener('change', (event) => {
-            loadProblem(event.target.value);
-        });
-
+        problemSelector.addEventListener('change', (event) => loadProblem(event.target.value));
         resetButton.addEventListener('click', () => {
-            // Re-initialize the game with the currently selected problem (or last loaded sourceText)
-            // This allows "Try Again" for the same problem.
-            initGame();
+            // Use the filePath from the selector to ensure "Try Again" reloads the current problem
+            const selectedProblemPath = problemSelector.value;
+            if (selectedProblemPath) {
+                loadProblem(selectedProblemPath);
+            } else { // If no problem was selected somehow, or if sourceText was set directly
+                initGame(); // Fallback to re-init with current sourceText
+            }
         });
         
         document.addEventListener('DOMContentLoaded', () => {
             populateProblemSelector();
-            // initGame(); // Don't start game immediately, wait for selection
         });
     </script>
 </body>
