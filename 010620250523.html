@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業記録: 単語練習と文の種類② (2025/5/23)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f4f7f6;
+            --bg-content: #ffffff;
+            --text-main: #333333;
+            --text-secondary: #555555;
+            --primary-color: #4CAF50;
+            --accent-color: #FF9800;
+            --link-color: #4CAF50;
+            --border-color: #e0e0e0;
+            --answer-bg: #e8f5e9;
+            --test-result-bg: #fffde7;
+            --test-result-border: #fff59d;
+            --related-test-bg: #f0f4f0; /* Lightened primary for related test */
+            --related-test-border: #d0e0d0;
+            --highlight-temp-bg: #fff9c4;
+            --tooltip-bg: #333;
+            --tooltip-text: #fff;
+            --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.75;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-content);
+            box-shadow: var(--box-shadow);
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background-color: var(--accent-color);
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.3em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.2em; }
+        h3 { font-size: 1.4em; }
+
+        p { margin-bottom: 1em; }
+        ul, ol { margin-bottom: 1em; padding-left: 1.5em; }
+        li { margin-bottom: 0.5em; }
+
+        a { color: var(--link-color); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .highlight { background-color: var(--accent-color); color: white; padding: 0.1em 0.3em; border-radius: 3px; font-weight: bold; }
+        .code-block { background-color: #f0f0f0; border: 1px solid var(--border-color); padding: 15px; border-radius: 5px; overflow-x: auto; font-family: monospace; margin-bottom: 1em; }
+        code { background-color: #e7e7e7; padding: 0.2em 0.4em; border-radius: 3px; font-family: monospace; }
+        
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1em;
+            margin-left: 0;
+            margin-right: 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .summary-box, .supplementary-box {
+            background-color: #eef7ee; /* Light green tint */
+            border: 1px solid #c8e6c9; /* Light green border */
+            padding: 15px;
+            margin-bottom: 1.5em;
+            border-radius: 5px;
+            box-shadow: var(--box-shadow);
+        }
+        .summary-box h3, .supplementary-box h3 { margin-top: 0; color: var(--primary-color); }
+
+        #tableOfContents {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2em;
+        }
+        #tableOfContents h3 { margin-top: 0; }
+        #tableOfContents ul {
+            list-style: none;
+            padding: 0;
+            column-count: 2; /* 2カラム表示 */
+            column-gap: 20px;
+        }
+        #tableOfContents li { margin-bottom: 0.5em; }
+        #tableOfContents li a { display: block; padding: 5px; border-radius: 3px; }
+        #tableOfContents li a:hover { background-color: #e9e9e9; }
+
+        /* Reading Time */
+        #readingTime {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 1.5em;
+            text-align: right;
+        }
+
+        /* Persistent Test Results Area */
+        #persistentTestResults {
+            background-color: var(--test-result-bg);
+            border: 1px solid var(--test-result-border);
+            padding: 15px;
+            margin-bottom: 1.5em;
+            border-radius: 5px;
+            box-shadow: var(--box-shadow);
+        }
+        #persistentTestResults h3 { margin-top: 0; color: var(--primary-color); }
+
+        /* Related Pre-test Area */
+        .related-pretest {
+            background-color: var(--related-test-bg);
+            border: 1px solid var(--related-test-border);
+            padding: 15px;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            border-radius: 5px;
+        }
+        .related-pretest h4 { margin-top: 0; color: var(--primary-color); }
+
+        /* Toggle Answer Button & Area */
+        .toggle-answer {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 0.5em;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-answer:hover { background-color: #3e8e41; /* Darker green */ }
+        .answer {
+            background-color: var(--answer-bg);
+            padding: 10px;
+            margin-top: 0.5em;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            display: none; /* Initially hidden */
+        }
+
+        /* Checklist */
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, text-decoration 0.3s ease;
+            position: relative;
+            padding-left: 30px; /* Space for custom checkbox */
+        }
+        .checklist li:before {
+            content: '☐'; /* Unchecked box */
+            position: absolute;
+            left: 10px;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
+        .checklist li.checked {
+            background-color: #e8f5e9; /* Light green */
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+        .checklist li.checked:before {
+            content: '☑'; /* Checked box */
+        }
+
+        /* Review Questions */
+        .review-questions .question { margin-bottom: 1.5em; }
+        .review-questions textarea {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 0.5em;
+            min-height: 80px;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        /* Scroll to Top Button */
+        #scrollTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--accent-color);
+            color: white;
+            cursor: pointer;
+            padding: 12px 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: var(--box-shadow);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #scrollTopBtn:hover { background-color: #e68a00; /* Darker orange */ }
+
+        /* Pre-Test Modal */
+        #preTestModalOverlay {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        #preTestModal {
+            background-color: var(--bg-content);
+            margin: 10% auto;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #preTestModal h2 { margin-top: 0; }
+        .test-question { margin-bottom: 20px; }
+        .test-question p { margin-bottom: 8px; font-weight: bold; }
+        .test-question label { display: block; margin-bottom: 5px; cursor: pointer; }
+        .test-question input[type="radio"] { margin-right: 8px; }
+        #testButtons { margin-top: 20px; text-align: right; }
+        #testButtons button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        #submitTestBtn { background-color: var(--primary-color); color: white; }
+        #skipTestBtn { background-color: var(--text-secondary); color: white; }
+        #testResults h3, #persistentTestResults h3 { margin-top: 0; color: var(--primary-color); }
+        #reviewLinks ul, #persistentReviewLinks ul { list-style-type: disc; padding-left: 20px; }
+        #reviewLinks li a, #persistentReviewLinks li a { color: var(--link-color); }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        [data-tooltip]:before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%; /* Position above the text */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 8px;
+            border-radius: 4px;
+            background-color: var(--tooltip-bg);
+            color: var(--tooltip-text);
+            font-size: 0.9em;
+            white-space: nowrap;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:after { /* Arrow */
+            content: '';
+            position: absolute;
+            bottom: 100%; /* Position below the tooltip text, above the main text */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            z-index: 10;
+        }
+        [data-tooltip]:hover:before, [data-tooltip]:hover:after {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Temporary Highlight */
+        .highlight-temp {
+            background-color: var(--highlight-temp-bg) !important; /* Use !important to override other backgrounds if necessary */
+            transition: background-color 0.5s ease-out;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 15px; margin-top: 10px; margin-bottom: 10px; }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.2em; }
+            #tableOfContents ul { column-count: 1; }
+            #preTestModal { width: 90%; margin: 5% auto; padding: 20px;}
+        }
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+
+    <div id="preTestModalOverlay">
+        <div id="preTestModal">
+            <h2>事前理解度チェックテスト</h2>
+            <p>この授業内容の理解度を事前にチェックしましょう。</p>
+            <form id="preTestForm">
+                <div class="test-question" data-section-id="weekly-test-info">
+                    <p>1. 英語のウィークリーテストは通常何曜日に行われますか？</p>
+                    <label><input type="radio" name="q1" value="a"> A) 月曜日</label>
+                    <label><input type="radio" name="q1" value="b"> B) 水曜日</label>
+                    <label><input type="radio" name="q1" value="c" data-correct="true"> C) 金曜日</label>
+                    <label><input type="radio" name="q1" value="d"> D) 土曜日</label>
+                </div>
+                <div class="test-question" data-section-id="classroom-guide">
+                    <p>2. 単語の学習ペースを確認するために使用するGoogle Classroomのコードは何ですか？</p>
+                    <label><input type="radio" name="q2" value="a"> A) 1234AB</label>
+                    <label><input type="radio" name="q2" value="b" data-correct="true"> B) 2516EC</label>
+                    <label><input type="radio" name="q2" value="c"> C) XYZ789</label>
+                    <label><input type="radio" name="q2" value="d"> D) 9876FG</label>
+                </div>
+                <div class="test-question" data-section-id="word-practice">
+                    <p>3. 今回の授業で扱った、「保護する」という意味の英単語は何ですか？</p>
+                    <label><input type="radio" name="q3" value="a"> A) Advance</label>
+                    <label><input type="radio" name="q3" value="b" data-correct="true"> B) Protect</label>
+                    <label><input type="radio" name="q3" value="c"> C) Depend</label>
+                    <label><input type="radio" name="q3" value="d"> D) Exist</label>
+                </div>
+                <div id="testButtons">
+                    <button type="button" id="skipTestBtn">テストをスキップ</button>
+                    <button type="submit" id="submitTestBtn">採点する</button>
+                </div>
+            </form>
+            <div id="testResults" style="display: none;">
+                <h3>テスト結果</h3>
+                <p id="testScore"></p>
+                <div id="reviewLinks"></div>
+                <button id="closeModalBtn" class="toggle-answer" style="margin-top:15px;">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>授業記録: 単語練習と文の種類② (2025/5/23 1時間目)</h1>
+        <div id="readingTime">読了時間の目安: 約20分</div>
+
+        <div class="summary-box">
+            <h3>本日の授業概要</h3>
+            <ul>
+                <li>ウィークリーテストに関するアナウンス</li>
+                <li>Google Classroomを利用した単語学習ペースの確認方法</li>
+                <li>単語練習 (No.226-250) とミニテスト</li>
+                <li>文の種類②: 従属接続詞を用いた名詞節・副詞節</li>
+            </ul>
+        </div>
+
+        <div id="tableOfContents">
+            <h3>目次</h3>
+            <ul></ul>
+        </div>
+
+        <div id="persistentTestResults" style="display: none;">
+            <h3>事前理解度チェックテストの結果</h3>
+            <p id="persistentScore"></p>
+            <div id="persistentReviewLinks"></div>
+        </div>
+
+        <section id="weekly-test-info">
+            <h2>ウィークリーテストについて</h2>
+            <p>来週からウィークリーテストが始まります。英語のウィークリーテストは<strong>金曜日</strong>に行われます。今日の授業は5月23日ですので、来週の金曜日が最初のテスト日になります。</p>
+            <p>テストの内容は、主に単語が中心となります。毎週計画的に学習を進めていきましょう。</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="classroom-guide">
+            <h2>Google Classroomの活用</h2>
+            <p>ウィークリーテストの進め方ですが、まずGoogle Classroomを利用します。皆さんのクラスルームで「<strong data-tooltip="授業に関するお知らせや課題などが投稿される場所">ストリーム</strong>」のタブから「授業」を選択してください。そこに「単語帳のペース」という資料が掲示されています。これを参照して学習計画を立ててください。</p>
+            <p>Classroomのコードは <code class="highlight">2516EC</code> です。まだ参加していない人は、このコードで参加してください。</p>
+            <p>現在、単語はNo.250まで学習済みです。Classroomの「単語のペース」には、今後の学習スケジュールが示されていますので、確認しておきましょう。</p>
+            <div class="related-pretest"></div>
+        </section>
+
+        <section id="word-test-format">
+            <h2>単語テストの形式と範囲</h2>
+            <p>来週の単語テストの範囲は、原則として <strong data-tooltip="No.251からNo.300までの50語">No.251からNo.300</strong> です。ただし、一度に50語は負担が大きいので、テストは分割して行います。</p>
+            <p>来週金曜日のテスト範囲は、前週の復習範囲（No.226-250の後半25語）と、新規範囲（No.251-275の前半25語）を合わせた <strong class="highlight">No.226からNo.275</strong> となります。つまり、復習25語＋新規25語の合計50語です。</p>
+            <p>出題形式は、まず単語が読めること、そして<strong data-tooltip="英単語を見て日本語の意味がわかる">英語から日本語</strong>の意味がわかることが基本です。余裕があれば、<strong data-tooltip="日本語を見て英単語が書ける">日本語から英語</strong>もできるようにしておきましょう。</p>
+            <div class="supplementary-box">
+                <h3>補足：テスト範囲の考え方</h3>
+                <p>毎週のテスト範囲は「<strong class="highlight">前回のテスト範囲の後半 + 今回の新規範囲の後半</strong>」となります。これにより、継続的な復習と新しい単語の定着を目指します。</p>
+            </div>
+        </section>
+
+        <section id="word-practice">
+            <h2>単語練習 (No.226-250)</h2>
+            <p>本日は、単語帳の74ページ、No.226からNo.250までの単語を練習します。まず発音練習から行い、その後各自で3分間の暗記時間を取ります。最後に簡単な確認テスト（日本語→英語）を行います。</p>
+            <h3>練習単語リスト (No.226-250)</h3>
+            <ul>
+                <li><strong>protect</strong>: 保護する</li>
+                <li><strong>pick</strong>: 選ぶ、摘む</li>
+                <li><strong>fit</strong>: 合う、適合する</li>
+                <li><strong>gain</strong>: 得る</li>
+                <li><strong>enter</strong>: 入る</li>
+                <li><strong>spread</strong>: 広がる、広げる</li>
+                <li><strong>advance</strong>: 進む、進歩する</li>
+                <li><strong>tend</strong>:傾向がある (to do)</li>
+                <li><strong>depend</strong>: 頼る、依存する (on)</li>
+                <li><strong>exist</strong>: 存在する</li>
+                <li><strong>decline</strong>: 減少する、断る</li>
+                <li><strong>decrease</strong>: 減少する</li>
+                <li><strong>waste</strong>: 浪費する</li>
+                <li><strong>damage</strong>: 損害を与える</li>
+                <li><strong>suffer</strong>: 苦しむ (from)</li>
+                <li><strong>act</strong>: 行動する、演じる</li>
+                <li><strong>perform</strong>: 実行する、演じる</li>
+                <li><strong>species</strong>: （生物の）種</li>
+                <li><strong>variety</strong>: 多様性</li>
+                <li><strong>degree</strong>: 程度、度、（温度などの）度</li>
+                <li><strong>range</strong>: 範囲</li>
+                <li><strong>standard</strong>: 基準、標準</li>
+                <li><strong>medium</strong>: 媒体、中間</li>
+                <li><strong>advantage</strong>: 利点、有利</li>
+                <li><strong>task</strong>: 仕事、任務</li>
+            </ul>
+            <p><em>（授業ではこの後、発音練習、3分間の自習、口頭での確認テストが行われました）</em></p>
+            <div class="related-pretest"></div>
+        </section>
+        
+        <section id="sentence-types-review">
+            <h2>文の種類② - 復習: 等位接続詞</h2>
+            <p>前回の授業では、等位接続詞について学びました。代表的なものとして <strong data-tooltip="For, And, Nor, But, Or, Yet, So の頭文字を取った覚え方">FANBOYS</strong> がありましたね。</p>
+            <code class="code-block">
+For（なぜなら）, And（そして）, Nor（～もまた～ない）, But（しかし）, Or（または）, Yet（しかし）, So（だから）
+            </code>
+            <p>これらの接続詞は、文と文、語と語、句と句など、文法的に対等なものを繋ぐ働きをします。</p>
+        </section>
+
+        <section id="sentence-types-imperative">
+            <h2>命令文 + and / or</h2>
+            <p>等位接続詞に関連して、命令文と組み合わせた特別な用法も確認しました。</p>
+            <ul>
+                <li><strong>命令文, and ...</strong> : 「～しなさい、<strong class="highlight">そうすれば</strong>...」 (肯定的な結果)
+                    <br>例: <code data-tooltip="急ぎなさい、そうすればバスに間に合いますよ">Hurry up, and you can catch the bus.</code></li>
+                <li><strong>命令文, or ...</strong> : 「～しなさい、<strong class="highlight">さもなければ</strong>...」 (否定的な結果の警告)
+                    <br>例: <code data-tooltip="起きなさい、さもなければ遅刻しますよ">Get up, or you will be late.</code></li>
+            </ul>
+        </section>
+
+        <section id="sentence-types-subordinate-noun">
+            <h2>名詞節を作る従属接続詞: that, whether, if</h2>
+            <p>今日の新しい内容として、従属接続詞を学びます。従属接続詞は、主節に従属する節（従属節）を導きます。従属節には名詞節、副詞節、形容詞節などがありますが、今回は名詞節と副詞節を扱います。</p>
+            
+            <h3>1. that</h3>
+            <p><code>that</code> は「～ということ」という意味の名詞節を導きます。この <code>that</code>節は文中で主語、目的語、補語になることができます。特に動詞の目的語になることが多いです。</p>
+            <code class="code-block">
+I hope <strong class="highlight">that</strong> you will get well soon.
+(あなたがすぐに良くなる<strong class="highlight">こと</strong>を願っています。)
+            </code>
+            <p>この例では、<code>that you will get well soon</code> が <code>hope</code> (願う) という動詞の目的語になっています。<code>hope</code> 以外にも、<code>think</code> (思う), <code>believe</code> (信じる), <code>know</code> (知っている), <code>say</code> (言う) などの動詞の後に続くことが多いです。</p>
+
+            <h3>2. whether / if</h3>
+            <p><code>whether</code> と <code>if</code> は「～かどうか」という意味の名詞節を導きます。こちらも文中で主語、目的語、補語の役割を果たします。</p>
+            <code class="code-block">
+I don't know <strong class="highlight">whether</strong> (or <strong class="highlight">if</strong>) Tom will come.
+(トムが来る<strong class="highlight">かどうか</strong>分かりません。)
+            </code>
+            <p>この例では、<code>whether (or if) Tom will come</code> が <code>know</code> (知っている) の目的語です。<code>know</code>, <code>ask</code> (尋ねる), <code>wonder</code> (～かなと思う) などの動詞の後に続くことが多いです。</p>
+            <div class="supplementary-box">
+                <h3>補足：whether と if の使い分け</h3>
+                <p>目的語になる名詞節を導く場合、<code>whether</code> と <code>if</code> は多くの場合交換可能ですが、以下のような違いがあります。</p>
+                <ul>
+                    <li>文頭で主語になる場合や前置詞の目的語になる場合は、主に <code>whether</code> が使われます。</li>
+                    <li><code>whether or not</code> (～かどうかに関わらず) の形では <code>whether</code> が使われます。</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="sentence-types-subordinate-adverb">
+            <h2>副詞節を作る従属接続詞</h2>
+            <p>副詞節は、主節の動詞や文全体を修飾し、時、理由、条件、譲歩などの情報を付け加えます。様々な種類の接続詞があります。</p>
+            <ul>
+                <li><strong>時を表す接続詞:</strong>
+                    <ul>
+                        <li><code>when</code> (～するとき): <code data-tooltip="私が7歳の時、家族は東京へ引っ越した">When I was seven, my family moved to Tokyo.</code></li>
+                        <li><code>while</code> (～する間): <code data-tooltip="私が夕食を食べている間に、携帯電話が鳴った">My cell phone rang while I was having dinner.</code></li>
+                        <li><code>before</code> (～する前に): <code data-tooltip="食べる前に手を洗いなさい">Wash your hands before you eat.</code></li>
+                        <li><code>after</code> (～した後で): (例文は授業で省略)</li>
+                    </ul>
+                </li>
+                <li><strong>理由を表す接続詞:</strong>
+                    <ul>
+                        <li><code>because</code> (なぜなら～だから): <code data-tooltip="気分が悪かったので、早く家に帰った">I went home early because I was sick.</code></li>
+                    </ul>
+                </li>
+                <li><strong>条件を表す接続詞:</strong>
+                    <ul>
+                        <li><code>if</code> (もし～ならば): <code data-tooltip="もし助けが必要なら、私に知らせてください">If you need any help, please let me know.</code>
+                        <br><strong class="highlight">注意:</strong> この <code>if</code> は「もし～ならば」という意味の副詞節を導き、名詞節の「～かどうか」とは意味が異なります。</li>
+                    </ul>
+                </li>
+                <li><strong>譲歩を表す接続詞:</strong>
+                    <ul>
+                        <li><code>though</code> / <code>although</code> (～だけれども): <code data-tooltip="雨が降っていたけれども、私たちは買い物に出かけた">Though it was raining, we went out shopping.</code></li>
+                    </ul>
+                </li>
+            </ul>
+            <p>これらの接続詞が導く節は、主節の前にも後にも置くことができます。前に置く場合は、コンマ(,)で区切ることが一般的です。</p>
+        </section>
+
+        <section id="drill-answers">
+            <h2>単語練習 解答・解説</h2>
+            <div class="drill-item">
+                <h3>単語 (No.226-250) の日本語訳</h3>
+                <button class="toggle-answer">解答を表示</button>
+                <div class="answer">
+                    <ul>
+                        <li>protect: 保護する</li>
+                        <li>pick: 選ぶ、摘む</li>
+                        <li>fit: 合う、適合する</li>
+                        <li>gain: 得る</li>
+                        <li>enter: 入る</li>
+                        <li>spread: 広がる、広げる</li>
+                        <li>advance: 進む、進歩する</li>
+                        <li>tend:傾向がある (to do)</li>
+                        <li>depend: 頼る、依存する (on)</li>
+                        <li>exist: 存在する</li>
+                        <li>decline: 減少する、断る</li>
+                        <li>decrease: 減少する</li>
+                        <li>waste: 浪費する</li>
+                        <li>damage: 損害を与える</li>
+                        <li>suffer: 苦しむ (from)</li>
+                        <li>act: 行動する、演じる</li>
+                        <li>perform: 実行する、演じる</li>
+                        <li>species: （生物の）種</li>
+                        <li>variety: 多様性</li>
+                        <li>degree: 程度、度、（温度などの）度</li>
+                        <li>range: 範囲</li>
+                        <li>standard: 基準、標準</li>
+                        <li>medium: 媒体、中間</li>
+                        <li>advantage: 利点、有利</li>
+                        <li>task: 仕事、任務</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="review">
+            <h2>振り返り</h2>
+            <h3>理解度チェックリスト</h3>
+            <ul class="checklist">
+                <li>ウィークリーテストの形式と範囲の基本を理解した。</li>
+                <li>Google Classroomでの情報確認方法を理解した。</li>
+                <li>等位接続詞 FANBOYS の基本的な役割を思い出せた。</li>
+                <li>「命令文, and ...」と「命令文, or ...」の使い分けを理解した。</li>
+                <li>名詞節を導く接続詞 <code>that</code> の用法を理解した。</li>
+                <li>名詞節を導く接続詞 <code>whether</code> / <code>if</code> の用法を理解した。</li>
+                <li>代表的な副詞節を導く接続詞（時、理由、条件、譲歩）とその意味を理解した。</li>
+            </ul>
+
+            <h3>確認問題</h3>
+            <div class="review-questions">
+                <div class="question">
+                    <p>1. 「命令文, and ...」と「命令文, or ...」の構文は、それぞれどのような意味の違いがありますか？例文を交えて説明してください。</p>
+                    <textarea placeholder="ここに解答を入力してください"></textarea>
+                    <button class="toggle-answer">解答例を表示</button>
+                    <div class="answer">
+                        <p>「命令文, and ...」は「～しなさい、<strong class="highlight">そうすれば</strong>...」という意味で、前の命令に従うことによる肯定的な結果を示します。例: <code>Study hard, and you will pass the exam.</code> (熱心に勉強しなさい、そうすれば試験に合格するでしょう。)</p>
+                        <p>「命令文, or ...」は「～しなさい、<strong class="highlight">さもなければ</strong>...」という意味で、前の命令に従わない場合の否定的な結果（警告）を示します。例: <code>Hurry up, or we will be late.</code> (急ぎなさい、さもなければ私たちは遅刻します。)</p>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>2. 動詞の目的語として <code>that</code>節（「～ということ」を表す名詞節）を取ることができる動詞の例を3つ挙げてください。</p>
+                    <textarea placeholder="ここに解答を入力してください"></textarea>
+                    <button class="toggle-answer">解答例を表示</button>
+                    <div class="answer">
+                        <p>例: <code>think</code> (思う), <code>believe</code> (信じる), <code>know</code> (知っている), <code>hope</code> (願う), <code>say</code> (言う), <code>feel</code> (感じる) など。
+                        <br>例文: <code>I think that he is honest.</code> (私は彼が正直だと思います。)</p>
+                    </div>
+                </div>
+                 <div class="question">
+                    <p>3. <code>whether</code> と <code>if</code> が名詞節「～かどうか」を導く場合、意味はほぼ同じですが、<code>if</code> が使いにくい、または使えないケースはどのような場合ですか？</p>
+                    <textarea placeholder="ここに解答を入力してください"></textarea>
+                    <button class="toggle-answer">解答例を表示</button>
+                    <div class="answer">
+                        <p><code>if</code> が使いにくい、または使えない主なケースは以下の通りです。</p>
+                        <ul>
+                            <li><strong>文頭で主語になる場合:</strong> <code class="highlight">Whether</code> he comes or not is important. (彼が来るかどうかは重要だ。) この場合、<code>If</code> he comes or not... とは通常言いません。</li>
+                            <li><strong>前置詞の目的語になる場合:</strong> We talked about <code class="highlight">whether</code> we should go. (私たちは行くべきかどうかについて話した。) about <code>if</code> ... とは通常言いません。</li>
+                            <li><strong><code>or not</code> を直後に伴う場合:</strong> I'm not sure <code class="highlight">whether or not</code> it's true. (それが本当かどうかわからない。) <code>if or not</code> とは言いますが、<code>whether or not</code> の方が一般的です。</li>
+                            <li><strong>to不定詞が続く場合:</strong> I can't decide <code class="highlight">whether to go</code> or stay. (行くべきか留まるべきか決められない。) <code>if to go</code> とは言いません。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="application">
+            <h2>今回の学びの応用</h2>
+            <h3>日常生活や学習への活用</h3>
+            <p>今回学んだ接続詞の知識は、英語の文章を正確に読解したり、より複雑で自然な英文を作成したりする際に非常に役立ちます。</p>
+            <ul>
+                <li><strong>読解において:</strong> 長い文が出てきたとき、接続詞に注目することで文の構造を把握しやすくなります。どの部分が主節で、どの部分が従属節かを見分けることで、文全体の意味を正確に捉えられます。</li>
+                <li><strong>英作文において:</strong> 単純な文だけでなく、理由、時、条件などを明確に示しながら、より詳細で論理的な文章を書くことができるようになります。</li>
+            </ul>
+            <h3>今後の学習へのつながり</h3>
+            <p>従属接続詞の理解は、今後学習する以下のようなより高度な文法項目への基礎となります。</p>
+            <ul>
+                <li><strong>関係詞 (Relative Clauses):</strong> 名詞を修飾する形容詞節を導きます。</li>
+                <li><strong>分詞構文 (Participle Constructions):</strong> 副詞節をより簡潔に表現する方法の一つです。</li>
+                <li><strong>仮定法 (Subjunctive Mood):</strong> 現実とは異なる仮定や願望を表す際に、<code>if</code> を用いた条件節が重要な役割を果たします。</li>
+            </ul>
+            <h3>気を付けるべき点</h3>
+            <ul>
+                <li><strong>接続詞の選択:</strong> 伝えたい意味（時、理由、条件、譲歩など）に応じて適切な接続詞を選ぶことが重要です。</li>
+                <li><strong>コンマの位置:</strong> 副詞節が主節の前に来る場合はコンマで区切るなど、句読点のルールにも注意しましょう。</li>
+                <li><strong>時制の一致:</strong> 主節と従属節の時制の関係にも注意が必要です（特に名詞節を導く<code>that</code>の場合など）。</li>
+            </ul>
+            <h3>参考資料</h3>
+            <ul>
+                <li><a href="https://eikaiwa.dmm.com/blog/grammar/conjunctions/" target="_blank" rel="noopener noreferrer" data-tooltip="DMM英会話ブログの接続詞解説ページ">DMM英会話ブログ - 英語の接続詞一覧</a></li>
+                <li><a href="https://www.ef.com/wwen/english-resources/english-grammar/conjunctions/" target="_blank" rel="noopener noreferrer" data-tooltip="EFの英語文法解説ページ(英語)">EF English Live - English Grammar: Conjunctions</a></li>
+                <li>オンライン辞書（例: Cambridge Dictionary, Oxford Learner's Dictionaries）で各接続詞の例文を多数確認する。</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>今日の授業はここまでです。しっかり復習して、次回の授業に備えましょう。</p>
+            <p><a href="https://tbt-beginner.github.io/eng" target="_blank" rel="noopener noreferrer">授業記録一覧ページへ</a></p>
+        </footer>
+    </div>
+
+    <button id="scrollTopBtn" title="トップへ戻る">▲</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Progress Bar ---
+            const progressBar = document.getElementById('progressBar');
+            window.addEventListener('scroll', () => {
+                const scrollTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / scrollTotal) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+
+            // --- Scroll to Top Button ---
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            window.addEventListener('scroll', () => {
+                if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- Checklist ---
+            const checklistItems = document.querySelectorAll('.checklist li');
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                });
+            });
+
+            // --- Toggle Answer ---
+            function setupToggleButtons() {
+                const toggleButtons = document.querySelectorAll('.toggle-answer');
+                toggleButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const targetId = this.dataset.target;
+                        const answerElement = targetId ? document.getElementById(targetId) : this.nextElementSibling;
+                        if (answerElement && answerElement.classList.contains('answer')) {
+                            const isVisible = answerElement.style.display === 'block';
+                            answerElement.style.display = isVisible ? 'none' : 'block';
+                            this.textContent = isVisible ? '解答を表示' : '解答を隠す';
+                        } else if (this.id === 'closeModalBtn' && preTestModalOverlay.style.display !== 'none') { // closeModalBtn specific logic
+                            preTestModalOverlay.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                });
+            }
+            setupToggleButtons(); // Initial setup
+
+            // --- Table of Contents ---
+            const tocList = document.querySelector('#tableOfContents ul');
+            const headings = document.querySelectorAll('section h2');
+            headings.forEach((heading, index) => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.textContent = (index + 1) + '. ' + heading.textContent;
+                link.href = '#' + heading.parentElement.id;
+                listItem.appendChild(link);
+                tocList.appendChild(listItem);
+            });
+            
+            // --- Reading Time ---
+            const readingTimeElement = document.getElementById('readingTime');
+            const contentText = document.querySelector('.container').innerText || document.querySelector('.container').textContent;
+            const wordCount = contentText.replace(/[\s\n\r]+/g, '').length;
+            const wordsPerMinute = 500; // Average reading speed for Japanese
+            const readingTime = Math.ceil(wordCount / wordsPerMinute);
+            readingTimeElement.textContent = `読了時間の目安: 約${readingTime}分`;
+
+            // --- Pre-Test Modal Logic ---
+            const preTestModalOverlay = document.getElementById('preTestModalOverlay');
+            const preTestForm = document.getElementById('preTestForm');
+            const submitTestBtn = document.getElementById('submitTestBtn');
+            const skipTestBtn = document.getElementById('skipTestBtn');
+            const testResultsDiv = document.getElementById('testResults');
+            const testScoreP = document.getElementById('testScore');
+            const reviewLinksDiv = document.getElementById('reviewLinks');
+            
+            const persistentTestResultsDiv = document.getElementById('persistentTestResults');
+            const persistentScoreP = document.getElementById('persistentScore');
+            const persistentReviewLinksDiv = document.getElementById('persistentReviewLinks');
+
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    preTestModalOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+            
+            function scrollToSection(sectionId) {
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    sectionElement.classList.add('highlight-temp');
+                    setTimeout(() => {
+                        sectionElement.classList.remove('highlight-temp');
+                    }, 2000); // Highlight for 2 seconds
+                }
+            }
+
+            if (sessionStorage.getItem('preTestCompleted') === 'true') {
+                const resultData = JSON.parse(sessionStorage.getItem('preTestResultData'));
+                if (resultData) {
+                    if (resultData.skipped) {
+                        persistentScoreP.textContent = "事前理解度チェックテストはスキップされました。";
+                        persistentReviewLinksDiv.innerHTML = "";
+                    } else {
+                        persistentScoreP.textContent = `スコア: ${resultData.score} / ${resultData.totalQuestions} 問正解`;
+                        let linksHtml = '<ul>';
+                        if (resultData.incorrectAnswers.length > 0) {
+                            linksHtml += '復習が必要な項目:';
+                            resultData.incorrectAnswers.forEach(item => {
+                                linksHtml += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">${item.questionText}</a></li>`;
+                            });
+                        } else if (resultData.score === resultData.totalQuestions) {
+                            linksHtml += '<li>全問正解です！素晴らしいスタートです。</li>';
+                        }
+                        linksHtml += '</ul>';
+                        persistentReviewLinksDiv.innerHTML = linksHtml;
+                    }
+                    persistentTestResultsDiv.style.display = 'block';
+                }
+            } else {
+                preTestModalOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            preTestForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = new FormData(preTestForm);
+                let score = 0;
+                const questions = document.querySelectorAll('#preTestModal .test-question');
+                const totalQuestions = questions.length;
+                const incorrectAnswers = [];
+
+                questions.forEach((question, index) => {
+                    const questionName = `q${index + 1}`;
+                    const userAnswer = formData.get(questionName);
+                    const correctAnswerElement = question.querySelector(`input[name="${questionName}"][data-correct="true"]`);
+                    
+                    if (userAnswer && correctAnswerElement && userAnswer === correctAnswerElement.value) {
+                        score++;
+                    } else {
+                        const questionText = question.querySelector('p').textContent.trim().substring(3); // Remove "1. " etc.
+                        const sectionId = question.dataset.sectionId;
+                        incorrectAnswers.push({ questionText, sectionId });
+                    }
+                });
+
+                testScoreP.textContent = `スコア: ${score} / ${totalQuestions} 問正解`;
+                let linksHtml = '<ul>';
+                if (incorrectAnswers.length > 0) {
+                    linksHtml += '復習が必要な項目:';
+                    incorrectAnswers.forEach(item => {
+                        const sectionTitle = document.querySelector(`#${item.sectionId} h2`)?.textContent || item.sectionId;
+                        linksHtml += `<li><a href="#${item.sectionId}" data-section-id="${item.sectionId}">${sectionTitle}</a></li>`;
+                    });
+                } else if (score === totalQuestions) {
+                     linksHtml += '<li>全問正解です！素晴らしいスタートです。</li>';
+                }
+                linksHtml += '</ul>';
+                reviewLinksDiv.innerHTML = linksHtml;
+                
+                persistentScoreP.textContent = testScoreP.textContent;
+                persistentReviewLinksDiv.innerHTML = linksHtml;
+
+                preTestForm.style.display = 'none';
+                testResultsDiv.style.display = 'block';
+                persistentTestResultsDiv.style.display = 'block';
+
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify({ score, totalQuestions, incorrectAnswers, skipped: false }));
+                
+                // Add event listeners for newly created links in modal
+                reviewLinksDiv.querySelectorAll('a[data-section-id]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const sectionId = this.dataset.sectionId;
+                        preTestModalOverlay.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        scrollToSection(sectionId);
+                    });
+                });
+            });
+
+            skipTestBtn.addEventListener('click', function() {
+                preTestModalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                persistentScoreP.textContent = "事前理解度チェックテストはスキップされました。";
+                persistentReviewLinksDiv.innerHTML = "";
+                persistentTestResultsDiv.style.display = 'block';
+                sessionStorage.setItem('preTestCompleted', 'true');
+                sessionStorage.setItem('preTestResultData', JSON.stringify({ skipped: true }));
+            });
+            
+            // Event delegation for persistent links
+            persistentTestResultsDiv.addEventListener('click', function(event) {
+                if (event.target.matches('a[data-section-id]')) {
+                    event.preventDefault();
+                    const sectionId = event.target.dataset.sectionId;
+                    scrollToSection(sectionId);
+                }
+            });
+
+            // --- Inject Related Pre-tests ---
+            function injectRelatedPretests() {
+                const testQuestions = document.querySelectorAll('#preTestModal .test-question');
+                testQuestions.forEach(questionDiv => {
+                    const sectionId = questionDiv.dataset.sectionId;
+                    const targetSection = document.getElementById(sectionId);
+                    if (targetSection) {
+                        const relatedPretestDiv = targetSection.querySelector('.related-pretest');
+                        if (relatedPretestDiv) {
+                            const questionText = questionDiv.querySelector('p').textContent;
+                            const correctAnswerInput = questionDiv.querySelector('input[data-correct="true"]');
+                            const correctAnswerLabel = correctAnswerInput ? correctAnswerInput.parentElement.textContent.trim().replace(correctAnswerInput.outerHTML, '').trim() : 'N/A';
+                            
+                            let explanation = '';
+                            switch(sectionId) {
+                                case 'weekly-test-info': explanation = '英語のウィークリーテストは金曜日です。計画的に学習しましょう。'; break;
+                                case 'classroom-guide': explanation = 'Google Classroomのコード 2516EC で、単語の学習ペースを確認できます。'; break;
+                                case 'word-practice': explanation = 'Protect は「保護する」という意味です。他の選択肢も確認しましょう。'; break;
+                            }
+
+                            relatedPretestDiv.innerHTML = `
+                                <h4>関連する事前テスト問題</h4>
+                                <p><strong>問題:</strong> ${questionText}</p>
+                                <button class="toggle-answer">正解と解説を表示</button>
+                                <div class="answer">
+                                    <p><strong>正解:</strong> ${correctAnswerLabel}</p>
+                                    <p><strong>解説:</strong> ${explanation}</p>
+                                </div>
+                            `;
+                        }
+                    }
+                });
+                setupToggleButtons(); // Re-setup for newly added buttons
+            }
+            injectRelatedPretests();
+
+        });
+    </script>
+</body>
+</html>
