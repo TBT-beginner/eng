@@ -96,6 +96,23 @@
       color: #7f8c8d;
       margin-top: 5px;
   }
+  /* 練習問題へのリンク用スタイル */
+  .practice-link-button {
+    display: inline-block;
+    background-color: #e74c3c; /* ドリルのテーマカラーに合わせる */
+    color: white;
+    padding: 12px 25px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .practice-link-button:hover {
+    background-color: #c0392b;
+  }
 </style>
 </head>
 <body>
@@ -212,6 +229,15 @@
       <p>第4文型はコミュニケーションを豊かにする便利な形です。動詞ごとの特徴を掴んで使いこなしましょう！</p>
     </div>
   </section>
+
+  <!-- 練習問題へのリンクを追加 -->
+  <section id="practice">
+    <h2>6. 練習問題に挑戦！</h2>
+    <p>理解を深めるために、並べ替えドリルで実際に練習してみましょう。</p>
+    <a href="./sentencep4drill.html" class="practice-link-button">地獄の第4文型並べ替えドリルへ</a>
+  </section>
+  <!-- ここまで追加 -->
+
 </div>
 
 <script>
