@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第4文型を学ぼう！</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #2c3e50;
+    text-align: center;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 15px;
+    margin-top: 0;
+  }
+  h2 {
+    color: #3498db;
+    border-left: 5px solid #3498db;
+    padding-left: 10px;
+    margin-top: 30px;
+  }
+  p, li {
+    font-size: 16px;
+  }
+  .example {
+    font-weight: bold;
+    color: #27ae60;
+    background-color: #e6f7e9;
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .svoio-do {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #ecf0f1;
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #7f8c8d;
+  }
+  .preposition {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  ul {
+    list-style-type: "💡 ";
+    padding-left: 25px;
+  }
+  li {
+    margin-bottom: 10px;
+  }
+  .toggle-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  .toggle-button:hover {
+    background-color: #2980b9;
+  }
+  .details {
+    background-color: #eaf5ff;
+    border-left: 4px solid #3498db;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95em;
+  }
+  .details p, .details li {
+    font-size: 15px; /* 詳細セクション内のフォントを少し小さく */
+  }
+  .details ul {
+    list-style-type: "🔹 ";
+  }
+  .note {
+      font-size: 0.9em;
+      color: #7f8c8d;
+      margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>第4文型 (S V IO DO) をマスターしよう！</h1>
+
+  <section id="basic">
+    <h2>1. 第4文型ってどんな形？</h2>
+    <p>第4文型は、主に「<span class="svoio-do">誰に</span>」「<span class="svoio-do">何を</span>」を伝えるときに使う文の形です。</p>
+    <p>基本的な語順は、<strong>S (主語) + V (動詞) + IO (間接目的語) + DO (直接目的語)</strong> となります。</p>
+    <p>初学者のうちは、間接目的語(IO)が「<span class="svoio-do">人</span>」、直接目的語(DO)が「<span class="svoio-do">物</span>」になることが多いので、
+    <strong>S V <span class="svoio-do">人</span> <span class="svoio-do">物</span></strong> と覚えると分かりやすいでしょう。</p>
+    <p>例文: <span class="example">He gave Sally a ring.</span> (彼はサリーに指輪をあげた。)</p>
+    <ul>
+      <li>S (主語): He</li>
+      <li>V (動詞): gave</li>
+      <li>IO (間接目的語 - 人): Sally</li>
+      <li>DO (直接目的語 - 物): a ring</li>
+    </ul>
+    <p>
+      <span class="example">give</span> (与える) のように、「人に物を渡す」といった意味合いの動詞が、この第4文型をよく取ります。
+    </p>
+    <button class="toggle-button" data-target="basic-details">第4文型のポイントをもっと詳しく</button>
+    <div id="basic-details" class="details" style="display:none;">
+      <p><strong>ポイント:</strong></p>
+      <ul>
+        <li><strong>間接目的語 (IO):</strong> 通常「〜に」と訳され、行為の対象となる人や組織を指します。</li>
+        <li><strong>直接目的語 (DO):</strong> 通常「〜を」と訳され、動詞の直接的な目的となる物や事柄を指します。</li>
+        <li>「人」「物」は典型例であり、IOが組織（例: the company）、DOが情報や抽象的な概念（例: advice, a chance）となることもあります。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="rewrite">
+    <h2>2. 第3文型への書き換え</h2>
+    <p>第4文型は、<strong>第3文型 (S V O)</strong> を使って、ほぼ同じような意味を表すことができます。</p>
+    <p>ただし、その際には動詞の後ろに置かれる目的語の順番が変わり、間接目的語の前に<strong>前置詞 (<span class="preposition">to</span> や <span class="preposition">for</span>)</strong> が必要になります。</p>
+    <p><strong>S V <span class="svoio-do">物</span> <span class="preposition">to</span>/<span class="preposition">for</span> <span class="svoio-do">人</span></strong> の形になります。</p>
+    <p>どの前置詞を使うかは、動詞の種類によって決まります。主に2つのタイプがあります。</p>
+  </section>
+
+  <section id="give-type">
+    <h2>3. give型動詞 (前置詞 <span class="preposition">to</span> を使うタイプ)</h2>
+    <p>このタイプの動詞は、<strong>「相手がいないと成り立たない」</strong>という特徴があります。物が相手に「到達する」というイメージです。</p>
+    <p>第3文型への書き換え: <strong>S V <span class="svoio-do">物</span> <span class="preposition">to</span> <span class="svoio-do">人</span></strong></p>
+    <p>例文:</p>
+    <ul>
+      <li>第4文型: <span class="example">He gave Sally a ring.</span></li>
+      <li>第3文型: <span class="example">He gave a ring <span class="preposition">to</span> Sally.</span></li>
+    </ul>
+    <p><strong>代表的なgive型動詞:</strong></p>
+    <ul>
+      <li>show (見せる), tell (話す), teach (教える), lend (貸す), send (送る), pay (支払う), offer (提供する), pass (手渡す) など</li>
+    </ul>
+    <p class="note">これらの動詞は、行為が相手に直接影響を与える、または物が相手に渡ることを意味します。</p>
+    <button class="toggle-button" data-target="give-details">前置詞 "to" のイメージと動詞の性質</button>
+    <div id="give-details" class="details" style="display:none;">
+      <p><strong>前置詞 <span class="preposition">"to"</span> のコアイメージ:</strong></p>
+      <p><span class="preposition">"to"</span> は、矢印のように「到達点」や「方向」を指し示すイメージを持つ前置詞です。<br>
+      例: I go <span class="preposition">to</span> school. (学校へ行く → 学校に到達する)<br>
+      give型動詞では、物が相手にしっかり「届く」「渡される」というニュアンスと相性が良いため、<span class="preposition">"to"</span> が使われます。行為の結果が相手に到達する感じです。</p>
+      <p><strong>動詞の性質:</strong></p>
+      <p>これらの動詞は、本質的に「授与」や「伝達」の意味合いが強く、受け取る相手がいて初めて行為が完結します。</p>
+    </div>
+  </section>
+
+  <section id="buy-type">
+    <h2>4. buy型動詞 (前置詞 <span class="preposition">for</span> を使うタイプ)</h2>
+    <p>このタイプの動詞は、<strong>「相手がいなくても行為自体はできる」</strong>のが特徴です。相手の「利益のために」何かをする、というイメージです。</p>
+    <p>第3文型への書き換え: <strong>S V <span class="svoio-do">物</span> <span class="preposition">for</span> <span class="svoio-do">人</span></strong></p>
+    <p>例文:</p>
+    <ul>
+      <li>第4文型: <span class="example">He bought Sally a ring.</span></li>
+      <li>第3文型: <span class="example">He bought a ring <span class="preposition">for</span> Sally.</span></li>
+    </ul>
+    <p><strong>代表的なbuy型動詞:</strong></p>
+    <ul>
+      <li>find (見つける), make (作る), choose (選ぶ), cook (料理する), get (手に入れる), build (建てる), sing (歌う) など</li>
+    </ul>
+    <p class="note">これらの動詞は、まず行為者が何かを行い、その結果や恩恵が相手に向けられることを示します。</p>
+    <button class="toggle-button" data-target="buy-details">前置詞 "for" のイメージと動詞の性質</button>
+    <div id="buy-details" class="details" style="display:none;">
+      <p><strong>前置詞 <span class="preposition">"for"</span> のコアイメージ:</strong></p>
+      <p><span class="preposition">"for"</span> は、「～のために」「～の利益に」といった、目的や受益、代理を表すイメージを持つ前置詞です。<br>
+      例: This gift is <span class="preposition">for</span> you. (これはあなたのためのプレゼントです)<br>
+      buy型動詞では、その行為が「誰かのために」行われるというニュアンスと相性が良いため、<span class="preposition">"for"</span> が使われます。行為自体は相手がいなくてもできますが、その恩恵を受ける相手（受益者）を示すのに適しています。</p>
+      <p><strong>動詞の性質:</strong></p>
+      <p>これらの動詞は、行為者自身がまず行動を起こし、その結果として誰かが利益を得る、という間接的な関係性を示します。相手はその行為の直接の受け手というよりは、受益者となります。</p>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2>5. まとめと発展</h2>
+    <p>第4文型 (S V <span class="svoio-do">人</span> <span class="svoio-do">物</span>) は、動詞の種類によって <span class="preposition">to</span> または <span class="preposition">for</span> を使って第3文型 (S V <span class="svoio-do">物</span> 前置詞 <span class="svoio-do">人</span>) に書き換えられます。</p>
+    <ul>
+      <li><strong>give型 (前置詞 <span class="preposition">to</span>):</strong><br>
+        物が相手に「到達する」イメージ。授与・伝達が本質で、相手が必須。</li>
+      <li><strong>buy型 (前置詞 <span class="preposition">for</span>):</strong><br>
+        相手の「利益のために」何かをするイメージ。行為自体は相手なしでも可能で、相手は受益者。</li>
+    </ul>
+    <button class="toggle-button" data-target="advanced-details">さらに深く (ニュアンスの違い・注意点)</button>
+    <div id="advanced-details" class="details" style="display:none;">
+      <p><strong>文型によるニュアンスの違い:</strong></p>
+      <ul>
+        <li><strong>S V IO DO (第4文型):</strong> 間接目的語(IO)が旧情報で、直接目的語(DO)が新情報として強調される傾向があります。「誰に」は既に分かっていて、「何を」が新しい情報、という場合に自然です。</li>
+        <li><strong>S V DO <span class="preposition">to</span>/<span class="preposition">for</span> IO (第3文型):</strong> 前置詞句になった間接目的語(IO)が、文末に来ることで新情報として強調されることがあります。「何を」よりも「誰に/誰のために」を特に伝えたい場合に効果的です。</li>
+      </ul>
+      <p><strong>注意点:</strong></p>
+      <ul>
+        <li>全ての動詞がこの書き換えができるわけではありません。例えば <span class="example">envy</span> (羨む) は <span class="example">I envy him his success.</span> (第4文型) のように使いますが、<span class="preposition">to</span> や <span class="preposition">for</span> を使った第3文型には通常しません。</li>
+        <li>動詞によっては、<span class="preposition">to</span> も <span class="preposition">for</span> も取らず、<span class="preposition">of</span> を取るものもあります (例: <span class="example">ask someone a question</span> → <span class="example">ask a question <span class="preposition">of</span> someone</span>)。これらは少数派です。</li>
+      </ul>
+      <p>第4文型はコミュニケーションを豊かにする便利な形です。動詞ごとの特徴を掴んで使いこなしましょう！</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+
+    toggleButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const targetId = this.dataset.target;
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          const isHidden = targetElement.style.display === 'none' || targetElement.style.display === '';
+          targetElement.style.display = isHidden ? 'block' : 'none';
+          // ボタンのテキストを適切に変更（例: もっと詳しく ⇔ 閉じる）
+          if (isHidden) {
+            if (this.textContent.includes('もっと詳しく')) {
+                this.textContent = this.textContent.replace('もっと詳しく', '閉じる');
+            } else if (this.textContent.includes('イメージと動詞の性質')) {
+                this.textContent = this.textContent.replace('イメージと動詞の性質', '閉じる');
+            } else if (this.textContent.includes('さらに深く')) {
+                this.textContent = this.textContent.replace('さらに深く', '閉じる');
+            }
+          } else {
+            if (this.textContent.includes('閉じる')) {
+                if (targetId === 'basic-details') this.textContent = '第4文型のポイントをもっと詳しく';
+                else if (targetId === 'give-details') this.textContent = '前置詞 "to" のイメージと動詞の性質';
+                else if (targetId === 'buy-details') this.textContent = '前置詞 "for" のイメージと動詞の性質';
+                else if (targetId === 'advanced-details') this.textContent = 'さらに深く (ニュアンスの違い・注意点)';
+            }
+          }
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
