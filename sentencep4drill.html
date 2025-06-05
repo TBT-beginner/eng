@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最終形態・地獄の第4文型並べ替えドリル (復習モード搭載)</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #1a1a1a;
+    color: #ccc;
+    text-align: center;
+  }
+  .container {
+    background-color: #2c2c2c;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    width: 90%;
+    max-width: 750px;
+  }
+  h1 {
+    color: #ff4757;
+    margin-top: 0;
+    font-size: 2em;
+    text-shadow: 1px 1px 3px #000;
+  }
+  .mode-indicator {
+    font-size: 0.9em;
+    color: #feca57; /* 復習モードの色 */
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .instructions {
+    color: #aaa;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+  }
+  .problem-area {
+    margin-bottom: 20px;
+  }
+  .hint-container {
+    margin-bottom: 15px;
+    min-height: 2em;
+  }
+  .hint-toggle-button {
+    background-color: #3742fa;
+    color: white;
+    padding: 8px 15px;
+    font-size: 0.85em;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 10px;
+  }
+  .hint-toggle-button:hover {
+    background-color: #273c75;
+  }
+  .hint-text {
+    color: #7ed6df;
+    font-style: italic;
+    font-size: 0.9em;
+    background-color: rgba(0,0,0,0.2);
+    padding: 8px;
+    border-radius: 4px;
+  }
+  .words-pool-container, .answer-area-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    min-height: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.2s;
+  }
+  .words-pool-container {
+    background-color: #3b3b3b;
+    border: 2px dashed #555;
+  }
+  .answer-area-container {
+    background-color: #222;
+    border: 2px solid #444;
+  }
+  .word-block {
+    background-color: #ff4757;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 4px;
+    cursor: grab;
+    user-select: none;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    transition: transform 0.1s ease-out, background-color 0.2s, opacity 0.2s;
+  }
+  .word-block.dragging {
+    opacity: 0.5;
+    background-color: #c0392b;
+    cursor: grabbing;
+  }
+  .placeholder {
+    background-color: #4a4a4a;
+    border: 2px dashed #666;
+    min-height: 40px;
+    min-width: 80px;
+    border-radius: 4px;
+    margin: 5px;
+    display: inline-block;
+  }
+  .buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  button {
+    background-color: #ff4757;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+    font-weight: bold;
+  }
+  .review-button { /* 復習ボタンの色を変える */
+    background-color: #2ecc71; /* 緑系 */
+  }
+  .review-button:hover {
+    background-color: #27ae60;
+  }
+  button:hover {
+    background-color: #c0392b;
+  }
+  button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+  }
+  .feedback {
+    margin-top: 20px;
+    font-size: 1.2em;
+    min-height: 1.5em;
+  }
+  .feedback.correct {
+    color: #2ecc71;
+  }
+  .feedback.incorrect {
+    color: #feca57;
+  }
+  .correct-answer-display {
+    margin-top: 10px;
+    color: #bdc3c7;
+    font-size: 0.9em;
+  }
+  .drag-over-area {
+    background-color: #303030 !important;
+  }
+  .progress-info {
+    color: #888;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .set-complete-message {
+    font-size: 1.3em;
+    color: #2ecc71;
+    margin-top: 20px;
+  }
+  #word-tooltip-element {
+    position: absolute;
+    background-color: #111;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    z-index: 1000;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    border: 1px solid #444;
+    pointer-events: none;
+    display: none;
+  }
+  #word-tooltip-element::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #111 transparent transparent transparent;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="mode-indicator" class="mode-indicator"></div>
+  <h1>最終形態・地獄の第4文型並べ替えドリル</h1>
+  <p class="instructions">S V IO DO の正しい語順に並べ替えろ。慈悲はない...が、ヒントくらいはくれてやる。</p>
+  
+  <div class="progress-info">
+    <span id="question-progress"></span> 
+    <span id="correct-streak">連続正解: 0</span>
+  </div>
+
+  <div class="problem-area">
+    <div class="hint-container">
+      <button id="hint-toggle-button">ヒント表示</button>
+      <div id="hint-text" class="hint-text" style="display: none;"></div>
+    </div>
+    <p style="font-size:0.8em; color:#777;">単語プール (ここからドラッグ):</p>
+    <div id="words-pool" class="words-pool-container"></div>
+
+    <p style="font-size:0.8em; color:#777;">回答エリア (ここにドロップして並べ替えろ):</p>
+    <div id="answer-area" class="answer-area-container"></div>
+  </div>
+
+  <div class="buttons">
+    <button id="check-button">回答チェック</button>
+    <button id="next-button" style="display: none;">次の問題</button>
+    <button id="restart-set-button" style="display: none;">もう一度このセットで挑戦</button>
+    <button id="new-set-button" style="display: none;">新しいセットで挑戦</button>
+    <button id="review-mistakes-button" class="review-button" style="display: none;">間違えた問題を復習</button>
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+  <div id="correct-answer-display" class="correct-answer-display"></div>
+  <div id="set-complete-message" class="set-complete-message" style="display:none;"></div>
+</div>
+
+<div id="word-tooltip-element"></div>
+
+<script>
+const allSentencePartsData = [
+  { id: 1, s: "He", v: "gave", io: "Sally", do: "a ring.", hint: "彼はサリーに指輪をあげた。" },
+  { id: 2, s: "She", v: "showed", io: "me", do: "her new car.", hint: "彼女は私に新しい車を見せた。" },
+  { id: 3, s: "My father", v: "bought", io: "me", do: "a bicycle.", hint: "私の父は私に自転車を買ってくれた。" },
+  { id: 4, s: "The chef", v: "made", io: "his customer", do: "a special dish.", hint: "そのシェフは顧客に特別な料理を作った。" },
+  { id: 5, s: "They", v: "sent", io: "us", do: "a postcard.", hint: "彼らは私たちに絵葉書を送った。" },
+  { id: 6, s: "The teacher", v: "told", io: "the students", do: "a story.", hint: "先生は生徒たちに物語を話した。" },
+  { id: 7, s: "Sarah", v: "cooked", io: "her family", do: "dinner.", hint: "サラは家族に夕食を作った。" },
+  { id: 8, s: "Tom", v: "found", io: "his sister", do: "a nice gift.", hint: "トムは妹に素敵な贈り物を見つけた。" },
+  { id: 9, s: "We", v: "will choose", io: "him", do: "a new tie.", hint: "私たちは彼に新しいネクタイを選ぶつもりだ。" },
+  { id: 10, s: "Our friends", v: "are making", io: "us", do: "a surprise party.", hint: "私たちの友達は私たちにサプライズパーティーを準備している。" },
+  { id: 11, s: "The company", v: "offered", io: "her", do: "a good job.", hint: "その会社は彼女によい仕事を提供した。" },
+  { id: 12, s: "I", v: "wrote", io: "my grandmother", do: "a long letter.", hint: "私は祖母に長い手紙を書いた。" },
+  { id: 13, s: "The librarian", v: "lent", io: "the boy", do: "an interesting book.", hint: "図書館員はその少年に面白い本を貸した。" },
+  { id: 14, s: "My parents", v: "promised", io: "me", do: "a new phone.", hint: "私の両親は私に新しい電話を約束した。" },
+  { id: 15, s: "A kind stranger", v: "got", io: "the lost child", do: "some water.", hint: "親切な見知らぬ人が迷子の子にいくらか水を持ってきてあげた。" },
+  { id: 16, s: "The wizard", v: "taught", io: "the young apprentice", do: "a magic spell.", hint: "その魔法使いは若い弟子に魔法の呪文を教えた。" },
+  { id: 17, s: "Our neighbor", v: "is building", io: "his son", do: "a treehouse.", hint: "私たちの隣人は息子にツリーハウスを建てている。" },
+  { id: 18, s: "She", v: "sings", io: "her baby", do: "a lullaby every night.", hint: "彼女は毎晩赤ちゃんに子守唄を歌う。" },
+  { id: 19, s: "The guide", v: "showed", io: "the tourists", do: "the ancient ruins.", hint: "ガイドは観光客に古代遺跡を見せた。" },
+  { id: 20, s: "He", v: "paid", io: "the cashier", do: "the money.", hint: "彼はお金をレジ係に支払った。" },
+  { id: 21, s: "My sister", v: "is knitting", io: "me", do: "a sweater.", hint: "私の姉は私にセーターを編んでいる。"},
+  { id: 22, s: "The dog", v: "brought", io: "its owner", do: "the ball.", hint: "その犬は飼い主にボールを持ってきた。"},
+  { id: 23, s: "Can you", v: "pass", io: "me", do: "the salt?", hint: "私に塩を渡してくれますか？"},
+  { id: 24, s: "The university", v: "awarded", io: "her", do: "a scholarship.", hint: "その大学は彼女に奨学金を与えた。"},
+  { id: 25, s: "I", v: "owe", io: "my friend", do: "ten dollars.", hint: "私は友達に10ドル借りている。"}
+];
+
+const wordDictionary = {
+    "he": "彼(は)", "gave": "あげた", "sally": "サリー(に)", "a": "一つの", "ring": "指輪", "ring.": "指輪",
+    "she": "彼女(は)", "showed": "見せた", "me": "私(に)", "her": "彼女の", "new": "新しい", "car": "車", "car.": "車",
+    "my": "私の", "father": "父", "bought": "買った", "bicycle": "自転車", "bicycle.": "自転車",
+    "the": "その", "chef": "シェフ", "made": "作った", "his": "彼の", "customer": "顧客", "special": "特別な", "dish": "料理", "dish.": "料理",
+    "they": "彼ら(は)", "sent": "送った", "us": "私たち(に)", "postcard": "絵葉書", "postcard.": "絵葉書",
+    "teacher": "先生", "told": "話した", "students": "生徒たち", "story": "物語", "story.": "物語",
+    "sarah": "サラ", "cooked": "料理した", "family": "家族", "dinner": "夕食", "dinner.": "夕食",
+    "tom": "トム", "found": "見つけた", "sister": "姉妹", "nice": "素敵な", "gift": "贈り物", "gift.": "贈り物",
+    "we": "私たち(は)", "will": "～だろう", "choose": "選ぶ", "him": "彼(に)", "tie": "ネクタイ", "tie.": "ネクタイ",
+    "our": "私たちの", "friends": "友達", "are": "～です", "making": "作っている", "surprise": "驚きの", "party": "パーティー", "party.": "パーティー",
+    "company": "会社", "offered": "提供した", "job": "仕事", "job.": "仕事", "good job.": "良い仕事",
+    "i": "私(は)", "wrote": "書いた", "grandmother": "祖母", "long": "長い", "letter": "手紙", "letter.": "手紙",
+    "librarian": "図書館員", "lent": "貸した", "boy": "少年", "an": "一つの", "interesting": "面白い", "book": "本", "book.": "本",
+    "parents": "両親", "promised": "約束した", "phone": "電話", "phone.": "電話",
+    "kind": "親切な", "stranger": "見知らぬ人", "got": "手に入れた/あげた", "lost": "迷子の", "child": "子供", "some": "いくらかの", "water": "水", "water.": "水",
+    "wizard": "魔法使い", "taught": "教えた", "young": "若い", "apprentice": "弟子", "magic": "魔法の", "spell": "呪文", "spell.": "呪文",
+    "neighbor": "隣人", "is": "～です", "building": "建てている", "son": "息子", "treehouse": "ツリーハウス", "treehouse.": "ツリーハウス",
+    "sings": "歌う", "baby": "赤ちゃん", "lullaby": "子守唄", "every": "毎", "night": "夜", "lullaby every night.": "毎晩の子守唄",
+    "guide": "ガイド", "tourists": "観光客", "ancient": "古代の", "ruins": "遺跡", "ruins.": "遺跡",
+    "paid": "支払った", "cashier": "レジ係", "money": "お金", "money.": "お金",
+    "knitting": "編んでいる", "sweater": "セーター", "sweater.": "セーター",
+    "dog": "犬", "brought": "持ってきた", "its": "それの", "owner": "飼い主", "ball": "ボール", "ball.": "ボール",
+    "can": "できる", "you": "あなた(は)", "pass": "渡す", "salt": "塩", "salt?": "塩",
+    "university": "大学", "awarded": "授与した", "scholarship": "奨学金", "scholarship.": "奨学金",
+    "owe": "借りている", "friend": "友達", "ten": "10", "dollars": "ドル", "dollars.": "ドル",
+    // 複合語のパーツも登録
+    "a ring.": "指輪を", "her new car.": "彼女の新しい車を", "a bicycle.": "自転車を", "a special dish.": "特別な料理を",
+    "a postcard.": "絵葉書を", "a story.": "物語を", "dinner.": "夕食を", "a nice gift.": "素敵な贈り物を",
+    "a new tie.": "新しいネクタイを", "a surprise party.": "サプライズパーティーを", "a good job.": "良い仕事を",
+    "a long letter.": "長い手紙を", "an interesting book.": "面白い本を", "a new phone.": "新しい電話を",
+    "some water.": "いくらかの水を", "a magic spell.": "魔法の呪文を", "a treehouse.": "ツリーハウスを",
+    "a lullaby every night.": "毎晩の子守唄を", "the ancient ruins.": "古代遺跡を", "the money.": "そのお金を",
+    "a sweater.": "セーターを", "the ball.": "そのボールを", "the salt?": "その塩を", "a scholarship.": "奨学金を",
+    "ten dollars.": "10ドルを",
+    "my father": "私の父", "his customer": "彼の顧客", "the students": "生徒たち", "her family": "彼女の家族",
+    "his sister": "彼の妹", "our friends": "私たちの友達", "my grandmother": "私の祖母", "the boy": "その少年",
+    "my parents": "私の両親", "a kind stranger": "親切な見知らぬ人", "the lost child": "迷子の子", "the young apprentice": "若い弟子",
+    "our neighbor": "私たちの隣人", "his son": "彼の息子", "her baby": "彼女の赤ちゃん", "the tourists": "観光客たち",
+    "the cashier": "レジ係", "my sister": "私の姉妹", "its owner": "その飼い主", "my friend": "私の友達"
+};
+
+
+const QUESTIONS_PER_SET = 5;
+let currentProblemSet = [];
+let currentProblemIndex = 0;
+let currentProblem = {};
+let draggedItem = null;
+let placeholder = null;
+let correctStreak = 0;
+let isHintActive = false;
+let mistakesInCurrentSet = []; // 現在のセットでの間違いを記録
+let isInReviewMode = false;     // 復習モードかどうかのフラグ
+
+const wordsPool = document.getElementById('words-pool');
+const answerArea = document.getElementById('answer-area');
+const checkButton = document.getElementById('check-button');
+const nextButton = document.getElementById('next-button');
+const restartSetButton = document.getElementById('restart-set-button');
+const newSetButton = document.getElementById('new-set-button');
+const reviewMistakesButton = document.getElementById('review-mistakes-button');
+const feedbackDiv = document.getElementById('feedback');
+const correctAnswerDisplayDiv = document.getElementById('correct-answer-display');
+const questionProgressSpan = document.getElementById('question-progress');
+const correctStreakSpan = document.getElementById('correct-streak');
+const hintToggleButton = document.getElementById('hint-toggle-button');
+const hintTextDiv = document.getElementById('hint-text');
+const setCompleteMessageDiv = document.getElementById('set-complete-message');
+const wordTooltipElement = document.getElementById('word-tooltip-element');
+const modeIndicatorDiv = document.getElementById('mode-indicator');
+
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function createPlaceholder() {
+    const ph = document.createElement('div');
+    ph.classList.add('placeholder');
+    return ph;
+}
+
+function selectProblemSet(isReview = false) {
+    isInReviewMode = isReview;
+    mistakesInCurrentSet = []; // 新しいセットまたは復習開始時にリセット
+    modeIndicatorDiv.textContent = isReview ? '復習モード' : '';
+
+    if (isReview) {
+        // 復習モードの場合、前回のセットで間違えた問題を使用
+        // (このサンプルでは、復習モードに入る前に `mistakesInLastSet` のような変数に保存しておく必要がある)
+        // 今回は、復習ボタンが押されたら `mistakesInCurrentSet` (そのセットで間違えた問題) を使う
+        // `startReviewMode` 関数内で `currentProblemSet` を設定する
+    } else {
+        currentProblemSet = shuffleArray([...allSentencePartsData]).slice(0, QUESTIONS_PER_SET);
+    }
+    
+    currentProblemIndex = 0;
+    setCompleteMessageDiv.style.display = 'none';
+    isHintActive = false;
+    hintTextDiv.style.display = 'none';
+    hintToggleButton.textContent = 'ヒント表示';
+    wordTooltipElement.style.display = 'none';
+    loadProblem();
+}
+
+function loadProblem() {
+  if (currentProblemIndex >= currentProblemSet.length) {
+    handleSetComplete();
+    return;
+  }
+
+  currentProblem = currentProblemSet[currentProblemIndex];
+  questionProgressSpan.textContent = `問題: ${currentProblemIndex + 1} / ${currentProblemSet.length}`; // 分母をセットの長さに
+  
+  // 各パーツ（S, V, IO, DO）を単語に分割する場合の考慮
+  // 今回は provided data が既に適切な塊になっている前提
+  const parts = [currentProblem.s, currentProblem.v, currentProblem.io, currentProblem.do];
+  const shuffledParts = shuffleArray([...parts]);
+
+  wordsPool.innerHTML = '';
+  answerArea.innerHTML = '';
+  feedbackDiv.textContent = '';
+  correctAnswerDisplayDiv.textContent = '';
+  hintTextDiv.textContent = currentProblem.hint;
+  hintTextDiv.style.display = isHintActive ? 'block' : 'none';
+  hintToggleButton.textContent = isHintActive ? 'ヒント非表示' : 'ヒント表示';
+
+  shuffledParts.forEach((partText, index) => {
+    const wordBlock = document.createElement('div');
+    wordBlock.classList.add('word-block');
+    wordBlock.textContent = partText; // ここが重要。partTextが辞書のキーと一致するように
+    wordBlock.draggable = true;
+    wordBlock.id = `draggable-${Date.now()}-${index}`;
+    wordBlock.addEventListener('dragstart', handleDragStart);
+    wordBlock.addEventListener('dragend', handleDragEnd);
+    wordBlock.addEventListener('mouseenter', handleWordMouseEnter);
+    wordBlock.addEventListener('mouseleave', handleWordMouseLeave);
+    wordsPool.appendChild(wordBlock);
+  });
+
+  checkButton.disabled = false;
+  checkButton.style.display = 'inline-block';
+  nextButton.style.display = 'none';
+  restartSetButton.style.display = 'none';
+  newSetButton.style.display = 'none';
+  reviewMistakesButton.style.display = 'none';
+  hintToggleButton.style.display = 'inline-block';
+  answerArea.innerHTML = '';
+}
+
+function handleWordMouseEnter(event) {
+    if (!isHintActive) return;
+
+    const originalText = event.target.textContent; // 元のテキスト (e.g., "a ring.")
+    let lookupKey = originalText.toLowerCase(); // まず小文字化
+    let translation = wordDictionary[lookupKey];
+
+    // もし末尾の句読点を除いたキーでも検索するなら
+    if (!translation) {
+        const cleanedKey = lookupKey.replace(/[.?]$/, ''); // 末尾の . や ? を除去
+        translation = wordDictionary[cleanedKey];
+    }
+    // さらに、主要な単語のみを抽出して検索する場合 (例: "her new car." -> "car")
+    // 今回は辞書に複合語も入れているので、上記のキーでヒットすることを期待
+
+    if (translation) {
+        wordTooltipElement.textContent = translation;
+        const rect = event.target.getBoundingClientRect();
+        const tooltipTop = rect.top + window.pageYOffset - wordTooltipElement.offsetHeight - 10;
+        const tooltipLeft = rect.left + window.pageXOffset + (rect.width / 2) - (wordTooltipElement.offsetWidth / 2);
+        wordTooltipElement.style.top = `${tooltipTop}px`;
+        wordTooltipElement.style.left = `${tooltipLeft}px`;
+        wordTooltipElement.style.display = 'block';
+    }
+}
+
+function handleWordMouseLeave(event) {
+    wordTooltipElement.style.display = 'none';
+}
+
+function handleDragStart(event) {
+  draggedItem = event.target;
+  event.dataTransfer.setData('text/plain', event.target.id);
+  event.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => {
+    if (draggedItem) draggedItem.classList.add('dragging');
+  }, 0);
+  placeholder = createPlaceholder();
+  if (draggedItem) {
+    placeholder.style.width = `${draggedItem.offsetWidth}px`;
+    placeholder.style.height = `${draggedItem.offsetHeight}px`;
+  }
+  wordTooltipElement.style.display = 'none';
+}
+
+function handleDragEnd(event) {
+  if (draggedItem) {
+    draggedItem.classList.remove('dragging');
+  }
+  if (placeholder && placeholder.parentNode) {
+    placeholder.parentNode.removeChild(placeholder);
+  }
+  placeholder = null;
+  draggedItem = null;
+  document.querySelectorAll('.drag-over-area').forEach(el => el.classList.remove('drag-over-area'));
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+  const targetContainer = event.target.closest('.words-pool-container, .answer-area-container');
+  if (!targetContainer || !draggedItem || !placeholder) return;
+  targetContainer.classList.add('drag-over-area');
+  if (placeholder.parentNode) {
+    placeholder.parentNode.removeChild(placeholder);
+  }
+  const afterElement = getDragAfterElement(targetContainer, event.clientX);
+  if (afterElement) {
+    targetContainer.insertBefore(placeholder, afterElement);
+  } else {
+    targetContainer.appendChild(placeholder);
+  }
+  wordTooltipElement.style.display = 'none';
+}
+
+function handleDragLeave(event) {
+    const targetContainer = event.target.closest('.words-pool-container, .answer-area-container');
+    if (targetContainer) {
+        if (!targetContainer.contains(event.relatedTarget)) {
+            targetContainer.classList.remove('drag-over-area');
+        }
+    }
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const targetContainer = event.target.closest('.words-pool-container, .answer-area-container');
+  if (!targetContainer || !draggedItem) return;
+  targetContainer.classList.remove('drag-over-area');
+  if (placeholder && placeholder.parentNode) {
+    placeholder.parentNode.insertBefore(draggedItem, placeholder);
+    placeholder.parentNode.removeChild(placeholder);
+  } else if (draggedItem) {
+    targetContainer.appendChild(draggedItem);
+  }
+  placeholder = null;
+}
+
+function getDragAfterElement(container, x) {
+    const draggableElements = [...container.querySelectorAll('.word-block:not(.dragging), .placeholder')];
+    return draggableElements.reduce((closest, child) => {
+        if (child === placeholder) return closest;
+        const box = child.getBoundingClientRect();
+        const offset = x - box.left - box.width / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+function checkAnswer() {
+  wordTooltipElement.style.display = 'none';
+  const answerWords = Array.from(answerArea.children)
+                        .filter(el => el.classList.contains('word-block'))
+                        .map(el => el.textContent);
+  const userAnswer = answerWords.join(' ');
+  const correctAnswer = `${currentProblem.s} ${currentProblem.v} ${currentProblem.io} ${currentProblem.do}`;
+
+  if (userAnswer === correctAnswer && answerWords.length === 4) {
+    feedbackDiv.textContent = '正解だ。見事だ。';
+    feedbackDiv.className = 'feedback correct';
+    correctStreak++;
+  } else {
+    feedbackDiv.textContent = '不正解！貴様に明日は無い！';
+    feedbackDiv.className = 'feedback incorrect';
+    correctAnswerDisplayDiv.textContent = `正解: ${correctAnswer}`;
+    correctStreak = 0;
+    if (!isInReviewMode && !mistakesInCurrentSet.includes(currentProblem.id)) { // 復習モードでなければ間違いを記録
+        mistakesInCurrentSet.push(currentProblem.id);
+    }
+  }
+  correctStreakSpan.textContent = `連続正解: ${correctStreak}`;
+
+  checkButton.disabled = true;
+  checkButton.style.display = 'none';
+  nextButton.style.display = 'inline-block';
+  hintToggleButton.style.display = 'none';
+
+  Array.from(answerArea.children).forEach(child => { if(child.classList.contains('word-block')) child.draggable = false; });
+  Array.from(wordsPool.children).forEach(child => { if(child.classList.contains('word-block')) child.draggable = false; });
+}
+
+function handleNextProblem() {
+    currentProblemIndex++;
+    wordTooltipElement.style.display = 'none';
+    loadProblem();
+}
+
+function toggleHint() {
+    isHintActive = !isHintActive;
+    hintTextDiv.style.display = isHintActive ? 'block' : 'none';
+    hintToggleButton.textContent = isHintActive ? 'ヒント非表示' : 'ヒント表示';
+    if (!isHintActive) {
+        wordTooltipElement.style.display = 'none';
+    }
+}
+
+function handleSetComplete() {
+    questionProgressSpan.textContent = `セット完了！ (${currentProblemSet.length}/${currentProblemSet.length})`;
+    feedbackDiv.textContent = '';
+    correctAnswerDisplayDiv.textContent = '';
+    setCompleteMessageDiv.textContent = isInReviewMode ? `復習完了！よくやった。` : `このセットの${QUESTIONS_PER_SET}問を終えた。`;
+    setCompleteMessageDiv.style.display = 'block';
+    
+    checkButton.style.display = 'none';
+    nextButton.style.display = 'none';
+    hintToggleButton.style.display = 'none';
+    wordsPool.innerHTML = '';
+    answerArea.innerHTML = '';
+    wordTooltipElement.style.display = 'none';
+
+    if (!isInReviewMode) { // 通常モード完了時のみ表示
+        restartSetButton.style.display = 'inline-block';
+        newSetButton.style.display = 'inline-block';
+        if (mistakesInCurrentSet.length > 0) {
+            reviewMistakesButton.style.display = 'inline-block';
+        }
+    } else { // 復習モード完了時
+        newSetButton.textContent = "新しいセットで通常モード"; // ボタンテキスト変更
+        newSetButton.style.display = 'inline-block';
+        restartSetButton.style.display = 'none';
+        reviewMistakesButton.style.display = 'none';
+    }
+}
+
+function restartCurrentSet() {
+    currentProblemIndex = 0;
+    setCompleteMessageDiv.style.display = 'none';
+    isHintActive = false;
+    hintTextDiv.style.display = 'none';
+    hintToggleButton.textContent = 'ヒント表示';
+    wordTooltipElement.style.display = 'none';
+    // mistakesInCurrentSet はリスタート時はリセットしない（同じセットで再度間違える可能性を記録するため）
+    // もしリスタート時に間違い記録もリセットしたい場合は、ここで mistakesInCurrentSet = [] を行う
+    loadProblem();
+}
+
+function startNewSet() {
+    isInReviewMode = false; // 通常モードに設定
+    newSetButton.textContent = "新しいセットで挑戦"; // ボタンテキストを元に戻す
+    selectProblemSet(false);
+}
+
+function startReviewMode() {
+    if (mistakesInCurrentSet.length === 0) {
+        alert("復習する問題がありません。");
+        return;
+    }
+    // 間違えた問題のIDリストに基づいて、allSentencePartsDataから問題オブジェクトを抽出
+    currentProblemSet = allSentencePartsData.filter(problem => mistakesInCurrentSet.includes(problem.id));
+    if (currentProblemSet.length === 0) { // 念のため
+        alert("復習対象の問題が見つかりませんでした。");
+        return;
+    }
+    isInReviewMode = true;
+    selectProblemSet(true); // isReview = true で selectProblemSet を呼び出す
+}
+
+
+// イベントリスナーの登録
+[wordsPool, answerArea].forEach(container => {
+    container.addEventListener('dragover', handleDragOver);
+    container.addEventListener('dragleave', handleDragLeave);
+    container.addEventListener('drop', handleDrop);
+});
+
+checkButton.addEventListener('click', checkAnswer);
+nextButton.addEventListener('click', handleNextProblem);
+hintToggleButton.addEventListener('click', toggleHint);
+restartSetButton.addEventListener('click', restartCurrentSet);
+newSetButton.addEventListener('click', startNewSet);
+reviewMistakesButton.addEventListener('click', startReviewMode);
+
+// 初期化
+selectProblemSet(false); // 最初は通常モード
+
+</script>
+</body>
+</html>
