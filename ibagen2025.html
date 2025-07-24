@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年度 茨城大学 人文社会科学部 小論文A 解説</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        :root {
+            --accent-color: #ffd700; /* アクセントの黄色 */
+            --bg-color: #000000;     /* 背景の黒 */
+            --surface-color: #1c1c1c; /* コンテンツ背景のダークグレー */
+            --text-color: #ffffff;   /* 基本の白文字 */
+            --text-on-accent-color: #000000; /* 黄色背景の上の黒文字 */
+            --border-color: #444444;
+            --highlight-mouseover: rgba(255, 215, 0, 0.2);
+            --highlight-click: rgba(255, 215, 0, 0.7);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--surface-color);
+            padding: 20px 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        h1 { text-align: center; font-size: 2.2em; border: none; }
+        h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
+        h3 { font-size: 1.4em; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+
+        .section { margin-bottom: 40px; }
+        
+        .question-box { background-color: #222; border-left: 5px solid var(--accent-color); padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .answer-box { background-color: #2a2a2a; border-left: 5px solid #ccc; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .point-box { border: 2px dashed var(--accent-color); background-color: rgba(255, 215, 0, 0.05); padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .point-box h3 { color: var(--accent-color); border: none; }
+
+        .keyword {
+            font-weight: bold;
+            color: var(--accent-color);
+            cursor: pointer;
+            text-decoration: underline dotted;
+            text-decoration-color: var(--accent-color);
+            text-decoration-thickness: 2px;
+        }
+        
+        .highlight { background-color: var(--highlight-click); color: var(--text-on-accent-color); }
+
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--text-on-accent-color); padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer; transition: transform 0.2s, background-color 0.2s; border: none; margin-right: 10px; margin-bottom: 10px; }
+        .btn:hover { transform: translateY(-2px); background-color: #fff; }
+
+        /* --- Translation Section --- */
+        .translation-section { background-color: #111; padding: 20px; border-radius: 10px; margin: 30px 0; border: 1px solid var(--border-color); }
+        .translation-container { display: flex; gap: 20px; }
+        .column { width: 50%; background: var(--surface-color); padding: 15px; border-radius: 8px; }
+        .column h3 { margin-top: 0; font-size: 1.1em; text-align: center; }
+        .paragraph { padding: 10px; border-radius: 5px; margin-bottom: 10px; cursor: default; transition: background-color 0.3s ease; font-size: 0.95em; }
+        .paragraph.sync-highlight { background-color: var(--highlight-mouseover); }
+        @media (max-width: 800px) { .translation-container { flex-direction: column; } .column { width: auto; } }
+        .instruction-box { background-color: #333; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-weight: bold; }
+        
+        /* --- Word List Section --- */
+        .word-list-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .word-list-table th, .word-list-table td { border: 1px solid var(--border-color); padding: 12px; text-align: left; }
+        .word-list-table th { background-color: var(--accent-color); color: var(--text-on-accent-color); }
+        .word-list-table tr:nth-child(even) { background-color: #222; }
+        .word-list-table tr:hover { background-color: #444; }
+
+        /* Modal (Popup) Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); animation: fadeIn 0.3s; }
+        .modal-content { background-color: var(--surface-color); margin: 15% auto; padding: 30px; width: 80%; max-width: 500px; border-radius: 12px; border: 1px solid var(--accent-color); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2); animation: slideIn 0.3s; }
+        @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+        @keyframes slideIn { from {transform: translateY(-50px); opacity: 0} to {transform: translateY(0); opacity: 1} }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-btn:hover, .close-btn:focus { color: var(--accent-color); text-decoration: none; cursor: pointer; }
+        
+        /* Thinking Steps */
+        .thinking-steps { display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; gap: 10px;}
+        .step { width: 30%; min-width: 200px; padding: 15px; background: #222; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
+        .step .step-number { background: var(--accent-color); color: var(--text-on-accent-color); border-radius: 50%; width: 30px; height: 30px; line-height: 30px; margin: 0 auto 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>2025年度 茨城大学 人文社会科学部 小論文A 解説</h1>
+        
+        <div class="section">
+            <h2>はじめに：この試験の「ねらい」は？</h2>
+            <p>この試験は、ただ英語が読めるだけではなく、<strong>「現代社会が抱える問題に関心があるか」「文章の要点を掴んで、自分の考えを論理的に説明できるか」</strong>を見ています。今回は「AIとジェンダー」という、まさに現代社会のど真ん中なテーマ。読解力を身につけよう！</p>
+        </div>
+
+        <div class="section translation-section">
+            <h2>英文・和訳 対訳チャレンジ（全文）</h2>
+            <div class="instruction-box">💡マウスをかざすと対訳がハイライト！「解答の根拠はここ！」ボタンで根拠箇所にジャンプします。</div>
+            <div class="translation-container">
+                <div class="column english">
+                    <h3>原文 (English)</h3>
+                    <div class="paragraph" data-sync-id="p1">The world has a gender equality problem, and Artificial Intelligence (AI) mirrors the gender bias in our society. Who creates AI and what biases are built into AI data (or not), can perpetuate, widen, or reduce gender equality gaps.</div>
+                    <div id="q1-hint" class="paragraph" data-sync-id="p2">(1)Beyza Doğuç, an artist from Ankara, Turkey, encountered <span class="keyword" data-title="Gender Bias" data-definition="性別による偏見や固定観念のこと。例えば「男は仕事、女は家庭」のような考え方。">gender bias</span> in <span class="keyword" data-title="Generative AI" data-definition="文章や画像などを自動で作り出すAIのこと。ChatGPTなどが有名。">Generative AI</span> when she was researching for a novel and prompted it to write a story about a doctor and a nurse. Generative AI creates new content (text, images, video, etc.) inspired by similar content and data that it was trained on, often in response to questions or prompts by a user. The AI made the doctor male and the nurse female. Doğuç continued to give it more prompts, and the AI always chose gender stereotypical roles for the characters and associated certain qualities and skills with male or female characters. When she asked the AI about the gender bias it exhibited, if the AI is trained on data that associates women and men with different and specific skills or interests, it will generate content reflecting that bias.</div>
+                    <div class="paragraph" data-sync-id="p3">Sola Mahfouz, a computing researcher at Tufts University, is excited about AI, but also concerned. "Is it equitable? How much does it mirror our society's patriarchal structures and inherent biases from its predominantly male creators," she reflected.</div>
+                    <div id="q2-hint" class="paragraph" data-sync-id="p4">Natacha Sangwa is a student from Rwanda who participated in the first coding camp organized under the African Girls Can Code Initiative last year. "I have noticed that [AI] is mostly developed by men and trained on datasets that are primarily based on men," said Sangwa, who saw first-hand (2)how that impacts women's experience with the technology. "When women use some AI-powered systems to diagnose illnesses, they often receive inaccurate answers, because the AI is not aware of symptoms that may present differently in women."</div>
+                    <div class="paragraph" data-sync-id="p5">If current trends continue, AI-powered technology and services will continue lacking diverse gender and racial perspectives, and that gap will result in lower quality of services, biased decisions about jobs, credit, health care and more.</div>
+                    <div id="q3-hint" class="paragraph" data-sync-id="p6">(3)Removing gender bias in AI starts with prioritizing gender equality as a goal, as AI systems are designed and built. This includes assessing data for misrepresentation, providing data that is representative of diverse gender and racial experiences, and reshaping the teams developing AI to make them more diverse and inclusive.</div>
+                    <div class="paragraph" data-sync-id="p7">In a rapidly advancing AI industry, the lack of gender perspectives, data, and decision-making can perpetuate profound inequality for years to come.</div>
+                    <div class="paragraph" data-sync-id="p8">International cooperation on digital technology has focused on technical and infrastructural issues and the digital economy, often at the expense of how technological developments were affecting society and generating disruption across all its layers - especially for the most vulnerable and historically excluded.</div>
+                    <div class="paragraph" data-sync-id="p9">There is a global <span class="keyword" data-title="Governance" data-definition="統治、管理、ルールのこと。ここでは、AIを倫理的に正しく使うための世界的な仕組みやルールの必要性を指している。">governance</span> deficit in addressing the challenges and risks of AI and harnessing its potential to leave no one behind.</div>
+                    <div class="paragraph" data-sync-id="p10">"Right now, there is no mechanism to constrain developers from releasing AI systems before they are ready and safe. There's a need for a global multistakeholder governance model that prevents and redresses when AI systems exhibit gender or racial bias, reinforce harmful stereotypes, or does not meet privacy and security standards," said Helene Molinier, UN Women's Advisor on Digital Gender Equality Cooperation in a recent interview with Devex.</div>
+                    <div id="q4-hint" class="paragraph" data-sync-id="p11">In the current AI architecture, benefits and risks are not equitably distributed, with power concentrated in the hands of a few corporations, states and individuals, who control talent, data and computer resources. There is also no mechanism to look at broader considerations, like (4)new forms of social vulnerability generated by AI, the disruption of industries and labor markets, the propensity for emerging technology to be used as a tool of oppression, the sustainability of the AI supply chain, or the impact of AI on future generations.</div>
+                </div>
+                <div class="column japanese">
+                    <h3>日本語訳 (Japanese)</h3>
+                    <div class="paragraph" data-sync-id="p1">世界にはジェンダー平等の問題があり、AI（人工知能）は私たちの社会のジェンダーバイアスを映し出す鏡となっている。誰がAIを作り、どのような偏見がAIのデータに組み込まれている（あるいはいない）のかが、ジェンダー平等の格差を永続させ、拡大させ、あるいは縮小させることになりうる。</div>
+                    <div class="paragraph" data-sync-id="p2">(1)トルコのアンカラ出身のアーティスト、Beyza Doğuçは、小説の調査中に生成AIにおけるジェンダーバイアスに遭遇した。彼女がAIに医者と看護師の物語を書くよう指示したところ、生成AIは、類似のコンテンツや学習データに基づき、ユーザーの質問や指示に応答して新しいコンテンツ（テキスト、画像、動画など）を創作する。AIは医者を男性、看護師を女性として創作した。Doğuçがさらに指示を続けても、AIは常に性別による固定的な役割を登場人物に与え、特定の資質やスキルを男性または女性キャラクターと関連付けた。彼女がAIにそのジェンダーバイアスについて尋ねると、もしAIが男女を異なる特定のスキルや興味と関連付けるデータで学習していれば、その偏見を反映したコンテンツを生成する、とのことであった。</div>
+                    <div class="paragraph" data-sync-id="p3">タフツ大学のコンピューティング研究者であるSola Mahfouzは、AIに期待する一方で懸念も抱いている。「それは公平なのでしょうか？ 私たちの社会の家父長制的な構造や、その主に男性である創作者たちから受け継いだ固有の偏見を、どれほど反映しているのでしょうか」と彼女は考えを述べた。</div>
+                    <div class="paragraph" data-sync-id="p4">Natacha Sangwaは、昨年アフリカ・ガールズ・キャン・コード・イニシアチブのもとで組織された初のコーディングキャンプに参加したルワンダ出身の学生である。「AIは主に男性によって開発され、主に男性に基づいたデータセットで訓練されていることに気づきました」とSangwaは語り、(2)それが女性のテクノロジー体験にどう影響するかを目の当たりにした。「女性が病気を診断するためにAI搭載システムを使うと、不正確な答えが返ってくることがよくあります。なぜならAIは女性に特有の症状を認識していないからです。」</div>
+                    <div class="paragraph" data-sync-id="p5">現在の傾向が続けば、AIを活用した技術やサービスは、多様なジェンダーや人種の視点を欠き続け、その格差は、質の低いサービス、雇用・信用・医療などに関する偏った決定をもたらすだろう。</div>
+                    <div class="paragraph" data-sync-id="p6">(3)AIにおけるジェンダーバイアスをなくすことは、AIシステムが設計・構築される際に、ジェンダー平等を目標として優先することから始まる。これには、データの偏った表現を評価すること、多様なジェンダーと人種の経験を代表するデータを提供すること、そしてAI開発チームをより多様で誰もが受け入れられるような構成に作り変えることが含まれる。</div>
+                    <div class="paragraph" data-sync-id="p7">急速に進歩するAI産業において、ジェンダーの視点、データ、そして意思決定の欠如は、深刻な不平等を何年にもわたって永続させる可能性がある。</div>
+                    <div class="paragraph" data-sync-id="p8">デジタル技術に関する国際協力は、技術的・社会基盤的な問題やデジタル経済に焦点を当ててきたが、それはしばしば、技術開発が社会にどう影響し、その全ての階層、特に最も脆弱で歴史的に排除されてきた人々に混乱を生じさせているか、という点を犠牲にしてきた。</div>
+                    <div class="paragraph" data-sync-id="p9">AIの課題とリスクに対処し、誰も置き去りにしないその可能性を活用する上で、世界的なガバナンスが欠如している。</div>
+                    <div class="paragraph" data-sync-id="p10">「現在、開発者が準備が整い安全になる前にAIシステムをリリースすることを抑制する仕組みがありません。AIシステムがジェンダーや人種の偏見を示したり、有害な固定観念を強化したり、プライバシーやセキュリティの基準を満たさなかったりした場合に、それを防ぎ是正するような、世界的なマルチステークホルダーによるガバナンスモデルが必要です」と、国連ウィメンのデジタル・ジェンダー平等協力アドバイザーであるHelene Molinierは最近のDevexとのインタビューで述べた。</div>
+                    <div class="paragraph" data-sync-id="p11">現在のAIの構造では、利益とリスクは公平に分配されておらず、才能、データ、コンピュータリソースを支配する一部の企業、国家、個人の手に権力が集中している。また、(4)AIによって生み出される新しい形の社会的脆弱性や、産業と労働市場の混乱、新興技術が抑圧の道具として使われる傾向、AIサプライチェーンの持続可能性、またはAIが未来の世代に与える影響といった、より広い問題を検討する仕組みも存在しない。</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>設問別解説</h2>
+            <h3>問1：アーティストが遭遇したジェンダーバイアス</h3>
+            <div class="question-box">下線部(1)について、このアーティストが遭遇したgender biasとは、どのようなものでしたか。本文に即して100文字以内の日本語で説明しなさい。何をしたときに、どのようなことが起きたのかがわかるように述べること。</div>
+            <button class="btn" onclick="highlightText('q1-hint')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>トルコのアーティストが、小説執筆の参考に生成AIへ医者と看護師が登場する物語の創作を指示した際、AIが自動的に医者を男性、看護師を女性として描写し、その後も性別による固定的な役割分担を続けたこと。(98字)</div>
+             <div class="point-box"><h3>💡採点ポイント</h3><ul><li><strong>「何をしたとき」</strong>：AIに医者と看護師の物語を頼んだこと</li><li><strong>「何が起きたか」</strong>：AIが性別で役割を固定したこと</li></ul>この２つの要素を、100字以内で簡潔にまとめられているかがカギ！</div>
+
+            <h3>問2：AIが女性に与える影響</h3>
+            <div class="question-box">下線部(2)について, Natacha Sangwa さんは、AIのどのような問題に気づいたのか、そして、それによって何が起こると考えているのか。100文字以内の日本語で具体的に説明しなさい。</div>
+            <button class="btn" onclick="highlightText('q2-hint')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>AIが主に男性によって開発され、男性中心のデータで訓練されているという問題点に気づいた。これにより、女性がAIを利用して病気の診断をする際に、AIが女性特有の症状を認識できず、不正確な診断結果が示される事態が起こると考えている。(100字)</div>
+            <div class="point-box"><h3>💡採点ポイント</h3><ul><li><strong>「AIの問題点」</strong>：開発者もデータも男性中心であること</li><li><strong>「起こりうること」</strong>：女性の病気の誤診</li></ul>本文の具体的な例（病気の診断）をしっかり盛り込めているかが重要！</div>
+            
+            <h3>問3：ジェンダーバイアス解消法</h3>
+            <div class="question-box">下線部(3)を実現するために、著者は何が必要だと言っていますか。具体的な対処がわかるように、150文字以内の日本語で説明しなさい。</div>
+            <button class="btn" onclick="highlightText('q3-hint')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>AIの設計・構築段階からジェンダー平等を目標として優先することが必要だ。具体的には、学習データにジェンダーや人種の偏った表現がないか評価し、多様な人々の経験を代表するデータを提供する。さらに、AIを開発するチーム自体も、より多様で誰もが受け入れられるような構成に作り変える必要がある。(143字)</div>
+            <div class="point-box"><h3>💡採点ポイント</h3>本文に書かれている３つの解決策（①目標設定、②多様なデータ、③多様な開発チーム）を漏れなく盛り込み、150字にまとめる整理能力が試される！</div>
+
+            <h3>問4：君ならどう考える？応用問題に挑戦！</h3>
+            <div class="question-box">下線部(4)からもわかるように、著者は、AIの問題が gender biasだけに留まらないと考えて、いくつかの例を提示していますが、具体的な内容については言及していません。それらの例の中から一つを取り上げ、誰が、どのような差別・排除を受ける可能性があるのかをAIとの関係がわかるよう具体的に説明した上で、それに対するあなたの考えを述べなさい。400文字以内の日本語で解答しなさい。</div>
+            <button class="btn" onclick="highlightText('q4-hint')">ヒントになるのはこの部分！</button>
+            <p style="text-align:center; font-weight: bold; font-size: 1.1em; color: var(--accent-color);">この問題が合否を分ける最重要問題！</p>
+            <div class="point-box"><h3>💡思考の３ステップ</h3><div class="thinking-steps"><div class="step"><div class="step-number">1</div><strong>テーマを選ぶ</strong><br>本文のヒント（抑圧の道具、労働市場の混乱など）から一つ選ぶ。</div><div class="step"><div class="step-number">2</div><strong>具体的にする</strong><br>「誰が」「どんな風に」困るのか？を想像して具体例を考える。</div><div class="step"><div class="step-number">3</div><strong>意見をまとめる</strong><br>「だから私はこう思う」「そのために〜が必要だ」と結論づける。</div></div></div>
+            <div class="answer-box"><strong>【解答例】</strong><br>私が取り上げるのは、AIが「抑圧の道具」として利用される問題だ。これにより差別を受ける可能性があるのは、政府や権力に批判的な意見を持つジャーナリストや活動家、あるいは特定の思想や信条を持つ少数派の人々である。<br><br>具体的には、政府などの権力者が、AIによる顔認証システムやSNSの投稿分析を用いて国民を監視するケースが考えられる。AIは、特定の個人を追跡し、その言動から「反体制的」と判断した人物を自動でリストアップする。その結果、人々は自らの思想や意見を表明することを恐れて自己検閲を始め、自由な言論が封殺される。さらに、AIによるラベリングに基づき、不当な逮捕や雇用の機会剥奪といった人権侵害や社会的排除につながる危険性も大きい。<br><br>AIの技術は中立的に見えても、その利用目的や設計次第で、深刻な人権抑圧のツールとなりうる。だからこそ、AIの開発と利用には、透明性を確保するための法規制や、独立した第三者機関による厳格な監視が不可欠だ。私たちは技術の発展を追求すると同時に、それが人間の尊厳と自由を脅かすことのないよう、倫理的な歯止めをかける社会的責任がある。(398字)</div>
+        </div>
+        
+        <div class="section">
+            <h2>重要単語・熟語 チェックリスト</h2>
+            <p>この長文を読み解くカギとなる単語・熟語リスト-意味を隠して覚えているかチェックしよう。</p>
+            <table class="word-list-table">
+                <thead>
+                    <tr><th>単語 / 熟語</th><th>品詞</th><th>意味</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>mirror</td><td>動</td><td>～を反映する、映し出す</td></tr>
+                    <tr><td>perpetuate</td><td>動</td><td>～を永続させる</td></tr>
+                    <tr><td>encounter</td><td>動</td><td>～に遭遇する、出くわす</td></tr>
+                    <tr><td>stereotypical</td><td>形</td><td>固定観念的な、典型的な</td></tr>
+                    <tr><td>associate</td><td>動</td><td>～を関連づける</td></tr>
+                    <tr><td>equitable</td><td>形</td><td>公平な、公正な</td></tr>
+                    <tr><td>patriarchal</td><td>形</td><td>家父長制の（男性優位の）</td></tr>
+                    <tr><td>inherent</td><td>形</td><td>固有の、元から備わっている</td></tr>
+                    <tr><td>predominantly</td><td>副</td><td>主に、大部分は</td></tr>
+                    <tr><td>diagnose</td><td>動</td><td>～を診断する</td></tr>
+                    <tr><td>diverse</td><td>形</td><td>多様な</td></tr>
+                    <tr><td>perspective</td><td>名</td><td>視点、考え方</td></tr>
+                    <tr><td>prioritize</td><td>動</td><td>～を優先する</td></tr>
+                    <tr><td>misrepresentation</td><td>名</td><td>不正確な[偏った]表現</td></tr>
+                    <tr><td>inclusive</td><td>形</td><td>包括的な、誰も排除しない</td></tr>
+                    <tr><td>profound</td><td>形</td><td>深刻な、重大な</td></tr>
+                    <tr ><td>infrastructural</td><td>形</td><td>社会基盤の、インフラの</td></tr>
+                    <tr><td>at the expense of A</td><td>熟</td><td>Aを犠牲にして</td></tr>
+                    <tr><td>vulnerable</td><td>形</td><td>脆弱な、傷つきやすい</td></tr>
+                    <tr><td>governance</td><td>名</td><td>統治、管理（の仕組み）</td></tr>
+                    <tr><td>constrain</td><td>動</td><td>～を抑制する、制約する</td></tr>
+                    <tr><td>redress</td><td>動</td><td>～を是正する、直す</td></tr>
+                    <tr><td>equitably</td><td>副</td><td>公平に</td></tr>
+                    <tr><td>propensity</td><td>名</td><td>（よくない）傾向、性質</td></tr>
+                    <tr><td>oppression</td><td>名</td><td>抑圧、弾圧</td></tr>
+                    <tr><td>sustainability</td><td>名</td><td>持続可能性</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>まとめ：合格へのロードマップ</h2>
+            <ol>
+                <li><strong>社会問題へのアンテナ力：</strong>ニュースや新聞で「ジェンダー」「AI」「格差」などの話題に普段から触れておこう！</li>
+                <li><strong>要約力：</strong>読んだ記事を「つまり、こういうことだよね」と100字くらいでまとめる練習をしよう！</li>
+                <li><strong>論述力：</strong>社会問題について「自分ならどう考えるか」を400字で書く練習をしよう！書いたら教員に見てもらうのがベスト！</li>
+            </ol>
+            <p style="text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 30px;">頑張れ！</p>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="keyword-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">×</span>
+        <h3 id="modal-title" style="color: var(--accent-color); border-bottom: 1px solid var(--accent-color);"></h3>
+        <p id="modal-definition"></p>
+      </div>
+    </div>
+
+    <script>
+        // Modal logic
+        const modal = document.getElementById('keyword-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDefinition = document.getElementById('modal-definition');
+        const closeBtn = document.querySelector('.close-btn');
+
+        document.querySelectorAll('.keyword').forEach(keyword => {
+            keyword.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalTitle.textContent = this.getAttribute('data-title');
+                modalDefinition.textContent = this.getAttribute('data-definition');
+                modal.style.display = 'block';
+            });
+        });
+
+        closeBtn.onclick = function() { modal.style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = 'none'; } }
+
+        // Button-click Highlight Logic
+        function highlightText(elementId) {
+            // Remove previous click highlight
+            document.querySelectorAll('.paragraph.highlight').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            const element = document.getElementById(elementId);
+            if (element) {
+                const syncId = element.dataset.syncId;
+                document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                    el.classList.add('highlight');
+                });
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Translation Sync Highlight Logic
+        document.querySelectorAll('.paragraph').forEach(p => {
+            p.addEventListener('mouseover', () => {
+                const syncId = p.dataset.syncId;
+                if (syncId) {
+                    document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                        el.classList.add('sync-highlight');
+                    });
+                }
+            });
+            p.addEventListener('mouseout', () => {
+                const syncId = p.dataset.syncId;
+                if (syncId) {
+                    document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                        el.classList.remove('sync-highlight');
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
