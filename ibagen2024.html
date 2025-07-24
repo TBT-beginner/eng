@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【白黒版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</title>
+    <title>【修正版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
@@ -63,7 +63,7 @@
 
         .keyword {
             font-weight: bold;
-            color: #0d6efd; /* 青色の方が見やすいので変更 */
+            color: #0d6efd;
             cursor: pointer;
             text-decoration: underline dotted;
             text-decoration-thickness: 2px;
@@ -99,16 +99,30 @@
         .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close-btn:hover, .close-btn:focus { color: var(--text-color); text-decoration: none; cursor: pointer; }
         
-        /* Thinking Steps */
-        .thinking-steps { display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; gap: 10px;}
-        .step { width: 30%; min-width: 200px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
+        /* Thinking Steps - Layout Fix */
+        .thinking-steps {
+            display: flex;
+            justify-content: center; /* 中央揃えに変更 */
+            flex-wrap: wrap;
+            gap: 15px; /* 要素間の隙間 */
+        }
+        .step {
+            flex-basis: 250px; /* 基本幅を指定 */
+            flex-grow: 1; /* コンテナ幅に応じて伸長 */
+            max-width: 300px; /* 最大幅 */
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
         .step .step-number { background: var(--accent-color); color: var(--text-on-accent-color); border-radius: 50%; width: 30px; height: 30px; line-height: 30px; margin: 0 auto 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>【白黒版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</h1>
+        <h1>【修正版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</h1>
         
         <div class="section">
             <h2>はじめに：この試験の「ねらい」とは？</h2>
@@ -123,21 +137,21 @@
                     <h3>原文 (English)</h3>
                     <div class="paragraph" data-sync-id="p1">It has by now become clear that the COVID-19 pandemic is not only a global health emergency, but is also leading to a major global economic <span class="keyword" data-title="Downturn" data-definition="（景気などの）後退、下降。">downturn</span>. In this paper, we provide some first results on how this economic downturn is going to affect women and men differently, and what the main long-run repercussions for gender equality may be.</div>
                     <div id="q1-hint" class="paragraph" data-sync-id="p2">We start by providing evidence that the effects of the current crisis on women versus men are likely to be sharply distinct from those of other economic downturns. In recent <span class="keyword" data-title="Recession" data-definition="不況、景気後退のこと。">recessions</span> such as the one in 2008, job losses for men were much higher than for women. One reason is that relatively more men work in industries heavily affected by a “standard” downturn (such as manufacturing and construction), while women’s employment is concentrated in less <span class="keyword" data-title="Cyclical sectors" data-definition="景気の波に左右されやすい部門のこと。建設業や製造業など。反対語は非景気循環部門（例：医療、教育）。">cyclical sectors</span> such as health care and education. In contrast, the current crisis has a big impact on service <span class="keyword" data-title="Occupations" data-definition="職業のこと。">occupations</span> with high female employment shares, such as restaurants and hospitality.</div>
-                    <div id="q2-hint" class="paragraph" data-sync-id="p3">An even more important channel for <span class="keyword" data-title="Differential impacts" data-definition="異なる影響のこと。ここでは男女間で影響の出方が違うことを指す。">differential impacts</span> on women and men is that in the course of the pandemic, most US states along with other countries have decided to close schools and daycare facilities. ... This has dramatically increased the need for childcare. ... Based on the existing distribution of child care duties in most families, mothers are likely to be more affected than fathers. Single mothers... will take the biggest hit.</div>
-                    <div id="q3-hint-1" class="paragraph" data-sync-id="p4">Taken together, these factors suggest that the COVID-19 pandemic will have a <span class="keyword" data-title="Disproportionate" data-definition="不均衡な、釣り合いの取れていない。">disproportionate</span> negative effect on women and their employment opportunities. The effects of this shock are likely to outlast the actual epidemic. A sizeable literature documents that earnings losses from job losses are highly <span class="keyword" data-title="Persistent" data-definition="持続的な、いつまでも続く。">persistent</span>...</div>
-                    <div id="q4-hint" class="paragraph" data-sync-id="p5">Despite this gloomy outlook, we also believe that the COVID-19 crisis can bring about some changes that have the potential to reduce gender inequality in the labor market in the long term. ... long-run progress towards more gender equality is likely to stem primarily from changes in <span class="keyword" data-title="Social norms" data-definition="社会規範。その社会で「当たり前」とされているルールや行動様式のこと。">social norms</span> and expectations that lead towards a more equal division of labor within the home.</div>
-                    <div class="paragraph" data-sync-id="p6">We can identify at least two channels through which the COVID-19 pandemic is likely to accelerate changing social norms and expectations. One is on the side of employers. Many businesses are now becoming much more aware of the childcare needs of their employees and respond by rapidly adopting more flexible work schedules and <span class="keyword" data-title="Telecommuting" data-definition="テレワーク、在宅勤務のこと。">telecommuting</span> options. ... As a result, in many places mothers and fathers alike will gain flexibility...</div>
-                    <div class="paragraph" data-sync-id="p7">A second channel runs through social norms and <span class="keyword" data-title="Role models" data-definition="ロールモデル。行動や考え方の手本となる人物のこと。">role models</span> in individual families. ... a sizeable fraction of families where role models will be reversed. Many medical doctors are women, as are most nurses. ... In such families, many men will inevitably turn into the main providers of child care. The literature on policy changes that engineer a similar change (e.g., “daddy months” and other forms of <span class="keyword" data-title="Paternity leave" data-definition="父親の育児休暇のこと。">paternity leave</span>) suggest that such a reallocation of duties within the household is likely to have persistent effects on gender roles and the division of labor.</div>
+                    <div id="q3-hint-1" class="paragraph" data-sync-id="p3">An even more important channel for <span class="keyword" data-title="Differential impacts" data-definition="異なる影響のこと。ここでは男女間で影響の出方が違うことを指す。">differential impacts</span> on women and men is that in the course of the pandemic, most US states along with other countries have decided to close schools and daycare facilities. Worldwide more than 1.5 billion children are out of school right now. This has dramatically increased the need for childcare. In addition, grandparent-provided childcare is now discouraged due to the higher mortality rate for the elderly, and given social distancing measures, sharing childcare with neighbors and friends is very limited also. Thus, most families have no choice but to watch their kids themselves. Based on the existing distribution of child care duties in most families, mothers are likely to be more affected than fathers. Single mothers, of which there are many in the United States, and who are often in a disadvantaged economic position to begin with, will take the biggest hit.</div>
+                    <div id="q2-hint" class="paragraph" data-sync-id="p4">Taken together, these factors suggest that the COVID-19 pandemic will have a <span class="keyword" data-title="Disproportionate" data-definition="不均衡な、釣り合いの取れていない。">disproportionate</span> negative effect on women and their employment opportunities. The effects of this shock are likely to outlast the actual epidemic. A sizeable literature documents that earnings losses from job losses are highly <span class="keyword" data-title="Persistent" data-definition="持続的な、いつまでも続く。">persistent</span> and much more severe when they occur in recessions. Workers who lose jobs now forgo returns to experience and are likely to have less secure employment in the future. The consequences are not just limited to those who lose jobs, but also those who were about to enter the labor market for the first time.</div>
+                    <div id="q4-hint" class="paragraph" data-sync-id="p5">Despite this gloomy outlook, we also believe that the COVID-19 crisis can bring about some changes that have the potential to reduce gender inequality in the labor market in the long term. We start by noting that today, a large part of gender inequality in the labor market is related to an unequal division of labor in the household. Even though the labor force participation of women is now close to or equal to that of men in most industrialized countries, women continue to provide a disproportionate share of housework (such as cooking and cleaning) and childcare. A recent literature in labor economics has documented that the gender pay gap is closely related to (expected and actual) child birth. From this perspective, long-run progress towards more gender equality is likely to stem primarily from changes in <span class="keyword" data-title="Social norms" data-definition="社会規範。その社会で「当たり前」とされているルールや行動様式のこと。">social norms</span> and expectations that lead towards a more equal division of labor within the home.</div>
+                    <div class="paragraph" data-sync-id="p6">We can identify at least two channels through which the COVID-19 pandemic is likely to accelerate changing social norms and expectations. One is on the side of employers. Many businesses are now becoming much more aware of the childcare needs of their employees and respond by rapidly adopting more flexible work schedules and <span class="keyword" data-title="Telecommuting" data-definition="テレワーク、在宅勤務のこと。">telecommuting</span> options. Through learning by doing and changing norms, some of these changes are likely to prove persistent. As a result, in many places mothers and fathers alike will gain flexibility in meeting the combined demands of having a career and running a family. Since currently women are more exposed to these competing demands, they stand to benefit disproportionately.</div>
+                    <div class="paragraph" data-sync-id="p7">A second channel runs through social norms and <span class="keyword" data-title="Role models" data-definition="ロールモデル。行動や考え方の手本となる人物のこと。">role models</span> in individual families. While in many cases mothers will pick up a large share of the additional childcare (and home schooling) during the crisis, there will also be a sizeable fraction of families where role models will be reversed. Many medical doctors are women, as are most nurses. Other critical businesses that will continue operating during the crisis include grocery stores and pharmacies, both of which feature high female employment shares. A sizeable fraction of women working in such areas are married to men who will either lose employment during the crisis or will be able to work from home (e.g., many office workers). In such families, many men will inevitably turn into the main providers of child care. The literature on policy changes that engineer a similar change (e.g., “daddy months” and other forms of <span class="keyword" data-title="Paternity leave" data-definition="父親の育児休暇のこと。">paternity leave</span>) suggest that such a reallocation of duties within the household is likely to have persistent effects on gender roles and the division of labor.</div>
                 </div>
                 <div class="column japanese">
                     <h3>日本語訳 (Japanese)</h3>
                     <div class="paragraph" data-sync-id="p1">今や、COVID-19のパンデミックが世界的な健康上の緊急事態であるだけでなく、世界的な大規模な景気後退にもつながっていることは明らかになった。この論文では、この景気後退が男女にどう異なる影響を与えるか、そしてジェンダー平等に対する長期的な主な影響がどのようなものになるかについて、いくつかの初期的な結果を提供する。</div>
                     <div class="paragraph" data-sync-id="p2">(1)まず、現在の危機が女性対男性に与える影響が、他の経済後退のそれとは著しく異なるとみられる証拠を示すことから始める。2008年のような近年の不況では、男性の失業者数は女性よりもはるかに多かった。一つの理由は、男性の方が「標準的な」不況で大きな影響を受ける産業（製造業や建設業など）で比較的多く働いている一方、女性の雇用は医療や教育のような景気循環にあまり左右されない部門に集中しているからだ。対照的に、現在の危機は、レストランや接客業といった女性の雇用シェアが高いサービス職に大きな影響を与えている。</div>
-                    <div class="paragraph" data-sync-id="p3">(3)男女間の異なる影響を生むさらに重要な経路は、パンデミックの過程で、他の国々と同様に米国のほとんどの州が学校や託児施設を閉鎖すると決定したことだ。…これにより育児の必要性が劇的に増加した。…ほとんどの家庭における既存の育児分担に基づけば、母親が父親よりも影響を受けやすい。…シングルマザーは最大の打撃を受けるだろう。</div>
-                    <div class="paragraph" data-sync-id="p4">(2)これらの要因を総合すると、COVID-19のパンデミックは女性とその雇用機会に対して不均衡に大きな悪影響を及ぼすことが示唆される。この衝撃の影響は、実際のパンデミックそのものよりも長く続く可能性が高い。相当数の文献が、失業による収入の損失は非常に持続的であることを記録している…。</div>
-                    <div class="paragraph" data-sync-id="p5">(4)この暗い見通しにもかかわらず、私たちはCOVID-19の危機が、長期的には労働市場におけるジェンダーの不平等を減少させる可能性のある変化をもたらしうるとも信じている。…ジェンダー平等をさらに進める長期的な進展は、主として、家庭内でのより平等な役割分担につながる社会規範や期待の変化から生じるだろう。</div>
-                    <div class="paragraph" data-sync-id="p6">COVID-19パンデミックが社会規範や期待の変化を加速させる可能性のある、少なくとも2つの経路を特定できる。一つは雇用主側にある。多くの企業が今、従業員の育児ニーズをより意識するようになり、より柔軟な勤務スケジュールや在宅勤務の選択肢を急速に採用することで対応している。…その結果、多くの場所で母親も父親も同様に柔軟性を得ることになるだろう…。</div>
-                    <div class="paragraph" data-sync-id="p7">第二の経路は、個々の家庭における社会規範とロールモデルを通じて機能する。…ロールモデルが逆転する家庭がかなりの割合で存在するだろう。多くの医師は女性であり、看護師のほとんども同様だ。…そうした家庭では、多くの男性が必然的に育児の主な担い手となる。同様の変化をもたらす政策変更に関する文献（例：「パパの月」や他の形態の父親育休）は、家庭内でのこのような役割の再配分が、性別役割と分業に持続的な影響を与える可能性が高いことを示唆している。</div>
+                    <div class="paragraph" data-sync-id="p3">(3)男女間の異なる影響を生むさらに重要な経路は、パンデミックの過程で、他の国々と同様に米国のほとんどの州が学校や託児施設を閉鎖すると決定したことだ。世界中で15億人以上の子どもが現在学校に通えていない。これにより育児の必要性が劇的に増加した。加えて、高齢者の死亡率が高いため祖父母による育児は現在推奨されず、またソーシャルディスタンス措置を考えると、隣人や友人と育児を分担することも非常に限られている。したがって、ほとんどの家庭は自分たちで子どもの面倒を見るしかない。ほとんどの家庭における既存の育児分担に基づけば、母親が父親よりも影響を受けやすい。米国に多数存在するシングルマザーは、元々経済的に不利な立場にあることが多く、最大の打撃を受けるだろう。</div>
+                    <div class="paragraph" data-sync-id="p4">(2)これらの要因を総合すると、COVID-19のパンデミックは女性とその雇用機会に対して不均衡に大きな悪影響を及ぼすことが示唆される。この衝撃の影響は、実際のパンデミックそのものよりも長く続く可能性が高い。相当数の文献が、失業による収入の損失は非常に持続的であり、不況時に起こるとさらに深刻であることを記録している。今失業した労働者は経験から得られるリターンを失い、将来的にはより不安定な雇用に就く可能性が高い。その影響は、失業した人々だけでなく、初めて労働市場に参入しようとしていた人々にも限定されない。</div>
+                    <div class="paragraph" data-sync-id="p5">(4)この暗い見通しにもかかわらず、私たちはCOVID-19の危機が、長期的には労働市場におけるジェンダーの不平等を減少させる可能性のある変化をもたらしうるとも信じている。まず、今日の労働市場におけるジェンダー不平等の大部分は、家庭内の不平等な労働分担に関連していることに注目する。ほとんどの先進国で女性の労働力率は今や男性のそれに近いか等しいにもかかわらず、女性は依然として家事（料理や掃除など）や育児の不均衡に大きな割合を担い続けている。最近の労働経済学の文献は、男女間の賃金格差が（予測および実際の）出産と密接に関連していることを記録している。この観点から、ジェンダー平等をさらに進める長期的な進展は、主として、家庭内でのより平等な役割分担につながる社会規範や期待の変化から生じるだろう。</div>
+                    <div class="paragraph" data-sync-id="p6">COVID-19パンデミックが社会規範や期待の変化を加速させる可能性のある、少なくとも2つの経路を特定できる。一つは雇用主側にある。多くの企業が今、従業員の育児ニーズをより意識するようになり、より柔軟な勤務スケジュールや在宅勤務の選択肢を急速に採用することで対応している。実践による学習と規範の変化を通じて、これらの変化のいくつかは持続的であることが証明されるだろう。その結果、多くの場所で母親も父親も同様に、キャリアと家庭運営という複合的な要求を満たすための柔軟性を得ることになる。現在、女性の方がこれらの競合する要求にさらされているため、彼女たちが不均衡に利益を得ることになる。</div>
+                    <div class="paragraph" data-sync-id="p7">第二の経路は、個々の家庭における社会規範とロールモデルを通じて機能する。多くの場合、危機の間に追加の育児（および家庭学習）の大部分を母親が引き受ける一方で、ロールモデルが逆転する家庭がかなりの割合で存在するだろう。多くの医師は女性であり、看護師のほとんども同様だ。危機の間も営業を続ける他の重要なビジネスには、食料品店や薬局があり、どちらも女性の雇用シェアが高い。このような分野で働く女性のかなりの割合が、危機中に失業するか、または在宅勤務が可能な男性（例：多くの事務職員）と結婚している。そうした家庭では、多くの男性が必然的に育児の主な担い手となる。同様の変化をもたらす政策変更に関する文献（例：「パパの月」や他の形態の父親育休）は、家庭内でのこのような役割の再配分が、性別役割と分業に持続的な影響を与える可能性が高いことを示唆している。</div>
                 </div>
             </div>
         </div>
@@ -189,7 +203,7 @@
                     <tr><td>stem from A</td><td>熟</td><td>Aから生じる、Aに由来する</td></tr>
                     <tr><td>social norms</td><td>名</td><td>社会規範</td></tr>
                     <tr><td>telecommuting</td><td>名</td><td>在宅勤務、テレワーク</td></tr>
-                    inevitably</td><td>副</td><td>必然的に、必ず</td></tr>
+                    <tr><td>inevitably</td><td>副</td><td>必然的に、必ず</td></tr>
                     <tr><td>paternity leave</td><td>名</td><td>父親の育児休暇</td></tr>
                     <tr><td>reallocation</td><td>名</td><td>再配分</td></tr>
                 </tbody>
