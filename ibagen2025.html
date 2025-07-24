@@ -8,14 +8,15 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
         :root {
-            --accent-color: #ffd700; /* アクセントの黄色 */
-            --bg-color: #FFFFFF;     /* 背景の黒 */
-            --surface-color: #FEFEFE; /* コンテンツ背景のダークグレー */
-            --text-color: #000000;   /* 基本の白文字 */
+            --accent-color: #ffc107; /* アクセントの黄色 */
+            --bg-color: #f8f9fa;     /* 背景の非常に薄いグレー */
+            --surface-color: #ffffff; /* コンテンツ背景の白 */
+            --text-color: #212529;   /* 基本のテキスト色（ダークグレー） */
+            --heading-color: #000000; /* 見出しの黒 */
             --text-on-accent-color: #000000; /* 黄色背景の上の黒文字 */
-            --border-color: #11111;
-            --highlight-mouseover: rgba(255, 215, 0, 0.2);
-            --highlight-click: rgba(255, 215, 0, 0.7);
+            --border-color: #dee2e6;
+            --highlight-mouseover: rgba(255, 193, 7, 0.2);
+            --highlight-click: #ffc107;
         }
 
         body {
@@ -33,66 +34,74 @@
             background-color: var(--surface-color);
             padding: 20px 40px;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         h1, h2, h3 {
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--heading-color);
         }
-        h1 { text-align: center; font-size: 2.2em; border: none; }
-        h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; }
-        h3 { font-size: 1.4em; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        h1 { text-align: center; font-size: 2.2em; border: none; padding-bottom: 10px; }
+        h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h3 { font-size: 1.4em; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
 
         .section { margin-bottom: 40px; }
         
-        .question-box { background-color: #222; border-left: 5px solid var(--accent-color); padding: 15px; margin: 20px 0; border-radius: 5px; }
-        .answer-box { background-color: #2a2a2a; border-left: 5px solid #ccc; padding: 15px; margin: 20px 0; border-radius: 5px; }
-        .point-box { border: 2px dashed var(--accent-color); background-color: rgba(255, 215, 0, 0.05); padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .point-box h3 { color: var(--accent-color); border: none; }
+        .question-box { background-color: #f3f9ff; border-left: 5px solid #007bff; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .answer-box { background-color: #fffaf0; border-left: 5px solid var(--accent-color); padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .point-box { border: 2px dashed var(--accent-color); background-color: #fffaf5; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .point-box h3 { color: var(--heading-color); border: none; }
 
         .keyword {
             font-weight: bold;
-            color: var(--accent-color);
+            color: #0d6efd; /* 青色の方が見やすいので変更 */
             cursor: pointer;
             text-decoration: underline dotted;
-            text-decoration-color: var(--accent-color);
             text-decoration-thickness: 2px;
         }
         
-        .highlight { background-color: var(--highlight-click); color: var(--text-on-accent-color); }
+        .highlight { background-color: var(--highlight-click); }
 
-        .btn { display: inline-block; background-color: var(--accent-color); color: var(--text-on-accent-color); padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer; transition: transform 0.2s, background-color 0.2s; border: none; margin-right: 10px; margin-bottom: 10px; }
-        .btn:hover { transform: translateY(-2px); background-color: #fff; }
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--text-on-accent-color); padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer; transition: transform 0.2s, filter 0.2s; border: none; margin-right: 10px; margin-bottom: 10px; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
 
         /* --- Translation Section --- */
-        .translation-section { background-color: #111; padding: 20px; border-radius: 10px; margin: 30px 0; border: 1px solid var(--border-color); }
+        .translation-section { background-color: #f0f2f5; padding: 20px; border-radius: 10px; margin: 30px 0; border: 1px solid var(--border-color); }
         .translation-container { display: flex; gap: 20px; }
         .column { width: 50%; background: var(--surface-color); padding: 15px; border-radius: 8px; }
         .column h3 { margin-top: 0; font-size: 1.1em; text-align: center; }
         .paragraph { padding: 10px; border-radius: 5px; margin-bottom: 10px; cursor: default; transition: background-color 0.3s ease; font-size: 0.95em; }
         .paragraph.sync-highlight { background-color: var(--highlight-mouseover); }
         @media (max-width: 800px) { .translation-container { flex-direction: column; } .column { width: auto; } }
-        .instruction-box { background-color: #333; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-weight: bold; }
+        .instruction-box { background-color: #fff3cd; color: #664d03; border: 1px solid var(--accent-color); padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-weight: bold; }
         
         /* --- Word List Section --- */
         .word-list-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .word-list-table th, .word-list-table td { border: 1px solid var(--border-color); padding: 12px; text-align: left; }
         .word-list-table th { background-color: var(--accent-color); color: var(--text-on-accent-color); }
-        .word-list-table tr:nth-child(even) { background-color: #222; }
-        .word-list-table tr:hover { background-color: #444; }
+        .word-list-table tr:nth-child(even) { background-color: #f8f9fa; }
+        .word-list-table tr:hover { background-color: #f1f3f5; }
 
         /* Modal (Popup) Styles */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); animation: fadeIn 0.3s; }
-        .modal-content { background-color: var(--surface-color); margin: 15% auto; padding: 30px; width: 80%; max-width: 500px; border-radius: 12px; border: 1px solid var(--accent-color); box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2); animation: slideIn 0.3s; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); animation: fadeIn 0.3s; }
+        .modal-content { background-color: var(--surface-color); margin: 15% auto; padding: 30px; width: 80%; max-width: 500px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1); animation: slideIn 0.3s; }
         @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
         @keyframes slideIn { from {transform: translateY(-50px); opacity: 0} to {transform: translateY(0); opacity: 1} }
         .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
-        .close-btn:hover, .close-btn:focus { color: var(--accent-color); text-decoration: none; cursor: pointer; }
+        .close-btn:hover, .close-btn:focus { color: var(--text-color); text-decoration: none; cursor: pointer; }
         
         /* Thinking Steps */
         .thinking-steps { display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; gap: 10px;}
-        .step { width: 30%; min-width: 200px; padding: 15px; background: #222; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
+        .step { width: 30%; min-width: 200px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
         .step .step-number { background: var(--accent-color); color: var(--text-on-accent-color); border-radius: 50%; width: 30px; height: 30px; line-height: 30px; margin: 0 auto 10px; font-weight: bold; }
     </style>
 </head>
@@ -103,12 +112,12 @@
         
         <div class="section">
             <h2>はじめに：この試験の「ねらい」は？</h2>
-            <p>この試験は、ただ英語が読めるだけではなく、<strong>「現代社会が抱える問題に関心があるか」「文章の要点を掴んで、自分の考えを論理的に説明できるか」</strong>を見ています。今回は「AIとジェンダー」という、まさに現代社会のど真ん中なテーマ。読解力を身につけよう！</p>
+            <p>この試験は、ただ英語が読めるだけではなく、<strong>「現代社会が抱える問題に関心があるか」「文章の要点を掴んで、自分の考えを論理的に説明できるか」</strong>を見ています。今回は「AIとジェンダー」という、まさに現代社会のど真ん中なテーマ！これを読み解く力をつけよう！</p>
         </div>
 
         <div class="section translation-section">
             <h2>英文・和訳 対訳チャレンジ（全文）</h2>
-            <div class="instruction-box">💡マウスをかざすと対訳がハイライト！「解答の根拠はここ！」ボタンで根拠箇所にジャンプします。</div>
+            <div class="instruction-box">💡マウスをかざすと対訳がハイライト！「解答の根拠はここ！」ボタンで根拠箇所にジャンプ！</div>
             <div class="translation-container">
                 <div class="column english">
                     <h3>原文 (English)</h3>
@@ -142,7 +151,7 @@
         </div>
 
         <div class="section">
-            <h2>設問別解説</h2>
+            <h2>設問別 徹底解説！</h2>
             <h3>問1：アーティストが遭遇したジェンダーバイアス</h3>
             <div class="question-box">下線部(1)について、このアーティストが遭遇したgender biasとは、どのようなものでしたか。本文に即して100文字以内の日本語で説明しなさい。何をしたときに、どのようなことが起きたのかがわかるように述べること。</div>
             <button class="btn" onclick="highlightText('q1-hint')">解答の根拠はここ！</button>
@@ -164,14 +173,14 @@
             <h3>問4：君ならどう考える？応用問題に挑戦！</h3>
             <div class="question-box">下線部(4)からもわかるように、著者は、AIの問題が gender biasだけに留まらないと考えて、いくつかの例を提示していますが、具体的な内容については言及していません。それらの例の中から一つを取り上げ、誰が、どのような差別・排除を受ける可能性があるのかをAIとの関係がわかるよう具体的に説明した上で、それに対するあなたの考えを述べなさい。400文字以内の日本語で解答しなさい。</div>
             <button class="btn" onclick="highlightText('q4-hint')">ヒントになるのはこの部分！</button>
-            <p style="text-align:center; font-weight: bold; font-size: 1.1em; color: var(--accent-color);">この問題が合否を分ける最重要問題！</p>
+            <p style="text-align:center; font-weight: bold; font-size: 1.1em; color: var(--heading-color);">この問題が<span style="color:var(--accent-color); background: #333; padding: 2px 6px; border-radius: 4px;">合否を分ける</span>最重要問題！</p>
             <div class="point-box"><h3>💡思考の３ステップ</h3><div class="thinking-steps"><div class="step"><div class="step-number">1</div><strong>テーマを選ぶ</strong><br>本文のヒント（抑圧の道具、労働市場の混乱など）から一つ選ぶ。</div><div class="step"><div class="step-number">2</div><strong>具体的にする</strong><br>「誰が」「どんな風に」困るのか？を想像して具体例を考える。</div><div class="step"><div class="step-number">3</div><strong>意見をまとめる</strong><br>「だから私はこう思う」「そのために〜が必要だ」と結論づける。</div></div></div>
             <div class="answer-box"><strong>【解答例】</strong><br>私が取り上げるのは、AIが「抑圧の道具」として利用される問題だ。これにより差別を受ける可能性があるのは、政府や権力に批判的な意見を持つジャーナリストや活動家、あるいは特定の思想や信条を持つ少数派の人々である。<br><br>具体的には、政府などの権力者が、AIによる顔認証システムやSNSの投稿分析を用いて国民を監視するケースが考えられる。AIは、特定の個人を追跡し、その言動から「反体制的」と判断した人物を自動でリストアップする。その結果、人々は自らの思想や意見を表明することを恐れて自己検閲を始め、自由な言論が封殺される。さらに、AIによるラベリングに基づき、不当な逮捕や雇用の機会剥奪といった人権侵害や社会的排除につながる危険性も大きい。<br><br>AIの技術は中立的に見えても、その利用目的や設計次第で、深刻な人権抑圧のツールとなりうる。だからこそ、AIの開発と利用には、透明性を確保するための法規制や、独立した第三者機関による厳格な監視が不可欠だ。私たちは技術の発展を追求すると同時に、それが人間の尊厳と自由を脅かすことのないよう、倫理的な歯止めをかける社会的責任がある。(398字)</div>
         </div>
         
         <div class="section">
             <h2>重要単語・熟語 チェックリスト</h2>
-            <p>この長文を読み解くカギとなる単語・熟語リスト-意味を隠して覚えているかチェックしよう。</p>
+            <p>この長文を読み解くカギとなる単語・熟語リストだ！意味を隠して覚えているかチェックしよう。</p>
             <table class="word-list-table">
                 <thead>
                     <tr><th>単語 / 熟語</th><th>品詞</th><th>意味</th></tr>
@@ -214,7 +223,7 @@
                 <li><strong>要約力：</strong>読んだ記事を「つまり、こういうことだよね」と100字くらいでまとめる練習をしよう！</li>
                 <li><strong>論述力：</strong>社会問題について「自分ならどう考えるか」を400字で書く練習をしよう！書いたら教員に見てもらうのがベスト！</li>
             </ol>
-            <p style="text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 30px;">頑張りましょう！</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 30px;">この解説が君の合格への第一歩になることを応援しています！頑張れ！</p>
         </div>
     </div>
 
@@ -222,7 +231,7 @@
     <div id="keyword-modal" class="modal">
       <div class="modal-content">
         <span class="close-btn">×</span>
-        <h3 id="modal-title" style="color: var(--accent-color); border-bottom: 1px solid var(--accent-color);"></h3>
+        <h3 id="modal-title" style="color: var(--heading-color); border-bottom: 1px solid var(--border-color);"></h3>
         <p id="modal-definition"></p>
       </div>
     </div>
@@ -248,7 +257,6 @@
 
         // Button-click Highlight Logic
         function highlightText(elementId) {
-            // Remove previous click highlight
             document.querySelectorAll('.paragraph.highlight').forEach(el => {
                 el.classList.remove('highlight');
             });
