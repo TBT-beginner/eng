@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【白黒版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        :root {
+            --accent-color: #ffc107; /* アクセントの黄色 */
+            --bg-color: #f8f9fa;     /* 背景の非常に薄いグレー */
+            --surface-color: #ffffff; /* コンテンツ背景の白 */
+            --text-color: #212529;   /* 基本のテキスト色（ダークグレー） */
+            --heading-color: #000000; /* 見出しの黒 */
+            --text-on-accent-color: #000000; /* 黄色背景の上の黒文字 */
+            --border-color: #dee2e6;
+            --highlight-mouseover: rgba(255, 193, 7, 0.2);
+            --highlight-click: #ffc107;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.8;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--surface-color);
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+        h1 { text-align: center; font-size: 2.2em; border: none; padding-bottom: 10px; }
+        h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        h2 { font-size: 1.8em; margin-top: 40px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h3 { font-size: 1.4em; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+
+        .section { margin-bottom: 40px; }
+        
+        .question-box { background-color: #f3f9ff; border-left: 5px solid #007bff; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .answer-box { background-color: #fffaf0; border-left: 5px solid var(--accent-color); padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .point-box { border: 2px dashed var(--accent-color); background-color: #fffaf5; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .point-box h3 { color: var(--heading-color); border: none; }
+
+        .keyword {
+            font-weight: bold;
+            color: #0d6efd; /* 青色の方が見やすいので変更 */
+            cursor: pointer;
+            text-decoration: underline dotted;
+            text-decoration-thickness: 2px;
+        }
+        
+        .highlight { background-color: var(--highlight-click); }
+
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--text-on-accent-color); padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; cursor: pointer; transition: transform 0.2s, filter 0.2s; border: none; margin-right: 10px; margin-bottom: 10px; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+
+        /* --- Translation Section --- */
+        .translation-section { background-color: #f0f2f5; padding: 20px; border-radius: 10px; margin: 30px 0; border: 1px solid var(--border-color); }
+        .translation-container { display: flex; gap: 20px; }
+        .column { width: 50%; background: var(--surface-color); padding: 15px; border-radius: 8px; }
+        .column h3 { margin-top: 0; font-size: 1.1em; text-align: center; }
+        .paragraph { padding: 10px; border-radius: 5px; margin-bottom: 10px; cursor: default; transition: background-color 0.3s ease; font-size: 0.95em; }
+        .paragraph.sync-highlight { background-color: var(--highlight-mouseover); }
+        @media (max-width: 800px) { .translation-container { flex-direction: column; } .column { width: auto; } }
+        .instruction-box { background-color: #fff3cd; color: #664d03; border: 1px solid var(--accent-color); padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-weight: bold; }
+        
+        /* --- Word List Section --- */
+        .word-list-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .word-list-table th, .word-list-table td { border: 1px solid var(--border-color); padding: 12px; text-align: left; }
+        .word-list-table th { background-color: var(--accent-color); color: var(--text-on-accent-color); }
+        .word-list-table tr:nth-child(even) { background-color: #f8f9fa; }
+        .word-list-table tr:hover { background-color: #f1f3f5; }
+
+        /* Modal (Popup) Styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); animation: fadeIn 0.3s; }
+        .modal-content { background-color: var(--surface-color); margin: 15% auto; padding: 30px; width: 80%; max-width: 500px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1); animation: slideIn 0.3s; }
+        @keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+        @keyframes slideIn { from {transform: translateY(-50px); opacity: 0} to {transform: translateY(0); opacity: 1} }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-btn:hover, .close-btn:focus { color: var(--text-color); text-decoration: none; cursor: pointer; }
+        
+        /* Thinking Steps */
+        .thinking-steps { display: flex; justify-content: space-around; margin-top: 20px; flex-wrap: wrap; gap: 10px;}
+        .step { width: 30%; min-width: 200px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); }
+        .step .step-number { background: var(--accent-color); color: var(--text-on-accent-color); border-radius: 50%; width: 30px; height: 30px; line-height: 30px; margin: 0 auto 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>【白黒版】2024年度 茨城大学 人文社会科学部 小論文A 徹底解説</h1>
+        
+        <div class="section">
+            <h2>はじめに：この試験の「ねらい」とは？</h2>
+            <p>この試験は、英文を読解する力に加え、<strong>「社会の大きな出来事が人々にどう影響するか」「特にジェンダーの視点から物事を考えられるか」</strong>という能力を試しています。今回は「コロナ禍とジェンダー」という、まさに現代史の一部となった大きなテーマ。社会を深く見る目を養おう！</p>
+        </div>
+
+        <div class="section translation-section">
+            <h2>英文・和訳 対訳チャレンジ（全文）</h2>
+            <div class="instruction-box">💡マウスをかざすと対訳がハイライト！「解答の根拠はここ！」ボタンで根拠箇所にジャンプするよ！</div>
+            <div class="translation-container">
+                <div class="column english">
+                    <h3>原文 (English)</h3>
+                    <div class="paragraph" data-sync-id="p1">It has by now become clear that the COVID-19 pandemic is not only a global health emergency, but is also leading to a major global economic <span class="keyword" data-title="Downturn" data-definition="（景気などの）後退、下降。">downturn</span>. In this paper, we provide some first results on how this economic downturn is going to affect women and men differently, and what the main long-run repercussions for gender equality may be.</div>
+                    <div id="q1-hint" class="paragraph" data-sync-id="p2">We start by providing evidence that the effects of the current crisis on women versus men are likely to be sharply distinct from those of other economic downturns. In recent <span class="keyword" data-title="Recession" data-definition="不況、景気後退のこと。">recessions</span> such as the one in 2008, job losses for men were much higher than for women. One reason is that relatively more men work in industries heavily affected by a “standard” downturn (such as manufacturing and construction), while women’s employment is concentrated in less <span class="keyword" data-title="Cyclical sectors" data-definition="景気の波に左右されやすい部門のこと。建設業や製造業など。反対語は非景気循環部門（例：医療、教育）。">cyclical sectors</span> such as health care and education. In contrast, the current crisis has a big impact on service <span class="keyword" data-title="Occupations" data-definition="職業のこと。">occupations</span> with high female employment shares, such as restaurants and hospitality.</div>
+                    <div id="q2-hint" class="paragraph" data-sync-id="p3">An even more important channel for <span class="keyword" data-title="Differential impacts" data-definition="異なる影響のこと。ここでは男女間で影響の出方が違うことを指す。">differential impacts</span> on women and men is that in the course of the pandemic, most US states along with other countries have decided to close schools and daycare facilities. ... This has dramatically increased the need for childcare. ... Based on the existing distribution of child care duties in most families, mothers are likely to be more affected than fathers. Single mothers... will take the biggest hit.</div>
+                    <div id="q3-hint-1" class="paragraph" data-sync-id="p4">Taken together, these factors suggest that the COVID-19 pandemic will have a <span class="keyword" data-title="Disproportionate" data-definition="不均衡な、釣り合いの取れていない。">disproportionate</span> negative effect on women and their employment opportunities. The effects of this shock are likely to outlast the actual epidemic. A sizeable literature documents that earnings losses from job losses are highly <span class="keyword" data-title="Persistent" data-definition="持続的な、いつまでも続く。">persistent</span>...</div>
+                    <div id="q4-hint" class="paragraph" data-sync-id="p5">Despite this gloomy outlook, we also believe that the COVID-19 crisis can bring about some changes that have the potential to reduce gender inequality in the labor market in the long term. ... long-run progress towards more gender equality is likely to stem primarily from changes in <span class="keyword" data-title="Social norms" data-definition="社会規範。その社会で「当たり前」とされているルールや行動様式のこと。">social norms</span> and expectations that lead towards a more equal division of labor within the home.</div>
+                    <div class="paragraph" data-sync-id="p6">We can identify at least two channels through which the COVID-19 pandemic is likely to accelerate changing social norms and expectations. One is on the side of employers. Many businesses are now becoming much more aware of the childcare needs of their employees and respond by rapidly adopting more flexible work schedules and <span class="keyword" data-title="Telecommuting" data-definition="テレワーク、在宅勤務のこと。">telecommuting</span> options. ... As a result, in many places mothers and fathers alike will gain flexibility...</div>
+                    <div class="paragraph" data-sync-id="p7">A second channel runs through social norms and <span class="keyword" data-title="Role models" data-definition="ロールモデル。行動や考え方の手本となる人物のこと。">role models</span> in individual families. ... a sizeable fraction of families where role models will be reversed. Many medical doctors are women, as are most nurses. ... In such families, many men will inevitably turn into the main providers of child care. The literature on policy changes that engineer a similar change (e.g., “daddy months” and other forms of <span class="keyword" data-title="Paternity leave" data-definition="父親の育児休暇のこと。">paternity leave</span>) suggest that such a reallocation of duties within the household is likely to have persistent effects on gender roles and the division of labor.</div>
+                </div>
+                <div class="column japanese">
+                    <h3>日本語訳 (Japanese)</h3>
+                    <div class="paragraph" data-sync-id="p1">今や、COVID-19のパンデミックが世界的な健康上の緊急事態であるだけでなく、世界的な大規模な景気後退にもつながっていることは明らかになった。この論文では、この景気後退が男女にどう異なる影響を与えるか、そしてジェンダー平等に対する長期的な主な影響がどのようなものになるかについて、いくつかの初期的な結果を提供する。</div>
+                    <div class="paragraph" data-sync-id="p2">(1)まず、現在の危機が女性対男性に与える影響が、他の経済後退のそれとは著しく異なるとみられる証拠を示すことから始める。2008年のような近年の不況では、男性の失業者数は女性よりもはるかに多かった。一つの理由は、男性の方が「標準的な」不況で大きな影響を受ける産業（製造業や建設業など）で比較的多く働いている一方、女性の雇用は医療や教育のような景気循環にあまり左右されない部門に集中しているからだ。対照的に、現在の危機は、レストランや接客業といった女性の雇用シェアが高いサービス職に大きな影響を与えている。</div>
+                    <div class="paragraph" data-sync-id="p3">(3)男女間の異なる影響を生むさらに重要な経路は、パンデミックの過程で、他の国々と同様に米国のほとんどの州が学校や託児施設を閉鎖すると決定したことだ。…これにより育児の必要性が劇的に増加した。…ほとんどの家庭における既存の育児分担に基づけば、母親が父親よりも影響を受けやすい。…シングルマザーは最大の打撃を受けるだろう。</div>
+                    <div class="paragraph" data-sync-id="p4">(2)これらの要因を総合すると、COVID-19のパンデミックは女性とその雇用機会に対して不均衡に大きな悪影響を及ぼすことが示唆される。この衝撃の影響は、実際のパンデミックそのものよりも長く続く可能性が高い。相当数の文献が、失業による収入の損失は非常に持続的であることを記録している…。</div>
+                    <div class="paragraph" data-sync-id="p5">(4)この暗い見通しにもかかわらず、私たちはCOVID-19の危機が、長期的には労働市場におけるジェンダーの不平等を減少させる可能性のある変化をもたらしうるとも信じている。…ジェンダー平等をさらに進める長期的な進展は、主として、家庭内でのより平等な役割分担につながる社会規範や期待の変化から生じるだろう。</div>
+                    <div class="paragraph" data-sync-id="p6">COVID-19パンデミックが社会規範や期待の変化を加速させる可能性のある、少なくとも2つの経路を特定できる。一つは雇用主側にある。多くの企業が今、従業員の育児ニーズをより意識するようになり、より柔軟な勤務スケジュールや在宅勤務の選択肢を急速に採用することで対応している。…その結果、多くの場所で母親も父親も同様に柔軟性を得ることになるだろう…。</div>
+                    <div class="paragraph" data-sync-id="p7">第二の経路は、個々の家庭における社会規範とロールモデルを通じて機能する。…ロールモデルが逆転する家庭がかなりの割合で存在するだろう。多くの医師は女性であり、看護師のほとんども同様だ。…そうした家庭では、多くの男性が必然的に育児の主な担い手となる。同様の変化をもたらす政策変更に関する文献（例：「パパの月」や他の形態の父親育休）は、家庭内でのこのような役割の再配分が、性別役割と分業に持続的な影響を与える可能性が高いことを示唆している。</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>設問別 徹底解説！</h2>
+            <h3>問1：「普通の不況」と「コロナ不況」の違い</h3>
+            <div class="question-box">下線部(1)について、“regular" recessions と COVID-19 によって引き起こされたそれとはどういう点が異なるか。本文の内容に即して, 100字以内の日本語で説明しなさい。</div>
+            <button class="btn" onclick="highlightText('q1-hint')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>従来の不況は製造業や建設業など男性の多い産業に打撃を与え男性の失業が多かったが、COVID-19による不況は、女性が多く働くレストランや接客業などのサービス産業に大きな影響を与えている点。 (99字)</div>
+            <div class="point-box"><h3>💡採点ポイント</h3><ul><li><strong>従来の不況</strong>：男性中心の産業に打撃</li><li><strong>コロナ不況</strong>：女性中心の産業に打撃</li></ul>この「影響を受ける産業と性別」の明確な対比が書けているかが重要！</div>
+
+            <h3>問2：コロナ禍が女性に与えた悪影響の理由</h3>
+            <div class="question-box">下線部(2) について、その理由を本文の内容に即して,100字以内の日本語で説明しなさい。（※下線部(2)は、パンデミックが女性に不均衡な悪影響を及ぼすという内容を指します）</div>
+            <button class="btn" onclick="highlightText('q2-hint')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>学校や託児施設が閉鎖されたことで育児の必要性が急増し、既存の性別役割分業の規範から、主に母親がその負担を引き受けることになるため、女性の雇用機会が不均衡に損なわれると考えられるから。 (99字)</div>
+            <div class="point-box"><h3>💡採点ポイント</h3>問1の産業構造の話よりも「さらに重要」と書かれている「学校閉鎖による育児負担の増加」を理由の中心として挙げられているかが最大のポイント！</div>
+
+            <h3>問3：男女間の異なる影響（differential impacts）の生じ方</h3>
+            <div class="question-box">下線部(3) について, differential impacts はどのように生じているか。本文の内容に即して、300字以内の日本語で説明しなさい。</div>
+            <button class="btn" onclick="highlightText('q3-hint-1')">解答の根拠はここ！</button>
+            <div class="answer-box"><strong>【解答例】</strong><br>男女間の異なる影響は、主に二つの要因から生じている。第一に、産業構造の違いである。今回の危機は、従来の不況が打撃を与えた男性中心の製造業とは対照的に、女性の労働力比率が高い接客業などのサービス部門に深刻な影響を与えている。第二に、より重要な要因として、学校や託児施設の全国的な閉鎖がある。これにより育児の需要が激増し、既存の社会規範の中で育児を担うことが多い女性、特に経済的に困難な立場に置かれがちなシングルマザーに、その負担が不均衡に重くのしかかっている。これらが複合的に作用し、女性の雇用機会を著しく脅かしている。 (248字)</div>
+            <div class="point-box"><h3>💡採点ポイント</h3>問1（産業構造）と問2（育児負担）の内容を組み合わせ、300字で構造的に説明する力が試されている。2つの要因をきちんと分けて書くのがコツ。</div>
+
+            <h3>問4：ジェンダー平等を推進するための方策</h3>
+            <div class="question-box">下線部(4)について, counteracting forces that may promote gender equality についてこれを推進するためにはどのような方策が考えられるか。本文で述べられている two channels を踏まえて、自身の考えを300字以内の日本語で説明しなさい。</div>
+            <button class="btn" onclick="highlightText('q4-hint')">ヒントになるのはこの部分！</button>
+            <p style="text-align:center; font-weight: bold; font-size: 1.1em; color: var(--heading-color);">この問題が<span style="color:var(--accent-color); background: #333; padding: 2px 6px; border-radius: 4px;">合否を分ける</span>応用問題！</p>
+            <div class="point-box"><h3>💡思考の３ステップ</h3><div class="thinking-steps"><div class="step"><div class="step-number">1</div><strong>本文のヒントを掴む</strong><br>「2つのチャネル」＝①企業の柔軟な働き方、②家庭での男性の育児参加、をしっかり押さえる。</div><div class="step"><div class="step-number">2</div><strong>具体策を考える</strong><br>その2つをどう社会で後押しするか？ 政府や個人の視点で具体的に考える。</div><div class="step"><div class="step-number">3</div><strong>意見をまとめる</strong><br>「～を推進するために、～という方策が必要だ」と論理的に文章を組み立てる。</div></div></div>
+            <div class="answer-box"><strong>【解答例】</strong><br>本文で示されたジェンダー平等を促進する二つの好機を社会全体で推進するため、企業と個人の両面から方策を講じるべきだ。第一に、企業が導入したテレワークやフレックスタイム制度が危機後も定着するよう、政府は導入企業への税制優遇や助成金で支援する。これにより、性別を問わず誰もが育児と仕事を両立しやすい環境を整える。第二に、家庭内で男性の育児参加を促すため、現在の父親の育児休業取得を義務化に近づけ、所得補償を手厚くする。さらに、育児を主体的に担った男性の体験談をメディアで共有し、「育児は女性の仕事」という古い社会規範そのものを変えていく必要がある。これらの施策により、危機を社会変革の契機とすべきだ。 (298字)</div>
+        </div>
+        
+        <div class="section">
+            <h2>重要単語・熟語 チェックリスト</h2>
+            <p>この長文を読み解くカギとなる単語・熟語リストだ！意味を隠して覚えているかチェックしよう。</p>
+            <table class="word-list-table">
+                <thead><tr><th>単語 / 熟語</th><th>品詞</th><th>意味</th></tr></thead>
+                <tbody>
+                    <tr><td>downturn / recession</td><td>名</td><td>景気後退、不況</td></tr>
+                    <tr><td>repercussions</td><td>名</td><td>（悪い）影響、反響</td></tr>
+                    <tr><td>distinct</td><td>形</td><td>全く異なる、はっきりと区別できる</td></tr>
+                    <tr><td>cyclical sector</td><td>名</td><td>景気循環部門（景気に左右される産業）</td></tr>
+                    <tr><td>concentrate</td><td>動</td><td>～を集中させる</td></tr>
+                    <tr><td>hospitality</td><td>名</td><td>接客業、（手厚い）もてなし</td></tr>
+                    <tr><td>differential</td><td>形</td><td>差異のある、異なる</td></tr>
+                    <tr><td>disproportionate</td><td>形</td><td>不均衡な、釣り合わない</td></tr>
+                    <tr><td>persistent</td><td>形</td><td>持続的な、頑固な</td></tr>
+                    <tr><td>gloomy</td><td>形</td><td>暗い、悲観的な</td></tr>
+                    <tr><td>stem from A</td><td>熟</td><td>Aから生じる、Aに由来する</td></tr>
+                    <tr><td>social norms</td><td>名</td><td>社会規範</td></tr>
+                    <tr><td>telecommuting</td><td>名</td><td>在宅勤務、テレワーク</td></tr>
+                    inevitably</td><td>副</td><td>必然的に、必ず</td></tr>
+                    <tr><td>paternity leave</td><td>名</td><td>父親の育児休暇</td></tr>
+                    <tr><td>reallocation</td><td>名</td><td>再配分</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>まとめ：合格へのロードマップ</h2>
+            <ol>
+                <li><strong>社会問題へのアンテナ力：</strong>ニュースや新聞で「ジェンダー」「働き方改革」「パンデミックの影響」などの話題に普段から触れておこう！</li>
+                <li><strong>要約力：</strong>読んだ記事を「つまり、こういうことだよね」と100字くらいでまとめる練習をしよう！</li>
+                <li><strong>論述力：</strong>社会問題について「自分ならどう考えるか」を300～400字で書く練習をしよう！書いたら先生に見てもらうのがベスト！</li>
+            </ol>
+            <p style="text-align: center; font-size: 1.2em; font-weight: bold; margin-top: 30px;">この解説が君の合格への第一歩になることを応援しています！頑張れ！</p>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="keyword-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">×</span>
+        <h3 id="modal-title" style="color: var(--heading-color); border-bottom: 1px solid var(--border-color);"></h3>
+        <p id="modal-definition"></p>
+      </div>
+    </div>
+
+    <script>
+        // Modal logic
+        const modal = document.getElementById('keyword-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDefinition = document.getElementById('modal-definition');
+        const closeBtn = document.querySelector('.close-btn');
+
+        document.querySelectorAll('.keyword').forEach(keyword => {
+            keyword.addEventListener('click', function(e) {
+                e.preventDefault();
+                modalTitle.textContent = this.getAttribute('data-title');
+                modalDefinition.textContent = this.getAttribute('data-definition');
+                modal.style.display = 'block';
+            });
+        });
+
+        closeBtn.onclick = function() { modal.style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == modal) { modal.style.display = 'none'; } }
+
+        // Button-click Highlight Logic
+        function highlightText(elementId) {
+            document.querySelectorAll('.paragraph.highlight').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            const element = document.getElementById(elementId);
+            if (element) {
+                const syncId = element.dataset.syncId;
+                document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                    el.classList.add('highlight');
+                });
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Translation Sync Highlight Logic
+        document.querySelectorAll('.paragraph').forEach(p => {
+            p.addEventListener('mouseover', () => {
+                const syncId = p.dataset.syncId;
+                if (syncId) {
+                    document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                        el.classList.add('sync-highlight');
+                    });
+                }
+            });
+            p.addEventListener('mouseout', () => {
+                const syncId = p.dataset.syncId;
+                if (syncId) {
+                    document.querySelectorAll(`[data-sync-id="${syncId}"]`).forEach(el => {
+                        el.classList.remove('sync-highlight');
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
